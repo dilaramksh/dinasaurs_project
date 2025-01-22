@@ -2,11 +2,10 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from libgravatar import Gravatar
+from .university import University
 
-import university
 
-
-class User(AbstractUser):
+class User(models.Model):
     """Model used for user authentication, and team member related information."""
 
 
@@ -14,7 +13,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
     user_type = models.CharField(max_length=100, choices=[('super_admin', 'Super Admin'), ('uni_admin', 'University Admin'), ('student', 'Student')])
-    university = models.ForeignKey('university.University', on_delete=models.CASCADE) #recheck the validity of university 
+    university = models.ForeignKey('University', on_delete=models.CASCADE) #recheck the validity of university 
     start_year = models.DateField(blank=False)
     end_year = models.DateField(blank=False)
 

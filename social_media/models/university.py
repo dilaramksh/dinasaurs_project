@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from libgravatar import Gravatar
 
-class University(AbstractUser):
+class University(models.Model):
     """Model used for user authentication, and team member related information."""
 
     name = models.CharField(max_length=250, unique=True)
