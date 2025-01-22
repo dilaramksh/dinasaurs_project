@@ -13,9 +13,10 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
     user_type = models.CharField(max_length=100, choices=[('super_admin', 'Super Admin'), ('uni_admin', 'University Admin'), ('student', 'Student')])
-    university = models.ForeignKey('University', on_delete=models.CASCADE) #recheck the validity of university 
-    start_year = models.DateField(blank=False)
-    end_year = models.DateField(blank=False)
+    university = models.ForeignKey('University', on_delete=models.CASCADE)
+    start_date= models.DateField(blank=False)
+    end_date = models.DateField(blank=False)
+    USERNAME_FIELD = 'email'
 
 
     class Meta:
