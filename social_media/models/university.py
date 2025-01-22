@@ -2,7 +2,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 class University(models.Model):
-    """Model used for user authentication, and team member related information."""
+    """Model used for infromation of different universities"""
 
     name = models.CharField(max_length=250, unique=True)
     domain = models.CharField(

@@ -1,6 +1,7 @@
 from django.core.validators import RegexValidator
 from django.db import models
-from libgravatar import Gravatar
 
 class Category(models.Model):
-    """Model used for ..."""
+    """Model used for categories of societies present at universities"""
+
+    name = models.CharField(max_length=50, blank=False)
