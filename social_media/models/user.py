@@ -5,7 +5,7 @@ from libgravatar import Gravatar
 from .university import University
 
 
-class User(models.Model):
+class User(AbstractUser):
     """Model used for user authentication, and team member related information."""
 
 
