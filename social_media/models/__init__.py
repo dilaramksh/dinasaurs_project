@@ -2,7 +2,7 @@
 
 from .category import Category 
 from .events_participant import Events_participant 
-from .events import Events
+from .event import Events
 from .membership import Membership
 from .news import News
 from .society_role import Society_role
