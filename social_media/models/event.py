@@ -2,7 +2,7 @@ from django.db import models
 
 from .society import Society
 
-class Events(models.Model):
+class Event(models.Model):
     """Model used for events in the societies"""
 
     name = models.CharField(max_length=250, blank=False)
