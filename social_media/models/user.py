@@ -1,7 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import EmailValidator
+from django.core.exceptions import ValidationError
+from datetime import date
 from libgravatar import Gravatar
-from .university import University
+from .university import University  
 
 
 class User(AbstractUser):
@@ -10,12 +13,13 @@ class User(AbstractUser):
 
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
-    email = models.EmailField(unique=True, blank=False)
+    email = models.EmailField(unique=True, blank=False, validators=[EmailValidator()])
     user_type = models.CharField(max_length=100, choices=[('super_admin', 'Super Admin'), ('uni_admin', 'University Admin'), ('student', 'Student')])
     university = models.ForeignKey(University, on_delete=models.CASCADE)
     start_date= models.DateField(blank=False)
     end_date = models.DateField(blank=False)
     USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'user_type', 'university']
 
 
     class Meta:
