@@ -10,4 +10,3 @@ class Events(models.Model):
     description = models.CharField(max_length=1000, blank=False)
     date = models.DateField(blank=False) 
     location = models.CharField(max_length=250, blank=False)
-
