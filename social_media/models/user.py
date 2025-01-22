@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from libgravatar import Gravatar
 
+import university
+
+
 class User(AbstractUser):
     """Model used for user authentication, and team member related information."""
 
@@ -17,6 +20,10 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
+    user_type = models.CharField(max_length=100, choices=[('super_admin', 'Super Admin'), ('uni_admin', 'University Admin'), ('student', 'Student')])
+    university = models.ForeignKey('university.University', on_delete=models.CASCADE) #recheck the validity of university 
+    start_year = models.DateField(blank=False)
+    end_year = models.DateField(blank=False)
 
 
     class Meta:
