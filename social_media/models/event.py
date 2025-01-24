@@ -1,5 +1,4 @@
 from django.db import models
-
 from .society import Society
 
 class Event(models.Model):
