@@ -7,4 +7,11 @@ class SocietyRole(models.Model):
     society = models.ForeignKey(Society, on_delete=models.CASCADE) 
     role_name = models.CharField(max_length=50, blank=False)
 
+    class Meta:
+        """Each society has unique role names."""
+        constraints = [
+            models.UniqueConstraint(fields=["society", "role_name"], name="unique_society_role")
+        ]
+       
+
     
