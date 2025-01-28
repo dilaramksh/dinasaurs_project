@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Student Homepage</title>
-</head>
+{% extends 'student/student_base.html' %}
 
-<body>
-    Content
-</body>
+{% block title %}
+Student Homepage
+{% endblock %}
 
-</html>
+{% block content %}
+    <div class="background">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Welcome to the Student Homepage</h1>
+    </div>
+    </div>
+{% endblock %}
