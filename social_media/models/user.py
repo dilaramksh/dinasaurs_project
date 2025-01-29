@@ -10,7 +10,6 @@ from .university import University
 class User(AbstractUser):
     """Model used for user authentication, and team member related information."""
 
-
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False, validators=[EmailValidator()])
