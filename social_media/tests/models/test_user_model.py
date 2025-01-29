@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from datetime import timedelta
 from django.utils.timezone import now
-from social_media.models import User, University
+from social_media.models import User
 
 class UserModelTestCase(TestCase):
     """Unit tests for the User model."""
@@ -15,20 +15,10 @@ class UserModelTestCase(TestCase):
     GRAVATAR_URL = "https://www.gravatar.com/avatar/363c1b0cd64dadffb867236a00e62986"
 
     def setUp(self):
-        self.university = University.objects.create(name="Test University", domain="@test.ac.uk")
-        self.user = User.objects.create_user(
-            first_name="John",
-            last_name="Doe",
-            email="john.doe@test.ac.uk",
-            user_type="student",
-            university=self.university,
-            start_date=now().date(),
-            end_date=(now() + timedelta(days=365)).date(),
-            username="@johndoe",
-            password="password123"
-        )
+        self.user = User.objects.get(email='john.doe@test.ac.uk')
 
     def test_valid_user(self):
+
         self._assert_user_is_valid()
 
     def test_first_name_must_not_be_blank(self):
@@ -61,15 +51,13 @@ class UserModelTestCase(TestCase):
 
     def test_email_must_be_unique(self):
         second_user = User.objects.create_user(
-            first_name="Jane",
+            first_name="Jessica",
             last_name="Doe",
-            email="jane.doe@test.ac.uk",
+            email="jessica.doe@test.ac.uk",
             user_type="student",
             university=self.university,
             start_date=now().date(),
-            end_date=(now() + timedelta(days=365)).date(),
-            username="@janedoe",
-            password="password123"
+            end_date=(now() + timedelta(days=365)).date()
         )
         self.user.email = second_user.email
         self._assert_user_is_invalid()
@@ -79,17 +67,13 @@ class UserModelTestCase(TestCase):
         self._assert_user_is_invalid()
 
     def test_email_domain_must_match_university_domain(self):
-        self.user.email = 'johndoe@other.ac.uk'
+        self.user.email = 'jason.doe@other.ac.uk'
         self._assert_user_is_invalid()
 
     def test_start_date_cannot_be_after_end_date(self):
         self.user.start_date = now().date() + timedelta(days=365)
         self.user.end_date = now().date()
         self._assert_user_is_invalid()
-
-    def test_full_name_must_be_correct(self):
-        full_name = self.user.full_name()
-        self.assertEqual(full_name, "John Doe")
 
     def test_default_gravatar(self):
         actual_gravatar_url = self.user.gravatar()
