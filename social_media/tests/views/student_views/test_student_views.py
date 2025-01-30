@@ -1,4 +1,4 @@
-import self
+#import self
 from django.test import TestCase, Client
 from django.urls import reverse
 from social_media.models import User

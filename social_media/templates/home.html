@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<div class="container">
+  <!-- Header Section with logo and buttons -->
+  <div class="row align-items-center py-3">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+
+      <!-- Buttons placed at the top-right -->
+      <div class="ms-auto">
+        <a href=# class="btn btn-secondary me-2">
+          Sign up
+        </a>
+        <a href="{% url 'log_in' %}" class="btn btn-secondary">
+          Log in
+        </a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
