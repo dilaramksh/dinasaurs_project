@@ -21,6 +21,7 @@ from social_media import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.home_view, name='home'),
     path('log_in/', views.LogInView.as_view(), name='log_in'),
 
     #student paths
