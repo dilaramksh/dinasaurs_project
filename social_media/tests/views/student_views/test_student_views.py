@@ -4,7 +4,7 @@ from django.urls import reverse
 from social_media.models import User
 from datetime import datetime
 
-from social_media.student_views import student_dashboard
+from social_media.views.student_views import student_dashboard
 
 
 class StudentDashBoardViewTestCase(TestCase):
