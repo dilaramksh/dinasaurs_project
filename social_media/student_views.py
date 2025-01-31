@@ -10,9 +10,10 @@ from social_media.models import User
 #@user_type_required('student')
 #@login_required
 def student_dashboard(request):
-    #student_name = User.first_name + " " + User.last_name
-    #student_university = User.university
-    #student_email = User.email
+    student = request.user
+    #student_name = student.first_name + " " + User.last_name
+    #student_university = student.university
+    #student_email = student.email
 
     #context = {
      #   'student_name' : student_name,
@@ -20,7 +21,7 @@ def student_dashboard(request):
        # 'student_email' : student_email
     #}
 
-    return render(request, 'student/student_dashboard.html')
+    return render(request, 'student/student_dashboard.html', {'student': student})
 
    
 
