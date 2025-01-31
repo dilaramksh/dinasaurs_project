@@ -22,6 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     #student paths
-    path('student/dashboard', student_dashboard, name='student_dashboard'),
+    path('student/dashboard/', student_dashboard, name='student_dashboard'),
 
 ]
