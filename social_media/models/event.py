@@ -1,6 +1,6 @@
 from django.db import models
 from .society import Society
-
+# TODO: ensure date is in the future
 class Event(models.Model):
     """Model used for events in the societies"""
 
