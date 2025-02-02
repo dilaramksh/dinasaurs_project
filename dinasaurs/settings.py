@@ -128,4 +128,4 @@ AUTH_USER_MODEL = 'social_media.User'
 # Login URL for redirecting users from login protected views
 LOGIN_URL = 'log_in'
 # URL where @login_prohibited redirects to (needs to be added)
-REDIRECT_URL_WHEN_LOGGED_IN = ''
+REDIRECT_URL_WHEN_LOGGED_IN = 'student_dashboard'
