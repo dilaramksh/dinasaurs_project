@@ -18,8 +18,12 @@ class User(AbstractUser):
     start_date= models.DateField(blank=False)
     end_date = models.DateField(blank=False)
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'user_type', 'university']
+    REQUIRED_FIELDS = []
 
+    def save(self, *args, **kwargs):
+        if not self.username:  # Automatically set username to email if not provided
+            self.username = self.email
+        super().save(*args, **kwargs)
 
     class Meta:
         """Model options."""

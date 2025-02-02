@@ -26,6 +26,6 @@ urlpatterns = [
     path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
 
     #student paths
-    path('student/dashboard', student_dashboard, name='student_dashboard'),
+    path('student/dashboard/', student_dashboard, name='student_dashboard'),
 
 ]

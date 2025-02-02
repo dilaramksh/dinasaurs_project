@@ -11,6 +11,6 @@ class EventsParticipant(models.Model):
     class Meta:
         """Member cannot be recorded as a participant of an event more than once."""
         constraints = [
-            models.UniqueConstraint(fields=["event", "membership"], name="unique_event_participant")
+            models.UniqueConstraint(fields=["event", "membership"], name="unique_events_participant")
         ]
    

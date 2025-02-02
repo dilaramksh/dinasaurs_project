@@ -63,7 +63,7 @@ class UserModelTestCase(TestCase):
         self._assert_user_is_invalid()
 
     def test_email_must_contain_at_symbol(self):
-        self.user.email = 'johndoe.example.org'
+        self.user.email = 'johndoe.test.ac.uk'
         self._assert_user_is_invalid()
 
     def test_email_domain_must_match_university_domain(self):
