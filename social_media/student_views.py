@@ -23,6 +23,15 @@ def student_dashboard(request):
 
     return render(request, 'student/student_dashboard.html', {'student': student})
 
-   
+#Views for pages from dropdown menu in Student Navbar
+#@login_required
+def help(request):
+    return render(request, 'help.html')
 
+#@login_required
+def features(request):
+    return render(request, 'features.html')
 
+#@login_required
+def pricing(request):
+    return render(request, 'pricing.html')

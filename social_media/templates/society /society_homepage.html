@@ -1,0 +1,40 @@
+{% extends 'student/base_content.html' %}
+{% load static %}
+
+{% block title %}Society Homepage{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h2 class="mb-3">Welcome to the Society Hub</h2>
+            <p class="lead">Join a community or start your own society!</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Create a New Society -->
+        <div class="col-md-6">
+            <div class="card text-center p-3">
+                <h5 class="card-header bg-warning text-dark">Start Your Own Society</h5>
+                <div class="card-body">
+                    <p class="card-text">Have an idea for a new society? Submit a request and start something amazing.</p>
+                    <a href="{% url 'create_society' %}" class="btn btn-warning">Request to Create</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Available Societies -->
+        <div class="col-md-6">
+            <div class="card text-center p-3">
+                <h5 class="card-header bg-warning text-dark">Explore Societies</h5>
+                <div class="card-body">
+                    <p class="card-text">Browse and join existing societies that match your interests.</p>
+                    <a href="{% url 'view_societies' %}" class="btn btn-warning">View Societies</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
