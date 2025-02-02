@@ -4,81 +4,94 @@
 {% block title %}Student Homepage{% endblock %}
 
 {% block content %}
-    
-<body>
-    <title>Student Homepage</title>
-    <div class="container mt-4">
-        <div class="row">
-            <!-- Profile Section -->
-            <div class="col-md-3">
-                <div class="card text-center p-3">
-                    <h5 class="card-header">Your Profile Details</h5>
-                    <div class="card-body">
-                        <img src="{{ student.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}" class="img-fluid" alt="Profile Picture">
-                        <h6 class="mt-2">{{ student.full_name }}</h6>
-                        <hr>
-                        <p><strong>Email:</strong> {{ student.email }}</p>
-                        <p><strong>University:</strong> {{ student.university }}</p>
-                        <p><strong>Start Date:</strong> {{ student.start_date }}</p>
-                        <p><strong>Graduation Date:</strong> {{ student.end_date }}</p>
-                    </div>
-                </div>
+    <body>
+        <title>Student Homepage</title>
+        
+        <!-- Header with honeycomb pattern -->
+        <header class="text-dark text-center py-4 mb-4" style="background: url('https://www.transparenttextures.com/patterns/honeycomb.png') #FFFFCC;">
+            <div class="container">
+                <h1 class="display-4 fw-bold">🐝 Welcome {{ user.first_name }}! 🐝</h1>
             </div>
-
-            <!-- Main Content -->
-            <div class="col-md-9">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <h5 class="card-header">Upcoming Events</h5>
-                            <div class="card-body">
-                                <ul>
-                                    {% for event in student.events %}
-                                        <li>{{ event.name }} - {{ event.date }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <h5 class="card-header">Your University Feed</h5>
-                            <div class="card-body">
-                                <p>New and upcoming societies</p>
-                            </div>
+        </header>
+        
+        <div class="container mt-4">
+            <div class="row">
+                <!-- Profile Section -->
+                <div class="col-md-3">
+                    <div class="card text-center p-3 border-warning shadow-sm">
+                        <h5 class="card-header">🐝 Your Profile Details</h5>
+                        <div class="card-body">
+                            <img src="{{ student.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}" class="img-fluid rounded-circle" alt="Profile Picture">
+                            <h6 class="mt-2">{{ student.full_name }}</h6>
+                            <hr>
+                            <p><strong>Email:</strong> {{ student.email }}</p>
+                            <p><strong>University:</strong> {{ student.university }}</p>
+                            <p><strong>Start Date:</strong> {{ student.start_date }}</p>
+                            <p><strong>Graduation Date:</strong> {{ student.end_date }}</p>
                         </div>
                     </div>
                 </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <h5 class="card-header">Suggestions for You</h5>
-                            <div class="card-body">
-                                <ul>
-                                    {% for suggestion in student.suggestions %}
-                                        <li>{{ suggestion }}</li>
-                                    {% endfor %}
-                                </ul>
-                                <!-- Button to View All Societies -->
-                                <div class="text-center mt-3">
-                                    <a href="{% url 'society_homepage' %}" class="btn custom-btn">View available societies</a>
+                
+                <!-- Main Content -->
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card border-warning shadow-sm">
+                                <h5 class="card-header">📅 Upcoming Events</h5>
+                                <div class="card-body">
+                                    <ul>
+                                        {% for event in student.events %}
+                                            <li>🐝 {{ event.name }} - {{ event.date }}</li>
+                                        {% empty %}
+                                            <li class="text-muted">No upcoming events</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-warning shadow-sm">
+                                <h5 class="card-header">🏛️ Your University Feed</h5>
+                                <div class="card-body">
+                                    <p>New and upcoming societies</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <h5 class="card-header">Your Current Societies</h5>
-                            <div class="card-body">
-                                <div class="row">
-                                    {% for society in student.societies %}
-                                        <div class="col-6">
-                                            <div class="card p-2 text-center">
-                                                <p>{{ society }}</p>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="card border-warning shadow-sm">
+                                <h5 class="card-header">🔍 Suggestions for You</h5>
+                                <div class="card-body">
+                                    <ul>
+                                        {% for suggestion in student.suggestions %}
+                                            <li>🐝 {{ suggestion }}</li>
+                                        {% empty %}
+                                            <li class="text-muted">No suggestions available</li>
+                                        {% endfor %}
+                                    </ul>
+                                    <div class="text-center mt-3">
+                                        <a href="{% url 'society_homepage' %}" class="btn btn-outline-warning">View available societies</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-warning shadow-sm">
+                                <h5 class="card-header">🏅 Your Current Societies</h5>
+                                <div class="card-body">
+                                    <div class="row g-2">
+                                        {% for society in student.societies %}
+                                            <div class="col-6">
+                                                <div class="card p-2 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
+                                                    <p class="fw-bold">🐝 {{ society }}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    {% endfor %}
+                                        {% empty %}
+                                            <p class="text-muted text-center">You are not part of any societies yet.</p>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -86,10 +99,9 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Bootstrap JS & dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-</body>
-{% endblock %} 
+        <!-- Bootstrap JS & dependencies -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    </body>
+{% endblock %}
