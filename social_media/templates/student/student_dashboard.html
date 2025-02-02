@@ -18,11 +18,11 @@
             <div class="row">
                 <!-- Profile Section -->
                 <div class="col-md-3">
-                    <div class="card text-center p-3 border-warning shadow-sm">
+                    <div class="card text-center p-4 border-warning shadow-sm" style="min-height: 100%;">
                         <h5 class="card-header">🐝 Your Profile Details</h5>
                         <div class="card-body">
-                            <img src="{{ student.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}" class="img-fluid rounded-circle" alt="Profile Picture">
-                            <h6 class="mt-2">{{ student.full_name }}</h6>
+                            <img src="{{ student.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}" class="img-fluid rounded-circle mb-3" alt="Profile Picture">
+                            <h6>{{ student.full_name }}</h6>
                             <hr>
                             <p><strong>Email:</strong> {{ student.email }}</p>
                             <p><strong>University:</strong> {{ student.university }}</p>
@@ -36,7 +36,7 @@
                 <div class="col-md-9">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="card border-warning shadow-sm">
+                            <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
                                 <h5 class="card-header">📅 Upcoming Events</h5>
                                 <div class="card-body">
                                     <ul>
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card border-warning shadow-sm">
+                            <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
                                 <h5 class="card-header">🏛️ Your University Feed</h5>
                                 <div class="card-body">
                                     <p>New and upcoming societies</p>
@@ -61,7 +61,7 @@
                     
                     <div class="row mt-3">
                         <div class="col-md-6">
-                            <div class="card border-warning shadow-sm">
+                            <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
                                 <h5 class="card-header">🔍 Suggestions for You</h5>
                                 <div class="card-body">
                                     <ul>
@@ -78,13 +78,13 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card border-warning shadow-sm">
+                            <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
                                 <h5 class="card-header">🏅 Your Current Societies</h5>
                                 <div class="card-body">
                                     <div class="row g-2">
                                         {% for society in student.societies %}
                                             <div class="col-6">
-                                                <div class="card p-2 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
+                                                <div class="card p-3 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
                                                     <p class="fw-bold">🐝 {{ society }}</p>
                                                 </div>
                                             </div>
@@ -99,6 +99,11 @@
                 </div>
             </div>
         </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-dark mt-5 py-4" style="background-color: #FFF2CC;">
+            <p class="mb-0">🐝 &copy; {{ year }} HiveSociety | Stay Connected | Contact Us</p>
+        </footer>
 
         <!-- Bootstrap JS & dependencies -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
