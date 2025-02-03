@@ -1,15 +1,19 @@
 from django.test import TestCase
-from social_media.models import Category, News, Society
+from social_media.models import Category, News, Society, User
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 class NewsModelTestCase(TestCase):
     """Unit tests for the News Model"""
+
+    fixtures = ['social_media/tests/fixtures/default_user.json']
+
     def setUp(self):
         self.category = Category.objects.create(name="cultural")
         self.society = Society.objects.create(
             name="A Soc",
             society_email="asoc@test.ac.uk",
+            founder = User.objects.get(email="john.doe@test.ac.uk"),
             description="A desc.",
             category=self.category,
             paid_membership=True,

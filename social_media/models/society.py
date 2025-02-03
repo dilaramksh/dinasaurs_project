@@ -9,7 +9,7 @@ from .category import Category
 class Society(models.Model):
     """Model used for information on societies"""
     name = models.CharField(max_length=50, blank=False)
-    # user_id = models.ForeignKey(User, on_delete=models.CASCADE) 
+    founder = models.ForeignKey(User, on_delete=models.CASCADE) 
     society_email = models.EmailField(unique=True, blank=False, validators=[EmailValidator()])
     description = models.CharField(max_length=2000, blank=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
