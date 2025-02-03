@@ -1,0 +1,84 @@
+{% extends 'base_content.html' %}
+{% load static %}
+{% block body %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm py-3">
+    <div class="container-fluid">
+        <!-- Navigation Links -->
+        <div class="d-flex align-items-center">
+            <li class="nav-item dropdown list-unstyled me-3">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Options
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#home">Home</a></li>
+                        <li><a class="dropdown-item" href="#universities">Universities</a></li>
+                        <li><a class="dropdown-item" href="#faq">FAQ/Help</a></li>
+                    </ul>
+                </li>
+            </div>
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="">
+                <img src="{% static 'images/Logo.png' %}" alt="Logo" style="height: 60px; width: auto; display: block;">
+            </a>
+            <!-- Log In and Sign Up Buttons -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <button class="btn" style="background-color: #fc9d3d; color: white; border: none; margin-right: 8px;">Log In</button> 
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn" style="background-color: #f7840f; color: white; border: none;">Sign Up</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<!-- Hero Section -->
+<div class="container-fluid text-white text-center py-5" style="background-color: #fabf52;">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-lg-8">
+            <h1 class="display-3 fw-bold mb-2">Welcome to Hive Society - Buzz in!</h1>
+            <p class="lead mb-4">
+                Discover new societies, exciting events, and endless opportunities to connect and grow.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container py-5">
+    <div class="row d-flex flex-column align-items-center g-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title" style="color: #ff5733;">Latest News:</h2>
+                    <p class="card-text">New events and societies...</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title" style="color: #ff5733;" >Discover Universities</h2>
+                    <p class="card-text">...</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title" style="color: #ff5733;">Why Join a Society?</h2>
+                    <p class="card-text">...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="text-black  text-center py-1" style="background-color: #f2d177;">
+    <p>&copy; 2025 Hive Society. All rights reserved.</p>
+</footer>
+{% endblock %}
