@@ -1,0 +1,22 @@
+{% extends 'base_content.html' %}
+{% load static %} 
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-6 offset-md-3">
+      <h1>Sign up</h1>
+      <p class="text-muted">Register with your school email.</p>
+      <hr>
+      <form action="{% url 'sign_up' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% include 'partials/bootstrap_form.html' with form=form %}
+        <input type="submit" value="Sign up" class="btn btn-primary">
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

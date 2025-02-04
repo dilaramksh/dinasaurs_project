@@ -119,6 +119,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -128,5 +131,5 @@ AUTH_USER_MODEL = 'social_media.User'
 
 # Login URL for redirecting users from login protected views
 LOGIN_URL = 'log_in'
-# URL where @login_prohibited redirects to
-REDIRECT_URL_WHEN_LOGGED_IN = ''
+# URL where @login_prohibited redirects to (needs to be added)
+REDIRECT_URL_WHEN_LOGGED_IN = 'student_dashboard'
