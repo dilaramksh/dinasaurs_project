@@ -22,6 +22,11 @@ from social_media import views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    # student/profile/password ??
+    path('profile/', views.ProfileUpdateView.as_view(), name='profile'),
+    path('password/', views.PasswordView.as_view(), name='password'),
+    path('log_in/', views.LogInView.as_view(), name='log_in'),
+
     #student paths
     path('student/dashboard/', views.student_dashboard, name='student_dashboard'),
     
