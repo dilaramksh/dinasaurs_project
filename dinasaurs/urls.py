@@ -29,7 +29,7 @@ urlpatterns = [
     path('log_in/', views.LogInView.as_view(), name='log_in'),
     path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
 
-    path('', homepage, name='homepage'),
+    path('homepage/', homepage, name='homepage'),
 
     #student paths
     path('student/dashboard/', student_dashboard, name='student_dashboard'),
