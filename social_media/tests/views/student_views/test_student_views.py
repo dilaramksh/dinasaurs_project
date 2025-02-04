@@ -1,7 +1,7 @@
 #import self
 from django.test import TestCase, Client
 from django.urls import reverse
-from social_media.models import User
+from social_media.models import User, University
 from datetime import datetime
 
 from social_media.views.student_views import student_dashboard
@@ -10,14 +10,16 @@ from social_media.views.student_views import student_dashboard
 class StudentDashBoardViewTestCase(TestCase):
 
     def setUp(self):
+        university = University.objects.create(name='kcl')
+
         self.user = User.objects.create(
             first_name= 'Jane',
             last_name= 'Doe',
             email = 'janedoe@email.com',
             user_type= 'student',
-            university= 'kcl',
-            start_date= '23.09.2023',
-            end_date= '05.06.2026',
+            university= university,
+            start_date= '2023-09-23',
+            end_date= '2026-05-06',
 
         )
 

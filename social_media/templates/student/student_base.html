@@ -1,11 +1,14 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <title>{% block title %}Default Title{% endblock %}</title>
+
         <!-- Temporary font -->
         <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Mina:wght@400;700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Prata&family=Quicksand:wght@300..700&family=Varela&display=swap" rel="stylesheet">
+        
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
         <style>
             body, html {
                 height: 100%;
@@ -49,87 +52,11 @@
                 padding: 30px;
             }
         </style>
-        <title>Student Homepage</title>
     </head>
     <body>
-        {% include 'partials/student_navbar.html' %}
-        
-        <div class="container mt-4">
-            <div class="row">
-                <!-- Profile Section -->
-                <div class="col-md-3">
-                    <div class="card text-center p-3">
-                        <h5 class="card-header">Your Profile Details</h5>
-                        <div class="card-body">
-                            <img src="{{ student.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}" class="img-fluid" alt="Profile Picture">
-                            <h6 class="mt-2">{{ student.full_name }}</h6>
-                            <hr>
-                            <p><strong>Email:</strong> {{ student.email }}</p>
-                            <p><strong>University:</strong> {{ student.university }}</p>
-                            <p><strong>Start Date:</strong> {{ student.start_date }}</p>
-                            <p><strong>Graduation Date:</strong> {{ student.end_date }}</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Main Content -->
-                <div class="col-md-9">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <h5 class="card-header">Upcoming Events</h5>
-                                <div class="card-body">
-                                    <ul>
-                                        {% for event in student.events %}
-                                            <li>{{ event.name }} - {{ event.date }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <h5 class="card-header">Your University Feed</h5>
-                                <div class="card-body">
-                                    <p>New and upcoming societies</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <h5 class="card-header">Suggestions for You</h5>
-                                <div class="card-body">
-                                    <ul>
-                                        {% for suggestion in student.suggestions %}
-                                            <li>{{ suggestion }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <h5 class="card-header">Your Current Societies</h5>
-                                <div class="card-body">
-                                    <div class="row">
-                                        {% for society in student.societies %}
-                                            <div class="col-6">
-                                                <div class="card p-2 text-center">
-                                                    <p>{{ society }}</p>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    {% include 'partials/student_navbar.html' %}
+    {% include 'partials/messages.html' %}
+        {% block content %}{% endblock %}
 
         <!-- Bootstrap JS & dependencies -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
