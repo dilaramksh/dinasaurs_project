@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from social_media.student_views import student_dashboard, help, features, pricing
-from social_media.society_views import society_homepage, create_society, view_societies
+from social_media.views.society_views import society_homepage, create_society, view_societies
+from social_media import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     #student paths
-    path('student/dashboard/', student_dashboard, name='student_dashboard'),
+    path('student/dashboard/', views.student_dashboard, name='student_dashboard'),
     
     #path from student dashboard to other pages 
     #path('student/features/', features, name='features'),
