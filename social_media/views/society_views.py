@@ -4,7 +4,7 @@ from social_media.decorators import user_type_required
 from social_media.models import User
 from django.contrib import messages
 from django.shortcuts import redirect, render
-from .forms.society_creation_form import SocietyCreationForm
+from social_media.forms.society_creation_form import SocietyCreationForm
 
 
 #@user_type_required('student')
