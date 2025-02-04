@@ -21,6 +21,7 @@ from social_media.views.homepage_views import homepage
 from social_media import views
 #from django.conf import settings
 #from django.conf.urls.static import static
+from social_media.society_views import society_homepage, view_societies, society_creation_request, create_temp_category
 
 
 urlpatterns = [
@@ -33,5 +34,8 @@ urlpatterns = [
 
     #student paths
    # path('student/dashboard/', student_dashboard, name='student_dashboard'),
+    path('society/homepage/', society_homepage, name='society_homepage'),
+    path('society/create/', society_creation_request, name='society_creation_request'),
+    path('society/view/', view_societies, name='view_societies'),
 
 ]
