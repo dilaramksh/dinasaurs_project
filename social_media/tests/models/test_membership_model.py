@@ -16,6 +16,7 @@ class MembershipModelTestCase(TestCase):
         self.society = Society.objects.create(
             name="A Soc",
             society_email="asoc@test.ac.uk",
+            founder = User.objects.get(email="john.doe@test.ac.uk"),
             description="A desc.",
             category=self.category,
             paid_membership=True,

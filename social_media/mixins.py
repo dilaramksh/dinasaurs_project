@@ -1,7 +1,8 @@
-from django import forms
-from django.core.validators import RegexValidator
 from django.shortcuts import redirect
 from django.core.exceptions import ImproperlyConfigured
+from django.core.validators import RegexValidator
+from django import forms
+
 
 class LoginProhibitedMixin:
     """Ensures that already logged in users cannot access the login page, redirecting them to specified URL."""

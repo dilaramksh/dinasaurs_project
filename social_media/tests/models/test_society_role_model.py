@@ -1,16 +1,19 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from social_media.models import SocietyRole, Category, Society
+from social_media.models import SocietyRole, Category, Society, User
 
 class SocietyRoleModelTestCase(TestCase):
     """Unit tests for the Society Role Model"""
-        
+    fixtures = [
+        'social_media/tests/fixtures/default_user.json'
+    ]
     def setUp(self):
         self.valid_role_name = "President"
         self.category = Category.objects.create(name="cultural")
         self.society = Society.objects.create(
             name="A Soc",
             society_email="asoc@test.ac.uk",
+            founder = User.objects.get(email="john.doe@test.ac.uk"),
             description="A desc.",
             category=self.category,
             paid_membership=True,

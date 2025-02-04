@@ -1,21 +1,24 @@
 from django.test import TestCase
-from social_media.models import Category, University, Society
+from social_media.models import Category, University, Society, User
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 class SocietyModelTestCase(TestCase):
     """Unit tests for the Society Model"""
-
+    fixtures = [
+        'social_media/tests/fixtures/default_user.json'
+    ]
     def setUp(self):
         self.category = Category.objects.create(name='cultural')
         self.university = University.objects.create(
-            name="Test Univeristy", 
-            domain="@test.ac.uk"
+            name="Test2 Univeristy", 
+            domain="@test2.ac.uk"
             )
         
         self.valid_society_data = {
             "name": "A Soc",
             "society_email": "asoc@test.ac.uk",
+            "founder": User.objects.get(email="john.doe@test.ac.uk"),
             "description": "A description.",
             "category": self.category,
             "paid_membership": False,
@@ -39,6 +42,7 @@ class SocietyModelTestCase(TestCase):
         duplicate = Society(
             name="Another Soc",
             society_email="asoc@test.ac.uk",
+            founder = User.objects.get(email="john.doe@test.ac.uk"),
             description="Another desc.",
             category=self.category,
             paid_membership=True,

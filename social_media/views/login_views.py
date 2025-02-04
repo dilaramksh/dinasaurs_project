@@ -4,8 +4,10 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.views import View
-from social_media.mixins import LoginProhibitedMixin
+from django.core.exceptions import ImproperlyConfigured
 from social_media.forms import LogInForm 
+from social_media.mixins import LoginProhibitedMixin
+
 
 class LogInView(LoginProhibitedMixin, View):
     """Display login screen and handle user login."""
