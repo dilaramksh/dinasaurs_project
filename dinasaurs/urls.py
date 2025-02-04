@@ -16,8 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from social_media.student_views import student_dashboard
+#from social_media.student_views import student_dashboard
 from social_media.homepage_views import homepage
+from social_media import views
 #from django.conf import settings
 #from django.conf.urls.static import static
 
@@ -31,6 +32,6 @@ urlpatterns = [
     path('', homepage, name='homepage'),
 
     #student paths
-    path('student/dashboard/', student_dashboard, name='student_dashboard'),
+   # path('student/dashboard/', student_dashboard, name='student_dashboard'),
 
 ]

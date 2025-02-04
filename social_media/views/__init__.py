@@ -3,3 +3,4 @@
 from .login_views import LogInView
 from .signup_views import SignUpView
 from .home_view import home_view
+from .student_views import student_dashboard
