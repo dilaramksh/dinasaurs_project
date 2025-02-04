@@ -25,11 +25,10 @@ from social_media.views.student_views import student_dashboard
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home_view, name='home'),
     path('log_in/', views.LogInView.as_view(), name='log_in'),
     path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
 
-    path('homepage/', homepage, name='homepage'),
+    path('', homepage, name='homepage'),
 
     #student paths
     path('student/dashboard/', student_dashboard, name='student_dashboard'),
