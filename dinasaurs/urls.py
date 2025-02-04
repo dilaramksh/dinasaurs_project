@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from social_media.student_views import student_dashboard, help, features, pricing
-from social_media.society_views import society_homepage, create_society, view_societies
+from social_media.society_views import society_homepage, view_societies, society_creation_request, create_temp_category
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,7 +33,8 @@ urlpatterns = [
 
     #society paths
     path('society/homepage/', society_homepage, name='society_homepage'),
-    path('society/create/', create_society, name='create_society'),
-    path('society/view/', view_societies, name='view_societies')
+    path('society/create/', society_creation_request, name='society_creation_request'),
+    path('society/view/', view_societies, name='view_societies'),
+    path("test-create-category/", create_temp_category, name="test_create_category"),
 
 ]

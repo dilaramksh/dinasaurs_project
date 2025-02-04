@@ -2,21 +2,21 @@
 from django.core.validators import EmailValidator, MaxValueValidator, RegexValidator
 from django.core.exceptions import ValidationError
 from django.db import models
-
 from .user import User
 from .category import Category
 
 class Society(models.Model):
     """Model used for information on societies"""
     name = models.CharField(max_length=50, blank=False)
-    founder = models.ForeignKey(User, on_delete=models.CASCADE) 
+    founder = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'user_type': 'student'}) 
     society_email = models.EmailField(unique=True, blank=False, validators=[EmailValidator()])
     description = models.CharField(max_length=2000, blank=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     paid_membership = models.BooleanField(default=False, blank=False) #all memberships are free by default
-    price = models.FloatField(validators=[MaxValueValidator(50.0)])
+    price = models.FloatField(default=0.0, validators=[MaxValueValidator(50.0)])
     colour1 = models.CharField(
         max_length=7,
+        default= "#FFD700",
         validators=[
             RegexValidator(
                 regex=r'^#(?:[0-9a-fA-F]{3}){1,2}$',
@@ -26,6 +26,7 @@ class Society(models.Model):
     )
     colour2 = models.CharField(
         max_length=7,
+        default="#FFF2CC", 
         validators=[
             RegexValidator(
                 regex=r'^#(?:[0-9a-fA-F]{3}){1,2}$',
@@ -46,3 +47,13 @@ class Society(models.Model):
         else:
             if self.price <= 0:
                 raise ValidationError("Price must be greater than zero for a paid membership.")
+    
+    def approve(self):
+        """Approve the society."""
+        self.status = "approved"
+        self.save()
+
+    def block(self):
+        """Block the society."""
+        self.status = "blocked"
+        self.save()
