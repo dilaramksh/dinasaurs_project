@@ -9,8 +9,8 @@ from social_media.forms.society_creation_form import SocietyCreationForm
 
 #@user_type_required('student')
 #@login_required
-def society_homepage(request):
-    return render(request, 'society/society_homepage.html')
+def society_browser(request):
+    return render(request, 'student/society_browser.html')
 
 def society_creation_request(request):
     # if request.user.user_type != "student":
@@ -32,7 +32,7 @@ def society_creation_request(request):
     else:
         form = SocietyCreationForm()
 
-    return render(request, 'society/submit_society_request.html', {'form': form})
+    return render(request, 'student/submit_society_request.html', {'form': form})
 
 from django.shortcuts import HttpResponse
 from social_media.models import Category
@@ -47,4 +47,4 @@ def create_temp_category(request):
         return HttpResponse("Category already exists.")
 
 def view_societies(request):
-    return render(request, 'society/view_societies.html')
+    return render(request, 'student/view_societies.html')
