@@ -21,6 +21,8 @@ from social_media.views.homepage_views import homepage
 from social_media import views
 #from django.conf import settings
 from social_media.views._all import *
+from social_media.views.society_views import *
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,5 +36,14 @@ urlpatterns = [
     path('student/homepage/', society_browser, name='society_browser'),
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
+
+    #society paths
+    path('society/dashboard/', society_dashboard, name='society_dashboard'),
+    path('society/create_event/', event_creation, name='create_event'),
+    path('society/create_post/', create_post, name='create_post'),
+    path('society/terminate_society/', terminate_society, name='terminate_society'),
+    path('society/view_members/', view_members, name='view_members'),
+    path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events')
+    
 
 ]
