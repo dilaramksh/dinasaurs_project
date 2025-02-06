@@ -10,7 +10,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     """Display user profile editing screen, and handle profile modifications."""
 
     model = UserForm
-    template_name = "profile.html"
+    template_name = "general/profile.html"
     form_class = UserForm
 
     def get_object(self):
@@ -26,7 +26,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 class PasswordView(LoginRequiredMixin, FormView):
     """Display password change screen and handle password change requests."""
 
-    template_name = 'password.html'
+    template_name = 'general/password.html'
     form_class = PasswordForm
 
     def get_form_kwargs(self, **kwargs):

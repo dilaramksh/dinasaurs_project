@@ -23,10 +23,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <button class="btn" style="background-color: #fc9d3d; color: white; border: none; margin-right: 8px;">Log In</button> 
+                        <a href="{% url 'log_in' %}" class="btn btn-warning text-white me-2">Log In</a>
                     </li>
                     <li class="nav-item">
-                        <button class="btn" style="background-color: #f7840f; color: white; border: none;">Sign Up</button>
+                        <a href="{% url 'sign_up' %}" class="btn btn-warning text-white me-2">Sign Up</a>
                     </li>
                 </ul>
             </div>

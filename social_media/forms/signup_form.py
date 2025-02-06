@@ -1,5 +1,7 @@
 from django import forms
-from social_media.models import User
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
+from social_media.models import User, University
 from social_media.mixins import NewPasswordMixin
 from django.utils.timezone import now
 
@@ -14,15 +16,23 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
         widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
     )
 
+    university = forms.ModelChoiceField( 
+        queryset=University.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Select your university",
+    )
+
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'university', 'start_date', 'end_date']
 
     def clean(self):
-        """Ensure date integrity."""
+        """Ensure date, university and email integrity."""
         cleaned_data = super().clean()
         start_date = cleaned_data.get("start_date")
         end_date = cleaned_data.get("end_date")
+        email = cleaned_data.get("email")
+        university = cleaned_data.get("university")
 
         # Validate start_date and end_date
         if start_date and end_date:
@@ -30,7 +40,20 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
                 raise forms.ValidationError("End date cannot be before start date.")
             if end_date < now().date():
                 raise forms.ValidationError("End date must be in the future.")
+        
+        #Validate email format
+        validator = EmailValidator()
+        try:
+            validator(email)
+        except ValidationError:
+            raise forms.ValidationError("Invalid email format. Please enter your univeristy email.")
 
+        #Validate that email matches univeristy
+        if university and email:
+            domain = "@" + email.split("@")[-1]
+            if not domain.lower() != university.domain.lower():
+                raise forms.ValidationError(f"Email must end with '{domain}'.")
+            
         return cleaned_data
     
     def save(self):
