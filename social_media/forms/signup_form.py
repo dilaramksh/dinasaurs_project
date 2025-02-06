@@ -9,10 +9,12 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
     """Form enabling unregistered users to sign up."""
 
     start_date = forms.DateField(
+        required=True,
         widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
     )
 
     end_date = forms.DateField(
+        required=True,
         widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
     )
 
@@ -24,7 +26,7 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'university', 'start_date', 'end_date']
+        fields = ['first_name', 'last_name', 'username', 'email']
 
     def clean(self):
         """Ensure date, university and email integrity."""
@@ -51,21 +53,23 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
         #Validate that email matches univeristy
         if university and email:
             domain = "@" + email.split("@")[-1]
-            if not domain.lower() != university.domain.lower():
+            if domain.lower() != university.domain.lower():
                 raise forms.ValidationError(f"Email must end with '{domain}'.")
             
         return cleaned_data
     
-    def save(self):
+    def save(self, commit=True):
         """Create a new user."""
-        super().save(commit=False)  
+        super().save(commit=False)
         user = User.objects.create_user(
-            username=self.cleaned_data.get('username'),
+            self.cleaned_data.get('username'),
             first_name=self.cleaned_data.get('first_name'),
             last_name=self.cleaned_data.get('last_name'),
             email=self.cleaned_data.get('email'),
+            start_date=self.cleaned_data.get('start_date'),
+            end_date=self.cleaned_data.get('end_date'),
             password=self.cleaned_data.get('new_password'),
-            user_type="student", #Default user type
+            user_type="student",
         )
 
         return user
