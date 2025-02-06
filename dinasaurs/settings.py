@@ -133,3 +133,5 @@ AUTH_USER_MODEL = 'social_media.User'
 LOGIN_URL = 'log_in'
 # URL where @login_prohibited redirects to (needs to be added)
 REDIRECT_URL_WHEN_LOGGED_IN = 'student_dashboard'
+#REDIRECT_TO_UNI_ADMIN_WHEN_LOGGED_IN = 'uni_admin_dashboard'
+#REDIRECT_TO_SOCIETY_WHEN_LOGGED_IN = 'society_dashboard'
