@@ -6,11 +6,11 @@ class Command(BaseCommand):
     help = "Seed the database with verified universities."
 
     UNIVESITIES = [
-        {"name": "King's College London", "domain": "@kcl.ac.uk"},
-        {"name": "University College London", "domain": "@ucl.ac.uk"},
-        {"name": "Imperial College London", "domain": "@imperial.ac.uk"},
-        {"name": "London School of Economics", "domain": "@lse.ac.uk"},
-        {"name": "University of Oxford", "domain": "@ox.ac.uk"},
+        {"name": "King's College London", "domain": "kcl.ac.uk"},
+        {"name": "University College London", "domain": "ucl.ac.uk"},
+        {"name": "Imperial College London", "domain": "imperial.ac.uk"},
+        {"name": "London School of Economics", "domain": "lse.ac.uk"},
+        {"name": "University of Oxford", "domain": "ox.ac.uk"},
     ]
 
     def handle(self, *args, **options):

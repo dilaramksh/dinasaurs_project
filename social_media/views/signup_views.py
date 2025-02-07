@@ -16,7 +16,6 @@ class SignUpView(LoginProhibitedMixin, FormView):
     def form_valid(self, form):
         self.object = form.save()  
         login(self.request, self.object) 
-        print(f"Selected University ID: {form.cleaned_data['university'].id}") 
         return super().form_valid(form)
 
     def form_invalid(self, form):
