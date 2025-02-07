@@ -5,6 +5,7 @@ from django.urls import reverse, NoReverseMatch
 from django.views.generic.edit import FormView
 from social_media.forms import SignUpForm
 
+
 class SignUpView(LoginProhibitedMixin, FormView):
     """Display the sign up screen and handle sign ups."""
 
@@ -13,11 +14,13 @@ class SignUpView(LoginProhibitedMixin, FormView):
     redirect_when_logged_in_url = settings.REDIRECT_URL_WHEN_LOGGED_IN
 
     def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)  
+        self.object = form.save()  
+        login(self.request, self.object) 
+        print(f"Selected University ID: {form.cleaned_data['university'].id}") 
         return super().form_valid(form)
-    
+
     def form_invalid(self, form):
+        print(f"Form errors: {form.errors}")
         return self.render_to_response(self.get_context_data(form=form))
 
     def get_success_url(self):
