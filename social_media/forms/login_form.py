@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
+from social_media.models import User
 
 class LogInForm(forms.Form):
     """Form for user login."""
@@ -9,9 +10,16 @@ class LogInForm(forms.Form):
 
     def get_user(self):
         """Return the user object if the credentials are valid."""
-        user = None
-        if self.is_valid():
-            email = self.cleaned_data['email']
-            password = self.cleaned_data['password']
-            user = authenticate(email=email, password=password)
-        return user
+        if not self.is_valid():
+            return None
+
+        email = self.cleaned_data['email']
+        password = self.cleaned_data['password']
+
+        try:
+            user = User.objects.get(email=email)
+            return authenticate(username=user.username, password=password)
+        except User.DoesNotExist:
+            return None
+
+
