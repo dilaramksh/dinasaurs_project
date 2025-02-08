@@ -1,15 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from social_media.decorators import user_type_required
 from social_media.models import User
 from django.contrib import messages
-from django.shortcuts import redirect, render
 from social_media.forms.society_creation_form import SocietyCreationForm
 from social_media.forms.event_creation_form import EventCreationForm
 from django.shortcuts import HttpResponse
 from social_media.models import Category
 from social_media.forms.post_creation import PostForm  
 from social_media.models.post import Post 
+from social_media.models import Society
 
 #@user_type_required('student')
 #@login_required
@@ -74,9 +74,14 @@ def event_creation(request):
 
     return render(request, 'society/event_creation.html', {'form': form})
 
-def terminate_society(request):
+def terminate_society(request, society_id):
+    society = get_object_or_404(Society, id=society_id)
 
-    return render(request, 'society/terminate_society.html')
+    if request.method == "POST":
+        society.delete()
+        return redirect("society/society_dashboard")  
+
+    return render(request, "terminate_society.html", {"society": society})
 
 def view_members(request):
 
