@@ -16,13 +16,13 @@
                     <form method="post">
                         {% csrf_token %}
 
-                        <!-- Iterate over form fields -->
+                        
                         {% for field in form %}
                             <div class="mb-3">
                                 <label class="form-label">{{ field.label }}</label>
 
                                 {% if field.name == "description" %}
-                                    <!-- Larger text area for description -->
+                                    
                                     {{ field|add_class:"form-control" }}
                                     <style>
                                         textarea {

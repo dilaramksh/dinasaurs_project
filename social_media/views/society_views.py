@@ -8,6 +8,8 @@ from social_media.forms.society_creation_form import SocietyCreationForm
 from social_media.forms.event_creation_form import EventCreationForm
 from django.shortcuts import HttpResponse
 from social_media.models import Category
+from social_media.forms.post_creation import PostForm  
+from social_media.models.post import Post 
 
 #@user_type_required('student')
 #@login_required
@@ -80,10 +82,20 @@ def view_members(request):
 
     return render(request, 'society/view_members.html')
 
-def create_post(request):
-
-    return render(request, 'society/create_post.html')
-
 def view_upcoming_events(request):
 
     return render(request, 'society/view_upcoming_events.html')
+
+def create_post(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Post created successfully!")  
+            return redirect("society/society_dashboard") 
+        else:
+            messages.error(request, "Error in post creation. Please check the form.")
+    else:
+        form = PostForm()  
+
+    return render(request, 'society/create_post.html', {"form": form}) 

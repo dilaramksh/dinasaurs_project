@@ -2,14 +2,15 @@
 
 ## Team members
 The members of the team are:
-- *enter full name 1 here*
-- *enter full name 2 here*
-- *enter full name 3 here*
-- *enter full name 4 here*
-- *enter full name 5 here*
+- Dilara Mukasheva
+- Anahita Savarypour
+- Dina Ghazaani
+- Lara Ergenc
+- Maryam Marei 
+- Jiaxuan (Emilie) Yu
 
 ## Project structure
-The project is called `task_manager`.  It currently consists of a single app `tasks`.
+The project is called `Universal student society webpages`.  It currently consists of a single app `Hive Soceity`.
 
 ## Deployed version of the application
 The deployed version of the application can be found at [*enter url here*](*enter_url_here*).
