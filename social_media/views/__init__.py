@@ -1,7 +1,7 @@
 # social_media/views/__init__.py
 
-from .login_views import LogInView
-from .signup_views import SignUpView
+from .login_view import LogInView
+from .signup_view import SignUpView
 from .profile_views import ProfileUpdateView, PasswordView, log_out
-from .home_view import home_view
+from .homepage_view import homepage
 from .student_views import student_dashboard
