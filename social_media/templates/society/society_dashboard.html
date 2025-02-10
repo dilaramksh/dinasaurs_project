@@ -1,4 +1,4 @@
-{% extends 'base_content.html' %}
+{% extends 'student/student_base.html' %}
 {% load static %}
 
 {% block title %}Society Homepage{% endblock %}
@@ -11,7 +11,7 @@
         <header class="text-dark text-center py-4 mb-4" 
             style="background: url('https://www.transparenttextures.com/patterns/honeycomb.png') #FFFFCC;">
             <div class="container">
-                <h1 class="display-4 fw-bold">🐝 Welcome to your Society Dashboard! 🐝</h1>
+                <h1 class="display-4 fw-bold">🐝 Welcome to Society Dashboard! 🐝</h1>
             </div>
         </header>
 
@@ -34,7 +34,7 @@
                         <h5 class="card-header bg-warning text-dark">⚠️ Terminate Society</h5>
                         <div class="card-body">
                             <p class="card-text">If necessary, you can request to terminate your society.</p>
-                            <a href="{% url 'terminate_society' %}" class="btn btn-warning">Terminate Society</a>
+                            <a href="{% url 'terminate_society' society.id %}">Terminate Society</a>
                         </div>
                     </div>
                 </div>
