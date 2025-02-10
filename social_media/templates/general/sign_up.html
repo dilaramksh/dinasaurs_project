@@ -14,7 +14,7 @@
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
         {% include 'partials/bootstrap_form.html' with form=form %}
-        <input type="submit" value="Sign up" class="btn btn-primary">
+        <input type="submit" value="Sign up" class="btn btn-warning">
       </form>
       <p class="text-muted">
         <a href="{% url 'homepage' %}" class="text-decoration-underline" style="color: grey;">Back to homepage</a>
@@ -22,4 +22,8 @@
     </div>
   </div>
 </div>
+<!-- Footer -->
+<footer class="text-center text-dark mt-5 py-4" style="background-color: #FFF2CC;">
+  <p class="mb-0">🐝 &copy; {{ year }} HiveSociety | Stay Connected | Contact Us</p>
+</footer>
 {% endblock %}
