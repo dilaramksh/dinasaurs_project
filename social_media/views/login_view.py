@@ -37,7 +37,6 @@ class LogInView(LoginProhibitedMixin, View):
 
     def render(self):
         """Render log in template with blank log in form."""
-
         form = LogInForm()
         return render(self.request, 'general/log_in.html', {'form': form, 'next': self.next})
 
