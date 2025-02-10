@@ -19,13 +19,13 @@ class LogInForm(forms.Form):
         """User can log in with username or email"""
         try:
             user = User.objects.get(email=identifier)
-            return authenticate(username=user.username, password=password)
         except User.DoesNotExist:
             try:
                 user = User.objects.get(username=identifier)
-                return authenticate(username=user.username, password=password)
             except User.DoesNotExist:
                 return None
 
+        authenticated_user = authenticate(username=user.username, password=password)
+        return authenticated_user
 
 

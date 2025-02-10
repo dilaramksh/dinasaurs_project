@@ -13,11 +13,13 @@
     "fields": {
       "first_name": "John",
       "last_name": "Doe",
+      "username": "@johndoe",
       "email": "john.doe@test.ac.uk",
       "user_type": "student",
       "university": 1,
       "start_date": "2025-01-01",
-      "end_date": "2026-01-01"
+      "end_date": "2026-01-01",
+      "password": "pbkdf2_sha256$600000$FaYwnRF0Hy7vDhLHXmMeSK$A5MpN+IPb0mPJWKY++7nb68H9jxu/Y0zMI1btxSG/5g="
     }
   }
 ]
