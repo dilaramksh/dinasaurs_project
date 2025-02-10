@@ -8,8 +8,10 @@
      <a class="navbar-brand d-flex align-items-center mb-2" href="">
        <img src="{% static 'images/Logo.png' %}" alt="Logo" style="height: 70px; width: auto;">
      </a>
+     
      <!-- Horizontal Line -->
      <hr style="width: 370%; border: 2px solid #ccc; margin: -5px 0 5px 0;">
+
     <!-- Navigation Links -->
       <ul class="navbar-nav" style="margin-left: 65px; margin-top: -10px; margin-bottom: -10px;">
         <li class="nav-item">
@@ -26,6 +28,13 @@
         </li>
        </ul>
      </div>
+      <!-- button that will trigger the off-canvas menu only if logged in -->
+      <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#userAccountCanvas" aria-controls="userAccountCanvas" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
    </div>
  </nav>
+
+ <!-- including  the user-specific menu -->
+ {% include 'partials/menu.html' %}
 

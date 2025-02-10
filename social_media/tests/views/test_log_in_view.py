@@ -1,35 +1,34 @@
-# """Tests of the log in view."""
-# from django.contrib import messages
-# from django.test import TestCase
-# from django.urls import reverse
-# from tutorials.forms import LogInForm
-# from tutorials.models import User
-# from tutorials.tests.helpers import LogInTester, MenuTesterMixin, reverse_with_next
+from django.contrib import messages
+from django.test import TestCase
+from django.urls import reverse
+from social_media.forms import LogInForm
+from social_media.models import User
+from social_media.tests.helpers import LogInTester, MenuTesterMixin, reverse_with_next
 
-# class LogInViewTestCase(TestCase, LogInTester, MenuTesterMixin):
-#     """Tests of the log in view."""
+class LogInViewTestCase(TestCase, LogInTester, MenuTesterMixin):
+    """Tests of the log in view."""
 
-#     fixtures = ['tutorials/tests/fixtures/default_user.json']
+    fixtures = ['social_media/tests/fixtures/default_user.json']
 
-#     def setUp(self):
-#         self.url = reverse('log_in')
-#         self.user = User.objects.get(username='@johndoe')
+    def setUp(self):
+        self.url = reverse('log_in')
+        self.user = User.objects.get(username='@johndoe')
 
-#     def test_log_in_url(self):
-#         self.assertEqual(self.url,'/log_in/')
+    def test_log_in_url(self):
+        self.assertEqual(self.url,'/log_in/')
 
-#     def test_get_log_in(self):
-#         response = self.client.get(self.url)
-#         self.assertEqual(response.status_code, 200)
-#         self.assertTemplateUsed(response, 'log_in.html')
-#         form = response.context['form']
-#         next = response.context['next']
-#         self.assertTrue(isinstance(form, LogInForm))
-#         self.assertFalse(form.is_bound)
-#         self.assertFalse(next)
-#         messages_list = list(response.context['messages'])
-#         self.assertEqual(len(messages_list), 0)
-#         self.assert_no_menu(response)
+    def test_get_log_in(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'log_in.html')
+        form = response.context['form']
+        next = response.context['next']
+        self.assertTrue(isinstance(form, LogInForm))
+        self.assertFalse(form.is_bound)
+        self.assertFalse(next)
+        messages_list = list(response.context['messages'])
+        self.assertEqual(len(messages_list), 0)
+        self.assert_no_menu(response)
 
 #     def test_get_log_in_with_redirect(self):
 #         destination_url = reverse('profile')
