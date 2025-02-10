@@ -11,6 +11,17 @@
           </div>
         {% endfor %}
       </div>
+      {% elif field|widget_type == "select" %} 
+        {% if form.is_bound %}
+          {% if field.errors %}
+            {% render_field field class="form-select is-invalid" %}
+          {% else %}
+            {% render_field field class="form-select is-valid" %}
+          {% endif %}
+        {% else %}
+          {% render_field field class="form-select" %}
+        {% endif %}
+        
     {% else %}
 
     {% if form.is_bound %}

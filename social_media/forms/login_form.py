@@ -5,7 +5,7 @@ from social_media.models import User
 class LogInForm(forms.Form):
     """Form for user login."""
     
-    email = forms.EmailField(label='Email', required=True)
+    email_or_username = forms.CharField(label='Email / Username', required=True)
     password = forms.CharField(label='Password', required=True, widget=forms.PasswordInput)
 
     def get_user(self):
@@ -13,13 +13,19 @@ class LogInForm(forms.Form):
         if not self.is_valid():
             return None
 
-        email = self.cleaned_data['email']
+        identifier = self.cleaned_data['email_or_username']
         password = self.cleaned_data['password']
-
+        
+        """User can log in with username or email"""
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(email=identifier)
             return authenticate(username=user.username, password=password)
         except User.DoesNotExist:
-            return None
+            try:
+                user = User.objects.get(username=identifier)
+                return authenticate(username=user.username, password=password)
+            except User.DoesNotExist:
+                return None
+
 
 
