@@ -2,9 +2,10 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.shortcuts import redirect
 from django.views.generic.edit import UpdateView, FormView
 from social_media.forms import UserForm, PasswordForm
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     """Display user profile editing screen, and handle profile modifications."""
@@ -22,7 +23,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         """Return redirect URL after successful update."""
         messages.add_message(self.request, messages.SUCCESS, "Profile updated!")
         return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
-    
+
 class PasswordView(LoginRequiredMixin, FormView):
     """Display password change screen and handle password change requests."""
 
@@ -48,3 +49,9 @@ class PasswordView(LoginRequiredMixin, FormView):
 
         messages.add_message(self.request, messages.SUCCESS, "Password updated")
         return reverse('dashboard')
+    
+def log_out(request):
+    """Log out the current user"""
+
+    logout(request)
+    return redirect('homepage')

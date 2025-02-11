@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 #from social_media.student_views import student_dashboard
-from social_media.views.homepage_views import homepage
+from social_media.views.homepage_view import homepage
 from social_media import views
 #from django.conf import settings
 from social_media.views._all import *
@@ -28,6 +28,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('log_in/', views.LogInView.as_view(), name='log_in'),
     path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
+    path('log_out/', views.log_out, name='log_out'),
+    
+    path('password/', views.PasswordView.as_view(), name='password'),
+    path('profile/', views.ProfileUpdateView.as_view(), name='profile'),
 
     path('', homepage, name='homepage'),
 

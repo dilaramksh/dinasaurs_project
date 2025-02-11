@@ -4,7 +4,6 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.views import View
-from django.core.exceptions import ImproperlyConfigured
 from social_media.forms import LogInForm 
 from social_media.mixins import LoginProhibitedMixin
 
@@ -38,7 +37,6 @@ class LogInView(LoginProhibitedMixin, View):
 
     def render(self):
         """Render log in template with blank log in form."""
-
         form = LogInForm()
         return render(self.request, 'general/log_in.html', {'form': form, 'next': self.next})
 
