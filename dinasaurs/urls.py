@@ -23,6 +23,7 @@ from social_media import views
 from social_media.views._all import *
 from social_media.views.society_views import *
 from social_media.views.super_admin_views import *
+from social_media.views.footer_view import *
 
 
 urlpatterns = [
@@ -35,6 +36,10 @@ urlpatterns = [
     path('profile/', views.ProfileUpdateView.as_view(), name='profile'),
 
     path('', homepage, name='homepage'),
+
+    #footer path 
+    path('stay-connected/', stay_connected, name='stay_connected'),
+    path('contact_us/', contact_us, name='contact_us'),
 
     #student paths
     path('student/dashboard/', student_dashboard, name='student_dashboard'),
