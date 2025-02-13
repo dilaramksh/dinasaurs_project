@@ -6,6 +6,7 @@ user_fixtures = [
     {'first_name':'jane', 'last_name':'doe', 'username':'@janedoe', 'email':'janedoe@kcl.ac.uk', 'user_type':'student', 'university':'kcl', 'start_date':'2022-09-24', 'end_date':'2025-05-07'},
     {'first_name':'paul', 'last_name':'poe', 'username':'@paulpoe', 'email':'paulpoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':'kcl', 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
     {'first_name':'pauline', 'last_name':'poe', 'username':'@paulinepoe', 'email':'paulinepoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':'kcl', 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
+    {'first_name':'grace', 'last_name':'kelly', 'username':'@gracekelly', 'email':'gracekelly@ox.ac.uk', 'user_type':'super_admin', 'university':'ox', 'start_date': '1987-07-02', 'end_date':'2025-09-01'},
 ]
 
 society_fixtures = [
