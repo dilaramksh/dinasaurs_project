@@ -14,14 +14,14 @@
                 </div>
 
                 <div class="card-body text-center">
-                    <p class="lead">Are you sure you want to terminate <strong>{{ society.name }}</strong>?</p>
+                    <p class="lead">Are you sure you want to terminate your society?</p>
                     <p class="text-muted">This will delete all associated posts, members, and data permanently.</p>
 
                     <!-- Termination Form -->
                     <form method="post">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger btn-lg" onclick="return confirmTermination()">Terminate Society</button>
-                        <a href="{% if society %}{% url 'society_dashboard' society.id %}{% else %}#{% endif %}" class="btn btn-secondary btn-lg">
+                        <a href="{% if society %}{% url 'society_dashboard'  %}{% else %}#{% endif %}" class="btn btn-warning btn-lg">
                             Cancel
                         </a>
                     </form>
