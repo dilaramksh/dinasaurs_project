@@ -17,8 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 #from social_media.student_views import student_dashboard
-from social_media.views.homepage_view import homepage
-from social_media import views
+from social_media.views import *
 #from django.conf import settings
 from social_media.views._all import *
 from social_media.views.society_views import *
@@ -28,12 +27,13 @@ from social_media.views.footer_view import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('log_in/', views.LogInView.as_view(), name='log_in'),
-    path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
-    path('log_out/', views.log_out, name='log_out'),
+    path('log_in/', LogInView.as_view(), name='log_in'),
+    path('sign_up/', SignUpView.as_view(), name='sign_up'),
+    path('log_out/', log_out, name='log_out'),
     
-    path('password/', views.PasswordView.as_view(), name='password'),
-    path('profile/', views.ProfileUpdateView.as_view(), name='profile'),
+    path('dashboard/', dashboard, name='dashboard'),
+    path('password/', PasswordView.as_view(), name='password'),
+    path('profile/', ProfileUpdateView.as_view(), name='profile'),
 
     path('', homepage, name='homepage'),
 
@@ -42,13 +42,13 @@ urlpatterns = [
     path('contact_us/', contact_us, name='contact_us'),
 
     #student paths
-    path('student/dashboard/', student_dashboard, name='student_dashboard'),
+    #path('student/dashboard/', student_dashboard, name='student_dashboard'),
     path('student/homepage/', society_browser, name='society_browser'),
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
 
     #society paths
-    path('society/dashboard/', society_dashboard, name='society_dashboard'),
+    #path('society/dashboard/', society_dashboard, name='society_dashboard'),
     path('society/create_event/', event_creation, name='create_event'),
     path('society/create_post/', create_post, name='create_post'),
     #path('society/terminate_society/<int:society_id>/', terminate_society, name='terminate_society'),

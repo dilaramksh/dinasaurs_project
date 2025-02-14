@@ -6,8 +6,7 @@
       <h1>Edit profile</h1>
       <form action="{% url 'profile' %}" method="post">
         {% csrf_token %}
-        {% include 'partials/bootstrap_form.html' with form=form %}
-        <input type="submit" value="Update" class="btn btn-primary">
+        {% include 'partials/bootstrap_form.html' with form=form submit_text="Update" %}
       </form>
     </div>
   </div>
