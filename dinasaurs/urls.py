@@ -30,19 +30,20 @@ urlpatterns = [
     path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
     path('log_out/', views.log_out, name='log_out'),
     
+    path('dashboard/', views.dashboard, name='dashboard'),
     path('password/', views.PasswordView.as_view(), name='password'),
     path('profile/', views.ProfileUpdateView.as_view(), name='profile'),
 
     path('', homepage, name='homepage'),
 
     #student paths
-    path('student/dashboard/', student_dashboard, name='student_dashboard'),
+    #path('student/dashboard/', student_dashboard, name='student_dashboard'),
     path('student/homepage/', society_browser, name='society_browser'),
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
 
     #society paths
-    path('society/dashboard/', society_dashboard, name='society_dashboard'),
+    #path('society/dashboard/', society_dashboard, name='society_dashboard'),
     path('society/create_event/', event_creation, name='create_event'),
     path('society/create_post/', create_post, name='create_post'),
     #path('society/terminate_society/<int:society_id>/', terminate_society, name='terminate_society'),
