@@ -13,12 +13,8 @@
       <form action="{% url 'sign_up' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
-        {% include 'partials/bootstrap_form.html' with form=form %}
-        <input type="submit" value="Sign up" class="btn btn-warning">
+        {% include 'partials/bootstrap_form.html' with form=form submit_text="Sign up"%}
       </form>
-      <p class="text-muted">
-        <a href="{% url 'homepage' %}" class="text-decoration-underline" style="color: grey;">Back to homepage</a>
-      </p>
     </div>
   </div>
 </div>

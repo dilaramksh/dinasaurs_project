@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_media.context_processor.back_button_context',
             ],
         },
     },
@@ -132,6 +133,6 @@ AUTH_USER_MODEL = 'social_media.User'
 # Login URL for redirecting users from login protected views
 LOGIN_URL = 'log_in'
 # URL where @login_prohibited redirects to (needs to be added)
-REDIRECT_URL_WHEN_LOGGED_IN = 'student_dashboard'
+REDIRECT_URL_WHEN_LOGGED_IN = 'dashboard'
 #REDIRECT_TO_UNI_ADMIN_WHEN_LOGGED_IN = 'uni_admin_dashboard'
 #REDIRECT_TO_SOCIETY_WHEN_LOGGED_IN = 'society_dashboard'

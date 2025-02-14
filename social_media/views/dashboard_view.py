@@ -13,12 +13,9 @@ def dashboard(request):
         'user': current_user,
     }
 
-    if user_type == 'Univeristy Admin':
-        #context.update(admin_dashboard_context(request, current_user))
-        template = 'admin_dashboard.html'
-    elif user_type == 'Society':
-        template = 'society_dashboard.html'
+    if user_type == 'Society':
+        template = 'society/society_dashboard.html'
     else:
-        template = 'student_dashboard.html'
+        template = 'student/student_dashboard.html'
     
     return render(request, template, context)
