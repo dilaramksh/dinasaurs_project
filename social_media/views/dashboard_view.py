@@ -8,7 +8,6 @@ def dashboard(request):
 
     current_user = request.user
     user_type = current_user.user_type
-    #template = 'student/student_dashboard.html'
 
     context = {
         'user': current_user,
