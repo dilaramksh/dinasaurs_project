@@ -8,3 +8,6 @@ class EventCreationForm(forms.ModelForm):
         model = Event
         fields = ["name", "description", "date", "location"]
 
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
