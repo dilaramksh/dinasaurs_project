@@ -36,7 +36,7 @@ urlpatterns = [
     path('', homepage, name='homepage'),
 
     #student paths
-    #path('student/dashboard/', student_dashboard, name='student_dashboard'),
+    path('student/dashboard/', student_dashboard, name='student_dashboard'),
     path('student/homepage/', society_browser, name='society_browser'),
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
