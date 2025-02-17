@@ -10,33 +10,40 @@
         <div class="col-md-8">
             <div class="card shadow">
                 <!-- Header Section -->
-                <div class="card-header text-center bg-warning text-white">
-                    <h4>Create a a new post for the society</h4>
-                    <p class="mb-0 text-light">Share updates, events, or announcements with society members.</p>
+                <div class="card-header text-center">
+                    <h4>Create a New Post</h4>
                 </div>
 
                 <div class="card-body">
                     <form method="post">
                         {% csrf_token %}
 
-                        <div class="mb-3">
-                            <label class="form-label">Title</label>
-                            {{ form.title|add_class:"form-control" }}
-                        </div>
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label class="form-label">{{ field.label }}</label>
 
-                        <div class="mb-3">
-                            <label class="form-label">Content</label>
-                            {{ form.content|add_class:"form-control" }}
-                            <style>
-                                textarea {
-                                    height: 200px !important;
-                                    resize: vertical;
-                                }
-                            </style>
-                        </div>
+                                {% if field.name == "content" %}
+                                    {{ field|add_class:"form-control" }}
+                                    <style>
+                                        textarea {
+                                            height: 150px !important;
+                                            resize: vertical;
+                                        }
+                                    </style>
+                                {% else %}
+                                    {{ field|add_class:"form-control" }}
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <div class="text-danger">
+                                        {{ field.errors|first }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-warning w-100">Post</button>
+                            <button type="submit" class="btn btn-warning">Submit</button>
                         </div>
                     </form>
                 </div>
