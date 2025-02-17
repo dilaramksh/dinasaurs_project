@@ -12,10 +12,10 @@
       {% if user.is_authenticated %}
         <div class="dropdown">
           <button class="btn border-0 dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://www.gravatar.com/avatar/{{ user.gravatar_hash }}?s=200&d=identicon" alt="Profile Picture" class="rounded-circle" width="40" height="40">
+            <img src="https://www.gravatar.com/avatar/{{ user.gravatar_hash }}?s=200&d=identicon" alt="Profile Picture" class="rounded-circle border border-dark" width="40" height="40">
           </button>
 
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+          <ul class="dropdown-menu dropdown-menu-end custom-dropdown" aria-labelledby="profileDropdown">
             {% include 'partials/menu.html' %}
           </ul>
         </div>

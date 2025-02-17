@@ -1,23 +1,6 @@
-<div class="offcanvas offcanvas-end" tabindex="-1" id="userAccountCanvas" aria-labelledby="userAccountCanvasLabel" data-bs-backdrop="true">
-    <div class="offcanvas-header">
-      <h5 id="userAccountCanvasLabel">Menu</h5>
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <ul class="list-group">
-        <li class="list-group-item list-group-item-action">
-          <strong>Profile</strong>
-        </li>
-        <li class="list-group-item list-group-item-action">
-          <a href="{% url 'profile' %}" class="text-decoration-none">Change Profile</a>
-        </li>
-        <li class="list-group-item list-group-item-action">
-          <a href="{% url 'password' %}" class="text-decoration-none">Change Password</a>
-        </li>
-    <!-- log out menu item -->
-        <li class="list-group-item list-group-item-action">
-          <a href="{% url 'log_out' %}" class="text-danger text-decoration-none">Log Out</a>
-        </li>
-      </ul>
-    </div>
-  </div>
+
+
+<li><a href="{% url 'profile' %}" class="dropdown-item">Change Profile</a></li>
+<li><a href="{% url 'password' %}" class="dropdown-item">Change Password</a></li>
+<li class="dropdown-item-separator"></li>
+<li><a href="{% url 'log_out' %}" class="dropdown-item logout">Log Out</a></li>
