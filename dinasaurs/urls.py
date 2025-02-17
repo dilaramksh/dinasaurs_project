@@ -21,6 +21,8 @@ from social_media.views import *
 #from django.conf import settings
 from social_media.views._all import *
 from social_media.views.society_views import *
+from social_media.views.super_admin_views import *
+from social_media.views.footer_view import *
 
 
 urlpatterns = [
@@ -35,6 +37,10 @@ urlpatterns = [
 
     path('', homepage, name='homepage'),
 
+    #footer path 
+    path('stay-connected/', stay_connected, name='stay_connected'),
+    path('contact_us/', contact_us, name='contact_us'),
+
     #student paths
     path('student/dashboard/', student_dashboard, name='student_dashboard'),
     path('student/homepage/', society_browser, name='society_browser'),
@@ -47,6 +53,10 @@ urlpatterns = [
     path('society/create_post/', create_post, name='create_post'),
     path('society/terminate_society/', terminate_society, name='terminate_society'),
     path('society/view_members/', view_members, name='view_members'),
-    path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events')
+    path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
+
+    #super-admin paths
+    path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard')
+
     
 ]
