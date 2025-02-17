@@ -4,6 +4,7 @@ from social_media.forms.event_creation_form import EventCreationForm
 from social_media.forms.post_creation import PostForm  
 from social_media.models import Society, Event
 from django.utils.timezone import now
+from datetime import date
 
 
 #@login_required
@@ -43,10 +44,10 @@ def view_members(request):
     return render(request, 'society/view_members.html')
 
 def view_upcoming_events(request):
-    events = Event.objects.filter(date__gte=now().date()).order_by("date")
-    
-    return render(request, 'society/view_upcoming_events.html', {"upcoming_events": events})
- 
+
+    events = Event.objects.filter(date__gte=date.today()).order_by("date")
+    return render(request, 'society/view_upcoming_events.html', {'events': events})
+
 def create_post(request):
     if request.method == "POST":
         form = PostForm(request.POST)
