@@ -23,6 +23,7 @@ from social_media.views._all import *
 from social_media.views.society_views import *
 from social_media.views.super_admin_views import *
 from social_media.views.footer_view import *
+from social_media.views.homepage_view import *
 
 
 urlpatterns = [
@@ -35,7 +36,9 @@ urlpatterns = [
     path('password/', PasswordView.as_view(), name='password'),
     path('profile/', ProfileUpdateView.as_view(), name='profile'),
 
+    #homepage paths 
     path('', homepage, name='homepage'),
+    path('homepage/discover_societies', discover_universities, name='discover_universities'),
 
     #footer path 
     path('stay-connected/', stay_connected, name='stay_connected'),
