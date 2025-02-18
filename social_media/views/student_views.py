@@ -43,7 +43,6 @@ def features(request):
 def pricing(request):
     return render(request, 'pricing.html')
 
-
 #@user_type_required('student')
 #@login_required
 def society_browser(request):

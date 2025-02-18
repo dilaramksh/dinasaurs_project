@@ -1,0 +1,23 @@
+
+<li class="list-group-item text-center fw-bold">
+  <img src="https://www.gravatar.com/avatar/{{ user.gravatar_hash }}?s=200&d=identicon" alt="Profile Picture" class="rounded-circle border" width="30" height="30">
+  {{ user.username }}
+</li>
+
+<li class="dropdown-divider"></li>
+
+<li><a href="{% url 'profile' %}" class="dropdown-item">Profile</a></li>
+<li><a href="{% url 'password' %}" class="dropdown-item">Change Password</a></li>
+<li><a href="#" class="dropdown-item">Customise</a></li>
+
+
+{% if user.user_type == 'student' %}
+  <li><a href="{% url 'view_memberships' %}" class="dropdown-item">Manage Memberships</a></li>
+  <li><a href=# class="dropdown-item">Purchases</a></li>
+  <li><a href=# class="dropdown-item">Help</a></li>
+{% endif %}
+
+  
+<li class="dropdown-divider"></li>
+
+<li><a href="{% url 'log_out' %}" class="dropdown-item logout">Log Out</a></li>

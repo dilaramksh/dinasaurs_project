@@ -1,0 +1,22 @@
+{% extends 'base_content.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Memberships</title>
+</head>
+<body>
+    <h1>Your Memberships</h1>
+    {% if memberships %}
+        <ul>
+            {% for membership in memberships %}
+                <li>{{ membership.society.name }} - {{ membership.society_role.role_name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have no memberships.</p>
+    {% endif %}
+</body>
+</html>

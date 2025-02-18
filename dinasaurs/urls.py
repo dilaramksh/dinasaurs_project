@@ -40,6 +40,7 @@ urlpatterns = [
     path('student/homepage/', society_browser, name='society_browser'),
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
+    path('student/memberships/', view_memberships, name='view_memberships'),
 
     #society paths
     path('society/dashboard/', society_dashboard, name='society_dashboard'),
