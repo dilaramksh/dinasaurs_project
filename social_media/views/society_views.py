@@ -1,50 +1,60 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from social_media.decorators import user_type_required
-from social_media.models import User
+from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
-from django.shortcuts import redirect, render
-from social_media.forms.society_creation_form import SocietyCreationForm
+from social_media.forms.event_creation_form import EventCreationForm
+from social_media.forms.post_creation import PostForm  
+from social_media.models import Society
 
 
-#@user_type_required('student')
 #@login_required
-def society_homepage(request):
-    return render(request, 'society/society_homepage.html')
+def society_dashboard(request):
 
-def society_creation_request(request):
-    # if request.user.user_type != "student":
-    #     messages.error(request, "Only students can request a new society.")
-    #     return redirect("society_homepage")
+    return render(request, 'society/society_dashboard.html')
+
+def event_creation(request):
+    
     if request.method == 'POST':
-        form = SocietyCreationForm(request.POST)
+        form = EventCreationForm(request.POST)
         if form.is_valid():
-            society = form.save(commit=False)
-            # Save with status 'Pending'
-            society.status = "pending" 
-            society.founder = request.user
-            society.save()
-            messages.success(request, "Your society request has been submitted for approval.")
-            return redirect("student_dashboard") 
+            event = form.save(commit=False)
+            
+            event.save()
+            messages.success(request, "Your event has been created.")
+            return redirect("society_dashboard") 
         else:                  
-            messages.error(request, "There was an error with your request submission. Please try again.")
+            messages.error(request, "There was an error with your submission. Please try again.")
     
     else:
-        form = SocietyCreationForm()
+        form = EventCreationForm()
 
-    return render(request, 'society/submit_society_request.html', {'form': form})
+    return render(request, 'society/event_creation.html', {'form': form})
 
-from django.shortcuts import HttpResponse
-from social_media.models import Category
+def terminate_society(request, society_id):
+    society = get_object_or_404(Society, id=society_id)
 
-def create_temp_category(request):
-    """View to create a temporary category for testing."""
-    temp_category, created = Category.objects.get_or_create(name="Temporary Category")
-    
-    if created:
-        return HttpResponse(f"Created category: {temp_category.name}")
+    if request.method == "POST":
+        society.delete()
+        return redirect("society/society_dashboard")  
+
+    return render(request, "terminate_society.html", {"society": society})
+
+def view_members(request):
+
+    return render(request, 'society/view_members.html')
+
+def view_upcoming_events(request):
+
+    return render(request, 'society/view_upcoming_events.html')
+
+def create_post(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Post created successfully!")  
+            return redirect("society/society_dashboard") 
+        else:
+            messages.error(request, "Error in post creation. Please check the form.")
     else:
-        return HttpResponse("Category already exists.")
+        form = PostForm()  
 
-def view_societies(request):
-    return render(request, 'society/view_societies.html')
+    return render(request, 'society/create_post.html', {"form": form}) 

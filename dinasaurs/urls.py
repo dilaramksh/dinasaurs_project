@@ -17,24 +17,36 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 #from social_media.student_views import student_dashboard
-from social_media.views.homepage_views import homepage
-from social_media import views
+from social_media.views import *
 #from django.conf import settings
-from social_media.views.society_views import society_homepage, view_societies, society_creation_request, create_temp_category
-from social_media.views.student_views import student_dashboard
+from social_media.views._all import *
+from social_media.views.society_views import *
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home_view, name='home'),
-    path('log_in/', views.LogInView.as_view(), name='log_in'),
-    path('sign_up/', views.SignUpView.as_view(), name='sign_up'),
+    path('log_in/', LogInView.as_view(), name='log_in'),
+    path('sign_up/', SignUpView.as_view(), name='sign_up'),
+    path('log_out/', log_out, name='log_out'),
+    
+    path('dashboard/', dashboard, name='dashboard'),
+    path('password/', PasswordView.as_view(), name='password'),
+    path('profile/', ProfileUpdateView.as_view(), name='profile'),
 
     path('', homepage, name='homepage'),
 
     #student paths
-    path('student/dashboard/', student_dashboard, name='student_dashboard'),
-    path('society/homepage/', society_homepage, name='society_homepage'),
-    path('society/create/', society_creation_request, name='society_creation_request'),
-    path('society/view/', view_societies, name='view_societies'),
+    #path('student/dashboard/', student_dashboard, name='student_dashboard'),
+    path('student/homepage/', society_browser, name='society_browser'),
+    path('student/create_society/', society_creation_request, name='society_creation_request'),
+    path('student/view_society/', view_societies, name='view_societies'),
 
+    #society paths
+    #path('society/dashboard/', society_dashboard, name='society_dashboard'),
+    path('society/create_event/', event_creation, name='create_event'),
+    path('society/create_post/', create_post, name='create_post'),
+    #path('society/terminate_society/<int:society_id>/', terminate_society, name='terminate_society'),
+    path('society/view_members/', view_members, name='view_members'),
+    path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events')
+    
 ]

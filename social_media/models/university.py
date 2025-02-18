@@ -15,4 +15,4 @@ class University(models.Model):
     )
 
     def __str__(self):
-        return self.name  # returns university's name instead of object
+        return self.name  

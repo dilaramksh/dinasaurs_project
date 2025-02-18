@@ -1,0 +1,23 @@
+{% extends 'base_content.html' %}
+{% load static %} 
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-6 offset-md-3">
+      <h1>Log in</h1>
+      <form action="{% url 'log_in' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% include 'partials/bootstrap_form.html' with form=form submit_text="Log in"%}
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="text-center text-dark mt-5 py-4" style="background-color: #FFF2CC;">
+  <p class="mb-0">🐝 &copy; {{ year }} HiveSociety | Stay Connected | Contact Us</p>
+</footer>
+{% endblock %}

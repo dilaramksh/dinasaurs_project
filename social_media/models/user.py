@@ -23,7 +23,9 @@ class User(AbstractUser):
         help_text='Enter a username starting with "@" followed by at least three alphanumeric characters.',
     )
     email = models.EmailField(unique=True, blank=False, validators=[EmailValidator()])
-    user_type = models.CharField(max_length=100, choices=[('super_admin', 'Super Admin'), ('uni_admin', 'University Admin'), ('student', 'Student')])
+    user_type = models.CharField(max_length=100, 
+                                 choices=[('super_admin', 'Super Admin'), ('uni_admin', 'University Admin'), ('student', 'Student')], 
+                                 default='student')
     university = models.ForeignKey(University, on_delete=models.CASCADE)
     start_date= models.DateField(blank=False)
     end_date = models.DateField(blank=False)
