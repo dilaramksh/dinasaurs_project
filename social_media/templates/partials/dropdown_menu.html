@@ -13,13 +13,10 @@
 {% if user.user_type == 'student' %}
   <li><a href="{% url 'view_memberships' %}" class="dropdown-item">Manage Memberships</a></li>
   <li><a href=# class="dropdown-item">Purchases</a></li>
-<!--
-{% else if user.user_type == 'group' %}
-  <li><a href=# class="dropdown-item">Customise</a></li>
--->
 {% endif %}
 
 <li><a href=# class="dropdown-item">FAQ/Help</a></li>
+<li><a href=# class="dropdown-item">Settings</a></li>
 <li class="dropdown-divider"></li>
 
 <li><a href="{% url 'log_out' %}" class="dropdown-item logout">Log Out</a></li>
