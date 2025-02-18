@@ -114,34 +114,71 @@ h3.profile-title {
   color: #0d6efd;
 }
 
-
 /* 
-* Dropdown
-*/
+ * Dropdown
+ */
 .custom-dropdown {
   background-color: #fdf2cf;
 }
 
 .custom-dropdown .dropdown-item {
+  padding: 8px 15px;
   color: #333; 
-  background-color: #fdf2cf; /* Light yellow background for items */
   transition: background-color 0.2s ease-in-out;
 }
 
 .custom-dropdown .dropdown-item:hover {
-  background-color: #fdef70;
+  background-color: #e3d7b5;
 }
 
-.custom-dropdown .dropdown-item-separator {
-  border-top: 1px solid #ffcc00;
+.custom-dropdown .dropdown-divider {
+  border-top: 1px solid #5c3b00;
 }
 
-.custom-dropdown .dropdown-item.logout {
-  color: #e60000;
+/*
+ * From student_base
+ */
+ body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #FFF9E6; /* Soft yellow background */
+  color: #333; /* Dark text for readability */
+}
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+.card-header {
+  background-color: #F1E0A6; /* Pastel orchid yellow */
+  color: #5A4C3A; /* A dark brown for text for better contrast */
+  font-weight: bold;
+}
+.card-body {
+  background-color: #FFF9E6;
+}
+h5 {
+  color: #8B6B3D; /* Darker yellow-brown for headings */
+}
+.img-fluid {
+  border-radius: 50%;
+  border: 2px solid #FFD700;
+}
+.btn-yellow {
+  background-color: #FFD700;
+  color: #fff;
+  border: none;
+}
+.btn-yellow:hover {
+  background-color: #FFC300;
+}
+.row {
+  margin-top: 20px;
+}
+.container {
+  padding: 30px;
 }
 
-.custom-dropdown .dropdown-item.logout:hover {
-  background-color: #ff7043; 
-}
 
 
