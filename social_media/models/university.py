@@ -13,3 +13,6 @@ class University(models.Model):
             message="Domain must start with '@', followed by at least three alphanumerics, and end with '.ac.uk'."
         )]
     )
+
+    def __str__(self):
+        return self.name  # returns university's name instead of object
