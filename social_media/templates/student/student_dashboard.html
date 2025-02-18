@@ -21,13 +21,13 @@
                     <div class="card text-center p-4 border-warning shadow-sm" style="min-height: 100%;">
                         <h5 class="card-header">🐝 Your Profile Details</h5>
                         <div class="card-body">
-                            <img src="{{ student.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}" class="img-fluid rounded-circle mb-3" alt="Profile Picture">
-                            <h6>{{ student.full_name }}</h6>
+                            <img src="{{ user.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}" class="img-fluid rounded-circle mb-3" alt="Profile Picture">
+                            <h6>{{ user.full_name }}</h6>
                             <hr>
-                            <p><strong>Email:</strong> {{ student.email }}</p>
-                            <p><strong>University:</strong> {{ student.university }}</p>
-                            <p><strong>Start Date:</strong> {{ student.start_date }}</p>
-                            <p><strong>Graduation Date:</strong> {{ student.end_date }}</p>
+                            <p><strong>Email:</strong> {{ user.email }}</p>
+                            <p><strong>University:</strong> {{ user.university }}</p>
+                            <p><strong>Start Date:</strong> {{ user.start_date }}</p>
+                            <p><strong>Graduation Date:</strong> {{ user.end_date }}</p>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                                     <ul>
                                         {% for event in user_events %}
                                             <div>
-                                                <p class="fw-bold">🐝 {{ event.name }}</p>
+                                                <a href="" class="btn btn">🐝{{event.name}}</a>
                                             </div>
                                         {% empty %}
                                             <li class="text-muted">No upcoming events</li>
@@ -87,7 +87,7 @@
                                        {% for society in user_societies %}
                                                 <div class="col-6">
                                                     <div class="card p-3 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
-                                                        <p class="fw-bold">🐝 {{ society.name }}</p>
+                                                         <a href="" class="btn btn">🐝{{society.name}}</a>
                                                     </div>
                                                 </div>
                                             </div>

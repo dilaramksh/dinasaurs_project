@@ -11,26 +11,20 @@ from django.shortcuts import redirect, render
 from social_media.forms.society_creation_form import SocietyCreationForm
 
 
-#to do: add login required
-#to do: add user type required
+#Views for pages from dropdown menu in Student Navbar
 
-#@user_type_required('student')
-#@login_required
+
+#REDUNDANT
 def student_dashboard(request):
     student = request.user
-
     memberships = Membership.objects.filter(user=student)
     user_societies = [membership.society_role.society for membership in memberships]
-    events= Event.objects.filter(society__in=user_societies)
-
-
+    events = Event.objects.filter(society__in=user_societies)
     return render(request, 'student/student_dashboard.html', {
         'student': student,
         'user_societies': user_societies,
-        'user_events':events
+        'user_events': events,
     })
-
-#Views for pages from dropdown menu in Student Navbar
 #@login_required
 def help(request):
     return render(request, 'help.html')
