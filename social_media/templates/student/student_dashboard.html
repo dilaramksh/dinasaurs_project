@@ -37,11 +37,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
-                                <h5 class="card-header">📅 Upcoming Events</h5>
+                               <h5 class="card-header">📅 Upcoming Events</h5>
                                 <div class="card-body">
                                     <ul>
-                                        {% for event in student.events %}
-                                            <li>🐝 {{ event.name }} - {{ event.date }}</li>
+                                        {% for event in user_events %}
+                                            <div>
+                                                <p class="fw-bold">🐝 {{ event.name }}</p>
+                                            </div>
                                         {% empty %}
                                             <li class="text-muted">No upcoming events</li>
                                         {% endfor %}
@@ -79,13 +81,14 @@
                         </div>
                         <div class="col-md-6">
                             <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
-                                <h5 class="card-header">🏅 Your Current Societies</h5>
+                               <h5 class="card-header">🏅 Your Current Societies</h5>
                                 <div class="card-body">
                                     <div class="row g-2">
-                                        {% for society in student.societies %}
-                                            <div class="col-6">
-                                                <div class="card p-3 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
-                                                    <p class="fw-bold">🐝 {{ society }}</p>
+                                       {% for society in user_societies %}
+                                                <div class="col-6">
+                                                    <div class="card p-3 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
+                                                        <p class="fw-bold">🐝 {{ society.name }}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         {% empty %}
