@@ -318,14 +318,21 @@ class Command(BaseCommand):
             raise ValueError("No societies found.")
         society = random.choice(societies)
 
-        event = Event.objects.create(
-            name=data['name'],
-            society=society,
-            description=data['description'],
-            date=data['date'],
-            location=data['location'],
-        )
-        event.save()
+        existing_event = Event.objects.filter(name=data['name'], society=society).first()
+
+        if not existing_event:
+            event = Event.objects.create(
+                name=data['name'],
+                society=society,
+                description=data['description'],
+                date=data['date'],
+                location=data['location'],
+            )
+            event.save()
+            print(f"Created event: {event.name}")
+        else:
+            event = existing_event
+            print(f"Skipping duplicate event: {event.name}")
         return event
 
     # Seed EventParticipants
@@ -354,12 +361,17 @@ class Command(BaseCommand):
             raise ValueError("No memberships found.")
         membership = random.choice(memberships)
 
-        event_participant = EventsParticipant.objects.create(
-            event=event, membership=membership
-        )
-        event_participant.save()
-        return event_participant
+        existing_participant = EventsParticipant.objects.filter()
 
+        if not existing_participant:
+            event_participant = EventsParticipant.objects.create(
+                event=event, membership=membership
+            )
+            event_participant.save()
+        else:
+            event_participant = existing_participant
+            print(f"Skipping duplicate event: {event.name}")
+        return event_participant
 
 
 
