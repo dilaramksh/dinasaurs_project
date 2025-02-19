@@ -1,11 +1,5 @@
 {% extends 'base_content.html' %}
 {% block content %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Memberships</title>
-</head>
-<body>
     <h1>Your Memberships</h1>
     {% if memberships %}
         <ul>
@@ -16,6 +10,5 @@
     {% else %}
         <p>You have no memberships.</p>
     {% endif %}
-</body>
 
 {% endblock %}
