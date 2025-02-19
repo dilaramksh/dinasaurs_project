@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from social_media.decorators import user_type_required
-from social_media.models import User
+from social_media.models import *
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from social_media.decorators import user_type_required
@@ -14,21 +14,32 @@ from social_media.forms.society_creation_form import SocietyCreationForm
 #to do: add login required
 #to do: add user type required
 
-#@user_type_required('student')
-#@login_required
+@user_type_required('student')
+@login_required
 def student_dashboard(request):
     student = request.user
-    #student_name = student.first_name + " " + User.last_name
-    #student_university = student.university
-    #student_email = student.email
 
-    #context = {
-     #   'student_name' : student_name,
-      #  'student_university' : student_university,
-       # 'student_email' : student_email
-    #}
+    memberships = Membership.objects.filter(user=student)
+    user_societies = [membership.society_role.society for membership in memberships]
+    print("User Societies:", user_societies)  # Debugging print
 
-    return render(request, 'student/student_dashboard.html', {'student': student})
+    events = Event.objects.filter(society__in=user_societies)
+    print("Events:", events)  # Debugging print
+
+    if not memberships:
+        print("No memberships found for this user")
+    if not user_societies:
+        print("No societies found for this user")
+    if not events:
+        print("No events found for this user")
+
+    return render(request, 'student/student_dashboard.html', {
+        'student': student,
+        'user_societies': user_societies,
+        'user_events': events
+    })
+
+
 
 #Views for pages from dropdown menu in Student Navbar
 #@login_required
@@ -42,7 +53,6 @@ def features(request):
 #@login_required
 def pricing(request):
     return render(request, 'pricing.html')
-
 
 #@user_type_required('student')
 #@login_required
