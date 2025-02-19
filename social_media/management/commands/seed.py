@@ -37,12 +37,12 @@ events_participant_fixtures = [
 
 
 membership_fixtures = [
-    {'user':'@johndoe', 'society_role':'member'},
-    {'user':'@janedoe', 'society_role':'member'},
-    {'user':'@paulpoe', 'society_role':'member'},
-    {'user':'@paulinepoe', 'society_role':'member'},
-    {'user':'@alexsmith', 'society_role':'member'},
-    {'user':'@emmajohnson', 'society_role':'member'}
+    {'user':'@johndoe', 'society':'computingsoc', 'society_role':'member'},
+    {'user':'@janedoe', 'society':'gamsoc','society_role':'member'},
+    {'user':'@paulpoe', 'society':'computingsoc', 'society_role':'member'},
+    {'user':'@paulinepoe', 'society':'gamsoc', 'society_role':'member'},
+    {'user':'@alexsmith', 'society':'artsoc', 'society_role':'member'},
+    {'user':'@emmajohnson', 'society':'artsoc', 'society_role':'member'}
 ]
 
 
@@ -257,7 +257,11 @@ class Command(BaseCommand):
 
     def generate_membership_fixtures(self):
         for data in membership_fixtures:
-            print(f"Creating membership: {data['society_role']} for user {data['user']}")
+            user = User.objects.get(username=data['user'])  
+            society = Society.objects.get(name=data['society'])
+            society_role = SocietyRole.objects.filter(society=society, role_name=data['society_role']).first()
+
+            print(f"Creating membership: {data['society_role']} in {data['society']} for user {data['user']}")
             created_membership = self.try_create_membership(data)
             if created_membership:
                 self.generated_memberships.append(created_membership)
@@ -277,6 +281,11 @@ class Command(BaseCommand):
         user = random.choice(self.generated_users)
         print(f"Selected user: {user.username}")
 
+        societies = Society.objects.all()
+        if not societies.exists():
+            raise ValueError("No societies found.")
+        society = random.choice(societies)
+
         society_roles = SocietyRole.objects.all()
         if not society_roles.exists():
             raise ValueError("No society roles found.")
@@ -287,13 +296,14 @@ class Command(BaseCommand):
         if not existing_role:
             membership = Membership.objects.create(
                 user=user,
+                society=society,
                 society_role=society_role
             )
             membership.save()
-            print(f"Created membership: {membership.society_role} for user {user}")
+            print(f"Created membership: {membership.society_role} in {membership.society.name} for user {user}")
         else:
             membership = existing_role
-            print(f"Skipping duplicate society role: {membership.society_role} for user {user}")
+            print(f"Skipping duplicate society role: {membership.society_role} in {membership.society.name} for user {user}")
         return membership
 
     # Seed Events

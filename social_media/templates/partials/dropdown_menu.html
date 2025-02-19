@@ -10,10 +10,9 @@
 <li><a href="{% url 'password' %}" class="dropdown-item">Change Password</a></li>
 
 
-{% if user.user_type == 'student' %}
-  <li><a href="{% url 'view_memberships' %}" class="dropdown-item">Manage Memberships</a></li>
-  <li><a href=# class="dropdown-item">Purchases</a></li>
-{% endif %}
+
+<li><a href="{% url 'view_memberships' %}" class="dropdown-item">Manage Memberships</a></li>
+<li><a href=# class="dropdown-item">Purchases</a></li>
 
 <li><a href=# class="dropdown-item">FAQ/Help</a></li>
 <li><a href=# class="dropdown-item">Settings</a></li>
