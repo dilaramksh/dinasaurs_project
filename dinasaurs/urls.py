@@ -23,6 +23,7 @@ from social_media.views._all import *
 from social_media.views.society_views import *
 from social_media.views.super_admin_views import *
 from social_media.views.footer_view import *
+from social_media.views.upload_image_views import *
 
 
 urlpatterns = [
@@ -56,7 +57,8 @@ urlpatterns = [
     path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
 
     #super-admin paths
-    path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard')
+    path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard'),
+
 
     
 ]

@@ -39,6 +39,10 @@ $ pip3 install django-storages
 
 ```
 
+python3 -m pip install Pillow
+
+```
+
 Migrate the database:
 
 ```
