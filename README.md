@@ -26,7 +26,17 @@ $ source venv/bin/activate
 Install all required packages:
 
 ```
+
 $ pip3 install -r requirements.txt
+
+```
+
+$ pip3 install boto3
+
+```
+
+$ pip3 install django-storages
+
 ```
 
 Migrate the database:
