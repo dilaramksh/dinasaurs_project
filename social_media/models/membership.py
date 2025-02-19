@@ -13,4 +13,7 @@ class Membership(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["user", "society_role"], name="unique_user_role_in_society")
         ]
+
+    def __str__(self):
+        return self.name
    
