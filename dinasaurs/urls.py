@@ -20,7 +20,7 @@ from django.urls import path
 from social_media.views import *
 #from django.conf import settings
 from social_media.views._all import *
-from social_media.views.dashboard_view import student_societies
+from social_media.views.dashboard_view import student_societies, student_events
 from social_media.views.society_views import *
 from social_media.views.super_admin_views import *
 from social_media.views.footer_view import *
@@ -51,6 +51,7 @@ urlpatterns = [
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
     path('student/societies', student_societies, name='student_societies'),
+    path('student/events', student_events, name='student_events'),
 
     #society paths
     path('society/dashboard/', society_dashboard, name='society_dashboard'),

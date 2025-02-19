@@ -79,3 +79,4 @@ def create_temp_category(request):
 
 def view_societies(request):
     return render(request, 'student/view_societies.html')
+
