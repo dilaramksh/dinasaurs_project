@@ -11,6 +11,7 @@ from django.shortcuts import render, get_object_or_404
 def dashboard(request):
     """Display the current user's dashboard."""
     student = request.user
+
     memberships = Membership.objects.filter(user=student)
     user_societies = [membership.society_role.society for membership in memberships]
     user_events = Event.objects.filter(society__in=user_societies)
@@ -27,6 +28,7 @@ def dashboard(request):
 
 def student_societies(request):
     student = request.user
+
     memberships = Membership.objects.filter(user=student)
     user_societies = [membership.society_role.society for membership in memberships]
     selected_society = None
@@ -48,7 +50,6 @@ def student_societies(request):
         'selected_society': selected_society,
         'society_roles': society_roles
     })
-
 def student_events(request):
     student = request.user
     memberships = Membership.objects.filter(user=student)
