@@ -50,15 +50,15 @@ society_role_fixtures = [
     {'society':'computingsoc', 'role_name':'president'},
     {'society':'computingsoc', 'role_name':'vice_president'},
     {'society':'computingsoc', 'role_name':'member'},
-    {'society':'gamsoc', 'role_name':'president'},
-    {'society':'gamsoc', 'role_name':'vice_president'},
-    {'society':'gamsoc', 'role_name':'member'}
+    {'society':'gamesoc', 'role_name':'president'},
+    {'society':'gamesoc', 'role_name':'vice_president'},
+    {'society':'gamesoc', 'role_name':'member'}
 ]
 
 
 society_fixtures = [
     {'name':'computingsoc', 'founder':'@johndoe', 'society_email':'computingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'academic_career', 'paid_membership':False, 'price':'0.0', 'colour1':'#FFD700', 'colour2':'#FFF2CC', 'status':'approved'},
-    {'name':'gamsoc', 'founder':'@janedoe', 'society_email':'gamingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':True, 'price':'5.0', 'colour1':'#FF6347', 'colour2':'#F0E68C', 'status':'approved'},
+    {'name':'gamesoc', 'founder':'@janedoe', 'society_email':'gamingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':True, 'price':'5.0', 'colour1':'#FF6347', 'colour2':'#F0E68C', 'status':'approved'},
     {'name':'artssoc', 'founder':'@alexsmith', 'society_email':'artsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':False, 'price':'0.0', 'colour1':'#6A5ACD', 'colour2':'#FFF', 'status':'approved'},
 ]
 
