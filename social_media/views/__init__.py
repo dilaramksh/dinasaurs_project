@@ -11,3 +11,4 @@ from .student_views import (
 from .society_views import (
     event_creation, terminate_society, view_members, view_upcoming_events, create_post
 )
+from .membership_view import view_memberships

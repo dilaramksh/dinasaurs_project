@@ -1,4 +1,4 @@
-{% extends 'student/student_base.html' %}
+{% extends 'base_content.html' %}
 {% load static %}
 
 {% block title %}Student Homepage{% endblock %}
@@ -39,15 +39,13 @@
                             <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
                                 <h5 class="card-header">📅 Upcoming Events</h5>
                                 <div class="card-body">
-                                    <ul class="list-group list-group-flush">
+                                    <ul>
                                         {% for event in user_events %}
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <span class="fw-bold">{{ event.name }}</span>
-                                                <span class="text-muted">{{ event.date|date:"F j, Y" }}</span>
-                                                <a href="{% url 'student_events' %}" class="btn">Details</a>
-                                            </li>
+                                            <div>
+                                                <p class="fw-bold">🐝 {{ event.name }}</p>
+                                            </div>
                                         {% empty %}
-                                            <li class="list-group-item text-muted text-center">No upcoming events</li>
+                                            <li class="text-muted">No upcoming events</li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -82,29 +80,20 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                                <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
-                                    <h5 class="card-header">🏅 Your Current Societies</h5>
-                                    <div class="card-body">
-                                        <div class="row g-2">
-                                            {% for society in user_societies %}
-                                                {% if society.societyrole_set.all %}
-                                                    <div class="col-6">
-                                                        <div class="card p-3 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
-                                                            <a href="{% url 'student_societies' %}" class="btn btn">
-                                                                🐝{{ society.name }} -
-                                                                {% for role in society.societyrole_set.all %}
-                                                                    {{ role.role_name }}
-                                                                {% endfor %}
-                                                            </a>
-                                                        </div>
+                            <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
+                                <h5 class="card-header">🏅 Your Current Societies</h5>
+                                <div class="card-body">
+                                    <div class="row g-2">
+                                       {% for society in user_societies %}
+                                                <div class="col-6">
+                                                    <div class="card p-3 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
+                                                        <p class="fw-bold">🐝 {{ society.name }}</p>
                                                     </div>
-                                                {% else %}
-                                                    <p class="text-muted text-center">You are not part of any societies yet.</p>
-                                                {% endif %}
-                                            {% empty %}
-                                                <p class="text-muted text-center">You are not part of any societies yet.</p>
-                                            {% endfor %}
-                                        </div>
+                                                </div>
+                                            </div>
+                                        {% empty %}
+                                            <p class="text-muted text-center">You are not part of any societies yet.</p>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -114,10 +103,11 @@
             </div>
         </div>
 
-        <!-- Footer -->
+        <!-- Footer 
         <footer class="text-center text-dark mt-5 py-4" style="background-color: #FFF2CC;">
             <p class="mb-0">🐝 &copy; {{ year }} HiveSociety | Stay Connected | Contact Us</p>
         </footer>
+        -->
 
         <!-- Bootstrap JS & dependencies -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

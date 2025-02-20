@@ -52,7 +52,7 @@ urlpatterns = [
     path('student/view_society/', view_societies, name='view_societies'),
     path('student/societies', student_societies, name='student_societies'),
     path('student/events', student_events, name='student_events'),
-
+    path('student/memberships/', view_memberships, name='view_memberships'),
     #society paths
     path('society/dashboard/', society_dashboard, name='society_dashboard'),
     path('society/create_event/', event_creation, name='create_event'),

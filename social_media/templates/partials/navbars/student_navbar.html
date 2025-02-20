@@ -1,33 +1,43 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-lg bg-white d-flex flex-column" style="padding: 10px 20px;">
-  <div class="container-fluid d-flex justify-content-between align-items-center w-100">
-    <!-- Logo -->
-    <a class="navbar-brand d-flex align-items-center" href="#">
+<nav class="navbar navbar-expand-lg navbar-light bg-white" style="padding: 10px 15px;">
+  <div class="container-fluid">
+    <!-- Logo (all navbars)-->
+    <a class="navbar-brand" href="#">
       <img src="{% static 'images/Logo.png' %}" alt="Logo" style="height: 70px; width: auto;">
     </a>
-    
-    <!-- Profile Dropdown -->
-    <div class="d-flex align-items-center">
-      {% if user.is_authenticated %}
-        <div class="dropdown">
-          <button class="btn border-0 dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://www.gravatar.com/avatar/{{ user.gravatar_hash }}?s=200&d=identicon" alt="Profile Picture" class="rounded-circle border border-dark" width="40" height="40">
-          </button>
-
-          <ul class="dropdown-menu dropdown-menu-end custom-dropdown" aria-labelledby="profileDropdown">
-            {% include 'partials/menu.html' %}
-          </ul>
-        </div>
-      {% endif %}
+    <!-- Icons/page (student only??)-->
+    {% if user.is_authenticated %}
+    <div class="collapse navbar-collapse mx-2" id="navbarNav">
+      <ul class="navbar-nav">
+        <a class="nav-item nav-link active mx-2" href="/dashboard">
+          <i class="fas fa-home fa-lg"></i>
+        </a>
+        <a class="nav-item nav-link" href="#">
+          <i class="fas fa-compass fa-lg"></i>             
+        </a>
+      </ul>
     </div>
+    {% endif %}
+    <!-- Icons/page (student only)-->
+    {% if user.is_authenticated %}
+      <div class="dropdown">
+        <button class="btn border-0 dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://www.gravatar.com/avatar/{{ user.gravatar_hash }}?s=200&d=identicon" alt="Profile Picture" class="rounded-circle border border-dark" width="40" height="40">
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end custom-dropdown" aria-labelledby="profileDropdown">
+          {% include 'partials/dropdown_menu.html' %}
+        </ul>
+      </div>
+    {% endif %}
   </div>
 
   {% if user.is_authenticated %}
-  <!-- Horizontal Line -->
+  <!-- Horizontal Line 
   <hr class="w-100" style="border: 2px solid #ccc; margin-top: 10px; margin-bottom: 5px;">
-
-  <!-- Left-Aligned Navigation Links -->
+  -->
+  <!-- Left-Aligned Navigation Links 
   <div class="container-fluid">
     <ul class="navbar-nav d-flex flex-row" style="margin-left: 0;">
       <li class="nav-item">
@@ -45,6 +55,7 @@
     </ul>
   </div>
   {% endif %}
+  -->
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
