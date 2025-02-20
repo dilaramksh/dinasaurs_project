@@ -2,24 +2,21 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from social_media.decorators import user_type_required
 from social_media.models import *
-from social_media.models import *
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from social_media.decorators import user_type_required
 from social_media.models import User
 from django.contrib import messages
 from django.shortcuts import redirect, render
+from social_media.forms.society_creation_form import SocietyCreationForm
 from django.shortcuts import HttpResponse
 from social_media.models import Category
-from social_media.forms.society_creation_form import SocietyCreationForm
 
-
-#Views for pages from dropdown menu in Student Navbar
-
+#to do: add login required
+#to do: add user type required
 
 @user_type_required('student')
 @login_required
-#REDUNDANT
 def student_dashboard(request):
     student = request.user
 
@@ -43,17 +40,7 @@ def student_dashboard(request):
         'user_events': events
     })
 
-
-
 #Views for pages from dropdown menu in Student Navbar
-    memberships = Membership.objects.filter(user=student)
-    user_societies = [membership.society_role.society for membership in memberships]
-    events = Event.objects.filter(society__in=user_societies)
-    return render(request, 'student/student_dashboard.html', {
-        'student': student,
-        'user_societies': user_societies,
-        'user_events': events,
-    })
 #@login_required
 def help(request):
     return render(request, 'help.html')
@@ -93,8 +80,6 @@ def society_creation_request(request):
 
     return render(request, 'student/submit_society_request.html', {'form': form})
 
-
-
 def create_temp_category(request):
     """View to create a temporary category for testing."""
     temp_category, created = Category.objects.get_or_create(name="Temporary Category")
@@ -106,4 +91,3 @@ def create_temp_category(request):
 
 def view_societies(request):
     return render(request, 'student/view_societies.html')
-

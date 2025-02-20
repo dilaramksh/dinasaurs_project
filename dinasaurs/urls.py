@@ -40,6 +40,8 @@ urlpatterns = [
     #homepage paths 
     path('', homepage, name='homepage'),
     path('homepage/discover_societies', discover_universities, name='discover_universities'),
+    path('homepage/why_join_society', why_join_society, name='why_join_society'),
+    path('homepage/latest_news', latest_news, name='latest_news'),
 
     #footer path 
     path('stay-connected/', stay_connected, name='stay_connected'),
