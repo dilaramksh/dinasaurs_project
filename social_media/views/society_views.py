@@ -31,13 +31,14 @@ def event_creation(request):
     return render(request, 'society/event_creation.html', {'form': form})
 
 def terminate_society(request):
-    society = get_object_or_404(Society, founder=request.user)  
+    '''society = get_object_or_404(Society, founder=request.user)  
 
     if request.method == "POST":
         society.delete()
         return redirect("society_dashboard")  
-
-    return render(request, "terminate_society.html", {"society": society})
+    '''
+    #return render(request, "terminate_society.html", {"society": society})
+    return render(request, "society/terminate_society.html")
 
 def view_members(request):
 
