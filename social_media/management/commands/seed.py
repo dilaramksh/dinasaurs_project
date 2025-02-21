@@ -38,11 +38,9 @@ events_participant_fixtures = [
 
 membership_fixtures = [
     {'user':'@johndoe', 'society':'computingsoc', 'society_role':'member'},
-    {'user':'@janedoe', 'society':'gamsoc','society_role':'member'},
+    {'user':'@janedoe', 'society':'gamesoc','society_role':'member'},
     {'user':'@paulpoe', 'society':'computingsoc', 'society_role':'member'},
-    {'user':'@paulinepoe', 'society':'gamsoc', 'society_role':'member'},
-    {'user':'@alexsmith', 'society':'artsoc', 'society_role':'member'},
-    {'user':'@emmajohnson', 'society':'artsoc', 'society_role':'member'}
+    {'user':'@paulinepoe', 'society':'gamesoc', 'society_role':'member'},
 ]
 
 
@@ -59,7 +57,7 @@ society_role_fixtures = [
 society_fixtures = [
     {'name':'computingsoc', 'founder':'@johndoe', 'society_email':'computingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'academic_career', 'paid_membership':False, 'price':'0.0', 'colour1':'#FFD700', 'colour2':'#FFF2CC', 'status':'approved'},
     {'name':'gamesoc', 'founder':'@janedoe', 'society_email':'gamingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':True, 'price':'5.0', 'colour1':'#FF6347', 'colour2':'#F0E68C', 'status':'approved'},
-    {'name':'artssoc', 'founder':'@alexsmith', 'society_email':'artsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':False, 'price':'0.0', 'colour1':'#6A5ACD', 'colour2':'#FFF', 'status':'approved'},
+    {'name':'artssoc', 'founder':'@paulinepoe', 'society_email':'artsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':False, 'price':'0.0', 'colour1':'#6A5ACD', 'colour2':'#FFF', 'status':'approved'},
 ]
 
 
