@@ -48,6 +48,7 @@ urlpatterns = [
     path('society/create_post/', create_post, name='create_post'),
     #path('society/terminate_society/<int:society_id>/', terminate_society, name='terminate_society'),
     path('society/view_members/', view_members, name='view_members'),
-    path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events')
+    path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
+    path('society/mainpage/', society_mainpage, name='society_mainpage'),
     
 ]

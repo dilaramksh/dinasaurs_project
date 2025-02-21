@@ -57,4 +57,8 @@ def create_post(request):
     else:
         form = PostForm()  
 
-    return render(request, 'society/create_post.html', {"form": form}) 
+    return render(request, 'society/create_post.html', {"form": form})
+
+
+def society_mainpage(request):
+    return render(request, 'society/society_mainpage.html')
