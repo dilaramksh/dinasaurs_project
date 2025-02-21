@@ -57,3 +57,6 @@ class Society(models.Model):
         """Block the society."""
         self.status = "blocked"
         self.save()
+
+    def __str__(self):
+        return self.name
