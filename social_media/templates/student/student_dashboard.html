@@ -64,17 +64,11 @@
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
-                                <h5 class="card-header">🔍 Suggestions for You</h5>
+                                <h5 class="card-header">🏵 Start Your Own Society</h5>
                                 <div class="card-body">
-                                    <ul>
-                                        {% for suggestion in student.suggestions %}
-                                            <li>🐝 {{ suggestion }}</li>
-                                        {% empty %}
-                                            <li class="text-muted">No suggestions available</li>
-                                        {% endfor %}
-                                    </ul>
-                                    <div class="text-center mt-3">
-                                        <a href="{% url 'society_browser' %}" class="btn btn-outline-warning">View available societies</a>
+                                    <p>Have an idea for a new society? Submit a request and start something amazing.</p>
+                                    <div class="text-center mt-3"> 
+                                        <a href="{% url 'society_creation_request' %}" class="btn btn-warning">Request to Create</a>                           
                                     </div>
                                 </div>
                             </div>
