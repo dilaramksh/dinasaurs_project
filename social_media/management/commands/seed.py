@@ -252,7 +252,10 @@ class Command(BaseCommand):
             return society_role
 
 
-    # Membership
+    # Membership 
+    """
+    Adjusted seeder, accidental randomization of membership - em:)
+    """
     def create_memberships(self):
         self.stdout.write('Creating memberships...')
         self.generate_membership_fixtures()
@@ -260,20 +263,42 @@ class Command(BaseCommand):
 
     def generate_membership_fixtures(self):
         for data in membership_fixtures:
-            user = User.objects.filter(username=data['user'], user_type='student').first()
-
-            if not user:
-                self.stdout.write(f"User {data['user']} is not a student, skipping membership assignment.")
-                continue
-
+            user = User.objects.get(username=data['user'])
             society = Society.objects.get(name=data['society'])
             society_role = SocietyRole.objects.filter(society=society, role_name=data['society_role']).first()
 
-            self.stdout.write(f"Creating membership: {data['society_role']} in {data['society']} for user {data['user']}")
-            created_membership = self.try_create_membership(data)
-            if created_membership:
-                self.generated_memberships.append(created_membership)
-        self.stdout.write(f"Generated memberships: {[membership.society_role.role_name for membership in self.generated_memberships]}")
+            self.try_create_membership({
+                'user': user,
+                'society': society,
+                'society_role': society_role,
+            })
+
+    def generate_random_membership(self):
+        pass
+
+    def generate_membership(self):
+        users = User.objects.filter(user_type='student')
+        if not users:
+            raise ValueError("No users found for membership selection.")
+        
+        societies = Society.objects.all()
+        if not societies.exists():
+            raise ValueError("No societies found.")
+        
+        user = random.choice(self.generated_users)
+        society = random.choice(societies)
+
+        society_roles = SocietyRole.objects.filter(society=society)
+        if not society_roles.exists():
+            raise ValueError(f"No roles found for society {society.name}.")
+        
+        society_role = random.choice(society_roles)
+
+        self.try_create_membership({
+            'user' : user, 
+            'society' : society,
+            'society_role' : society_role,
+        })
 
     def try_create_membership(self, data):
         try:
@@ -282,24 +307,15 @@ class Command(BaseCommand):
             self.stderr.write(self.style.ERROR(f"Error creating membership for {data['user']}: {str(e)}"))
 
     def create_membership(self, data):
-        if not self.generated_users:
-            raise ValueError("No users found for membership selection.")
+        user = data['user']
+        society = data['society']
+        society_role = data['society_role']
 
-        user = random.choice(self.generated_users)
-        self.stdout.write(f"Selected user: {user.username}")
-
-        societies = Society.objects.all()
-        if not societies.exists():
-            raise ValueError("No societies found.")
-        society = random.choice(societies)
-
-
-        society_roles = SocietyRole.objects.filter(society=society)
-        if not society_roles.exists():
-            raise ValueError(f"No roles found for society {society.name}.")
-        society_role = random.choice(society_roles)
-
-        existing_membership = Membership.objects.filter(user=user, society_role=society_role).first()
+        existing_membership = Membership.objects.filter(
+            user=user ,
+            society=society, 
+            society_role=society_role,
+        ).first()
 
         if not existing_membership:
             membership = Membership.objects.create(
@@ -313,8 +329,8 @@ class Command(BaseCommand):
         else:
             membership = existing_membership
             self.stdout.write(
-                f"Skipping duplicate society role: {membership.society_role} in {membership.society.name} for user {user.username}")
-
+                f"Skipping duplicate membership: {membership.society_role} in {membership.society.name} for user {user.username}")
+            return
         return membership
 
     # Event
