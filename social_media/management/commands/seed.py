@@ -38,7 +38,7 @@ events_participant_fixtures = [
 
 membership_fixtures = [
     {'user':'@johndoe', 'society':'computingsoc', 'society_role':'member'},
-    {'user':'@janedoe', 'society':'gamesoc','society_role':'member'},
+    {'user':'@janedoe', 'society':'gamesoc','society_role':'president'},
     {'user':'@paulpoe', 'society':'computingsoc', 'society_role':'member'},
     {'user':'@paulinepoe', 'society':'gamesoc', 'society_role':'member'},
 ]

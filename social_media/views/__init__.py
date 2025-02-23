@@ -4,7 +4,7 @@ from .login_view import LogInView
 from .signup_view import SignUpView
 from .profile_views import ProfileUpdateView, PasswordView, log_out
 from .homepage_view import homepage
-from .dashboard_view import dashboard
+from .dashboard_views import dashboard, get_society_dashboard
 from .student_views import (
     society_browser, view_societies, society_creation_request
 )
