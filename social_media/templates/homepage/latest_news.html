@@ -1,0 +1,106 @@
+{% extends 'base_content.html' %}
+{% load static %}
+
+{% block title %}Latest News{% endblock %}
+
+{% block content %}
+<body>
+
+    <!-- Hero Section -->
+    <div class="hero text-center text-white py-5" style="background-color: #FFC533;">
+        <h1 class="display-4 fw-bold">📰 Latest News</h1>
+        <p class="lead fs-4">Stay updated with the latest happenings and stories.</p>
+    </div>
+
+    <!-- News Section -->
+    <div class="container my-5">
+        <div class="row">
+            <!-- News Articles -->
+            <div class="col-md-8">
+                <div class="row">
+                    <!-- News Article 1 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card border-0 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">🚀 Exciting New Society Launches!</h5>
+                                <p class="card-text text-muted">Published on Feb 20, 2025</p>
+                                <p class="card-text">View new societies launched in your university, and how to join them, or maybe even request to start your own new and exciting society!</p>
+                                <a href="{% url 'sign_up' %}" class="btn btn-warning btn-sm">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Article 2 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card border-0 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">🎭 Drama Society's Latest Performance at King's College London</h5>
+                                <p class="card-text text-muted">Published on Feb 18, 2025</p>
+                                <p class="card-text">The Drama Society recently put on a spectacular performance of 'Hamlet' that left audiences in awe...</p>
+                                <a href="{% url 'sign_up' %}" class="btn btn-warning btn-sm">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Article 3 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card border-0 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">🏆 UCL Women's Football Team Wins Big!</h5>
+                                <p class="card-text text-muted">Published on Feb 15, 2025</p>
+                                <p class="card-text">The Women's football team won the BUCS tournement in a thrilling final match, bringing home the trophy...</p>
+                                <a href="{% url 'sign_up' %}" class="btn btn-warning btn-sm">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Article 4 -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card border-0 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">🌱 Sustainability Initiatives within University</h5>
+                                <p class="card-text text-muted">Published on Feb 10, 2025</p>
+                                <p class="card-text">New sustainability initiatives are making waves on campuses, encouraging students to go green...</p>
+                                <a href="{% url 'sign_up' %}" class="btn btn-warning btn-sm">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-md-4">
+                <div class="p-4 bg-light rounded shadow">
+                    <h4 class="fw-bold">📌 Popular Tags</h4>
+                    <div class="d-flex flex-wrap">
+                        <span class="badge bg-warning text-dark m-1">#Events</span>
+                        <span class="badge bg-warning text-dark m-1">#Sports</span>
+                        <span class="badge bg-warning text-dark m-1">#Societies</span>
+                        <span class="badge bg-warning text-dark m-1">#Sustainability</span>
+                        <span class="badge bg-warning text-dark m-1">#Technology</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Related News Section -->
+        <div class="p-4 mt-4 bg-light rounded shadow">
+            <h4 class="fw-bold">🔎 Related News</h4>
+            <ul class="list-unstyled">
+                <li><a href="#" class="text-decoration-none text-dark">💡 New Student Innovation Projects</a></li>
+                <li><a href="#" class="text-decoration-none text-dark">🌍 International Students Meet-Up Event</a></li>
+                <li><a href="#" class="text-decoration-none text-dark">🛠️ Engineering Society's Workshop</a></li>
+                <li><a href="#" class="text-decoration-none text-dark">🎉 Freshers Week Highlights</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Call to Action Section -->
+    <div class="text-center py-5" style="background-color: #FFC533;">
+        <h2 class="fw-bold">Ready to Join?</h2>
+        <p class="fs-5">Take the first step towards an amazing university experience!</p>
+        <a href="{% url 'sign_up' %}" class="btn btn-lg btn-light fw-bold px-4 py-2">Create an Account</a>
+    </div>
+
+</body>
+{% endblock %}

@@ -2,7 +2,9 @@ from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
 from social_media.forms.event_creation_form import EventCreationForm
 from social_media.forms.post_creation import PostForm  
-from social_media.models import Society
+from social_media.models import Society, Event
+from django.utils.timezone import now
+from datetime import date
 
 
 #@login_required
@@ -28,14 +30,15 @@ def event_creation(request):
 
     return render(request, 'society/event_creation.html', {'form': form})
 
-def terminate_society(request, society_id):
-    society = get_object_or_404(Society, id=society_id)
+def terminate_society(request):
+    '''society = get_object_or_404(Society, founder=request.user)  
 
     if request.method == "POST":
         society.delete()
-        return redirect("society/society_dashboard")  
-
-    return render(request, "terminate_society.html", {"society": society})
+        return redirect("society_dashboard")  
+    '''
+    #return render(request, "terminate_society.html", {"society": society})
+    return render(request, "society/terminate_society.html")
 
 def view_members(request):
 
@@ -43,19 +46,23 @@ def view_members(request):
 
 def view_upcoming_events(request):
 
-    return render(request, 'society/view_upcoming_events.html')
+    events = Event.objects.filter(date__gte=date.today()).order_by("date")
+    return render(request, 'society/view_upcoming_events.html', {'events': events})
 
 def create_post(request):
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)  
+            post.author = request.user  
+            post.save()
             messages.success(request, "Post created successfully!")  
-            return redirect("society/society_dashboard") 
+            return redirect("society_dashboard") 
         else:
             messages.error(request, "Error in post creation. Please check the form.")
+        
     else:
-        form = PostForm()  
+        form = PostForm()
 
     return render(request, 'society/create_post.html', {"form": form})
 

@@ -14,4 +14,10 @@ class SocietyRole(models.Model):
         ]
        
 
-    
+    def __str__(self):
+        return f"{self.society.name} - {self.role_name}"
+
+    def is_committee_role(self):
+        """Determine if the role is a committee role."""
+        #Change to standard member in seeder?
+        return self.role_name.lower() not in ["member", "standard member"]
