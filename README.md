@@ -31,18 +31,6 @@ $ pip3 install -r requirements.txt
 
 ```
 
-$ pip3 install boto3
-
-```
-
-$ pip3 install django-storages
-
-```
-
-python3 -m pip install Pillow
-
-```
-
 Migrate the database:
 
 ```

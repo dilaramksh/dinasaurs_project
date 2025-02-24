@@ -8,11 +8,14 @@
       <h1>Sign up</h1>
       <p class="text-muted">Register with your school email.</p>
       <hr>
-      <form action="{% url 'sign_up' %}" method="post">
+
+      <form action="{% url 'sign_up' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
+        
+    
         {% include 'partials/bootstrap_form.html' with form=form submit_text="Sign up"%}
-      </form>
+    </form>
     </div>
   </div>
 </div>

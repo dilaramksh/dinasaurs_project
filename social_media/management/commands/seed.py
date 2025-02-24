@@ -4,11 +4,13 @@ from django.template.defaultfilters import first
 from social_media.models import *
 import random
 
+DEFAULT_PROFILE_PICTURE = "profile_pictures/default_user.jpg"
+
 user_fixtures = [
-    {'first_name':'john', 'last_name':'doe', 'username':'@johndoe', 'email':'johndoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2023-09-23', 'end_date':'2026-05-06'},
-    {'first_name':'jane', 'last_name':'doe', 'username':'@janedoe', 'email':'janedoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2022-09-24', 'end_date':'2025-05-07'},
-    {'first_name':'paul', 'last_name':'poe', 'username':'@paulpoe', 'email':'paulpoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
-    {'first_name':'pauline', 'last_name':'poe', 'username':'@paulinepoe', 'email':'paulinepoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
+    {'first_name':'john', 'last_name':'doe', 'username':'@johndoe', 'email':'johndoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2023-09-23', 'end_date':'2026-05-06', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'jane', 'last_name':'doe', 'username':'@janedoe', 'email':'janedoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2022-09-24', 'end_date':'2025-05-07', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'paul', 'last_name':'poe', 'username':'@paulpoe', 'email':'paulpoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'pauline', 'last_name':'poe', 'username':'@paulinepoe', 'email':'paulinepoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
 ]
 
 university_fixtures = [
@@ -61,6 +63,7 @@ society_fixtures = [
     {'name':'gamsoc', 'founder':'@janedoe', 'society_email':'gamingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':True, 'price':'5.0', 'colour1':'#FF6347', 'colour2':'#F0E68C', 'status':'approved'},
     {'name':'artssoc', 'founder':'@alexsmith', 'society_email':'artsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':False, 'price':'0.0', 'colour1':'#6A5ACD', 'colour2':'#FFF', 'status':'approved'},
 ]
+
 
 
 
@@ -126,6 +129,11 @@ class Command(BaseCommand):
             university=university,
             password=Command.DEFAULT_PASSWORD,
         )
+
+        if not user.profile_picture:
+            user.profile_picture.name = DEFAULT_PROFILE_PICTURE
+
+
         user.save()
         return user
 

@@ -29,6 +29,7 @@ class User(AbstractUser):
     university = models.ForeignKey(University, on_delete=models.CASCADE)
     start_date= models.DateField(blank=False)
     end_date = models.DateField(blank=False)
+    profile_picture = models.ImageField(upload_to="profile_pictures/", blank=True, null=True)
     REQUIRED_FIELDS = ['email']
 
     def save(self, *args, **kwargs):
