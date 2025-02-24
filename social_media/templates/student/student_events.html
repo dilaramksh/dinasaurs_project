@@ -1,0 +1,51 @@
+{% extends 'student/student_base.html' %}
+{% load static %}
+
+{% block title %}Student Homepage{% endblock %}
+
+{% block content %}
+    <body>
+        <title>Student Societies</title>
+        <div class="container mt-4">
+            <header class="text-dark text-center py-2 mb-4"
+                    style="background: url('https://www.transparenttextures.com/patterns/honeycomb.png') ">
+                <div class="container">
+                    <h1 class="display-4 fw-bold" style="color: black;">Upcoming Events</h1>
+                </div>
+            </header>
+            <div class="d-flex justify-content-center gap-3 mt-3">
+                <form class="form-inline">
+                    <div class="mb-3">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                    </div>
+                    <button class="btn btn-outline-success ml-2" type="submit">Search Event</button>
+                </form>
+                <form class="form-inline">
+                    <div>
+                         <input class="form-control" type="search" placeholder="Search by Date" aria-label="Search">
+                    </div>
+                    <button class="btn btn-outline-success ml-2" type="submit">Date</button>
+                </form>
+                </form>
+            </div>
+            <div class="row justify-content-center gap-4">
+                {% for event in user_events %}
+                    <div class="col-md-4 col-sm-6">
+                        <div class="card shadow-lg mb-4 mx-2" style="border-radius: 10px; border: none; background-color: #FFFFFF;">
+                            <div class="card-body">
+                                <img src="{{ 'https://picsum.photos/id/237/200/300' }}" class="img-fluid rounded mb-3" alt="Event Image">
+                                <p class="text-white p-2" style="background-color: #F9A825; border-radius: 5px; font-weight: bold;">{{ event.society }}</p>
+                                <p class="card-subtitle text-muted" style="font-size: 0.9em;">{{ event.date|date:"F j, Y" }}</p>
+                                <h3 class="card-title" style="color: #388E3C;">{{ event.name }}</h3>
+                                <p class="card-text" style="font-style: italic; color: #555;">{{ event.description }}</p>
+                                <p class="card-text" style="color: #1976D2;"><strong>⚲</strong> {{ event.location }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="alert alert-info text-center" style="background-color: #FFEB3B;">No upcoming events</div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+{% endblock %}

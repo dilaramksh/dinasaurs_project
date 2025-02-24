@@ -9,7 +9,8 @@ from social_media.models import User
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from social_media.forms.society_creation_form import SocietyCreationForm
-
+from django.shortcuts import HttpResponse
+from social_media.models import Category
 
 #to do: add login required
 #to do: add user type required
@@ -38,8 +39,6 @@ def student_dashboard(request):
         'user_societies': user_societies,
         'user_events': events
     })
-
-
 
 #Views for pages from dropdown menu in Student Navbar
 #@login_required
@@ -80,9 +79,6 @@ def society_creation_request(request):
         form = SocietyCreationForm()
 
     return render(request, 'student/submit_society_request.html', {'form': form})
-
-from django.shortcuts import HttpResponse
-from social_media.models import Category
 
 def create_temp_category(request):
     """View to create a temporary category for testing."""

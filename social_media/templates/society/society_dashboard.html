@@ -19,7 +19,7 @@
             <div class="row">
                 <!-- Event Creation -->
                 <div class="col-md-6 mb-3">
-                    <div class="card text-center p-4 border-warning shadow-sm h-100">
+                    <div class="card text-center p-4 border-warning shadow-sm h-80">
                         <h5 class="card-header bg-warning text-dark">📅 Create an Event</h5>
                         <div class="card-body">
                             <p class="card-text">Schedule events for your society and invite members to join.</p>
@@ -30,21 +30,22 @@
 
                 <!-- Society Termination -->
                 <div class="col-md-6 mb-3">
-                    <div class="card text-center p-4 border-warning shadow-sm h-100">
+                    <div class="card text-center p-4 border-warning shadow-sm h-80">
                         <h5 class="card-header bg-warning text-dark">⚠️ Terminate Society</h5>
                         <div class="card-body">
                             <p class="card-text">If necessary, you can request to terminate your society.</p>
-                            
+                            <a href="{% url 'terminate_society' %}" class="btn btn-warning">Terminate Society</a>
+
                         </div>
                     </div>
                 </div>
 
                 <!-- Create Post -->
                 <div class="col-md-6 mb-3">
-                    <div class="card text-center p-4 border-warning shadow-sm h-100">
+                    <div class="card text-center p-4 border-warning shadow-sm h-80">
                         <h5 class="card-header bg-warning text-dark">📝 Create a Post</h5>
                         <div class="card-body">
-                            <p class="card-text">Share updates, announcements, or any news with your society members.</p>
+                            <p class="card-text">Share updates and announcements with your society members.</p>
                             <a href="{% url 'create_post' %}" class="btn btn-warning">Create Post</a>
                         </div>
                     </div>
@@ -52,7 +53,7 @@
 
                 <!-- View Members -->
                 <div class="col-md-6 mb-3">
-                    <div class="card text-center p-4 border-warning shadow-sm h-100">
+                    <div class="card text-center p-4 border-warning shadow-sm h-80">
                         <h5 class="card-header bg-warning text-dark">👥 View Society Members</h5>
                         <div class="card-body">
                             <p class="card-text">Check who is part of your society and manage memberships.</p>
@@ -63,7 +64,7 @@
 
                 <!-- Upcoming Events -->
                 <div class="col-md-12 mb-3">
-                    <div class="card text-center p-4 border-warning shadow-sm h-100">
+                    <div class="card text-center p-4 border-warning shadow-sm h-80">
                         <h5 class="card-header bg-warning text-dark">🎉 Upcoming Events</h5>
                         <div class="card-body">
                             <p class="card-text">Check out the upcoming events for your society.</p>
