@@ -19,8 +19,8 @@ from django.urls import path
 #from social_media.student_views import student_dashboard
 from social_media.views import *
 #from django.conf import settings
-from social_media.views._all import *
-from social_media.views.dashboard_view import student_societies, student_events
+
+# import below this line should not be necessary -- add view to init.py
 from social_media.views.society_views import *
 from social_media.views.super_admin_views import *
 from social_media.views.footer_view import *
@@ -55,6 +55,7 @@ urlpatterns = [
     path('student/societies', student_societies, name='student_societies'),
     path('student/events', student_events, name='student_events'),
     path('student/memberships/', view_memberships, name='view_memberships'),
+
     #society paths
     path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
     #path('society/dashboard/', society_dashboard, name='society_dashboard'),

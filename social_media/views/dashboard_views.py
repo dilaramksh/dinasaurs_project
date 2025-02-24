@@ -1,9 +1,8 @@
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from social_media.models import Society, Membership
+from social_media.models import Society, Membership, Event, SocietyRole
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse, HttpResponse
 
 @login_required
 def dashboard(request):
@@ -12,20 +11,30 @@ def dashboard(request):
     current_user = request.user
     user_type = current_user.user_type
 
-    if user_type == 'student':
+    context = {
+        'user': current_user,
+    }
+
+    if user_type == "student":
+        memberships = Membership.objects.filter(user=current_user)
+        user_societies = [membership.society_role.society for membership in memberships]
+        user_events = Event.objects.filter(society__in=user_societies)
+        society_roles = SocietyRole.objects.filter(society__in=user_societies)
+
         committee_societies = Society.objects.filter(
             membership__user=current_user
         ).exclude(
             membership__society_role__role_name__in=["member", "standard member"] 
         ).distinct()
-    else:
-        committee_societies = None
 
-    context = {
-        'user': current_user,
-        'committee_societies': committee_societies,
-    }
-    if user_type == "student":
+        context = {
+            'user': current_user,
+            'user_societies': user_societies,
+            'user_events': user_events,
+            'society_roles': society_roles,
+            'committee_societies': committee_societies,
+        }
+
         template = "student/student_dashboard.html"
     else:
         template = 'student/student_dashboard.html'
