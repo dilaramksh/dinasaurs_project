@@ -11,7 +11,7 @@
             <div class="banner-image" style="background-image: url('{{ society.banner_image|default:'https://placehold.co/1920x400' }}'); height: 275px; width: 100%; background-size: cover; background-position: center;">
                 <!-- Society Name Positioned at Bottom Left -->
                 <div class="society-name" style="position: absolute; bottom: 10px; left: 10px; color: white; font-size: 30px; font-weight: bold;">
-                    Society Name
+                    {{ society.name }}
                 </div>
             </div>
         </header>
@@ -52,21 +52,34 @@
         <!-- Sections-->
         <section id="about" style="height: 100vh; padding: 20px;">
             <h1>About</h1>
-            <p>society.description here</p>
+            <p>{{ society.description }}</p>
         </section>
 
         <section id="committee" style="height: 100vh; padding: 20px;">
             <h1>Meet the Committee</h1>
-            <p>society committee members</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                {% for member in committee_members %}
+                <div style="text-align: center; padding: 10px; border: 1px solid #ddd; border-radius: 10px;">
+                    <strong>{{ member.membership_set.first.society_role.role_name }}</strong><br>
+                    <img src="https://www.gravatar.com/avatar/{{ member.gravatar_hash }}?s=100&d=identicon" 
+                        alt="Profile Picture" class="gravatar" width="30" height="30" style="border-radius: 50%; margin: 10px 0;">
+                    <p>{{ member.get_full_name }}</p>
+                </div>
+                {% empty %}
+                <p>No committee members found.</p>
+                {% endfor %}
+            </div>
         </section>
 
         <section id="events" style="height: 100vh; padding: 20px;">
             <h1>Events</h1>
-            <p>upcoming & past events</p>
+            <ul>
+                {% for event in society_events %}
+                <li>{{ event.name }} - {{ event.date }}</li>
+                {% empty %}
+                <p>No events available.</p>
+                {% endfor %}
+            </ul>
         </section>
-
-        <!-- Bootstrap JS & dependencies -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     </body>
 {% endblock %}

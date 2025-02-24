@@ -64,7 +64,7 @@ urlpatterns = [
     path('society/terminate_society/', terminate_society, name='terminate_society'),
     path('society/view_members/', view_members, name='view_members'),
     path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
-    path('society/mainpage/', society_mainpage, name='society_mainpage'),
+    path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
 
     #super-admin paths
     path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard')

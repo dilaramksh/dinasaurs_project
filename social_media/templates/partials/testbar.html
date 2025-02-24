@@ -25,7 +25,8 @@
     {% if user.is_authenticated %}
       <div class="nav-item dropdown">
         <button type="button" class="btn border-0 dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img src="https://www.gravatar.com/avatar/{{ user.gravatar_hash }}?s=200&d=identicon" alt="Profile Picture" class="rounded-circle border" width="40" height="40">
+          <img src="https://www.gravatar.com/avatar/{{ user.gravatar_hash }}?s=200&d=identicon" 
+            alt="Profile Picture" class="gravatar rounded-circle border" width="40" height="40">
         </button>
         <ul class="dropdown-menu dropdown-menu-end custom-dropdown" aria-labelledby="profileDropdown">
           {% include 'partials/dropdown_menu.html' %}
