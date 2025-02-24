@@ -38,11 +38,9 @@ events_participant_fixtures = [
 
 membership_fixtures = [
     {'user':'@johndoe', 'society':'computingsoc', 'society_role':'member'},
-    {'user':'@janedoe', 'society':'gamsoc','society_role':'member'},
+    {'user':'@janedoe', 'society':'gamesoc','society_role':'member'},
     {'user':'@paulpoe', 'society':'computingsoc', 'society_role':'member'},
-    {'user':'@paulinepoe', 'society':'gamsoc', 'society_role':'member'},
-    {'user':'@alexsmith', 'society':'artsoc', 'society_role':'member'},
-    {'user':'@emmajohnson', 'society':'artsoc', 'society_role':'member'}
+    {'user':'@paulinepoe', 'society':'gamesoc', 'society_role':'member'},
 ]
 
 
@@ -59,9 +57,8 @@ society_role_fixtures = [
 society_fixtures = [
     {'name':'computingsoc', 'founder':'@johndoe', 'society_email':'computingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'academic_career', 'paid_membership':False, 'price':'0.0', 'colour1':'#FFD700', 'colour2':'#FFF2CC', 'status':'approved'},
     {'name':'gamesoc', 'founder':'@janedoe', 'society_email':'gamingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':True, 'price':'5.0', 'colour1':'#FF6347', 'colour2':'#F0E68C', 'status':'approved'},
-    {'name':'artssoc', 'founder':'@alexsmith', 'society_email':'artsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':False, 'price':'0.0', 'colour1':'#6A5ACD', 'colour2':'#FFF', 'status':'approved'},
+    {'name':'artssoc', 'founder':'@paulinepoe', 'society_email':'artsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':False, 'price':'0.0', 'colour1':'#6A5ACD', 'colour2':'#FFF', 'status':'approved'},
 ]
-
 
 
 class Command(BaseCommand):
@@ -73,9 +70,11 @@ class Command(BaseCommand):
         self.generated_users = []
         self.generated_memberships = []
         self.generated_societies = []
+        self.generated_society_roles = []
         self.generated_universities = []
 
     def handle(self, *args, **options):
+        self.stdout.write('\nStarting the seeding process...')
         self.clear_data()
         self.create_universities()
         self.create_users()
@@ -84,24 +83,27 @@ class Command(BaseCommand):
         self.create_memberships()
         self.create_events()
         self.create_events_participants()
+        self.stdout.write('\nSeeding process completed successfully.')
 
     def clear_data(self):
         """Clear existing data."""
-        self.stdout.write('\nClearing existing data...')
+        self.stdout.write('Clearing existing data...')
+        # User.objects.all().delete()
         self.stdout.write('Existing data cleared.\n')
 
-    # Seed Users
+    # User
     def create_users(self):
+        self.stdout.write('Creating users...')
         self.generate_user_fixtures()
+        self.stdout.write('Users creation completed.')
 
     def generate_user_fixtures(self):
         for data in user_fixtures:
-            print(f"Creating user: {data['username']}, Type: {data['user_type']}")
+            self.stdout.write(f"Creating user: {data['username']} of type {data['user_type']}")
             created_user = self.try_create_user(data)
             if created_user:
                 self.generated_users.append(created_user)
-        print("Users created successfully.")
-        print(f"Generated users: {[user.username for user in self.generated_users]}")
+        self.stdout.write(f"Generated users: {[user.username for user in self.generated_users]}")
 
     def try_create_user(self, data):
         try:
@@ -127,27 +129,29 @@ class Command(BaseCommand):
             password=Command.DEFAULT_PASSWORD,
         )
         user.save()
+        self.stdout.write(f"Created user: {user.username} ({user.user_type})")
         return user
 
 
-    # Seed University
+    # University
     def create_universities(self):
+        self.stdout.write('Creating universities...')
         self.generate_university_fixtures()
+        self.stdout.write('Universities creation completed.')
 
     def generate_university_fixtures(self):
         for data in university_fixtures:
-            print(f"Creating University: {data['name']} with domain {data['domain']}")
+            self.stdout.write(f"Creating University: {data['name']} with domain {data['domain']}")
             created_university = self.try_create_university(data)
             if created_university:
                 self.generated_universities.append(created_university)
-        print("Universities created successfully")
-        print(f"Generated Universities: {[university.name for university in self.generated_universities]}")
+        self.stdout.write(f"Generated Universities: {[university.name for university in self.generated_universities]}")
 
     def try_create_university(self, data):
         try:
             return self.create_university(data)
         except Exception as e:
-            self.stderr.write(self.style.ERROR(f"Error creating university {data['name']}: {str(e)}\n"))
+            self.stderr.write(self.style.ERROR(f"Error creating university {data['name']}: {str(e)}"))
 
     def create_university(self, data):
         university = University.objects.create(
@@ -155,36 +159,36 @@ class Command(BaseCommand):
             domain=data['domain']
         )
         university.save()
+        self.stdout.write(f"Created university: {university.name}")
         return university
 
-    # Seed Societies
+    # Society
     def create_societies(self):
+        self.stdout.write('Creating societies...')
         self.generate_society_fixtures()
+        self.stdout.write('Societies creation completed.')
 
     def generate_society_fixtures(self):
         for data in society_fixtures:
-            print(f"Creating society: {data['name']}")
-            print(f"Available users for founder selection: {[user.username for user in self.generated_users]}")
+            self.stdout.write(f"Creating society: {data['name']}")
+            self.stdout.write(f"Available users for founder selection: {[user.username for user in self.generated_users]}")
 
             created_society = self.try_create_society(data)
             if created_society:
                 self.generated_societies.append(created_society)
-
-        print("Societies created successfully.")
-        print(f"Generated societies: {[society.name for society in self.generated_societies]}")
+        self.stdout.write(f"Generated societies: {[society.name for society in self.generated_societies]}")
 
     def try_create_society(self, data):
         try:
             return self.create_society(data)
         except Exception as e:
             self.stderr.write(self.style.ERROR(f"Error creating society {data['name']}: {str(e)}"))
-            return None
 
     def create_society(self, data):
         if not self.generated_users:
             raise ValueError("No users available for founder selection.")
         founder = random.choice(self.generated_users)
-        print(f"Selected founder: {founder.username}")
+        self.stdout.write(f"Selected founder: {founder.username}")
 
         category_choices = dict(Category._meta.get_field('name').choices)
         category_name = random.choice(list(category_choices.keys()))
@@ -204,33 +208,33 @@ class Command(BaseCommand):
             status=data['status'],
         )
         society.save()
-        print(f"Created society: {society.name}, Founder: {society.founder.username}")
+        self.stdout.write(f"Created society: {society.name}, Founder: {society.founder.username}")
         return society
 
-    # Seed SocietyRoles
+    # SocietyRole
     def create_society_roles(self):
-        self.generate_society_roles_fixtures()
+        self.stdout.write('Creating society roles...')
+        self.generate_society_role_fixtures()
+        self.stdout.write('Society roles creation completed.')
 
-    def generate_society_roles_fixtures(self):
+    def generate_society_role_fixtures(self):
         for data in society_role_fixtures:
-            print(f"Creating society role: {data['role_name']} for society {data['society']}")
+            self.stdout.write(f"Creating society role: {data['role_name']} for society {data['society']}")
             self.try_create_society_role(data)
-        print("Society roles created successfully.")
+        self.stdout.write(f"Generated society roles: {[role.role_name for role in self.generated_society_roles]}")
 
     def try_create_society_role(self, data):
         try:
             self.create_society_role(data)
         except Exception as e:
             self.stderr.write(self.style.ERROR(
-                f"Error creating society role {data['role_name']} for society {data['society']}: {str(e)}"
-            ))
+                f"Error creating society role {data['role_name']} for society {data['society']}: {str(e)}"))
 
     def create_society_role(self, data):
         societies = Society.objects.all()
         if not societies.exists():
             raise ValueError("No societies found.")
         society = random.choice(societies)
-
 
         role_name = data['role_name']
         if not role_name:
@@ -245,29 +249,31 @@ class Command(BaseCommand):
                 role_name=role_name
             )
             society_role.save()
-            print(f"Created society role: {data['role_name']} for society {society.name}")
-        else:
-            society_role = existing_role
-            print(f"Skipping duplicate society role: {data['role_name']} for society {society.name}")
-        return membership
+            return society_role
 
-    # Seed Memberships
+
+    # Membership
     def create_memberships(self):
+        self.stdout.write('Creating memberships...')
         self.generate_membership_fixtures()
+        self.stdout.write('Membership creation completed.')
 
     def generate_membership_fixtures(self):
         for data in membership_fixtures:
-            user = User.objects.get(username=data['user'])  
+            user = User.objects.filter(username=data['user'], user_type='student').first()
+
+            if not user:
+                self.stdout.write(f"User {data['user']} is not a student, skipping membership assignment.")
+                continue
+
             society = Society.objects.get(name=data['society'])
             society_role = SocietyRole.objects.filter(society=society, role_name=data['society_role']).first()
 
-            print(f"Creating membership: {data['society_role']} in {data['society']} for user {data['user']}")
+            self.stdout.write(f"Creating membership: {data['society_role']} in {data['society']} for user {data['user']}")
             created_membership = self.try_create_membership(data)
             if created_membership:
                 self.generated_memberships.append(created_membership)
-
-        print("Memberships created successfully.")
-        print(f"Generated memberships: {[membership.society_role.role_name for membership in self.generated_memberships]}")
+        self.stdout.write(f"Generated memberships: {[membership.society_role.role_name for membership in self.generated_memberships]}")
 
     def try_create_membership(self, data):
         try:
@@ -278,43 +284,50 @@ class Command(BaseCommand):
     def create_membership(self, data):
         if not self.generated_users:
             raise ValueError("No users found for membership selection.")
+
         user = random.choice(self.generated_users)
-        print(f"Selected user: {user.username}")
+        self.stdout.write(f"Selected user: {user.username}")
 
         societies = Society.objects.all()
         if not societies.exists():
             raise ValueError("No societies found.")
         society = random.choice(societies)
 
-        society_roles = SocietyRole.objects.all()
+
+        society_roles = SocietyRole.objects.filter(society=society)
         if not society_roles.exists():
-            raise ValueError("No society roles found.")
+            raise ValueError(f"No roles found for society {society.name}.")
         society_role = random.choice(society_roles)
 
-        existing_role = Membership.objects.filter(user=user, society_role=society_role).first()
+        existing_membership = Membership.objects.filter(user=user, society_role=society_role).first()
 
-        if not existing_role:
+        if not existing_membership:
             membership = Membership.objects.create(
                 user=user,
                 society=society,
                 society_role=society_role
             )
             membership.save()
-            print(f"Created membership: {membership.society_role} in {membership.society.name} for user {user}")
+            self.stdout.write(
+                f"Created membership: {membership.society_role} in {membership.society.name} for user {user.username}")
         else:
-            membership = existing_role
-            print(f"Skipping duplicate society role: {membership.society_role} in {membership.society.name} for user {user}")
+            membership = existing_membership
+            self.stdout.write(
+                f"Skipping duplicate society role: {membership.society_role} in {membership.society.name} for user {user.username}")
+
         return membership
 
-    # Seed Events
+    # Event
     def create_events(self):
+        self.stdout.write('Creating events...')
         self.generate_event_fixtures()
+        self.stdout.write('Event creation completed.')
 
     def generate_event_fixtures(self):
         for data in event_fixtures:
-            print(f"Creating event: {data['name']}")
+            self.stdout.write(f"Creating event: {data['name']}")
             self.try_create_event(data)
-        print("Events created successfully.")
+        self.stdout.write('Events creation completed.')
 
     def try_create_event(self, data):
         try:
@@ -338,20 +351,20 @@ class Command(BaseCommand):
                 date=data['date'],
                 location=data['location'],
             )
-            event.save()
-            print(f"Created event: {event.name}")
-        else:
-            event = existing_event
-            print(f"Skipping duplicate event: {event.name}")
+        event.save()
+        self.stdout.write(f"Created event: {event.name}")
         return event
 
-    # Seed EventParticipants
+
+    #EventsParticipant
     def create_events_participants(self):
+        self.stdout.write('Adding event participants...')
         self.generate_events_participant_fixtures()
+        self.stdout.write('Event participants creation completed.')
 
     def generate_events_participant_fixtures(self):
         for data in events_participant_fixtures:
-            print(f"Adding event participant for event: {data['event']}")
+            self.stdout.write(f"Adding event participant for event: {data['event']}")
             self.try_create_events_participant(data)
 
     def try_create_events_participant(self, data):
@@ -378,32 +391,11 @@ class Command(BaseCommand):
                 event=event, membership=membership
             )
             event_participant.save()
+            self.stdout.write(f"Added participant to event {event.name}")
         else:
             event_participant = existing_participant
             print(f"Skipping duplicate event: {event.name}")
         return event_participant
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
