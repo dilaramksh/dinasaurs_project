@@ -62,7 +62,7 @@
                 <div style="text-align: center; padding: 10px; border: 1px solid #ddd; border-radius: 10px;">
                     <strong>{{ member.membership_set.first.society_role.role_name }}</strong><br>
                     <img src="https://www.gravatar.com/avatar/{{ member.gravatar_hash }}?s=100&d=identicon" 
-                        alt="Profile Picture" class="gravatar" width="30" height="30" style="border-radius: 50%; margin: 10px 0;">
+                        alt="Profile Picture" class="gravatar" width="60" height="60" style="border-radius: 50%; margin: 10px 0;">
                     <p>{{ member.get_full_name }}</p>
                 </div>
                 {% empty %}
