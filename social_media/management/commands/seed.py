@@ -121,7 +121,7 @@ class Command(BaseCommand):
             first_name=data['first_name'],
             last_name=data['last_name'],
             username=data['username'],
-            email=data['email'],
+            email=f"{data['first_name']}{data['last_name']}@{university.domain}",
             start_date=data['start_date'],
             end_date=data['end_date'],
             user_type=data['user_type'],
