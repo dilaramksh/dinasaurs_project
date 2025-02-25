@@ -14,10 +14,18 @@ def society_mainpage(request, society_id):
     
     society_events = Event.objects.filter(society=society)
 
+    society_colour1 = society.colour1
+    society_colour2 = society.colour2
+
+    #Pass society colours
+
     context = {
         'society': society,
         'committee_members': committee_members,
         'society_events': society_events,
+        'society_colour1': society_colour1,
+        'society_colour2': society_colour2,
+
     }
 
     return render(request, 'society/society_mainpage.html', context)
