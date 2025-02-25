@@ -25,9 +25,9 @@ university_fixtures = [
 
 event_fixtures = [
     {'name':'hackathon', 'society':'computingsoc', 'description':'Cyber Security hackathon', 'date':'2025-10-10', 'location':'bush house'},
-    {'name':'tech_talk', 'society':'computingsoc', 'description':'Tech talk', 'date':'2025-11-12', 'location':'strand campus'},
+    {'name':'tech talk', 'society':'computingsoc', 'description':'Tech talk', 'date':'2025-11-12', 'location':'strand campus'},
     {'name':'painting', 'society':'artsoc', 'description':'Sip n Paint', 'date':'2025-12-01', 'location':'theatre 2'},
-    {'name':'gaming_night', 'society':'gamesoc', 'description':'Gaming event', 'date':'2025-08-15', 'location':'library'},
+    {'name':'gaming night', 'society':'gamesoc', 'description':'Gaming event', 'date':'2025-08-15', 'location':'library'},
 ]
 
 
@@ -73,8 +73,8 @@ society_role_fixtures = [
 
 society_fixtures = [
     {'name':'computingsoc', 'founder':'@johndoe', 'society_email':'computingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'academic_career', 'paid_membership':False, 'price':'0.0', 'colour1':'#FFD700', 'colour2':'#FFF2CC', 'status':'approved'},
-    {'name':'gamesoc', 'founder':'@janedoe', 'society_email':'gamingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':True, 'price':'5.0', 'colour1':'#FF6347', 'colour2':'#F0E68C', 'status':'approved'},
-    {'name':'artssoc', 'founder':'@paulinepoe', 'society_email':'artsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':False, 'price':'0.0', 'colour1':'#6A5ACD', 'colour2':'#FFF', 'status':'approved'},
+    {'name':'gamesoc', 'founder':'@janedoe', 'society_email':'gamingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':True, 'price':'5.0', 'colour1':'#FC8EAC', 'colour2':'#FFD1DC', 'status':'approved'},
+    {'name':'artssoc', 'founder':'@paulinepoe', 'society_email':'artsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':False, 'price':'0.0', 'colour1':'#FC8EAC', 'colour2':'#FFD1DC', 'status':'approved'},
 ]
 
 
@@ -132,6 +132,7 @@ class Command(BaseCommand):
         universities = University.objects.all()
         if not universities.exists():
             raise ValueError("No universities found.")
+
         university = random.choice(universities)
 
         user = User.objects.create_user(
