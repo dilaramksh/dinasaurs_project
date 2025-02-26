@@ -475,22 +475,34 @@ class Command(BaseCommand):
 
     def generate_event_fixtures(self):
         for data in event_fixtures:
+
+            society = Society.objects.get(name=data['society'])
+            print(f"Found Society: {society}")  # Debugging line to ensure the object is correct
+
+            name = data['name']
+            description = data['description']
+            date = data['date']
+            location = data['location']
+
             self.stdout.write(f"Creating event: {data['name']}")
-            self.try_create_event(data)
+            self.try_create_event({
+                'name': name,
+                'society': society,
+                'description' : description,
+                'date': date,
+                'location' : location
+            })
         self.stdout.write('Events creation completed.')
+
 
     def try_create_event(self, data):
         try:
-            self.create_event(data)
+            return self.create_event(data)
         except Exception as e:
             self.stderr.write(self.style.ERROR(f"Error creating event {data['name']}: {str(e)}"))
 
     def create_event(self, data):
-        societies = Society.objects.all()
-        if not societies.exists():
-            raise ValueError("No societies found.")
-        society = random.choice(societies)
-
+        society = data['society']
         existing_event = Event.objects.filter(name=data['name'], society=society).first()
 
         if not existing_event:
