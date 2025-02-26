@@ -10,6 +10,7 @@ user_fixtures = [
     {'first_name':'jane', 'last_name':'doe', 'username':'@janedoe', 'email':'janedoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2022-09-24', 'end_date':'2025-05-07'},
     {'first_name':'paul', 'last_name':'poe', 'username':'@paulpoe', 'email':'paulpoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
     {'first_name':'pauline', 'last_name':'poe', 'username':'@paulinepoe', 'email':'paulinepoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
+
     {'first_name':'alice', 'last_name':'smith', 'username':'@alicesmith', 'email':'alicesmith@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-06-01'},
     {'first_name':'bob', 'last_name':'morgan', 'username':'@bobmorgan', 'email':'bobmorgan@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-07-01'},
 
@@ -35,6 +36,8 @@ user_fixtures = [
     {'first_name':'samuel', 'last_name':'white', 'username':'@samuelwhite', 'email':'samuelwhite@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-05-10', 'end_date':'2026-08-20'},
     {'first_name':'tina', 'last_name':'roberts', 'username':'@tinaroberts', 'email':'tinaroberts@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-08-15', 'end_date':'2025-07-10'},
     {'first_name':'umar', 'last_name':'ali', 'username':'@umarali', 'email':'umarali@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2020-12-01', 'end_date':'2024-11-30'}
+
+
 
 
 ]

@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.shortcuts import redirect
+from social_media.models import *
 
 
 def login_prohibited(view_function):
