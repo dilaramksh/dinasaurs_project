@@ -98,24 +98,24 @@ membership_fixtures = [
 
     # gamesoc
     {'user':'@janedoe', 'society':'gamesoc','society_role':'president'},
-    {'user':'@johndoe', 'society':'gamesoc','society_role':'vice_president'},
+    {'user':'@johndoe', 'society':'gamesoc','society_role':'vice president'},
     {'user':'@paulpoe', 'society':'gamesoc', 'society_role':'treasurer'},
-    {'user':'@paulinepoe', 'society':'gamesoc', 'society_role':'events_manager'},
+    {'user':'@paulinepoe', 'society':'gamesoc', 'society_role':'events manager'},
     {'user':'@alicesmith', 'society':'gamesoc', 'society_role':'secretary'},
     {'user':'@bobmorgan', 'society':'gamesoc', 'society_role':'wellbeing'},
 
     # computingsoc
     {'user':'@charliejohnson', 'society':'computingsoc','society_role':'president'},
-    {'user':'@daisyevans', 'society':'computingsoc','society_role':'vice_president'},
+    {'user':'@daisyevans', 'society':'computingsoc','society_role':'vice president'},
     {'user':'@edwardbrown', 'society':'computingsoc', 'society_role':'treasurer'},
-    {'user':'@fionataylor', 'society':'computingsoc', 'society_role':'events_manager'},
+    {'user':'@fionataylor', 'society':'computingsoc', 'society_role':'events manager'},
     {'user':'@georgewilliams', 'society':'computingsoc', 'society_role':'secretary'},
 
     # artsoc
     {'user':'@michaeladams', 'society':'artsoc','society_role':'president'},
-    {'user':'@nataliecooper', 'society':'artsoc','society_role':'vice_president'},
+    {'user':'@nataliecooper', 'society':'artsoc','society_role':'vice president'},
     {'user':'@oliverparker', 'society':'artsoc', 'society_role':'treasurer'},
-    {'user':'@pennythompson', 'society':'artsoc', 'society_role':'events_manager'},
+    {'user':'@pennythompson', 'society':'artsoc', 'society_role':'events manager'},
     {'user':'@quentinharris', 'society':'artsoc', 'society_role':'secretary'},
 
 ]
@@ -124,26 +124,26 @@ membership_fixtures = [
 society_role_fixtures = [
     # gamesoc
     {'society':'gamesoc', 'role_name':'president'},
-    {'society':'gamesoc', 'role_name':'vice_president'},
+    {'society':'gamesoc', 'role_name':'vice president'},
     {'society':'gamesoc', 'role_name':'treasurer'},
-    {'society':'gamesoc', 'role_name':'events_manager'},
+    {'society':'gamesoc', 'role_name':'events manager'},
     {'society':'gamesoc', 'role_name':'secretary'},
     {'society':'gamesoc', 'role_name':'wellbeing'},
     {'society':'gamesoc', 'role_name':'member'},
 
     # computingsoc
     {'society': 'computingsoc', 'role_name': 'president'},
-    {'society': 'computingsoc', 'role_name': 'vice_president'},
+    {'society': 'computingsoc', 'role_name': 'vice president'},
     {'society': 'computingsoc', 'role_name': 'treasurer'},
-    {'society': 'computingsoc', 'role_name': 'events_manager'},
+    {'society': 'computingsoc', 'role_name': 'events manager'},
     {'society': 'computingsoc', 'role_name': 'secretary'},
     {'society': 'computingsoc', 'role_name': 'member'},
 
     # artsoc
     {'society': 'artsoc', 'role_name': 'president'},
-    {'society': 'artsoc', 'role_name': 'vice_president'},
+    {'society': 'artsoc', 'role_name': 'vice president'},
     {'society': 'artsoc', 'role_name': 'treasurer'},
-    {'society': 'artsoc', 'role_name': 'events_manager'},
+    {'society': 'artsoc', 'role_name': 'events manager'},
     {'society': 'artsoc', 'role_name': 'secretary'},
     {'society': 'artsoc', 'role_name': 'member'},
 ]
