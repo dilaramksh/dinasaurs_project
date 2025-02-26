@@ -5,6 +5,7 @@ from social_media.models import *
 import random
 
 user_fixtures = [
+
     {'first_name':'john', 'last_name':'doe', 'username':'@johndoe', 'email':'johndoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2023-09-23', 'end_date':'2026-05-06'},
     {'first_name':'jane', 'last_name':'doe', 'username':'@janedoe', 'email':'janedoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2022-09-24', 'end_date':'2025-05-07'},
     {'first_name':'paul', 'last_name':'poe', 'username':'@paulpoe', 'email':'paulpoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
@@ -12,6 +13,33 @@ user_fixtures = [
 
     {'first_name':'alice', 'last_name':'smith', 'username':'@alicesmith', 'email':'alicesmith@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-06-01'},
     {'first_name':'bob', 'last_name':'morgan', 'username':'@bobmorgan', 'email':'bobmorgan@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-07-01'},
+
+    {'first_name':'charlie', 'last_name':'johnson', 'username':'@charliejohnson', 'email':'charliejohnson@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-08-01'},
+    {'first_name':'daisy', 'last_name':'evans', 'username':'@daisyevans', 'email':'daisyevans@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-09-01'},
+    {'first_name':'edward', 'last_name':'brown', 'username':'@edwardbrown', 'email':'edwardbrown@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-10-01'},
+    {'first_name':'fiona', 'last_name':'taylor', 'username':'@fionataylor', 'email':'fionataylor@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-11-01'},
+    {'first_name':'george', 'last_name':'williams', 'username':'@georgewilliams', 'email':'georgewilliams@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-12-01'},
+
+    {'first_name':'hannah', 'last_name':'clarke', 'username':'@hannahclarke', 'email':'hannahclarke@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-09-15', 'end_date':'2025-06-30'},
+    {'first_name':'isaac', 'last_name':'lewis', 'username':'@isaaclewis', 'email':'isaaclewis@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-01-10', 'end_date':'2026-07-15'},
+    {'first_name':'jessica', 'last_name':'martin', 'username':'@jessicamartin', 'email':'jessicamartin@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2020-06-20', 'end_date':'2024-05-25'},
+    {'first_name':'kieran', 'last_name':'hall', 'username':'@kieranhall', 'email':'kieranhall@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-10-01', 'end_date':'2026-09-30'},
+    {'first_name':'laura', 'last_name':'wright', 'username':'@laurawright', 'email':'laurawright@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-09-05', 'end_date':'2027-08-31'},
+
+    {'first_name':'michael', 'last_name':'adams', 'username':'@michaeladams', 'email':'michaeladams@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-01-15', 'end_date':'2024-12-20'},
+    {'first_name':'natalie', 'last_name':'cooper', 'username':'@nataliecooper', 'email':'nataliecooper@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-04-10', 'end_date':'2025-09-30'},
+    {'first_name':'oliver', 'last_name':'parker', 'username':'@oliverparker', 'email':'oliverparker@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-07-01', 'end_date':'2026-06-30'},
+    {'first_name':'penny', 'last_name':'thompson', 'username':'@pennythompson', 'email':'pennythompson@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2020-09-25', 'end_date':'2024-07-15'},
+    {'first_name':'quentin', 'last_name':'harris', 'username':'@quentinharris', 'email':'quentinharris@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-11-10', 'end_date':'2025-10-05'},
+
+    {'first_name':'rachel', 'last_name':'moore', 'username':'@rachelmoore', 'email':'rachelmoore@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-02-20', 'end_date':'2025-06-15'},
+    {'first_name':'samuel', 'last_name':'white', 'username':'@samuelwhite', 'email':'samuelwhite@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-05-10', 'end_date':'2026-08-20'},
+    {'first_name':'tina', 'last_name':'roberts', 'username':'@tinaroberts', 'email':'tinaroberts@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-08-15', 'end_date':'2025-07-10'},
+    {'first_name':'umar', 'last_name':'ali', 'username':'@umarali', 'email':'umarali@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2020-12-01', 'end_date':'2024-11-30'}
+
+
+
+
 ]
 
 university_fixtures = [
@@ -24,41 +52,77 @@ university_fixtures = [
 ]
 
 event_fixtures = [
-    {'name':'hackathon', 'society':'computingsoc', 'description':'Cyber Security hackathon', 'date':'2025-10-10', 'location':'bush house'},
-    {'name':'tech talk', 'society':'computingsoc', 'description':'Tech talk', 'date':'2025-11-12', 'location':'strand campus'},
-    {'name':'painting', 'society':'artsoc', 'description':'Sip n Paint', 'date':'2025-12-01', 'location':'theatre 2'},
-    {'name':'gaming night', 'society':'gamesoc', 'description':'Gaming event', 'date':'2025-08-15', 'location':'library'},
+    {'name': 'hackathon', 'society': 'computingsoc', 'description': 'Cyber Security hackathon', 'date': '2025-10-10',
+     'location': 'bush house'},
+    {'name': 'AI workshop', 'society': 'computingsoc', 'description': 'Introduction to AI and Machine Learning',
+     'date': '2025-11-05', 'location': 'seminar room 3'},
+    {'name': 'coding challenge', 'society': 'computingsoc', 'description': 'Competitive coding challenge',
+     'date': '2025-09-20', 'location': 'lab 5'},
+
+    {'name': 'painting', 'society': 'artsoc', 'description': 'Sip n Paint', 'date': '2025-12-01',
+     'location': 'theatre 2'},
+    {'name': 'sculpting workshop', 'society': 'artsoc', 'description': 'Hands-on sculpting session',
+     'date': '2025-07-18', 'location': 'art studio 1'},
+    {'name': 'gallery visit', 'society': 'artsoc', 'description': 'Visit to a contemporary art gallery',
+     'date': '2025-06-25', 'location': 'off-campus'},
+
+    {'name': 'gaming night', 'society': 'gamesoc', 'description': 'Gaming event', 'date': '2025-08-15',
+     'location': 'library'},
+    {'name': 'board games evening', 'society': 'gamesoc', 'description': 'Board games and pizza night',
+     'date': '2025-10-30', 'location': 'student lounge'},
+    {'name': 'esports tournament', 'society': 'gamesoc', 'description': 'Competitive esports event',
+     'date': '2025-09-12', 'location': 'auditorium'},
 ]
 
-
 events_participant_fixtures = [
-    {'event':'hackathon', 'membership':'computingsoc_member1'},
-    {'event':'tech_talk', 'membership':'computingsoc_member2'},
-    {'event':'painting', 'membership':'artsocmember1'},
-    {'event':'gaming_night', 'membership':'gamsoc_member1'},
+    {'event': 'hackathon', 'membership': 'computingsoc_member1'},
+    {'event': 'AI workshop', 'membership': 'computingsoc_member2'},
+    {'event': 'coding challenge', 'membership': 'computingsoc_member3'},
+
+    {'event': 'painting', 'membership': 'artsoc_member1'},
+    {'event': 'sculpting workshop', 'membership': 'artsoc_member2'},
+    {'event': 'gallery visit', 'membership': 'artsoc_member3'},
+
+    {'event': 'gaming night', 'membership': 'gamesoc_member1'},
+    {'event': 'board games evening', 'membership': 'gamesoc_member2'},
+    {'event': 'esports tournament', 'membership': 'gamesoc_member3'},
 ]
 
 
 membership_fixtures = [
-    {'user':'@johndoe', 'society':'computingsoc', 'society_role':'president'},
-    {'user':'@paulpoe', 'society':'computingsoc', 'society_role':'member'},
-    {'user':'@paulinepoe', 'society':'artssoc', 'society_role':'president'},
-    {'user':'@paulinepoe', 'society':'computingsoc', 'society_role':'vice_president'},
 
+    # members
+    {'user':'@rachelmoore', 'society':'gamesoc', 'society_role':'member'},
+    {'user':'@samuelwhite', 'society':'computingsoc', 'society_role':'member'},
+    {'user':'@tinaroberts', 'society':'artsoc', 'society_role':'member'},
+
+    # gamesoc
     {'user':'@janedoe', 'society':'gamesoc','society_role':'president'},
     {'user':'@johndoe', 'society':'gamesoc','society_role':'vice_president'},
     {'user':'@paulpoe', 'society':'gamesoc', 'society_role':'treasurer'},
     {'user':'@paulinepoe', 'society':'gamesoc', 'society_role':'events_manager'},
     {'user':'@alicesmith', 'society':'gamesoc', 'society_role':'secretary'},
     {'user':'@bobmorgan', 'society':'gamesoc', 'society_role':'wellbeing'},
+
+    # computingsoc
+    {'user':'@charliejohnson', 'society':'computingsoc','society_role':'president'},
+    {'user':'@daisyevans', 'society':'computingsoc','society_role':'vice_president'},
+    {'user':'@edwardbrown', 'society':'computingsoc', 'society_role':'treasurer'},
+    {'user':'@fionataylor', 'society':'computingsoc', 'society_role':'events_manager'},
+    {'user':'@georgewilliams', 'society':'computingsoc', 'society_role':'secretary'},
+
+    # artsoc
+    {'user':'@michaeladams', 'society':'artsoc','society_role':'president'},
+    {'user':'@nataliecooper', 'society':'artsoc','society_role':'vice_president'},
+    {'user':'@oliverparker', 'society':'artsoc', 'society_role':'treasurer'},
+    {'user':'@pennythompson', 'society':'artsoc', 'society_role':'events_manager'},
+    {'user':'@quentinharris', 'society':'artsoc', 'society_role':'secretary'},
+
 ]
 
 
 society_role_fixtures = [
-    {'society':'computingsoc', 'role_name':'president'},
-    {'society':'computingsoc', 'role_name':'vice_president'},
-    {'society':'computingsoc', 'role_name':'member'},
-
+    # gamesoc
     {'society':'gamesoc', 'role_name':'president'},
     {'society':'gamesoc', 'role_name':'vice_president'},
     {'society':'gamesoc', 'role_name':'treasurer'},
@@ -67,14 +131,37 @@ society_role_fixtures = [
     {'society':'gamesoc', 'role_name':'wellbeing'},
     {'society':'gamesoc', 'role_name':'member'},
 
-    {'society':'artssoc', 'role_name':'president'},
+    # computingsoc
+    {'society': 'computingsoc', 'role_name': 'president'},
+    {'society': 'computingsoc', 'role_name': 'vice_president'},
+    {'society': 'computingsoc', 'role_name': 'treasurer'},
+    {'society': 'computingsoc', 'role_name': 'events_manager'},
+    {'society': 'computingsoc', 'role_name': 'secretary'},
+    {'society': 'computingsoc', 'role_name': 'member'},
+
+    # artsoc
+    {'society': 'artsoc', 'role_name': 'president'},
+    {'society': 'artsoc', 'role_name': 'vice_president'},
+    {'society': 'artsoc', 'role_name': 'treasurer'},
+    {'society': 'artsoc', 'role_name': 'events_manager'},
+    {'society': 'artsoc', 'role_name': 'secretary'},
+    {'society': 'artsoc', 'role_name': 'member'},
 ]
 
-
 society_fixtures = [
-    {'name':'computingsoc', 'founder':'@johndoe', 'society_email':'computingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'academic_career', 'paid_membership':False, 'price':'0.0', 'colour1':'#FFD700', 'colour2':'#FFF2CC', 'status':'approved'},
-    {'name':'gamesoc', 'founder':'@janedoe', 'society_email':'gamingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':True, 'price':'5.0', 'colour1':'#FC8EAC', 'colour2':'#FFD1DC', 'status':'approved'},
-    {'name':'artssoc', 'founder':'@paulinepoe', 'society_email':'artsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':False, 'price':'0.0', 'colour1':'#FC8EAC', 'colour2':'#FFD1DC', 'status':'approved'},
+    {'name': 'computingsoc', 'founder': '@charliejohnson', 'society_email': 'computingsoc@kcl.ac.uk',
+     'description': 'A society for students passionate about technology, coding, and cybersecurity. We host hackathons, coding workshops, and networking events.',
+     'category': 'academic_career', 'paid_membership': False, 'price': '0.0', 'colour1': '#FFD700', 'colour2': '#FFF2CC', 'status': 'approved'},
+
+    {'name': 'gamesoc', 'founder': '@janedoe', 'society_email': 'gamingsoc@kcl.ac.uk',
+     'description': 'A community for gamers of all levels! From casual board games to intense esports tournaments, we provide a space for all gaming enthusiasts.',
+     'category': 'other', 'paid_membership': True, 'price': '5.0', 'colour1': '#FC8EAC', 'colour2': '#FFD1DC',
+     'status': 'approved'},
+
+    {'name': 'artsoc', 'founder': '@michaeladams', 'society_email': 'artsoc@kcl.ac.uk',
+     'description': 'A creative hub for artists of all skill levels. Join us for painting sessions, sculpting workshops, and gallery visits to explore the world of art.',
+     'category': 'other', 'paid_membership': False, 'price': '0.0', 'colour1': '#FC8EAC', 'colour2': '#FFD1DC',
+     'status': 'approved'},
 ]
 
 
@@ -139,7 +226,7 @@ class Command(BaseCommand):
             first_name=data['first_name'],
             last_name=data['last_name'],
             username=data['username'],
-            email=data['email'],
+            email=f"{data['first_name']}{data['last_name']}@{university.domain}",
             start_date=data['start_date'],
             end_date=data['end_date'],
             user_type=data['user_type'],
@@ -388,22 +475,34 @@ class Command(BaseCommand):
 
     def generate_event_fixtures(self):
         for data in event_fixtures:
+
+            society = Society.objects.get(name=data['society'])
+            print(f"Found Society: {society}")  # Debugging line to ensure the object is correct
+
+            name = data['name']
+            description = data['description']
+            date = data['date']
+            location = data['location']
+
             self.stdout.write(f"Creating event: {data['name']}")
-            self.try_create_event(data)
+            self.try_create_event({
+                'name': name,
+                'society': society,
+                'description' : description,
+                'date': date,
+                'location' : location
+            })
         self.stdout.write('Events creation completed.')
+
 
     def try_create_event(self, data):
         try:
-            self.create_event(data)
+            return self.create_event(data)
         except Exception as e:
             self.stderr.write(self.style.ERROR(f"Error creating event {data['name']}: {str(e)}"))
 
     def create_event(self, data):
-        societies = Society.objects.all()
-        if not societies.exists():
-            raise ValueError("No societies found.")
-        society = random.choice(societies)
-
+        society = data['society']
         existing_event = Event.objects.filter(name=data['name'], society=society).first()
 
         if not existing_event:
