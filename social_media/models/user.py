@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from datetime import date
 from libgravatar import Gravatar
 from .university import University  
+import hashlib
 
 
 class User(AbstractUser):
@@ -35,6 +36,12 @@ class User(AbstractUser):
         if not self.username:  # Automatically set username to email if not provided
             self.username = self.email
         super().save(*args, **kwargs)
+    
+
+    class Meta:
+        """Model options."""
+
+        ordering = ['last_name', 'first_name']
 
     class Meta:
         """Model options."""
@@ -52,8 +59,16 @@ class User(AbstractUser):
         gravatar_object = Gravatar(self.email)
         gravatar_url = gravatar_object.get_image(size=size, default='mp')
         return gravatar_url
+    
+    # For randomized gravatars
+    @property
+    def gravatar_hash(self):
+        email = self.email.strip().lower().encode('utf-8')
+        return hashlib.md5(email).hexdigest()
 
     def mini_gravatar(self):
         """Return a URL to a miniature version of the user's gravatar."""
         
         return self.gravatar(size=60)
+    
+    

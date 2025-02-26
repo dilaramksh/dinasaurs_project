@@ -9,6 +9,9 @@ user_fixtures = [
     {'first_name':'jane', 'last_name':'doe', 'username':'@janedoe', 'email':'janedoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2022-09-24', 'end_date':'2025-05-07'},
     {'first_name':'paul', 'last_name':'poe', 'username':'@paulpoe', 'email':'paulpoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
     {'first_name':'pauline', 'last_name':'poe', 'username':'@paulinepoe', 'email':'paulinepoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
+
+    {'first_name':'alice', 'last_name':'smith', 'username':'@alicesmith', 'email':'alicesmith@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-06-01'},
+    {'first_name':'bob', 'last_name':'morgan', 'username':'@bobmorgan', 'email':'bobmorgan@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-07-01'},
 ]
 
 university_fixtures = [
@@ -22,9 +25,9 @@ university_fixtures = [
 
 event_fixtures = [
     {'name':'hackathon', 'society':'computingsoc', 'description':'Cyber Security hackathon', 'date':'2025-10-10', 'location':'bush house'},
-    {'name':'tech_talk', 'society':'computingsoc', 'description':'Tech talk', 'date':'2025-11-12', 'location':'strand campus'},
+    {'name':'tech talk', 'society':'computingsoc', 'description':'Tech talk', 'date':'2025-11-12', 'location':'strand campus'},
     {'name':'painting', 'society':'artsoc', 'description':'Sip n Paint', 'date':'2025-12-01', 'location':'theatre 2'},
-    {'name':'gaming_night', 'society':'gamesoc', 'description':'Gaming event', 'date':'2025-08-15', 'location':'library'},
+    {'name':'gaming night', 'society':'gamesoc', 'description':'Gaming event', 'date':'2025-08-15', 'location':'library'},
 ]
 
 
@@ -37,10 +40,17 @@ events_participant_fixtures = [
 
 
 membership_fixtures = [
-    {'user':'@johndoe', 'society':'computingsoc', 'society_role':'member'},
-    {'user':'@janedoe', 'society':'gamesoc','society_role':'member'},
+    {'user':'@johndoe', 'society':'computingsoc', 'society_role':'president'},
     {'user':'@paulpoe', 'society':'computingsoc', 'society_role':'member'},
-    {'user':'@paulinepoe', 'society':'gamesoc', 'society_role':'member'},
+    {'user':'@paulinepoe', 'society':'artssoc', 'society_role':'president'},
+    {'user':'@paulinepoe', 'society':'computingsoc', 'society_role':'vice_president'},
+
+    {'user':'@janedoe', 'society':'gamesoc','society_role':'president'},
+    {'user':'@johndoe', 'society':'gamesoc','society_role':'vice_president'},
+    {'user':'@paulpoe', 'society':'gamesoc', 'society_role':'treasurer'},
+    {'user':'@paulinepoe', 'society':'gamesoc', 'society_role':'events_manager'},
+    {'user':'@alicesmith', 'society':'gamesoc', 'society_role':'secretary'},
+    {'user':'@bobmorgan', 'society':'gamesoc', 'society_role':'wellbeing'},
 ]
 
 
@@ -48,16 +58,23 @@ society_role_fixtures = [
     {'society':'computingsoc', 'role_name':'president'},
     {'society':'computingsoc', 'role_name':'vice_president'},
     {'society':'computingsoc', 'role_name':'member'},
+
     {'society':'gamesoc', 'role_name':'president'},
     {'society':'gamesoc', 'role_name':'vice_president'},
-    {'society':'gamesoc', 'role_name':'member'}
+    {'society':'gamesoc', 'role_name':'treasurer'},
+    {'society':'gamesoc', 'role_name':'events_manager'},
+    {'society':'gamesoc', 'role_name':'secretary'},
+    {'society':'gamesoc', 'role_name':'wellbeing'},
+    {'society':'gamesoc', 'role_name':'member'},
+
+    {'society':'artssoc', 'role_name':'president'},
 ]
 
 
 society_fixtures = [
     {'name':'computingsoc', 'founder':'@johndoe', 'society_email':'computingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'academic_career', 'paid_membership':False, 'price':'0.0', 'colour1':'#FFD700', 'colour2':'#FFF2CC', 'status':'approved'},
-    {'name':'gamesoc', 'founder':'@janedoe', 'society_email':'gamingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':True, 'price':'5.0', 'colour1':'#FF6347', 'colour2':'#F0E68C', 'status':'approved'},
-    {'name':'artssoc', 'founder':'@paulinepoe', 'society_email':'artsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':False, 'price':'0.0', 'colour1':'#6A5ACD', 'colour2':'#FFF', 'status':'approved'},
+    {'name':'gamesoc', 'founder':'@janedoe', 'society_email':'gamingsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':True, 'price':'5.0', 'colour1':'#FC8EAC', 'colour2':'#FFD1DC', 'status':'approved'},
+    {'name':'artssoc', 'founder':'@paulinepoe', 'society_email':'artsoc@kcl.ac.uk', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'category':'other', 'paid_membership':False, 'price':'0.0', 'colour1':'#FC8EAC', 'colour2':'#FFD1DC', 'status':'approved'},
 ]
 
 
@@ -115,6 +132,7 @@ class Command(BaseCommand):
         universities = University.objects.all()
         if not universities.exists():
             raise ValueError("No universities found.")
+
         university = random.choice(universities)
 
         user = User.objects.create_user(
@@ -219,9 +237,19 @@ class Command(BaseCommand):
 
     def generate_society_role_fixtures(self):
         for data in society_role_fixtures:
-            self.stdout.write(f"Creating society role: {data['role_name']} for society {data['society']}")
-            self.try_create_society_role(data)
-        self.stdout.write(f"Generated society roles: {[role.role_name for role in self.generated_society_roles]}")
+            society = Society.objects.get(name=data['society'])
+            role_name = data['role_name']
+
+            existing_role = SocietyRole.objects.filter(society=society, role_name=role_name).first()
+
+            if existing_role:
+                self.stdout.write(self.style.WARNING(f"Role '{role_name}' already exists for society '{society.name}'. Skipping."))
+            else:
+                self.try_create_society_role({
+                    'society': society,
+                    'role_name': role_name
+                })
+    
 
     def try_create_society_role(self, data):
         try:
@@ -230,7 +258,26 @@ class Command(BaseCommand):
             self.stderr.write(self.style.ERROR(
                 f"Error creating society role {data['role_name']} for society {data['society']}: {str(e)}"))
 
+
+    # Simply Creates society role for data
     def create_society_role(self, data):
+
+        society = data['society']
+        role_name = data['role_name']
+
+        if not society:
+            self.stderr.write(self.style.ERROR(f"Society '{data['society']}' not found."))
+            return None
+
+        society_role = SocietyRole.objects.create(
+            society=society,
+            role_name=role_name
+        )
+        self.stdout.write(
+            f"Created society role: {role_name} for {society.name}")
+        return society_role
+        
+        """
         societies = Society.objects.all()
         if not societies.exists():
             raise ValueError("No societies found.")
@@ -250,9 +297,12 @@ class Command(BaseCommand):
             )
             society_role.save()
             return society_role
+        """
 
-
-    # Membership
+    # Membership 
+    """
+    Adjusted seeder, accidental randomization of membership - em:)
+    """
     def create_memberships(self):
         self.stdout.write('Creating memberships...')
         self.generate_membership_fixtures()
@@ -260,20 +310,42 @@ class Command(BaseCommand):
 
     def generate_membership_fixtures(self):
         for data in membership_fixtures:
-            user = User.objects.filter(username=data['user'], user_type='student').first()
-
-            if not user:
-                self.stdout.write(f"User {data['user']} is not a student, skipping membership assignment.")
-                continue
-
+            user = User.objects.get(username=data['user'])
             society = Society.objects.get(name=data['society'])
             society_role = SocietyRole.objects.filter(society=society, role_name=data['society_role']).first()
 
-            self.stdout.write(f"Creating membership: {data['society_role']} in {data['society']} for user {data['user']}")
-            created_membership = self.try_create_membership(data)
-            if created_membership:
-                self.generated_memberships.append(created_membership)
-        self.stdout.write(f"Generated memberships: {[membership.society_role.role_name for membership in self.generated_memberships]}")
+            self.try_create_membership({
+                'user': user,
+                'society': society,
+                'society_role': society_role,
+            })
+
+    def generate_random_membership(self):
+        pass
+
+    def generate_membership(self):
+        users = User.objects.filter(user_type='student')
+        if not users:
+            raise ValueError("No users found for membership selection.")
+        
+        societies = Society.objects.all()
+        if not societies.exists():
+            raise ValueError("No societies found.")
+        
+        user = random.choice(self.generated_users)
+        society = random.choice(societies)
+
+        society_roles = SocietyRole.objects.filter(society=society)
+        if not society_roles.exists():
+            raise ValueError(f"No roles found for society {society.name}.")
+        
+        society_role = random.choice(society_roles)
+
+        self.try_create_membership({
+            'user' : user, 
+            'society' : society,
+            'society_role' : society_role,
+        })
 
     def try_create_membership(self, data):
         try:
@@ -282,24 +354,15 @@ class Command(BaseCommand):
             self.stderr.write(self.style.ERROR(f"Error creating membership for {data['user']}: {str(e)}"))
 
     def create_membership(self, data):
-        if not self.generated_users:
-            raise ValueError("No users found for membership selection.")
+        user = data['user']
+        society = data['society']
+        society_role = data['society_role']
 
-        user = random.choice(self.generated_users)
-        self.stdout.write(f"Selected user: {user.username}")
-
-        societies = Society.objects.all()
-        if not societies.exists():
-            raise ValueError("No societies found.")
-        society = random.choice(societies)
-
-
-        society_roles = SocietyRole.objects.filter(society=society)
-        if not society_roles.exists():
-            raise ValueError(f"No roles found for society {society.name}.")
-        society_role = random.choice(society_roles)
-
-        existing_membership = Membership.objects.filter(user=user, society_role=society_role).first()
+        existing_membership = Membership.objects.filter(
+            user=user ,
+            society=society, 
+            society_role=society_role,
+        ).first()
 
         if not existing_membership:
             membership = Membership.objects.create(
@@ -313,8 +376,8 @@ class Command(BaseCommand):
         else:
             membership = existing_membership
             self.stdout.write(
-                f"Skipping duplicate society role: {membership.society_role} in {membership.society.name} for user {user.username}")
-
+                f"Skipping duplicate membership: {membership.society_role} in {membership.society.name} for user {user.username}")
+            return
         return membership
 
     # Event

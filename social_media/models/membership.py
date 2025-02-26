@@ -18,6 +18,11 @@ class Membership(models.Model):
             models.UniqueConstraint(fields=["user", "society_role"], name="unique_user_role_in_society")
         ]
 
+    # Can be added to helpers
+    def is_committee_member(self):
+        """Returns True if the membership is a committee role."""
+        return self.society_role.is_committee_role()
+
     def __str__(self):
         return f"{self.user.username} - {self.society.name} ({self.society_role.role_name})"
    
