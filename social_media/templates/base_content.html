@@ -1,4 +1,12 @@
 {% extends 'base.html' %}
+{% block extra_head %}
+    <style>
+        body {
+            background-color: {{ society_colour1 }} !important;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     {% include 'partials/testbar.html' %}
     {% include 'partials/messages.html' %}

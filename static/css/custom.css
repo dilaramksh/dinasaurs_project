@@ -122,6 +122,12 @@ ul.errorlist {
   border-top: 1px solid #5c3b00;
 }
 
+.dropdown-submenu:hover .dropdown-menu {
+  display: block;
+  margin-left: 100%;
+  top: 0;
+}
+
 /*
  * From student_base
  */

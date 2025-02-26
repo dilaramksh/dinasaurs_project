@@ -19,8 +19,8 @@ from django.urls import path
 #from social_media.student_views import student_dashboard
 from social_media.views import *
 #from django.conf import settings
-from social_media.views._all import *
-from social_media.views.dashboard_view import student_societies, student_events
+
+# import below this line should not be necessary -- add view to init.py
 from social_media.views.society_views import *
 from social_media.views.super_admin_views import *
 from social_media.views.footer_view import *
@@ -49,23 +49,23 @@ urlpatterns = [
     path('contact_us/', contact_us, name='contact_us'),
 
     #student paths
-    path('student/dashboard/', student_dashboard, name='student_dashboard'),
+    #path('student/dashboard/', student_dashboard, name='student_dashboard'),
     path('student/homepage/', society_browser, name='society_browser'),
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
     path('student/societies', student_societies, name='student_societies'),
     path('student/events', student_events, name='student_events'),
     path('student/memberships/', view_memberships, name='view_memberships'),
-    #path('student/student_feed/', society_feed, name='society_feed'),
-    #path('view_societies/', view_societies, name='view_societies'),
 
     #society paths
-    path('society/dashboard/', society_dashboard, name='society_dashboard'),
+    path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
+    #path('society/dashboard/', society_dashboard, name='society_dashboard'),
     path('society/create_event/', event_creation, name='create_event'),
     path('society/create_post/', create_post, name='create_post'),
     path('society/terminate_society/', terminate_society, name='terminate_society'),
     path('society/view_members/', view_members, name='view_members'),
     path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
+    path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
 
     #super-admin paths
     path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard')
