@@ -25,6 +25,7 @@ from social_media.views.society_views import *
 from social_media.views.super_admin_views import *
 from social_media.views.footer_view import *
 from social_media.views.homepage_view import *
+#from social_media.views.student_feed_view import *
 
 
 urlpatterns = [
