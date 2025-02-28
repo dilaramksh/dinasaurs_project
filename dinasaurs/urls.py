@@ -37,6 +37,7 @@ urlpatterns = [
     path('dashboard/', dashboard, name='dashboard'),
     path('password/', PasswordView.as_view(), name='password'),
     path('profile/', ProfileUpdateView.as_view(), name='profile'),
+    path('help/', help, name='help'),
 
     #homepage paths 
     path('', homepage, name='homepage'),
@@ -59,13 +60,13 @@ urlpatterns = [
 
     #society paths
     path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
-    #path('society/dashboard/', society_dashboard, name='society_dashboard'),
     path('society/create_event/', event_creation, name='create_event'),
     path('society/create_post/', create_post, name='create_post'),
     path('society/terminate_society/', terminate_society, name='terminate_society'),
     path('society/view_members/', view_members, name='view_members'),
     path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
+    path("customise-society/<int:society_id>/", customise_society_view, name="customise_society"),
 
     #super-admin paths
     path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard')

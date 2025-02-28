@@ -35,7 +35,6 @@
                         <div class="card-body">
                             <p class="card-text">If necessary, you can request to terminate your society.</p>
                             <a href="{% url 'terminate_society' %}" class="btn btn-warning">Terminate Society</a>
-
                         </div>
                     </div>
                 </div>
@@ -63,7 +62,7 @@
                 </div>
 
                 <!-- Upcoming Events -->
-                <div class="col-md-12 mb-3">
+                <div class="col-md-6 mb-3">
                     <div class="card text-center p-4 border-warning shadow-sm h-80">
                         <h5 class="card-header bg-warning text-dark">🎉 Upcoming Events</h5>
                         <div class="card-body">
@@ -72,6 +71,18 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Customise Society -->
+                <div class="col-md-6 mb-3">
+                    <div class="card text-center p-4 border-warning shadow-sm h-80">
+                        <h5 class="card-header bg-warning text-dark">🎨 Customise Society</h5>
+                        <div class="card-body">
+                            <p class="card-text">Modify your society details including name, colors, and description.</p>
+                            <a href="{% url 'customise_society' society.id %}" class="btn btn-warning">Customise Society</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </body>

@@ -1,0 +1,60 @@
+{% extends 'base_content.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Customise Your Society{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <!-- Header -->
+                <div class="card-header text-center">
+                    <h4>Customise Your Society</h4>
+                </div>
+
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Loop through form fields -->
+                        {% for field in form %}
+                            {% if field.name in "description price colour1 colour2" %}
+                                <div class="mb-3">
+                                    <label class="form-label">{{ field.label }}</label>
+                                    {{ field|add_class:"form-control" }}
+                                    
+                                    {% if field.name == "colour1" or field.name == "colour2" %}
+                                        <input type="color" name="{{ field.name }}" value="{{ field.value|default:'#FFFFFF' }}" class="form-control form-control-color mt-2">
+                                    {% endif %}
+
+                                    {% if field.errors %}
+                                        <div class="text-danger">
+                                            {{ field.errors|first }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="text-center">
+                            
+                            <a href="{% url 'society_dashboard' society.id %}" class="btn btn-warning">Submit changes</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Society Details Preview -->
+            <div class="mt-4">
+                <h5>Current Society Details</h5>
+                <p><strong>Description:</strong> {{ society.description }}</p>
+                <p><strong>Membership Price:</strong> £{{ society.price }}</p>
+                <p><strong>Primary Colour:</strong> {{ society.colour1 }}</p>
+                <p><strong>Secondary Colour:</strong> {{ society.colour2 }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

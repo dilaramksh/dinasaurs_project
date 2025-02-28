@@ -2,6 +2,7 @@ from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
 from social_media.forms.event_creation_form import EventCreationForm
 from social_media.forms.post_creation import PostForm  
+from social_media.forms.customise_society import customisationForm 
 from social_media.models import Society, Event
 from django.utils.timezone import now
 from datetime import date
@@ -65,3 +66,17 @@ def create_post(request):
         form = PostForm()
 
     return render(request, 'society/create_post.html', {"form": form})
+
+def customise_society_view(request, society_id):
+    society = get_object_or_404(Society, id=society_id) 
+
+    if request.method == "POST":
+        form = customisationForm(request.POST, instance=society)
+        if form.is_valid():
+            form.save()
+            return redirect("customise_society", society_id=society.id)  
+    else:
+        form = customisationForm(instance=society)
+
+    return render(request, "society/customise_society.html", {"form": form, "society": society})
+
