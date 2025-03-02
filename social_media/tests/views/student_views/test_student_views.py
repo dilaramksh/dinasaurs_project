@@ -4,7 +4,7 @@ from django.urls import reverse
 from social_media.forms.society_creation_form import SocietyCreationForm
 from social_media.models import User, University
 
-class StudentDashBoardViewTestCase(TestCase):
+class StudentViewTestCase(TestCase):
 
     def setUp(self):
         university = University.objects.create(name="King's College London")
