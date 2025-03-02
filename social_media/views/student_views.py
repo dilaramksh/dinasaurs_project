@@ -5,7 +5,8 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from social_media.forms.society_creation_form import SocietyCreationForm
 from django.shortcuts import HttpResponse
-from django.shortcuts import get_object_or_404
+from social_media.models import Category
+
 
 #to do: add login required
 #to do: add user type required
@@ -88,7 +89,28 @@ def create_temp_category(request):
         return HttpResponse("Category already exists.")
 
 def view_societies(request):
-    return render(request, 'student/view_societies.html')
+    societies = Society.objects.all()  # Fetch all societies
+    categories = Category.objects.all() # Get all categories for the filter
+
+    # Get search query
+    search_query = request.GET.get('search', '')
+    if search_query:
+        societies = societies.filter(name__icontains=search_query)
+
+    # Get category filter
+    category_id = request.GET.get('category', '')
+    if category_id:
+        societies = societies.filter(category_id=category_id)
+
+    return render(request, 'student/view_societies.html', {
+        'societies': societies,
+        'categories': categories,
+        'search_query': search_query,
+        'selected_category': category_id,
+    })
+
+    return render(request, 'student/view_societies.html', {'societies': societies})
+    #return render(request, 'student/view_societies.html')
 
 def student_societies(request):
     student = request.user
