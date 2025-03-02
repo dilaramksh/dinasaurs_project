@@ -39,9 +39,8 @@ def student_dashboard(request):
 
 #Views for pages from dropdown menu in Student Navbar
 #@login_required
-def help(request):
-    return render(request, 'help.html')
-
+def help_page(request):
+    return render(request, 'general/help.html')
 #@login_required
 def features(request):
     return render(request, 'features.html')

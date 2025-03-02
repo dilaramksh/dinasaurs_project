@@ -22,6 +22,7 @@ from social_media.views import *
 
 # import below this line should not be necessary -- add view to init.py
 from social_media.views.society_views import *
+from social_media.views.student_views import *
 from social_media.views.super_admin_views import *
 from social_media.views.footer_view import *
 from social_media.views.homepage_view import *
@@ -37,7 +38,7 @@ urlpatterns = [
     path('dashboard/', dashboard, name='dashboard'),
     path('password/', PasswordView.as_view(), name='password'),
     path('profile/', ProfileUpdateView.as_view(), name='profile'),
-    path('help/', help, name='help'),
+    path('help/', help_page, name='help'),
 
     #homepage paths 
     path('', homepage, name='homepage'),
