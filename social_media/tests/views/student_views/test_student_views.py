@@ -45,6 +45,11 @@ class StudentDashBoardViewTestCase(TestCase):
         self.assertIn('user', response.context)
         self.assertEqual(response.context['user'].user_type, 'student')"""
 
+    '''def test_features_view(self):'''
+
+    '''def test_pricing_view(self):'''
+
+
     def test_society_browser_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -56,18 +61,45 @@ class StudentDashBoardViewTestCase(TestCase):
 
 
 
-    """def test_society_creation_request(self):
+    '''def test_society_creation_request_view(self):
         # form creation
 
 
         # form is successfully submitted
         response = self.client.post()
-        self.assertEqual(response.status_code, 200)"""
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_temp_category(self):'''
 
 
+    def test_societies_view(self):
+        login_success = self.client.login(username='@janedoe', password='Password123')
+        self.assertTrue(login_success)
+        response = self.client.get(reverse('view_societies'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed('student/view_societies.html')
+        self.assertIn('user', response.context)
+        self.assertEqual(response.context['user'].user_type, 'student')
 
 
+    def test_student_societies_view(self):
+        login_success = self.client.login(username='@janedoe', password='Password123')
+        self.assertTrue(login_success)
+        response = self.client.get(reverse('student_societies'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed('student/student_societies.html')
+        self.assertIn('user', response.context)
+        self.assertEqual(response.context['user'].user_type, 'student')
 
+
+    def test_student_events_view(self):
+        login_success = self.client.login(username='@janedoe', password='Password123')
+        self.assertTrue(login_success)
+        response = self.client.get(reverse('student_events'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed('student/student_events.html')
+        self.assertIn('user', response.context)
+        self.assertEqual(response.context['user'].user_type, 'student')
 
 
 
