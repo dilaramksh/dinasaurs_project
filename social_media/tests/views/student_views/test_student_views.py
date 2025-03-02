@@ -1,7 +1,5 @@
 from django.test import TestCase
 from django.urls import reverse
-
-from social_media.forms.society_creation_form import SocietyCreationForm
 from social_media.models import User, University
 
 class StudentViewTestCase(TestCase):
@@ -22,6 +20,8 @@ class StudentViewTestCase(TestCase):
         self.user.set_password('Password123')
         self.user.save()
         self.login_url = reverse('log_in')
+
+
 
 
     def test_student_dashboard_view(self):
