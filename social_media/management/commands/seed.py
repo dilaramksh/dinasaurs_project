@@ -206,6 +206,7 @@ class Command(BaseCommand):
         self.generate_user_fixtures()
         self.stdout.write('Users creation completed.')
 
+
     def generate_user_fixtures(self):
         for data in user_fixtures:
             self.stdout.write(f"Creating user: {data['username']} of type {data['user_type']}")
@@ -221,7 +222,7 @@ class Command(BaseCommand):
             self.stderr.write(self.style.ERROR(f"Error creating user {data['username']}: {str(e)}"))
 
     def create_user(self, data):
-        universities = University.objects.all()
+        universities = University.objects.filter(status='approved')
         if not universities.exists():
             raise ValueError("No universities found.")
 
