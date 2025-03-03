@@ -6,6 +6,8 @@ import random
 
 DEFAULT_UNIVERSITY_LOGO = "university_logos/default_university_logo.png"
 
+DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
+
 user_fixtures = [
 
     {'first_name':'john', 'last_name':'doe', 'username':'@johndoe', 'email':'johndoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2023-09-23', 'end_date':'2026-05-06'},
@@ -167,6 +169,8 @@ society_fixtures = [
 ]
 
 
+
+
 class Command(BaseCommand):
     DEFAULT_PASSWORD = 'Password123'
     help = 'Seeds the database with sample data'
@@ -235,6 +239,11 @@ class Command(BaseCommand):
             university=university,
             password=Command.DEFAULT_PASSWORD,
         )
+
+        if not user.profile_picture:
+            user.profile_picture.name = DEFAULT_PROFILE_PICTURE
+
+
         user.save()
         self.stdout.write(f"Created user: {user.username} ({user.user_type})")
         return user

@@ -26,6 +26,7 @@ from social_media.views.super_admin_views import *
 from social_media.views.footer_view import *
 from social_media.views.homepage_view import *
 #from social_media.views.student_feed_view import *
+from social_media.views.upload_image_views import *
 
 
 urlpatterns = [
@@ -69,7 +70,8 @@ urlpatterns = [
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
 
     #super-admin paths
-    path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard')
+    path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard'),
+
 
     
 ]

@@ -30,9 +30,11 @@ class User(AbstractUser):
     university = models.ForeignKey(University, on_delete=models.CASCADE)
     start_date= models.DateField(blank=False)
     end_date = models.DateField(blank=False)
+    profile_picture = models.ImageField(upload_to="profile_pictures/", blank=True, null=True)
     REQUIRED_FIELDS = ['email']
 
     def save(self, *args, **kwargs):
+        self.delete_old_picture() 
         if not self.username:  # Automatically set username to email if not provided
             self.username = self.email
         super().save(*args, **kwargs)
@@ -47,6 +49,13 @@ class User(AbstractUser):
         """Model options."""
 
         ordering = ['last_name', 'first_name']
+    
+    def delete_old_picture(self):
+        """Deletes the old profile picture from S3 when a new one is uploaded."""
+        if self.pk:  # Check if the instance already exists in the DB
+            old_instance = User.objects.get(pk=self.pk)
+            if old_instance.profile_picture and old_instance.profile_picture != self.profile_picture:
+                old_instance.profile_picture.delete(save=False) 
 
     def full_name(self):
         """Return a string containing the user's full name."""

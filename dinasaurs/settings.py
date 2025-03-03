@@ -39,8 +39,34 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
-    'social_media'
+    'storages',
+    'social_media',
 ]
+
+
+AWS_ACCESS_KEY_ID = 'AKIA5CBGTMB6UGUEZ5BU'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'society-hive'
+AWS_S3_REGION_NAME = 'eu-west-2' 
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+
+STORAGES = {
+
+    # Media file (image) management  
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+   
+    # CSS and JS file management
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+}
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
