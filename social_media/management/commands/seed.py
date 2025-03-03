@@ -4,6 +4,8 @@ from django.template.defaultfilters import first
 from social_media.models import *
 import random
 
+DEFAULT_UNIVERSITY_LOGO = "university_logos/default_university_logo.png"
+
 user_fixtures = [
 
     {'first_name':'john', 'last_name':'doe', 'username':'@johndoe', 'email':'johndoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2023-09-23', 'end_date':'2026-05-06'},
@@ -42,14 +44,13 @@ user_fixtures = [
 
 ]
 
-DEFAULT_UNIVERSITY_LOGO = ""
-university_fixtures = [
 
-        {"name": "King's College London", "domain": "kcl.ac.uk", "logo" = DEFAULT_UNIVERSITY_LOGO,  'status': "approved"},
-        {"name": "University College London", "domain": "ucl.ac.uk", "logo" = DEFAULT_UNIVERSITY_LOGO, 'status': "approved"},
-        {"name": "Imperial College London", "domain": "imperial.ac.uk", "logo" = DEFAULT_UNIVERSITY_LOGO, 'status': "approved"},
-        {"name": "London School of Economics", "domain": "lse.ac.uk", "logo" = DEFAULT_UNIVERSITY_LOGO,'status': "approved"},
-        {"name": "University of Oxford", "domain": "ox.ac.uk", "logo" = DEFAULT_UNIVERSITY_LOGO,'status': "approved"},
+university_fixtures = [
+        {"name": "King's College London", "domain": "@kcl.ac.uk", 'status': "approved", 'logo' : DEFAULT_UNIVERSITY_LOGO},
+        {"name": "University College London", "domain": "@ucl.ac.uk",'status': "approved", 'logo' : DEFAULT_UNIVERSITY_LOGO},
+        {"name": "Imperial College London", "domain": "@imperial.ac.uk", 'status': "approved", 'logo' : DEFAULT_UNIVERSITY_LOGO},
+        {"name": "London School of Economics", "domain": "@lse.ac.uk", 'status': "approved", 'logo' : DEFAULT_UNIVERSITY_LOGO},
+        {"name": "University of Oxford", "domain": "@ox.ac.uk",'status': "approved", 'logo' : DEFAULT_UNIVERSITY_LOGO},
 ]
 
 event_fixtures = [
@@ -262,7 +263,9 @@ class Command(BaseCommand):
     def create_university(self, data):
         university = University.objects.create(
             name=data['name'],
-            domain=data['domain']
+            domain=data['domain'],
+            status=data['status'],
+            logo=data['logo']
         )
         university.save()
         self.stdout.write(f"Created university: {university.name}")
