@@ -43,6 +43,7 @@ urlpatterns = [
     path('homepage/discover_societies', discover_universities, name='discover_universities'),
     path('homepage/why_join_society', why_join_society, name='why_join_society'),
     path('homepage/latest_news', latest_news, name='latest_news'),
+    path('homepage/register_your_university', register_your_university, name='register_your_university'),
 
     #footer path 
     path('stay-connected/', stay_connected, name='stay_connected'),

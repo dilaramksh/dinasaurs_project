@@ -13,6 +13,8 @@ class University(models.Model):
             message="Domain must start with '@', followed by at least three alphanumerics, and end with '.ac.uk'."
         )]
     )
+    status = models.CharField(max_length=20, choices=[("pending", "Pending"), ("approved", "Approved"), ("blocked", "Blocked")], default="pending")
+    logo = models.ImageField()
 
     def __str__(self):
         return self.name  

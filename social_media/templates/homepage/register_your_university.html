@@ -1,0 +1,25 @@
+{% extends 'base_content.html' %}
+{% load static %}
+
+{% block title %}Latest News{% endblock %}
+
+{% block content %}
+<body>
+    <!-- Hero Section -->
+    <div class="hero text-center text-white py-5" style="background-color: #FFC533;">
+        <h1 class="display-4 fw-bold">🏛️ Register Your University </h1>
+        <p class="lead fs-4">If your university is not yet part of our Hive, you can request to join by filling in the form below.</p>
+    </div>
+
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {% include 'partials/bootstrap_form.html' with form=form submit_text="Submit"%}
+        
+        </form>
+    </div>
+</body>
+
+    
+{% endblock %}

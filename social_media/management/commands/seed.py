@@ -44,11 +44,11 @@ user_fixtures = [
 
 university_fixtures = [
 
-        {"name": "King's College London", "domain": "kcl.ac.uk"},
-        {"name": "University College London", "domain": "ucl.ac.uk"},
-        {"name": "Imperial College London", "domain": "imperial.ac.uk"},
-        {"name": "London School of Economics", "domain": "lse.ac.uk"},
-        {"name": "University of Oxford", "domain": "ox.ac.uk"},
+        {"name": "King's College London", "domain": "kcl.ac.uk", 'status': 'approved'},
+        {"name": "University College London", "domain": "ucl.ac.uk", 'status': 'approved'},
+        {"name": "Imperial College London", "domain": "imperial.ac.uk", 'status': 'approved'},
+        {"name": "London School of Economics", "domain": "lse.ac.uk", 'status': 'approved'},
+        {"name": "University of Oxford", "domain": "ox.ac.uk", 'status': 'approved'},
 ]
 
 event_fixtures = [
