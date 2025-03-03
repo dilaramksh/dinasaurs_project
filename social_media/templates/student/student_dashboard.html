@@ -26,11 +26,10 @@
                                     class="img-fluid rounded-circle mb-3" 
                                     alt="Profile Picture">
                             {% else %}
-                                <img src="{% static 'profile_pictures/default.jpg' %}" 
+                                <img src="https://hive-society.s3.amazonaws.com/profile_pictures/default-user.jpg" 
                                     class="img-fluid rounded-circle mb-3" 
                                     alt="Default Profile Picture">
                             {% endif %}
-                            
                             <h6>{{ user.full_name }}</h6>
                             <hr>
                             <p><strong>Email:</strong> {{ user.email }}</p>

@@ -7,6 +7,9 @@ from django.views.generic.edit import UpdateView, FormView
 from social_media.models import User
 from social_media.forms import UserForm, PasswordForm
 from django.contrib.auth import login, logout
+import boto3
+
+DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     """Display user profile editing screen, and handle profile modifications."""
@@ -20,6 +23,23 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user
     
     def form_valid(self, form):
+        """Handle valid profile update, remove old picture, and upload new one."""
+        user = self.request.user
+        new_picture = form.cleaned_data.get('profile_picture')  # Fix incorrect access
+
+        if new_picture and user.profile_picture and user.profile_picture.url != DEFAULT_PROFILE_PICTURE:
+            s3_client = boto3.client('s3')
+            bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+
+            try:
+                s3_client.delete_object(Bucket=bucket_name, Key=user.profile_picture)
+            except Exception as e:
+                print(f"Error deleting old profile picture: {e}")
+
+        # Update user profile
+        user.profile_picture = new_picture
+        user.save()
+
         messages.success(self.request, "Profile updated!")
         return super().form_valid(form)
 
@@ -30,6 +50,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         """Return the redirect URL after a successful update."""
         return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
+    
 
     """
     def get_success_url(self):

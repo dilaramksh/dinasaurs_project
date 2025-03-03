@@ -5,7 +5,7 @@ from django.urls import reverse, NoReverseMatch
 from django.views.generic.edit import FormView
 from social_media.forms import SignUpForm
 
-DEFAULT_PROFILE_PICTURE_URL = "profile_pictures/default.jpg"
+DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
 class SignUpView(LoginProhibitedMixin, FormView):
     """Display the sign up screen and handle sign ups."""
@@ -19,7 +19,8 @@ class SignUpView(LoginProhibitedMixin, FormView):
         if self.request.FILES.get("profile_picture"):
             user.profile_picture = self.request.FILES["profile_picture"]
         else: 
-            user.profile_picture = DEFAULT_PROFILE_PICTURE_URL
+            user.profile_picture = DEFAULT_PROFILE_PICTURE
+        
         user.save()
         login(self.request, user)
 

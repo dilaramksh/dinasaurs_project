@@ -4,7 +4,7 @@ from django.template.defaultfilters import first
 from social_media.models import *
 import random
 
-DEFAULT_PROFILE_PICTURE = "profile_pictures/default_user.jpg"
+DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
 user_fixtures = [
     {'first_name':'john', 'last_name':'doe', 'username':'@johndoe', 'email':'johndoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2023-09-23', 'end_date':'2026-05-06', 'profile_picture': DEFAULT_PROFILE_PICTURE},
