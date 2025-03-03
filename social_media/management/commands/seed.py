@@ -42,13 +42,14 @@ user_fixtures = [
 
 ]
 
+DEFAULT_UNIVERSITY_LOGO = ""
 university_fixtures = [
 
-        {"name": "King's College London", "domain": "kcl.ac.uk", 'status': 'approved'},
-        {"name": "University College London", "domain": "ucl.ac.uk", 'status': 'approved'},
-        {"name": "Imperial College London", "domain": "imperial.ac.uk", 'status': 'approved'},
-        {"name": "London School of Economics", "domain": "lse.ac.uk", 'status': 'approved'},
-        {"name": "University of Oxford", "domain": "ox.ac.uk", 'status': 'approved'},
+        {"name": "King's College London", "domain": "kcl.ac.uk", "logo" = DEFAULT_UNIVERSITY_LOGO,  'status': "approved"},
+        {"name": "University College London", "domain": "ucl.ac.uk", "logo" = DEFAULT_UNIVERSITY_LOGO, 'status': "approved"},
+        {"name": "Imperial College London", "domain": "imperial.ac.uk", "logo" = DEFAULT_UNIVERSITY_LOGO, 'status': "approved"},
+        {"name": "London School of Economics", "domain": "lse.ac.uk", "logo" = DEFAULT_UNIVERSITY_LOGO,'status': "approved"},
+        {"name": "University of Oxford", "domain": "ox.ac.uk", "logo" = DEFAULT_UNIVERSITY_LOGO,'status': "approved"},
 ]
 
 event_fixtures = [
