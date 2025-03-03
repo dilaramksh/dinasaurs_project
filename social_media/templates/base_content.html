@@ -1,7 +1,17 @@
 {% extends 'base.html' %}
+{% block extra_head %}
+    <style>
+        body {
+            background-color: {{ society_colour1 }} !important;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-  {% include 'partials/navbars/navbar.html' %}
-  {% include 'partials/messages.html' %}
-  {% block content %}
-  {% endblock %}
+    {% include 'partials/testbar.html' %}
+    {% include 'partials/messages.html' %}
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    {% include 'partials/footer.html' %}
 {% endblock %}

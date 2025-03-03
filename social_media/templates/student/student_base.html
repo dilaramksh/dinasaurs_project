@@ -1,7 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}"> 
         <title>{% block title %}Default Title{% endblock %}</title>
 
         <!-- Temporary font -->
@@ -52,9 +54,10 @@
                 padding: 30px;
             }
         </style>
+
     </head>
     <body>
-    {% include 'partials/navbars/navbar.html' %}
+    {% include 'partials/navbars/student_navbar.html' %}
     {% include 'partials/messages.html' %}
     <div class="container">
         {% block content %}{% endblock %}
