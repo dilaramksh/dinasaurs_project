@@ -3,6 +3,8 @@ from social_media.helpers import login_prohibited
 from django.contrib import messages
 from social_media.forms.university_creation_form import UniversityCreationForm
 
+DEFAULT_UNIVERSITY_LOGO = "university_logos/default.png"
+
 @login_prohibited
 def homepage(request):
     return render(request, 'homepage.html')
@@ -19,14 +21,20 @@ def latest_news(request):
 
 def register_your_university(request):
     if request.method == 'POST':
-        form = UniversityCreationForm(request.POST)
+        form = UniversityCreationForm(request.POST, request.FILES)
+
         if form.is_valid():
             university = form.save(commit=False)
-            university.status = "pending"
+
+            if 'logo' in request.FILES:
+                university.logo = request.FILES['logo']
+            else:
+                university.logo = DEFAULT_UNIVERSITY_LOGO
+
             university.save()
-            messages.success(request, "Your society request has been submitted for approval.")
-            return redirect("homepage") 
-        else:                  
+            messages.success(request, "Your University request has been submitted for approval.")
+            return redirect("homepage")
+        else:
             messages.error(request, "There was an error with your request submission. Please try again.")
     else:
         form = UniversityCreationForm()

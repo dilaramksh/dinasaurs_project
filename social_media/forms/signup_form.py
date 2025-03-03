@@ -10,10 +10,10 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
     profile_picture = forms.ImageField(required=False)
 
     university = forms.ModelChoiceField(
-        queryset=University.objects.all(), 
+        queryset=University.objects.filter(status='approved'),
         empty_label="Select a University",
         label="University"
-    )
+    ) 
 
     class Meta:
         model = User

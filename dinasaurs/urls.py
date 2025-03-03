@@ -47,7 +47,7 @@ urlpatterns = [
     path('homepage/register_your_university', register_your_university, name='register_your_university'),
 
     #footer path 
-    path('stay-connected/', stay_connected, name='stay_connected'),
+    path('stay_connected/', stay_connected, name='stay_connected'),
     path('contact_us/', contact_us, name='contact_us'),
 
     #student paths
@@ -70,8 +70,9 @@ urlpatterns = [
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
 
     #super-admin paths
-    path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard'),
-
-
+    path('super_admin/dashboard', super_admin_dashboard, name='super_admin_dashboard'),
+    path('super_admin/requests', university_requests, name='university_requests'),
+    path('super_admin/university_requests/<int:university_id>/<str:new_status>/', update_university_status, name='update_university_status'),
+    path('super_admin/registered_universities', registered_universities, name='registered_universities'),
     
 ]

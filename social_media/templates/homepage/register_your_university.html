@@ -12,7 +12,7 @@
     </div>
 
     <div class="card-body">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}">
             {% include 'partials/bootstrap_form.html' with form=form submit_text="Submit"%}
