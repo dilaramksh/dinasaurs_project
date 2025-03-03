@@ -1,3 +1,5 @@
+
+
 from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
 from social_media.forms.event_creation_form import EventCreationForm
@@ -19,13 +21,14 @@ def event_creation(request, society_id):
         form = EventCreationForm(request.POST)
         if form.is_valid():
             event = form.save(commit=False)
-            
             event.save()
             messages.success(request, "Your event has been created.")
-            return redirect("society_dashboard", args=[society.id])
-        else:                  
+            return redirect("society_dashboard", society_id=society.id)
+        else:
+            print(form.errors)
             messages.error(request, "There was an error with your submission. Please try again.")
-    
+
+
     else:
         form = EventCreationForm()
 

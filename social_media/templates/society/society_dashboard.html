@@ -23,7 +23,7 @@
                         <h5 class="card-header bg-warning text-dark">📅 Create an Event</h5>
                         <div class="card-body">
                             <p class="card-text">Schedule events for your society and invite members to join.</p>
-                            <a href="{% url 'create_event' %}" class="btn btn-warning">Create Event</a>
+                            <a href="{% url 'create_event' society_id=society.id %}" class="btn btn-warning">Create Event</a>
                         </div>
                     </div>
                 </div>
