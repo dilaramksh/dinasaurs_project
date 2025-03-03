@@ -4,6 +4,9 @@ from social_media.mixins import LoginProhibitedMixin
 from django.urls import reverse, NoReverseMatch
 from django.views.generic.edit import FormView
 from social_media.forms import SignUpForm
+import os
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
@@ -16,11 +19,18 @@ class SignUpView(LoginProhibitedMixin, FormView):
 
     def form_valid(self, form):
         user = form.save()
-        if self.request.FILES.get("profile_picture"):
-            user.profile_picture = self.request.FILES["profile_picture"]
-        else: 
+        uploaded_file = self.request.FILES.get("profile_picture")
+
+        if uploaded_file:
+            file_extension = os.path.splitext(uploaded_file.name)[1]
+            new_filename = f"profile_pictures/{user.username}{file_extension}"
+
+            saved_path = default_storage.save(new_filename, uploaded_file)
+            user.profile_picture.name = saved_path
+
+        else:
             user.profile_picture = DEFAULT_PROFILE_PICTURE
-        
+
         user.save()
         login(self.request, user)
 

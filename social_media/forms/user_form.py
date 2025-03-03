@@ -12,6 +12,7 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'university','start_date', 'end_date', 'profile_picture']
+    
 
     
     email = forms.EmailField(disabled=True)
