@@ -9,10 +9,11 @@ from datetime import date
 
 #@login_required
 def society_dashboard(request):
-
     return render(request, 'society/society_dashboard.html')
 
-def event_creation(request):
+def event_creation(request, society_id):
+
+    society = get_object_or_404(Society, pk=society_id)
     
     if request.method == 'POST':
         form = EventCreationForm(request.POST)
@@ -21,14 +22,19 @@ def event_creation(request):
             
             event.save()
             messages.success(request, "Your event has been created.")
-            return redirect("society_dashboard") 
+            return redirect("society_dashboard", args=[society.id])
         else:                  
             messages.error(request, "There was an error with your submission. Please try again.")
     
     else:
         form = EventCreationForm()
 
-    return render(request, 'society/event_creation.html', {'form': form})
+    context = {
+        'society':society,
+        'form':form
+    }
+
+    return render(request, 'society/event_creation.html', context)
 
 def terminate_society(request):
     '''society = get_object_or_404(Society, founder=request.user)  

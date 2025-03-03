@@ -6,6 +6,7 @@ from django.urls import reverse
 from social_media.models import *
 
 from social_media.views import *
+from social_media.views.society_views import society_dashboard
 
 
 class SocietyPageViewTestCase(TestCase):
@@ -35,6 +36,18 @@ class SocietyPageViewTestCase(TestCase):
             paid_membership=False,
         )
 
+        self.form_data = {
+            'name':'nba finals',
+            'society':society,
+            'description':'nba finals watch party',
+            'date':'2025-06-01',
+            'location':'bush house lecture theatre',
+            'society_id':self.society.id,
+        }
+
+
+        self.url = reverse('create_event', kwargs={'society_id': self.society.id})
+
     def test_society_dashboard_view(self):
         #login_success = self.client.login(username='@janedoe', password='Password123') # society account
         #self.assertTrue(login_success)
@@ -45,7 +58,30 @@ class SocietyPageViewTestCase(TestCase):
         #self.assertIn('user', response.context)
         #self.assertEqual(response.context['user'].user_type, 'society')
 
-    '''def test_event_creation_view(self):'''
+    def test_get_event_creation_view(self):
+        response = self.client.get(reverse('create_event'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'society/event_creation.html')
+
+    def test_post_event_creation_view(self):
+        self.client.login(username='@johndoe', password='Password123')
+        response = self.client.post(self.url, data=self.form_data)
+        self.assertRedirects(response, reverse('society_dashboard', args=[self.society.id]))
+        created_event = Event.objects.filter(name='nba finals')
+        self.assertTrue(created_event.exists())
+        test_event = created_event.first()
+
+        self.assertEqual(test_event.name, self.form_data['name'])
+        self.assertEqual(test_event.society, self.form_data['society'])
+        self.assertEqual(test_event.description, self.form_data['description'])
+        self.assertEqual(test_event.date, self.form_data['date'])
+        self.assertEqual(test_event.location, self.form_data['location'])
+
+
+
+
+
+
 
     def test_terminate_society_view(self):
         #login_success = self.client.login(username='@janedoe', password='Password123')
