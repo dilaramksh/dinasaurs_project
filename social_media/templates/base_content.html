@@ -8,7 +8,10 @@
 {% endblock %}
 
 {% block body %}
-    {% include 'partials/testbar.html' %}
+    {% block navbar %}
+        {% include 'partials/testbar.html' %}
+    {% endblock %}
+        
     {% include 'partials/messages.html' %}
     <div class="container">
         {% block content %}{% endblock %}
