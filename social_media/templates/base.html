@@ -23,37 +23,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.min.js" integrity="sha384-PsUw7Xwds7x08Ew3exXhqzbhuEYmA2xnwc8BuD6SEr+UmEHlX8/MCltYEodzWA4u" crossorigin="anonymous"></script>  
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
-    <!-- JS for dropdown submenus -->
+    <!-- JS for dropdown submenu -->
     <script>
-      $(document).ready(function() {
-        $('.dropdown-submenu a.dropdown-toggle').on("click", function(e) {
-          var $el = $(this).next('.dropdown-menu');
-          var $parent = $(this).parents('.dropdown-submenu');
-          
-          if (!$el.hasClass('show')) {
-            $el.addClass('show');
-          } else {
-            $el.removeClass('show');
-          }
-          
-          $parent.siblings().children('.dropdown-menu').removeClass('show');
-          return false; 
+      document.addEventListener("DOMContentLoaded", function () {
+        const submenu = document.getElementById("societyDropdown");
+  
+        submenu.addEventListener("click", function (event) {
+            event.stopPropagation();
         });
-
-        $(document).on("click", function(e) {
-          if (!$(e.target).closest('.dropdown').length) {
-            if ($('.dropdown-menu').hasClass('show')) {
-              $('.dropdown-menu').removeClass('show');
-            }
-          }
-        });
-
-        $('.dropdown').on("click", function(e) {
-          e.stopPropagation();
-        });
-
-      });
-    </script>
+    });
+  </script>
+  
+    
+  
 
     {% block extra_scripts %}{% endblock %}
   </body>
