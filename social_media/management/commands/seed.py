@@ -9,12 +9,12 @@ DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
 user_fixtures = [
 
-    {'first_name':'john', 'last_name':'doe', 'username':'@johndoe', 'email':'johndoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2023-09-23', 'end_date':'2026-05-06', 'profile_picture': DEFAULT_PROFILE_PICTURE},
-    {'first_name':'jane', 'last_name':'doe', 'username':'@janedoe', 'email':'janedoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2022-09-24', 'end_date':'2025-05-07', 'profile_picture': DEFAULT_PROFILE_PICTURE},
-    {'first_name':'paul', 'last_name':'poe', 'username':'@paulpoe', 'email':'paulpoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
-    {'first_name':'pauline', 'last_name':'poe', 'username':'@paulinepoe', 'email':'paulinepoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'john', 'last_name':'doe', 'username':'@johndoe', 'email':'johndoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2023-09-23', 'end_date':'2026-05-06', 'profile_picture': 'profile_pictures/@johndoe.png'},
+    {'first_name':'jane', 'last_name':'doe', 'username':'@janedoe', 'email':'janedoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2022-09-24', 'end_date':'2025-05-07', 'profile_picture': 'profile_pictures/@janedoe.png'},
+    {'first_name':'paul', 'last_name':'poe', 'username':'@paulpoe', 'email':'paulpoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01', 'profile_picture': 'profile_pictures/@paulpoe.png'},
+    {'first_name':'pauline', 'last_name':'poe', 'username':'@paulinepoe', 'email':'paulinepoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01', 'profile_picture': 'profile_pictures/@paulinepoe.png'},
 
-    {'first_name':'alice', 'last_name':'smith', 'username':'@alicesmith', 'email':'alicesmith@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-06-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'alice', 'last_name':'smith', 'username':'@alicesmith', 'email':'alicesmith@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-06-01', 'profile_picture': 'profile_pictures/@alicesmith.png'},
     {'first_name':'bob', 'last_name':'morgan', 'username':'@bobmorgan', 'email':'bobmorgan@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-07-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
 
     {'first_name':'charlie', 'last_name':'johnson', 'username':'@charliejohnson', 'email':'charliejohnson@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-08-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
@@ -237,12 +237,9 @@ class Command(BaseCommand):
             end_date=data['end_date'],
             user_type=data['user_type'],
             university=university,
+            profile_picture=data['profile_picture'],
             password=Command.DEFAULT_PASSWORD,
         )
-
-        if not user.profile_picture:
-            user.profile_picture = DEFAULT_PROFILE_PICTURE
-
 
         user.save()
         self.stdout.write(f"Created user: {user.username} ({user.user_type})")
