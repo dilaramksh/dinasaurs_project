@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from social_media.models import Society, Membership, Event, SocietyRole
 from django.shortcuts import get_object_or_404
+from social_media.helpers import redirect_to_society_dashboard 
+
 
 @login_required
 def dashboard(request):
@@ -53,6 +55,7 @@ def get_society_dashboard(request, society_id):
 
     # Store the selected society ID
     request.session['active_society_id'] = society.id
+    
     return render(request, 'society/society_dashboard.html', {'society': society})
 
 @login_required

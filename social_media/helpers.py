@@ -12,3 +12,11 @@ def login_prohibited(view_function):
         else:
             return view_function(request)
     return modified_view_function
+
+
+def redirect_to_society_dashboard(request, fallback='dashboard'):
+    """Redirects to the correct society dashboard or falls back to the general dashboard."""
+    society_id = request.session.get('active_society_id')
+    if society_id:
+        return redirect('society_dashboard', society_id=society_id)
+    return redirect(fallback)

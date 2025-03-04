@@ -102,8 +102,13 @@ ul.errorlist {
   color: #E6A500; 
 }
 
+#dashboardDropdown i {
+  color: #FFC107;
+  font-size: 1.5rem; 
+}
+
 /* 
- * Dropdown
+ * Profile Custom Dropdown
  */
 .custom-dropdown {
   background-color: #fdf2cf;
@@ -140,6 +145,32 @@ ul.errorlist {
 .custom-dropdown .dashboard-link:hover {
   background-color: #e3d7b5 !important;
   color: #5c3b00 !important;
+}
+
+/* 
+ * Dropdown Menu 
+ */
+
+.dropdown-menu  {
+  background-color: #fdf2cf;
+}
+
+.dropdown-menu .dropdown-item.active {
+  background-color: #f9db60 !important; 
+  color: #5c3b00 !important;
+  font-weight: bold;
+  border-left: 3px solid #a37000 !important;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #e3d7b5;
+  color: #5c3b00
+}
+
+.dropdown-menu .dropdown-item {
+  padding: 8px 15px;
+  color: #333; 
+  transition: background-color 0.2s ease-in-out;
 }
 
 /*

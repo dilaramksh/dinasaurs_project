@@ -13,14 +13,14 @@
                 <li>
                     <a class="dropdown-item {% if request.session.active_society_id == membership.society.id %}active{% endif %}"
                      href="{% url 'society_dashboard' society_id=membership.society.id %}">
-                        {{ membership.society.name }}
+                        {{ membership.society.name }} 
                     </a>
                 </li>
             {% endif %}
         {% endfor %}
         {% if request.session.active_society_id %}
             <li>
-                <a class="dropdown-item dashboard-link" href="{% url 'to_student_dashboard' %}">Your Dashboard</a>
+                <a class="dropdown-item dashboard-link" href="{% url 'to_student_dashboard' %}">{{ user.username }}</a>
             </li>
         {% endif %}
     </ul>
