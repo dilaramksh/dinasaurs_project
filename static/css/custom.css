@@ -107,6 +107,17 @@ ul.errorlist {
   font-size: 1.5rem; 
 }
 
+/*
+ * Toggle
+ */
+.position-absolute-toggle {
+  position: absolute;
+  top: 90px; /* Adjust this value to match your navbar height */
+  left: 40px;
+  z-index: 1000; /* Ensure it's above other content but below the navbar */
+}
+
+
 /* 
  * Profile Custom Dropdown
  */
