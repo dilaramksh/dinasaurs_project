@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from social_media.models import *
 
 
@@ -13,6 +13,15 @@ def login_prohibited(view_function):
             return view_function(request)
     return modified_view_function
 
+def membership_required(view_function):
+    """Decorator for views that checks if a user is a member of the society."""
+    
+    def modified_view_function(request, society_id, *args, **kwargs):
+        society = get_object_or_404(Society, pk=society_id)
+        if not Membership.objects.filter(user=request.user, society_role__society=society).exists():
+            return redirect('dashboard')
+        return view_function(request, society_id, *args, **kwargs)
+    return modified_view_function
 
 def redirect_to_society_dashboard(request, fallback='dashboard'):
     """Redirects to the correct society dashboard or falls back to the general dashboard."""

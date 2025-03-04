@@ -36,49 +36,41 @@
 
     <!-- JS for toggle -->
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-          var toggle = document.getElementById("viewToggle");
-          const dashboardLabel = document.getElementById("dashboardLabel");
-          const publicPageLabel = document.getElementById("publicPageLabel");
+      document.addEventListener("DOMContentLoaded", function () {
+        const toggle = document.getElementById("viewToggle");
+        const dashboardLabel = document.getElementById("dashboardLabel");
+        const publicPageLabel = document.getElementById("publicPageLabel");
 
-          // Ensure correct toggle state based on the page URL
-          function updateToggleState() {
-            const isPublicPage = window.location.pathname === "{% url 'society_mainpage' society_id=society.id %}";
-            const isDashboardPage = window.location.pathname === "{% url 'society_dashboard' society_id=society.id %}";
-            if (isPublicPage) {
-                toggle.checked = true;
-            } else if (isDashboardPage) {
-                toggle.checked = false;
-            }
+        function updateBoldText() {
+          if (toggle.checked) {
+            publicPageLabel.style.fontWeight = "bold";
+            dashboardLabel.style.fontWeight = "normal";
+          } else {
+            publicPageLabel.style.fontWeight = "normal";
+            dashboardLabel.style.fontWeight = "bold";
           }
+        }
 
-          function updateBoldText() {
-            if (toggle.checked) {
-              publicPageLabel.style.fontWeight = "bold";
-              dashboardLabel.style.fontWeight = "normal";
+        // Redirect based on toggle state
+        if (toggle) {
+          toggle.addEventListener("change", function () {
+            if (this.checked) {
+              window.location.href = "/society/{{ society.id }}/mainpage/"; 
             } else {
-              publicPageLabel.style.fontWeight = "normal";
-              dashboardLabel.style.fontWeight = "bold";
+              window.location.href = "/society/{{ society.id }}/dashboard/";  
             }
-          }
+          });
 
-          if (toggle) {
-            // Ensure correct toggle state on load
-            updateToggleState();
+          const isPublicPage = window.location.pathname === "/society/{{ society.id }}/mainpage/";  
+          toggle.checked = isPublicPage;
 
-            toggle.addEventListener("change", function() {
-              if (this.checked) {
-                window.location.href = "{% url 'society_mainpage' society_id=society.id %}";
-              } else {
-                window.location.href = "{% url 'society_dashboard' society_id=society.id %}";
-              }
-            });
+          updateBoldText();
 
-            updateBoldText();
-            toggle.addEventListener("change", updateBoldText);
-          }
+          toggle.addEventListener("change", updateBoldText);
+        }
       });
     </script>
+  
 
     {% block extra_scripts %}{% endblock %}
   </body>
