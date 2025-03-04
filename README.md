@@ -26,7 +26,9 @@ $ source venv/bin/activate
 Install all required packages:
 
 ```
+
 $ pip3 install -r requirements.txt
+
 ```
 
 Migrate the database:

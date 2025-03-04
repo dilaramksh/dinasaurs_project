@@ -3,9 +3,18 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col-12">
-      <h1>Profile</h1>
-      <form action="{% url 'profile' %}" method="post">
+      <header class="text-dark text-center py-4 mb-4" 
+        style="background: url('https://www.transparenttextures.com/patterns/honeycomb.png') #FFFFCC;">
+        <div class="container">
+            <h1 class="display-4 fw-bold">🐝 Modify Profile 🐝</h1>
+        </div>
+      </header>
+      
+      <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        
+    
         {% include 'partials/bootstrap_form.html' with form=form submit_text="Update" %}
       </form>
     </div>
