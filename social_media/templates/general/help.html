@@ -77,8 +77,53 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- FAQ 5 -->
+                        <div class="accordion-item border-0">
+                            <h6 class="accordion-header" id="faq5">
+                                <button class="accordion-button collapsed bg-light text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                                    How can I reset my password?
+                                </button>
+                            </h6>
+                            <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body bg-white text-muted">
+                                    Click on "Forgot Password" on the login page and follow the instructions to reset your password.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 6 -->
+                        <div class="accordion-item border-0">
+                            <h6 class="accordion-header" id="faq6">
+                                <button class="accordion-button collapsed bg-light text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
+                                    How do I delete my account?
+                                </button>
+                            </h6>
+                            <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body bg-white text-muted">
+                                    To delete your account, please contact support with your request.
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
+                    <!-- Submit a Question Section -->
+                    <div class="mt-4 p-3 bg-light rounded">
+                        <h6 class="text-primary">Have a question? Submit it here:</h6>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="student" value="{{ request.user.id }}">
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter the subject of your question" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Your Question</label>
+                                <textarea class="form-control" id="content" name="content" rows="5" placeholder="Type your question here" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-warning">Submit Question</button>
+                        </form>
+                    </div>
                     <!-- Contact Support -->
                     <div class="mt-4 p-3 text-center bg-light rounded">
                         <h6 class="text-primary">Still need help? Reach out to us:</h6>
@@ -86,7 +131,6 @@
                         <p class="mb-1"><strong>Phone:</strong> +44 1234567890</p>
                         <p class="mb-0"><strong>Support Hours:</strong> Mon-Fri, 9 AM - 5 PM</p>
                     </div>
-
                 </div>
             </div>
         </div>

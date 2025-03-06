@@ -50,6 +50,7 @@ urlpatterns = [
     #footer path 
     path('stay_connected/', stay_connected, name='stay_connected'),
     path('contact_us/', contact_us, name='contact_us'),
+    path('partials/footer/privacy_policy/', privacy_policy, name='privacy_policy'),
 
     #student paths
     #path('student/dashboard/', student_dashboard, name='student_dashboard'),
@@ -69,6 +70,7 @@ urlpatterns = [
     path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
     path("customise-society/<int:society_id>/", customise_society_view, name="customise_society"),
+    path("update-customise-society/<int:society_id>/", update_society_colors, name="update_customise_society"),
 
     #super-admin paths
     path('super_admin/dashboard', super_admin_dashboard, name='super_admin_dashboard'),
