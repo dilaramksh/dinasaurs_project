@@ -12,3 +12,6 @@ pytz
 six
 sqlparse
 typing_extensions
+boto3
+django-storages
+Pillow

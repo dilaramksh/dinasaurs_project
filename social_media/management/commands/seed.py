@@ -4,51 +4,54 @@ from django.template.defaultfilters import first
 from social_media.models import *
 import random
 
+
+DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
+
 user_fixtures = [
 
-    {'first_name':'john', 'last_name':'doe', 'username':'@johndoe', 'email':'johndoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2023-09-23', 'end_date':'2026-05-06'},
-    {'first_name':'jane', 'last_name':'doe', 'username':'@janedoe', 'email':'janedoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2022-09-24', 'end_date':'2025-05-07'},
-    {'first_name':'paul', 'last_name':'poe', 'username':'@paulpoe', 'email':'paulpoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
-    {'first_name':'pauline', 'last_name':'poe', 'username':'@paulinepoe', 'email':'paulinepoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
+    {'first_name':'john', 'last_name':'doe', 'username':'@johndoe', 'email':'johndoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2023-09-23', 'end_date':'2026-05-06', 'profile_picture': 'profile_pictures/@johndoe.png'},
+    {'first_name':'jane', 'last_name':'doe', 'username':'@janedoe', 'email':'janedoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2022-09-24', 'end_date':'2025-05-07', 'profile_picture': 'profile_pictures/@janedoe.png'},
+    {'first_name':'paul', 'last_name':'poe', 'username':'@paulpoe', 'email':'paulpoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01', 'profile_picture': 'profile_pictures/@paulpoe.png'},
+    {'first_name':'pauline', 'last_name':'poe', 'username':'@paulinepoe', 'email':'paulinepoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01', 'profile_picture': 'profile_pictures/@paulinepoe.png'},
 
-    {'first_name':'alice', 'last_name':'smith', 'username':'@alicesmith', 'email':'alicesmith@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-06-01'},
-    {'first_name':'bob', 'last_name':'morgan', 'username':'@bobmorgan', 'email':'bobmorgan@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-07-01'},
+    {'first_name':'alice', 'last_name':'smith', 'username':'@alicesmith', 'email':'alicesmith@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-06-01', 'profile_picture': 'profile_pictures/@alicesmith.png'},
+    {'first_name':'bob', 'last_name':'morgan', 'username':'@bobmorgan', 'email':'bobmorgan@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-07-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
 
-    {'first_name':'charlie', 'last_name':'johnson', 'username':'@charliejohnson', 'email':'charliejohnson@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-08-01'},
-    {'first_name':'daisy', 'last_name':'evans', 'username':'@daisyevans', 'email':'daisyevans@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-09-01'},
-    {'first_name':'edward', 'last_name':'brown', 'username':'@edwardbrown', 'email':'edwardbrown@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-10-01'},
-    {'first_name':'fiona', 'last_name':'taylor', 'username':'@fionataylor', 'email':'fionataylor@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-11-01'},
-    {'first_name':'george', 'last_name':'williams', 'username':'@georgewilliams', 'email':'georgewilliams@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-12-01'},
+    {'first_name':'charlie', 'last_name':'johnson', 'username':'@charliejohnson', 'email':'charliejohnson@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-08-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'daisy', 'last_name':'evans', 'username':'@daisyevans', 'email':'daisyevans@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-09-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'edward', 'last_name':'brown', 'username':'@edwardbrown', 'email':'edwardbrown@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-10-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'fiona', 'last_name':'taylor', 'username':'@fionataylor', 'email':'fionataylor@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-11-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'george', 'last_name':'williams', 'username':'@georgewilliams', 'email':'georgewilliams@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-01-01', 'end_date':'2025-12-01', 'profile_picture': DEFAULT_PROFILE_PICTURE},
 
-    {'first_name':'hannah', 'last_name':'clarke', 'username':'@hannahclarke', 'email':'hannahclarke@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-09-15', 'end_date':'2025-06-30'},
-    {'first_name':'isaac', 'last_name':'lewis', 'username':'@isaaclewis', 'email':'isaaclewis@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-01-10', 'end_date':'2026-07-15'},
-    {'first_name':'jessica', 'last_name':'martin', 'username':'@jessicamartin', 'email':'jessicamartin@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2020-06-20', 'end_date':'2024-05-25'},
-    {'first_name':'kieran', 'last_name':'hall', 'username':'@kieranhall', 'email':'kieranhall@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-10-01', 'end_date':'2026-09-30'},
-    {'first_name':'laura', 'last_name':'wright', 'username':'@laurawright', 'email':'laurawright@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-09-05', 'end_date':'2027-08-31'},
+    {'first_name':'hannah', 'last_name':'clarke', 'username':'@hannahclarke', 'email':'hannahclarke@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-09-15', 'end_date':'2025-06-30', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'isaac', 'last_name':'lewis', 'username':'@isaaclewis', 'email':'isaaclewis@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-01-10', 'end_date':'2026-07-15', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'jessica', 'last_name':'martin', 'username':'@jessicamartin', 'email':'jessicamartin@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2020-06-20', 'end_date':'2024-05-25', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'kieran', 'last_name':'hall', 'username':'@kieranhall', 'email':'kieranhall@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-10-01', 'end_date':'2026-09-30', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'laura', 'last_name':'wright', 'username':'@laurawright', 'email':'laurawright@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-09-05', 'end_date':'2027-08-31', 'profile_picture': DEFAULT_PROFILE_PICTURE},
 
-    {'first_name':'michael', 'last_name':'adams', 'username':'@michaeladams', 'email':'michaeladams@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-01-15', 'end_date':'2024-12-20'},
-    {'first_name':'natalie', 'last_name':'cooper', 'username':'@nataliecooper', 'email':'nataliecooper@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-04-10', 'end_date':'2025-09-30'},
-    {'first_name':'oliver', 'last_name':'parker', 'username':'@oliverparker', 'email':'oliverparker@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-07-01', 'end_date':'2026-06-30'},
-    {'first_name':'penny', 'last_name':'thompson', 'username':'@pennythompson', 'email':'pennythompson@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2020-09-25', 'end_date':'2024-07-15'},
-    {'first_name':'quentin', 'last_name':'harris', 'username':'@quentinharris', 'email':'quentinharris@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-11-10', 'end_date':'2025-10-05'},
+    {'first_name':'michael', 'last_name':'adams', 'username':'@michaeladams', 'email':'michaeladams@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-01-15', 'end_date':'2024-12-20', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'natalie', 'last_name':'cooper', 'username':'@nataliecooper', 'email':'nataliecooper@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-04-10', 'end_date':'2025-09-30', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'oliver', 'last_name':'parker', 'username':'@oliverparker', 'email':'oliverparker@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-07-01', 'end_date':'2026-06-30', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'penny', 'last_name':'thompson', 'username':'@pennythompson', 'email':'pennythompson@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2020-09-25', 'end_date':'2024-07-15', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'quentin', 'last_name':'harris', 'username':'@quentinharris', 'email':'quentinharris@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-11-10', 'end_date':'2025-10-05', 'profile_picture': DEFAULT_PROFILE_PICTURE},
 
-    {'first_name':'rachel', 'last_name':'moore', 'username':'@rachelmoore', 'email':'rachelmoore@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-02-20', 'end_date':'2025-06-15'},
-    {'first_name':'samuel', 'last_name':'white', 'username':'@samuelwhite', 'email':'samuelwhite@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-05-10', 'end_date':'2026-08-20'},
-    {'first_name':'tina', 'last_name':'roberts', 'username':'@tinaroberts', 'email':'tinaroberts@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-08-15', 'end_date':'2025-07-10'},
-    {'first_name':'umar', 'last_name':'ali', 'username':'@umarali', 'email':'umarali@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2020-12-01', 'end_date':'2024-11-30'}
-
-
-
+    {'first_name':'rachel', 'last_name':'moore', 'username':'@rachelmoore', 'email':'rachelmoore@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2022-02-20', 'end_date':'2025-06-15', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'samuel', 'last_name':'white', 'username':'@samuelwhite', 'email':'samuelwhite@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2023-05-10', 'end_date':'2026-08-20', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'tina', 'last_name':'roberts', 'username':'@tinaroberts', 'email':'tinaroberts@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2021-08-15', 'end_date':'2025-07-10', 'profile_picture': DEFAULT_PROFILE_PICTURE},
+    {'first_name':'umar', 'last_name':'ali', 'username':'@umarali', 'email':'umarali@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date': '2020-12-01', 'end_date':'2024-11-30', 'profile_picture': DEFAULT_PROFILE_PICTURE}
 
 ]
 
-university_fixtures = [
 
-        {"name": "King's College London", "domain": "kcl.ac.uk"},
-        {"name": "University College London", "domain": "ucl.ac.uk"},
-        {"name": "Imperial College London", "domain": "imperial.ac.uk"},
-        {"name": "London School of Economics", "domain": "lse.ac.uk"},
-        {"name": "University of Oxford", "domain": "ox.ac.uk"},
+university_fixtures = [
+        {"name": "King's College London", "domain": "kcl.ac.uk", 'status': "approved", 'logo' : "university_logos/kcl.png"},
+        {"name": "University College London", "domain": "ucl.ac.uk",'status': "approved", 'logo' : "university_logos/ucl.png"},
+        {"name": "Imperial College London", "domain": "imperial.ac.uk", 'status': "approved", 'logo' : "university_logos/imperial.png"},
+        {"name": "London School of Economics", "domain": "lse.ac.uk", 'status': "approved", 'logo' : "university_logos/lse.png"},
+        {"name": "University of Oxford", "domain": "ox.ac.uk",'status': "approved", 'logo' : "university_logos/ox.png"},
+        {"name": "University of Leeds", "domain": "leeds.ac.uk",'status': "pending", 'logo' : "university_logos/University_of_Leeds.png"},
+        {"name": "University of Manchester", "domain": "man.ac.uk",'status': "pending", 'logo' : "university_logos/University_of_Manchester.png"},
+        {"name": "University of Arts London", "domain": "ual.ac.uk",'status': "pending", 'logo' : "university_logos/UAL.png"},
 ]
 
 event_fixtures = [
@@ -165,6 +168,8 @@ society_fixtures = [
 ]
 
 
+
+
 class Command(BaseCommand):
     DEFAULT_PASSWORD = 'Password123'
     help = 'Seeds the database with sample data'
@@ -201,6 +206,7 @@ class Command(BaseCommand):
         self.generate_user_fixtures()
         self.stdout.write('Users creation completed.')
 
+
     def generate_user_fixtures(self):
         for data in user_fixtures:
             self.stdout.write(f"Creating user: {data['username']} of type {data['user_type']}")
@@ -216,7 +222,7 @@ class Command(BaseCommand):
             self.stderr.write(self.style.ERROR(f"Error creating user {data['username']}: {str(e)}"))
 
     def create_user(self, data):
-        universities = University.objects.all()
+        universities = University.objects.filter(status='approved')
         if not universities.exists():
             raise ValueError("No universities found.")
 
@@ -231,8 +237,10 @@ class Command(BaseCommand):
             end_date=data['end_date'],
             user_type=data['user_type'],
             university=university,
+            profile_picture=data['profile_picture'],
             password=Command.DEFAULT_PASSWORD,
         )
+
         user.save()
         self.stdout.write(f"Created user: {user.username} ({user.user_type})")
         return user
@@ -261,7 +269,9 @@ class Command(BaseCommand):
     def create_university(self, data):
         university = University.objects.create(
             name=data['name'],
-            domain=data['domain']
+            domain=data['domain'],
+            status=data['status'],
+            logo=data['logo']
         )
         university.save()
         self.stdout.write(f"Created university: {university.name}")
