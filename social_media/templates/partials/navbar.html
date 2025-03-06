@@ -6,7 +6,7 @@
       <img src="{% static 'images/Logo.png' %}" alt="Logo" style="height: 60px; width: auto;">
     </a>
 
-    <!-- Switch Dashboard functionality here?-->
+    <!-- Switch Dashboard functionality here?
     <div class="nav-item dropdown d-flex align-items-center">
       <button type="button" class="btn border-0 dropdown-toggle" id="dashboardDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-home fa-lg"></i>
@@ -29,16 +29,16 @@
           {% endif %}
       </ul>
     </div>
-
+    -->
     <!-- Icons/page (student only??)-->
     {% if user.is_authenticated %}
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-        <!--
+        
           <a class="nav-item nav-link active" href="{% url 'dashboard' %}">
             <i class="fas fa-home fa-lg"></i>
           </a>
-        -->
+        
           <a class="nav-item nav-link" href="#">
             <i class="fas fa-compass fa-lg"></i>             
           </a>
@@ -52,10 +52,10 @@
         <button type="button" class="btn border-0 dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {% if user.profile_picture %}
               <img src="{{ user.profile_picture.url }}" 
-              alt="Profile Picture" class="gravatar rounded-circle border" width="40" height="40">
+              alt="Profile Picture" class="gravatar rounded-circle border" width="50" height="50">
             {% else %}
               <img src="https://hive-society.s3.amazonaws.com/profile_pictures/default-user.jpg" 
-              alt="Profile Picture" class="gravatar rounded-circle border" width="40" height="40">
+              alt="Profile Picture" class="gravatar rounded-circle border" width="50" height="50">
             {% endif %}
         </button>
         <ul class="dropdown-menu dropdown-menu-end custom-dropdown" aria-labelledby="profileDropdown">

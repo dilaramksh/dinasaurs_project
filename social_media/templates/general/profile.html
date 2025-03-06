@@ -1,23 +1,43 @@
 {% extends 'base_content.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
 {% block content %}
 <div class="container mt-4">
-  <div class="row">
-    <div class="col-12">
-      <header class="text-dark text-center py-4 mb-4" 
-        style="background: url('https://www.transparenttextures.com/patterns/honeycomb.png') #FFFFCC;">
-        <div class="container">
-            <h1 class="display-4 fw-bold">🐝 Modify Profile 🐝</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow p-4">
+                
+                <!-- Profile Picture Section -->
+                <div class="text-center mb-4">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="Profile Picture" 
+                             class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                    {% else %}
+                        <img src="{% static 'images/default_profile.png' %}" alt="Default Profile Picture"
+                             class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                    {% endif %}
+                    <div class="mt-3">
+                        <label for="id_profile_picture" class="btn btn-outline-secondary">Change Profile Picture</label>
+                        <input type="file" name="profile_picture" id="id_profile_picture" class="d-none">
+                    </div>
+                </div>
+
+                <!-- Form for other fields, excluding profile_picture -->
+                <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
+
+                    {% include 'partials/bootstrap_form.html' with form=form exclude_fields="profile_picture" submit_text="Update Profile" %}
+                    
+                    <input type="file" name="profile_picture" id="id_profile_picture_hidden" class="d-none" />
+
+                </form>
+                
+            </div>
         </div>
-      </header>
-      
-      <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}">
-        
-    
-        {% include 'partials/bootstrap_form.html' with form=form submit_text="Update" %}
-      </form>
     </div>
-  </div>
 </div>
 {% endblock %}
+
+
