@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.template.defaultfilters import first
-
+from faker import Faker
 from social_media.models import *
 import random
 
@@ -173,6 +173,8 @@ society_fixtures = [
 class Command(BaseCommand):
     DEFAULT_PASSWORD = 'Password123'
     help = 'Seeds the database with sample data'
+    STUDENT_COUNT = 100
+
 
     def __init__(self):
         super().__init__()
@@ -181,6 +183,7 @@ class Command(BaseCommand):
         self.generated_societies = []
         self.generated_society_roles = []
         self.generated_universities = []
+        self.faker = Faker('en_GB')
 
     def handle(self, *args, **options):
         self.stdout.write('\nStarting the seeding process...')
@@ -205,6 +208,10 @@ class Command(BaseCommand):
         self.stdout.write('Creating users...')
         self.generate_user_fixtures()
         self.stdout.write('Users creation completed.')
+        self.stdout.write('Creating RANDOM students...')
+        self.generate_random_students()
+        self.stdout.write('Random students creation completed.')
+
 
 
     def generate_user_fixtures(self):
@@ -215,11 +222,13 @@ class Command(BaseCommand):
                 self.generated_users.append(created_user)
         self.stdout.write(f"Generated users: {[user.username for user in self.generated_users]}")
 
+
     def try_create_user(self, data):
         try:
             return self.create_user(data)
         except Exception as e:
             self.stderr.write(self.style.ERROR(f"Error creating user {data['username']}: {str(e)}"))
+
 
     def create_user(self, data):
         universities = University.objects.filter(status='approved')
@@ -244,6 +253,33 @@ class Command(BaseCommand):
         user.save()
         self.stdout.write(f"Created user: {user.username} ({user.user_type})")
         return user
+
+
+
+    # Random Users
+    def generate_random_students(self):
+        student_count = User.objects.filter(user_type='student').count()
+        while student_count < self.STUDENT_COUNT:
+            print(f"Seeding student {student_count}/{self.STUDENT_COUNT}", end='\r')
+            self.try_create_user(self.generate_student())
+            student_count = User.objects.filter(user_type='student').count()
+
+    def generate_student(self):
+        universities = University.objects.all()
+        if not universities.exists():
+            raise ValueError("No universities found.")
+        university = random.choice(universities) #???
+
+        first_name = self.faker.first_name()
+        last_name = self.faker.last_name()
+        user_type = 'student'
+        university = university
+        username = create_username(first_name, last_name)
+        email = create_email(first_name, last_name, university.domain)
+        start_date='2023-09-23'
+        end_date='2023-06-05'
+        data = {'first_name':first_name, 'last_name':last_name, 'user_type':user_type, 'university':university, 'username':username, 'email':email, 'start_date':start_date, 'end_date':end_date}
+        return data
 
 
     # University
@@ -570,6 +606,13 @@ class Command(BaseCommand):
         return event_participant
 
 
+
+# refactoring
+def create_username(first_name, last_name):
+    return '@' + first_name.lower() + last_name.lower()
+
+def create_email(first_name, last_name, domain):
+    return first_name + last_name + '@' + domain
 
 
 
