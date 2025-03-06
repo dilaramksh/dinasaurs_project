@@ -1,9 +1,8 @@
 from social_media.decorators import user_type_required
-from django.shortcuts import render,get_object_or_404, redirect
 from social_media.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from social_media.forms.society_creation_form import SocietyCreationForm
 from django.shortcuts import HttpResponse
 from social_media.models import Category
@@ -41,6 +40,7 @@ def student_dashboard(request):
 #@login_required
 def help_page(request):
     return render(request, 'general/help.html')
+
 #@login_required
 def features(request):
     return render(request, 'features.html')
