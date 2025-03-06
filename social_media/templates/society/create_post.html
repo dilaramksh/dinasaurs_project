@@ -50,8 +50,9 @@
             </div>
 
             <!-- Display Posts Created by the User -->
-            <div class="mt-4">
-                <h5>Your Posts</h5>
+            <div class="card shadow mt-4 border-0"></div>
+                <div class="card-header bg-light text-center">
+                    <h5>Your Posts</h5>
                 {% if posts %}
                     <ul class="list-group">
                         {% for post in posts %}
@@ -65,8 +66,8 @@
                 {% else %}
                     <p>No posts found. Start by creating a new post!</p>
                 {% endif %}
+                </div>
             </div>
-
         </div>
     </div>
 </div>

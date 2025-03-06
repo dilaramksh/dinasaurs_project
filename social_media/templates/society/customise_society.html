@@ -23,10 +23,13 @@
                             {% if field.name in "description price colour1 colour2" %}
                                 <div class="mb-3">
                                     <label class="form-label">{{ field.label }}</label>
-                                    {{ field|add_class:"form-control" }}
-                                    
+
                                     {% if field.name == "colour1" or field.name == "colour2" %}
-                                        <input type="color" name="{{ field.name }}" value="{{ field.value|default:'#FFFFFF' }}" class="form-control form-control-color mt-2">
+                                        <input type="color" name="{{ field.name }}" 
+                                            value="{% if field.value %}{{ field.value }}{% endif %}" 
+                                            class="form-control form-control-color">
+                                    {% else %}
+                                        {{ field|add_class:"form-control" }}
                                     {% endif %}
 
                                     {% if field.errors %}
@@ -39,21 +42,62 @@
                         {% endfor %}
 
                         <div class="text-center">
-                            
-                            <a href="{% url 'society_dashboard' society.id %}" class="btn btn-warning">Submit changes</a>
+                            <a href="{% url 'society_dashboard' society.id%}" class="btn btn-warning">Submit</a>
                         </div>
                     </form>
                 </div>
             </div>
-
-            <!-- Society Details Preview -->
-            <div class="mt-4">
-                <h5>Current Society Details</h5>
-                <p><strong>Description:</strong> {{ society.description }}</p>
-                <p><strong>Membership Price:</strong> £{{ society.price }}</p>
-                <p><strong>Primary Colour:</strong> {{ society.colour1 }}</p>
-                <p><strong>Secondary Colour:</strong> {{ society.colour2 }}</p>
+            
+            <!-- Society Details Preview in a Card -->
+            <div class="card shadow mt-4 border-0">
+                <div class="card-header bg-light text-center">
+                    <h5 class="mb-0">Current Society Details</h5>
+                </div>
+                <div class="card-body bg-white">
+                    <p><strong>Description:</strong> {{ society.description }}</p>
+                    <p><strong>Membership Price:</strong> £{{ society.price }}</p>
+                    <p><strong>Primary Colour:</strong> 
+                        <span class="px-2 py-1 rounded" style="background-color: {{ society.colour1 }};">
+                            {{ society.colour1 }}
+                        </span>
+                    </p>
+                    <p><strong>Secondary Colour:</strong> 
+                        <span class="px-2 py-1 rounded" style="background-color: {{ society.colour2 }};">
+                            {{ society.colour2 }}
+                        </span>
+                    </p>
+                </div>
             </div>
+
+            <!-- Previous Color History -->
+            <div class="card shadow mt-4 border-0">
+                <div class="card-header bg-light text-center">
+                    <h5 class="mb-0">Previous Colour History</h5>
+                </div>
+                <div class="card-body bg-white">
+                    {% if past_colors %}
+                        <ul class="list-group">
+                            {% for color in past_colors %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>
+                                        <strong>Updated on:</strong> {{ color.updated_at|date:"d M Y, H:i" }}
+                                    </span>
+                                    <span class="badge" style="background-color: {{ color.previous_colour1 }}; color: #fff;">
+                                        {{ color.previous_colour1 }}
+                                    </span>
+                                    →
+                                    <span class="badge" style="background-color: {{ color.previous_colour2 }}; color: #fff;">
+                                        {{ color.previous_colour2 }}
+                                    </span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted text-center">No previous colors recorded.</p>
+                    {% endif %}
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
