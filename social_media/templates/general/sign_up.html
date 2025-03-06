@@ -2,9 +2,11 @@
 {% load static %} 
 
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12 col-md-6 offset-md-3">
+<div class="container mt-4">
+  <div class="row justify-content-center">
+      <div class="col-md-8">
+          <div class="card shadow p-4">
+
       <h1>Sign up</h1>
       <p class="text-muted">Register with your school email.</p>
       <hr>
@@ -16,12 +18,9 @@
     
         {% include 'partials/bootstrap_form.html' with form=form submit_text="Sign up"%}
     </form>
-    </div>
   </div>
 </div>
-<!-- Footer
-<footer class="text-center text-dark mt-5 py-4" style="background-color: #FFF2CC;">
-  <p class="mb-0">🐝 &copy; {{ year }} HiveSociety | Stay Connected | Contact Us</p>
-</footer>
--->
+</div>
+</div>
+
 {% endblock %}
