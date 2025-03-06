@@ -55,113 +55,113 @@ university_fixtures = [
 ]
 
 event_fixtures = [
-    {'name': 'hackathon', 'society': 'computingsoc', 'description': 'Cyber Security hackathon', 'date': '2025-10-10',
+    {'name': 'hackathon', 'society': 'Computingsoc', 'description': 'Cyber Security hackathon', 'date': '2025-10-10',
      'location': 'bush house'},
-    {'name': 'AI workshop', 'society': 'computingsoc', 'description': 'Introduction to AI and Machine Learning',
+    {'name': 'AI workshop', 'society': 'Computingsoc', 'description': 'Introduction to AI and Machine Learning',
      'date': '2025-11-05', 'location': 'seminar room 3'},
-    {'name': 'coding challenge', 'society': 'computingsoc', 'description': 'Competitive coding challenge',
+    {'name': 'coding challenge', 'society': 'Computingsoc', 'description': 'Competitive coding challenge',
      'date': '2025-09-20', 'location': 'lab 5'},
 
-    {'name': 'painting', 'society': 'artsoc', 'description': 'Sip n Paint', 'date': '2025-12-01',
+    {'name': 'painting', 'society': 'Artsoc', 'description': 'Sip n Paint', 'date': '2025-12-01',
      'location': 'theatre 2'},
-    {'name': 'sculpting workshop', 'society': 'artsoc', 'description': 'Hands-on sculpting session',
+    {'name': 'sculpting workshop', 'society': 'Artsoc', 'description': 'Hands-on sculpting session',
      'date': '2025-07-18', 'location': 'art studio 1'},
-    {'name': 'gallery visit', 'society': 'artsoc', 'description': 'Visit to a contemporary art gallery',
+    {'name': 'gallery visit', 'society': 'Artsoc', 'description': 'Visit to a contemporary art gallery',
      'date': '2025-06-25', 'location': 'off-campus'},
 
-    {'name': 'gaming night', 'society': 'gamesoc', 'description': 'Gaming event', 'date': '2025-08-15',
+    {'name': 'gaming night', 'society': 'Gamesoc', 'description': 'Gaming event', 'date': '2025-08-15',
      'location': 'library'},
-    {'name': 'board games evening', 'society': 'gamesoc', 'description': 'Board games and pizza night',
+    {'name': 'board games evening', 'society': 'Gamesoc', 'description': 'Board games and pizza night',
      'date': '2025-10-30', 'location': 'student lounge'},
-    {'name': 'esports tournament', 'society': 'gamesoc', 'description': 'Competitive esports event',
+    {'name': 'esports tournament', 'society': 'Gamesoc', 'description': 'Competitive esports event',
      'date': '2025-09-12', 'location': 'auditorium'},
 ]
 
 events_participant_fixtures = [
-    {'event': 'hackathon', 'membership': 'computingsoc_member1'},
-    {'event': 'AI workshop', 'membership': 'computingsoc_member2'},
-    {'event': 'coding challenge', 'membership': 'computingsoc_member3'},
+    {'event': 'hackathon', 'membership': 'Computingsoc_member1'},
+    {'event': 'AI workshop', 'membership': 'Computingsoc_member2'},
+    {'event': 'coding challenge', 'membership': 'Computingsoc_member3'},
 
-    {'event': 'painting', 'membership': 'artsoc_member1'},
-    {'event': 'sculpting workshop', 'membership': 'artsoc_member2'},
-    {'event': 'gallery visit', 'membership': 'artsoc_member3'},
+    {'event': 'painting', 'membership': 'Artsoc_member1'},
+    {'event': 'sculpting workshop', 'membership': 'Artsoc_member2'},
+    {'event': 'gallery visit', 'membership': 'Artsoc_member3'},
 
-    {'event': 'gaming night', 'membership': 'gamesoc_member1'},
-    {'event': 'board games evening', 'membership': 'gamesoc_member2'},
-    {'event': 'esports tournament', 'membership': 'gamesoc_member3'},
+    {'event': 'gaming night', 'membership': 'Gamesoc_member1'},
+    {'event': 'board games evening', 'membership': 'Gamesoc_member2'},
+    {'event': 'esports tournament', 'membership': 'Gamesoc_member3'},
 ]
 
 
 membership_fixtures = [
 
     # members
-    {'user':'@rachelmoore', 'society':'gamesoc', 'society_role':'member'},
-    {'user':'@samuelwhite', 'society':'computingsoc', 'society_role':'member'},
-    {'user':'@tinaroberts', 'society':'artsoc', 'society_role':'member'},
+    {'user':'@rachelmoore', 'society':'Gamesoc', 'society_role':'member'},
+    {'user':'@samuelwhite', 'society':'Computingsoc', 'society_role':'member'},
+    {'user':'@tinaroberts', 'society':'Artsoc', 'society_role':'member'},
 
-    # gamesoc
-    {'user':'@janedoe', 'society':'gamesoc','society_role':'president'},
-    {'user':'@johndoe', 'society':'gamesoc','society_role':'vice president'},
-    {'user':'@paulpoe', 'society':'gamesoc', 'society_role':'treasurer'},
-    {'user':'@paulinepoe', 'society':'gamesoc', 'society_role':'events manager'},
-    {'user':'@alicesmith', 'society':'gamesoc', 'society_role':'secretary'},
-    {'user':'@bobmorgan', 'society':'gamesoc', 'society_role':'wellbeing'},
+    # Gamesoc
+    {'user':'@janedoe', 'society':'Gamesoc','society_role':'president'},
+    {'user':'@johndoe', 'society':'Gamesoc','society_role':'vice president'},
+    {'user':'@paulpoe', 'society':'Gamesoc', 'society_role':'treasurer'},
+    {'user':'@paulinepoe', 'society':'Gamesoc', 'society_role':'events manager'},
+    {'user':'@alicesmith', 'society':'Gamesoc', 'society_role':'secretary'},
+    {'user':'@bobmorgan', 'society':'Gamesoc', 'society_role':'wellbeing'},
 
-    # computingsoc
-    {'user':'@charliejohnson', 'society':'computingsoc','society_role':'president'},
-    {'user':'@daisyevans', 'society':'computingsoc','society_role':'vice president'},
-    {'user':'@edwardbrown', 'society':'computingsoc', 'society_role':'treasurer'},
-    {'user':'@fionataylor', 'society':'computingsoc', 'society_role':'events manager'},
-    {'user':'@georgewilliams', 'society':'computingsoc', 'society_role':'secretary'},
+    # Computingsoc
+    {'user':'@charliejohnson', 'society':'Computingsoc','society_role':'president'},
+    {'user':'@daisyevans', 'society':'Computingsoc','society_role':'vice president'},
+    {'user':'@edwardbrown', 'society':'Computingsoc', 'society_role':'treasurer'},
+    {'user':'@fionataylor', 'society':'Computingsoc', 'society_role':'events manager'},
+    {'user':'@georgewilliams', 'society':'Computingsoc', 'society_role':'secretary'},
 
-    # artsoc
-    {'user':'@michaeladams', 'society':'artsoc','society_role':'president'},
-    {'user':'@nataliecooper', 'society':'artsoc','society_role':'vice president'},
-    {'user':'@oliverparker', 'society':'artsoc', 'society_role':'treasurer'},
-    {'user':'@pennythompson', 'society':'artsoc', 'society_role':'events manager'},
-    {'user':'@quentinharris', 'society':'artsoc', 'society_role':'secretary'},
+    # Artsoc
+    {'user':'@michaeladams', 'society':'Artsoc','society_role':'president'},
+    {'user':'@nataliecooper', 'society':'Artsoc','society_role':'vice president'},
+    {'user':'@oliverparker', 'society':'Artsoc', 'society_role':'treasurer'},
+    {'user':'@pennythompson', 'society':'Artsoc', 'society_role':'events manager'},
+    {'user':'@quentinharris', 'society':'Artsoc', 'society_role':'secretary'},
 
 ]
 
 
 society_role_fixtures = [
-    # gamesoc
-    {'society':'gamesoc', 'role_name':'president'},
-    {'society':'gamesoc', 'role_name':'vice president'},
-    {'society':'gamesoc', 'role_name':'treasurer'},
-    {'society':'gamesoc', 'role_name':'events manager'},
-    {'society':'gamesoc', 'role_name':'secretary'},
-    {'society':'gamesoc', 'role_name':'wellbeing'},
-    {'society':'gamesoc', 'role_name':'member'},
+    # Gamesoc
+    {'society':'Gamesoc', 'role_name':'president'},
+    {'society':'Gamesoc', 'role_name':'vice president'},
+    {'society':'Gamesoc', 'role_name':'treasurer'},
+    {'society':'Gamesoc', 'role_name':'events manager'},
+    {'society':'Gamesoc', 'role_name':'secretary'},
+    {'society':'Gamesoc', 'role_name':'wellbeing'},
+    {'society':'Gamesoc', 'role_name':'member'},
 
-    # computingsoc
-    {'society': 'computingsoc', 'role_name': 'president'},
-    {'society': 'computingsoc', 'role_name': 'vice president'},
-    {'society': 'computingsoc', 'role_name': 'treasurer'},
-    {'society': 'computingsoc', 'role_name': 'events manager'},
-    {'society': 'computingsoc', 'role_name': 'secretary'},
-    {'society': 'computingsoc', 'role_name': 'member'},
+    # Computingsoc
+    {'society': 'Computingsoc', 'role_name': 'president'},
+    {'society': 'Computingsoc', 'role_name': 'vice president'},
+    {'society': 'Computingsoc', 'role_name': 'treasurer'},
+    {'society': 'Computingsoc', 'role_name': 'events manager'},
+    {'society': 'Computingsoc', 'role_name': 'secretary'},
+    {'society': 'Computingsoc', 'role_name': 'member'},
 
-    # artsoc
-    {'society': 'artsoc', 'role_name': 'president'},
-    {'society': 'artsoc', 'role_name': 'vice president'},
-    {'society': 'artsoc', 'role_name': 'treasurer'},
-    {'society': 'artsoc', 'role_name': 'events manager'},
-    {'society': 'artsoc', 'role_name': 'secretary'},
-    {'society': 'artsoc', 'role_name': 'member'},
+    # Artsoc
+    {'society': 'Artsoc', 'role_name': 'president'},
+    {'society': 'Artsoc', 'role_name': 'vice president'},
+    {'society': 'Artsoc', 'role_name': 'treasurer'},
+    {'society': 'Artsoc', 'role_name': 'events manager'},
+    {'society': 'Artsoc', 'role_name': 'secretary'},
+    {'society': 'Artsoc', 'role_name': 'member'},
 ]
 
 society_fixtures = [
-    {'name': 'computingsoc', 'founder': '@charliejohnson', 'society_email': 'computingsoc@kcl.ac.uk',
+    {'name': 'Computingsoc', 'founder': '@charliejohnson', 'society_email': 'Computingsoc@kcl.ac.uk',
      'description': 'A society for students passionate about technology, coding, and cybersecurity. We host hackathons, coding workshops, and networking events.',
      'category': 'academic_career', 'paid_membership': False, 'price': '0.0', 'colour1': '#FFD700', 'colour2': '#FFF2CC', 'status': 'approved'},
 
-    {'name': 'gamesoc', 'founder': '@janedoe', 'society_email': 'gamingsoc@kcl.ac.uk',
+    {'name': 'Gamesoc', 'founder': '@janedoe', 'society_email': 'gamingsoc@kcl.ac.uk',
      'description': 'A community for gamers of all levels! From casual board games to intense esports tournaments, we provide a space for all gaming enthusiasts.',
      'category': 'other', 'paid_membership': True, 'price': '5.0', 'colour1': '#FC8EAC', 'colour2': '#FFD1DC',
      'status': 'approved'},
 
-    {'name': 'artsoc', 'founder': '@michaeladams', 'society_email': 'artsoc@kcl.ac.uk',
+    {'name': 'Artsoc', 'founder': '@michaeladams', 'society_email': 'Artsoc@kcl.ac.uk',
      'description': 'A creative hub for artists of all skill levels. Join us for painting sessions, sculpting workshops, and gallery visits to explore the world of art.',
      'category': 'other', 'paid_membership': False, 'price': '0.0', 'colour1': '#FC8EAC', 'colour2': '#FFD1DC',
      'status': 'approved'},

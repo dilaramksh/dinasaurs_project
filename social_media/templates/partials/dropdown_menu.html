@@ -1,7 +1,12 @@
 <div class="nav-item dropdown d-flex align-items-center">
     <div class="d-flex align-items-center px-2">
-        <img src="https://www.gravatar.com/avatar/{{ user.gravatar_hash }}?s=200&d=identicon" 
-        alt="Profile Picture" class="rounded-circle border" width="30" height="30">
+        {% if user.profile_picture %}
+            <img src="{{ user.profile_picture.url }}" 
+            alt="Profile Picture" class="gravatar rounded-circle border" width="30" height="30">
+        {% else %}
+            <img src="https://hive-society.s3.amazonaws.com/profile_pictures/default-user.jpg" 
+            alt="Profile Picture" class="gravatar rounded-circle border" width="30" height="30">
+        {% endif %}
         <span class="fw-bold ms-2">{{ user.username }}</span>
     </div>
     <button type="button" class="btn border-0 dropdown-toggle dropdown-toggle-split" id="societyDropdown" data-bs-toggle="dropdown" aria-expanded="false">
