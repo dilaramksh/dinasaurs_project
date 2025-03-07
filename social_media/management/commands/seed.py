@@ -13,6 +13,8 @@ user_fixtures = [
     {'first_name':'pauline', 'last_name':'poe', 'username':'@paulinepoe', 'email':'paulinepoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
 ]
 
+# TO DO create uni_admin for each university
+
 university_fixtures = [
 
         {"name": "King's College London", "domain": "kcl.ac.uk"},
@@ -21,22 +23,6 @@ university_fixtures = [
         {"name": "London School of Economics", "domain": "lse.ac.uk"},
         {"name": "University of Oxford", "domain": "ox.ac.uk"},
 ]
-
-
-events_participant_fixtures = [
-    {'event': 'hackathon', 'membership': 'computingsoc_member1'},
-    {'event': 'AI workshop', 'membership': 'computingsoc_member2'},
-    {'event': 'coding challenge', 'membership': 'computingsoc_member3'},
-
-    {'event': 'painting', 'membership': 'artsoc_member1'},
-    {'event': 'sculpting workshop', 'membership': 'artsoc_member2'},
-    {'event': 'gallery visit', 'membership': 'artsoc_member3'},
-
-    {'event': 'gaming night', 'membership': 'gamesoc_member1'},
-    {'event': 'board games evening', 'membership': 'gamesoc_member2'},
-    {'event': 'esports tournament', 'membership': 'gamesoc_member3'},
-]
-
 
 categories = [ 'cultural', 'academic_career', 'faith', 'political', 'sports', 'volunteering', 'other']
 
@@ -190,12 +176,11 @@ class Command(BaseCommand):
     def __init__(self):
         super().__init__()
         self.generated_students = []
-        # generated others
-        # generated all
-        self.generated_memberships = []
+        self.generated_users = []
+        self.generated_universities = []
         self.generated_societies = []
         self.generated_society_roles = []
-        self.generated_universities = []
+        self.generated_memberships = []
         self.generated_events = []
         self.faker = Faker('en_GB')
 
@@ -203,7 +188,7 @@ class Command(BaseCommand):
         self.stdout.write('\nStarting the seeding process...')
         self.clear_data()
         self.create_universities()
-        self.create_students()
+        self.create_users()
         self.create_categories()
         self.create_societies()
         self.create_society_roles()
@@ -219,8 +204,13 @@ class Command(BaseCommand):
         self.stdout.write('Existing data cleared.\n')
 
 
+
+
     # Seed Students via Faker
-    def create_students(self):
+    def create_users(self):
+        self.stdout.write('Creating Users')
+        self.generate_user_fixtures()
+        self.stdout.write('User creation completed.')
         self.stdout.write('Creating RANDOM students...')
         self.generate_students()
         self.stdout.write('Random students creation completed.')
@@ -249,6 +239,15 @@ class Command(BaseCommand):
         end_date='2023-06-05' # TO DO: randomise
         data = {'first_name':first_name, 'last_name':last_name, 'user_type':user_type, 'university':university, 'username':username, 'email':email, 'start_date':start_date, 'end_date':end_date}
         return data
+
+    # Seed User Fixtures
+    def generate_user_fixtures(self):
+        for data in user_fixtures:
+            self.stdout.write(f"Creating user: {data['username']} of type {data['user_type']}")
+            created_user = self.try_create_user(data)
+            if created_user:
+                self.generated_users.append(created_user)
+        self.stdout.write(f"Generated users: {[user.username for user in self.generated_users]}")
 
     def try_create_user(self, data):
         try:
@@ -288,7 +287,6 @@ class Command(BaseCommand):
         self.generated_students.append(user)
         self.stdout.write(f"Created user: {user.username} ({user.user_type})")
         return user
-
 
 
     # Seed Universities
@@ -532,7 +530,7 @@ class Command(BaseCommand):
         return event
 
 
-    #EventsParticipant
+    # Seed EventsParticipant
     def create_events_participants(self):
         self.stdout.write('Adding event participants...')
         self.generate_events_participant_fixtures()
