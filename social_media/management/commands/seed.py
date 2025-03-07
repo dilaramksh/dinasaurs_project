@@ -272,13 +272,6 @@ class Command(BaseCommand):
             self.stdout.write(f"User with email {data['email']} already exists.")
             return None
 
-        '''category_name = society_category_mapping.get(name, 'other')
-
-        try:
-            category = Category.objects.get(name=category_name)
-        except Category.DoesNotExist:
-            self.stdout.write(f"Category '{category_name}' does not exist.")
-            category = Category.objects.create(name=category_name)'''
 
         universities = University.objects.all()
         if not universities.exists():
@@ -480,7 +473,7 @@ class Command(BaseCommand):
 
         existing_membership = Membership.objects.filter(
             user=user ,
-            society=society, 
+            society=society,
             society_role=society_role,
         ).first()
 
