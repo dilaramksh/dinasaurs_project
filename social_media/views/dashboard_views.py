@@ -42,7 +42,7 @@ def dashboard(request):
 
         template = "student/student_dashboard.html"
     else:
-        template = 'student/student_dashboard.html'
+        template = 'student/student_dashboard.html' # ???
     
     return render(request, template, context)
 
