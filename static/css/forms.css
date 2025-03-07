@@ -78,20 +78,4 @@ h1, h2 {
     padding: 0;
 }
 
-/* Form section */
-.card .form-group {
-    margin-bottom: 20px;
-}
-
-.card .form-group label {
-    font-weight: bold;
-    color: #5c3b00;
-}
-
-.card .form-control {
-    border-radius: 8px;
-    background-color: #fff;
-    color: #5c3b00;
-    transition: 0.3s ease-in-out;
-}
 
