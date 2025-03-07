@@ -14,6 +14,7 @@ user_fixtures = [
 
 user_universities_mapping = {}
 
+
 # TO DO create uni_admin for each university
 
 university_fixtures = [
@@ -226,7 +227,7 @@ class Command(BaseCommand):
         universities = University.objects.all()
         if not universities.exists():
             raise ValueError("No universities found.")
-        university = random.choice(universities) #???
+        university = universities.get(name="King's College London")
 
         first_name = self.faker.first_name()
         last_name = self.faker.last_name()
@@ -295,7 +296,7 @@ class Command(BaseCommand):
         self.stdout.write(f"Created user: {user.username} ({user.user_type})")
         return user
 
-    '''def create_students(self):'''
+    # TO DO: create admins
 
     # Seed Universities
     def create_universities(self):
