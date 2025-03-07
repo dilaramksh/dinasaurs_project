@@ -68,6 +68,9 @@ urlpatterns = [
     path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
 
+    #university paths
+    path("university/dashboard/change_status/<int:society_id>/", change_society_status, name="change_society_status"),
+  
     #super-admin paths
     path('super_admin/dashboard', super_admin_dashboard, name='super_admin_dashboard'),
     path('super_admin/requests', university_requests, name='university_requests'),

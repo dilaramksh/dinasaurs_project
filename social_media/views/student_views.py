@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from social_media.forms.society_creation_form import SocietyCreationForm
 from django.shortcuts import HttpResponse
 from social_media.models import Category
+from django.shortcuts import get_object_or_404
 
 
 #to do: add login required
@@ -67,7 +68,7 @@ def society_creation_request(request):
             society.founder = request.user
             society.save()
             messages.success(request, "Your society request has been submitted for approval.")
-            return redirect("student_dashboard") 
+            return redirect("dashboard") 
         else:                  
             messages.error(request, "There was an error with your request submission. Please try again.")
     
