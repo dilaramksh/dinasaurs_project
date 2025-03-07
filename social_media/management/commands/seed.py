@@ -9,9 +9,10 @@ user_fixtures = [
 
     {'first_name':'john', 'last_name':'doe', 'username':'@johndoe', 'email':'johndoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2023-09-23', 'end_date':'2026-05-06'},
     {'first_name':'jane', 'last_name':'doe', 'username':'@janedoe', 'email':'janedoe@kcl.ac.uk', 'user_type':'student', 'university':"King's College London", 'start_date':'2022-09-24', 'end_date':'2025-05-07'},
-    {'first_name':'paul', 'last_name':'poe', 'username':'@paulpoe', 'email':'paulpoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
-    {'first_name':'pauline', 'last_name':'poe', 'username':'@paulinepoe', 'email':'paulinepoe@kcl.ac.uk', 'user_type':'uni_admin', 'university':"King's College London", 'start_date': '1864-01-01', 'end_date':'2025-01-01'},
+
 ]
+
+user_universities_mapping = {}
 
 # TO DO create uni_admin for each university
 
@@ -204,8 +205,6 @@ class Command(BaseCommand):
         self.stdout.write('Existing data cleared.\n')
 
 
-
-
     # Seed Students via Faker
     def create_users(self):
         self.stdout.write('Creating Users')
@@ -265,6 +264,14 @@ class Command(BaseCommand):
             self.stdout.write(f"User with email {data['email']} already exists.")
             return None
 
+        '''category_name = society_category_mapping.get(name, 'other')
+
+        try:
+            category = Category.objects.get(name=category_name)
+        except Category.DoesNotExist:
+            self.stdout.write(f"Category '{category_name}' does not exist.")
+            category = Category.objects.create(name=category_name)'''
+
         universities = University.objects.all()
         if not universities.exists():
             raise ValueError("No universities found.")
@@ -288,6 +295,7 @@ class Command(BaseCommand):
         self.stdout.write(f"Created user: {user.username} ({user.user_type})")
         return user
 
+    '''def create_students(self):'''
 
     # Seed Universities
     def create_universities(self):
@@ -356,6 +364,7 @@ class Command(BaseCommand):
         except Exception as e:
             self.stdout.write(f"Error creating society {name}: {str(e)}")
 
+    #TO DO
     def create_society(self, name, category, description):
 
         students = User.objects.all().filter(user_type='student')
