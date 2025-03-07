@@ -39,17 +39,19 @@
                             <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
                                 <h5 class="card-header">📅 Upcoming Events</h5>
                                 <div class="card-body">
-                                    <ul class="list-group list-group-flush">
-                                        {% for event in user_events %}
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <span class="fw-bold">{{ event.name }}</span>
-                                                <span class="text-muted">{{ event.date|date:"F j, Y" }}</span>
-                                                <a href="{% url 'student_events' %}" class="btn">Details</a>
-                                            </li>
-                                        {% empty %}
-                                            <li class="list-group-item text-muted text-center">No upcoming events</li>
-                                        {% endfor %}
-                                    </ul>
+                                    <div class="events-list" style="max-height: 250px; overflow-y: auto;">
+                                        <ul class="list-group list-group-flush">
+                                            {% for event in user_events %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <span class="fw-bold">{{ event.name }}</span>
+                                                    <span class="text-muted">{{ event.date|date:"F j, Y" }}</span>
+                                                    <a href="{% url 'student_events' %}" class="btn">Details</a>
+                                                </li>
+                                            {% empty %}
+                                                <li class="list-group-item text-muted text-center">No upcoming events</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -85,16 +87,18 @@
                         <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
                             <h5 class="card-header">🏅 Your Current Societies</h5>
                             <div class="card-body">
-                                <div class="row g-2">
-                                    {% for society_info in user_societies %}
-                                        <div class="col-6">
-                                            <div class="card p-3 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
-                                                <a href="{% url 'student_societies' %}" class="btn btn">
-                                                    🐝{{ society_info.society.name }} - {{ society_info.role }}
-                                                </a>
+                                <div class="societies-list" style="max-height: 300px; overflow-y: auto;">
+                                    <div class="row g-2">
+                                        {% for society_info in user_societies %}
+                                            <div class="col-6">
+                                                <div class="card p-3 text-center border-light shadow-sm" style="background-color: #FFF2CC; transition: all 0.3s ease-in-out;">
+                                                    <a href="{% url 'student_societies' %}" class="btn btn-outline-warning w-100" style="border-radius: 5px;">
+                                                        🐝 {{ society_info.society.name }} - {{ society_info.role }}
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    {% endfor %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
