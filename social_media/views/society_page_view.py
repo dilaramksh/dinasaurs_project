@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from social_media.models import Society, Membership, Event
+from social_media.models.colour_history import SocietyColorHistory
 
 
 #@login_required
@@ -14,7 +15,7 @@ def society_mainpage(request, society_id):
                          if membership.is_committee_member()]
     
     society_events = Event.objects.filter(society=society)
-
+    past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')
     is_committee_member = request.user in committee_members
 
     society_colour1 = society.colour1
@@ -29,6 +30,7 @@ def society_mainpage(request, society_id):
         'society_colour1': society_colour1,
         'society_colour2': society_colour2,
         'is_committee_member': is_committee_member,
+        'past_colors': past_colors, 
 
     }
 
