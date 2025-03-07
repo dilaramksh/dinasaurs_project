@@ -34,7 +34,7 @@
                         <h5 class="card-header bg-warning text-dark">⚠️ Terminate Society</h5>
                         <div class="card-body">
                             <p class="card-text">If necessary, you can request to terminate your society.</p>
-                            <a href="{% url 'terminate_society' %}" class="btn btn-warning">Terminate Society</a>
+                            <a href="{% url 'terminate_society' society.id %}" class="btn btn-warning">Terminate Society</a>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                         <h5 class="card-header bg-warning text-dark">👥 View Society Members</h5>
                         <div class="card-body">
                             <p class="card-text">Check who is part of your society and manage memberships.</p>
-                            <a href="{% url 'view_members' %}" class="btn btn-warning">View Members</a>
+                            <a href="{% url 'view_members' society.id %}"class="btn btn-warning">View Members</a>
                         </div>
                     </div>
                 </div>

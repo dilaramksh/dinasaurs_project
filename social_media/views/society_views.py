@@ -4,7 +4,7 @@ from social_media.forms.event_creation_form import EventCreationForm
 from social_media.forms.post_creation import PostForm  
 from social_media.forms.customise_society import customisationForm 
 from social_media.models.colour_history import SocietyColorHistory
-from social_media.models import Society, Event
+from social_media.models import Society, Event, Membership
 from django.utils.timezone import now
 from datetime import date
 
@@ -32,7 +32,7 @@ def event_creation(request):
 
     return render(request, 'society/event_creation.html', {'form': form})
 
-def terminate_society(request):
+def terminate_society(request, society_id):
     '''society = get_object_or_404(Society, founder=request.user)  
 
     if request.method == "POST":
@@ -42,9 +42,20 @@ def terminate_society(request):
     #return render(request, "terminate_society.html", {"society": society})
     return render(request, "society/terminate_society.html")
 
-def view_members(request):
 
-    return render(request, 'society/view_members.html')
+def view_members(request, society_id):
+ 
+    memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
+    committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
+    
+    all_users = list(set(m.user for m in memberships))
+
+    context = {
+        "committee_members": committee_members,
+        "users": all_users,  
+    }
+    
+    return render(request, "society/view_members.html", context)
 
 def view_upcoming_events(request):
 
