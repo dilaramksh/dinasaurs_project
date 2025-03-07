@@ -1,4 +1,4 @@
-{% extends 'base_content.html' %}
+{% extends 'student/student_base.html' %}
 {% load static %}
 
 {% block title %}Terminate Society{% endblock %}
@@ -14,13 +14,16 @@
                 </div>
 
                 <div class="card-body text-center">
-                    <p class="lead">Are you sure you want to terminate your society?</p>
+                    <p class="lead">Are you sure you want to terminate <strong>{{ society.name }}</strong>?</p>
                     <p class="text-muted">This will delete all associated posts, members, and data permanently.</p>
 
                     <!-- Termination Form -->
                     <form method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-warning btn-lg" onclick="return confirmTermination()">Terminate Society</button>
+                        <button type="submit" class="btn btn-danger btn-lg" onclick="return confirmTermination()">Terminate Society</button>
+                        <a href="{% if society %}{% url 'society_dashboard' society.id %}{% else %}#{% endif %}" class="btn btn-secondary btn-lg">
+                            Cancel
+                        </a>
                     </form>
                 </div>
             </div>
@@ -28,7 +31,10 @@
     </div>
 </div>
 
-
+<!-- Footer -->
+<footer class="text-center text-dark mt-5 py-4" style="background-color: #FFF2CC;">
+    <p class="mb-0">🐝 &copy; {{ year }} HiveSociety | Stay Connected | Contact Us</p>
+</footer>
 
 <!-- JavaScript Confirmation -->
 <script>

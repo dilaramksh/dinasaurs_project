@@ -4,39 +4,25 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.views.generic.edit import UpdateView, FormView
-from social_media.models import User
 from social_media.forms import UserForm, PasswordForm
 from django.contrib.auth import login, logout
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     """Display user profile editing screen, and handle profile modifications."""
 
-    model = User
+    model = UserForm
     template_name = "general/profile.html"
     form_class = UserForm
 
     def get_object(self):
         """Return the user to be updated."""
-        return self.request.user
-    
-    def form_valid(self, form):
-        messages.success(self.request, "Profile updated!")
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        messages.error(self.request, "Please could not be updated")
-        return super().form_invalid(form)
+        user = self.request.user
+        return user
 
     def get_success_url(self):
-        """Return the redirect URL after a successful update."""
-        return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
-
-    """
-    def get_success_url(self):
-        Return redirect URL after successful update.
+        """Return redirect URL after successful update."""
         messages.add_message(self.request, messages.SUCCESS, "Profile updated!")
         return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
-    """
 
 class PasswordView(LoginRequiredMixin, FormView):
     """Display password change screen and handle password change requests."""

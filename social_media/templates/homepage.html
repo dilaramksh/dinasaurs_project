@@ -2,13 +2,12 @@
 {% load static %}
 {% block content %}
 
+
 <!-- Hero Section -->
 <div class="container-fluid text-white text-center py-5" style="background-color: #fabf52;">
     <div class="row justify-content-center align-items-center">
         <div class="col-lg-8">
-            <h1 class="display-3 fw-bold mb-3">
-                🐝 Welcome to Hive Society - Buzz in!🐝
-            </h1>
+            <h1 class="display-3 fw-bold mb-2">Welcome to Hive Society - Buzz in!</h1>
             <p class="lead mb-4">
                 Discover new societies, exciting events, and endless opportunities to connect and grow.
             </p>
@@ -18,38 +17,35 @@
 
 <!-- Features Section -->
 <div class="container py-5">
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm text-center p-4">
+    <div class="row d-flex flex-column align-items-center g-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <i class="fas fa-newspaper fa-3x mb-3" style="color: #ffc533;"></i>
-                    <h3 class="card-title text-dark">Latest News</h3>
-                    <p class="card-text text-muted">Stay updated on new events and societies happening near you.</p>
-                    <a href="{% url 'latest_news' %}" class="btn btn-outline-dark">Read More</a>
+                    <h2 class="card-title" style="color: #ff5733;">Latest News:</h2>
+                    <p class="card-text">New events and societies...</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm text-center p-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <i class="fas fa-university fa-3x mb-3" style="color: #ffc533;"></i>
-                    <h3 class="card-title text-dark">Discover Universities</h3>
-                    <p class="card-text text-muted">Explore different universities and find the best societies for you.</p>
-                    <a href="{% url 'discover_universities' %}" class="btn btn-outline-dark">Explore Now</a>
+                    <h2 class="card-title" style="color: #ff5733;" >Discover Universities</h2>
+                    <p class="card-text">...</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm text-center p-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <i class="fas fa-users fa-3x mb-3" style="color: #ffc533;"></i>
-                    <h3 class="card-title text-dark">Why Join a Society?</h3>
-                    <p class="card-text text-muted">Make new friends, develop skills, and have unforgettable experiences.</p>
-                    <a href="{% url 'why_join_society' %}" class="btn btn-outline-dark">Learn More</a>
+                    <h2 class="card-title" style="color: #ff5733;">Why Join a Society?</h2>
+                    <p class="card-text">...</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<footer class="text-black  text-center py-1" style="background-color: #f2d177;">
+    <p>&copy; 2025 Hive Society. All rights reserved.</p>
+</footer>
 {% endblock %}
