@@ -1,7 +1,8 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from social_media.helpers import login_prohibited
 from django.contrib import messages
 from social_media.forms.university_creation_form import UniversityCreationForm
+from social_media.models import University
 
 DEFAULT_UNIVERSITY_LOGO = "university_logos/default.png"
 
@@ -10,7 +11,8 @@ def homepage(request):
     return render(request, 'homepage.html')
 
 def discover_universities(request):
-    return render(request, 'homepage/discover_universities.html')
+    universities = University.objects.filter(status='approved')
+    return render(request, 'homepage/discover_universities.html',{'universities': universities})
 
 def why_join_society(request):
     return render(request, 'homepage/why_join_society.html')
