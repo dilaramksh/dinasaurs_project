@@ -1,40 +1,49 @@
 {% extends 'student/student_base.html' %}
 {% load static %}
 
-{% block title %}Student Homepage{% endblock %}
+{% block title %}Student Societies{% endblock %}
 
 {% block content %}
-    <body>
-        <title>Student Societies</title>
-            <div class="container" style="position: relative">
-                <div class="dropdown-container" style="position: absolute; top: 20px; right: 25px;">
-                    <form method="GET" action="{% url 'student_societies' %}">
-                        <div class="mb-3">
-                            <label for="societySelect" class="form-label" style="font-size: 14px;">Select a Society:</label>
-                            <select id="societySelect" name="society_id" class="form-select form-select-sm" style="width: 200px; font-size: 14px;">
-                                <option value="" disabled selected>Select a society</option>
-                                {% for society in user_societies %}
-                                    <option value="{{ society.id }}">{{ society.name }}</option>
-                                {% empty %}
-                                    <option value="" disabled>No societies found</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-warning btn-sm">View</button>
-                    </form>
+    <div class="container">
+        <div class="dropdown-container" style="position: absolute; top: 20px; right: 25px;">
+            <form method="GET" action="{% url 'student_societies' %}">
+                <div class="mb-3">
+                    <label for="societySelect" class="form-label" style="font-size: 14px;">Select a Society:</label>
+                    <select id="societySelect" name="society_id" class="form-select form-select-sm" style="width: 200px; font-size: 14px;">
+                        <option value="" disabled selected>Select a society</option>
+                        {% for society in user_societies %}
+                            <option value="{{ society.id }}" {% if selected_society and selected_society.id == society.id %} selected {% endif %}>
+                                {{ society.name }}
+                            </option>
+                        {% empty %}
+                            <option value="" disabled>No societies found</option>
+                        {% endfor %}
+                    </select>
                 </div>
-            </div>
-            {% if selected_society %}
-    <h3>{{ selected_society.name }}</h3>
-    <p><i>{{ selected_society.description }}</i></p>
-    <p><strong>Email:</strong> {{ selected_society.society_email }}</p>
-    <p><strong>Founded by:</strong> {{ selected_society.founder }}</p>
-    <p><strong>Category:</strong> {{ selected_society.category }}</p>
-    <p><strong>Committee Members:</strong></p>
-    <p><strong>Paid Membership:</strong> {{ selected_society.paid_membership }}</p>
-    {% else %}
-        <p class="text-muted text-center">Please select a society to view details.</p>
-    {% endif %}
+                <button type="submit" class="btn btn-warning btn-sm">View</button>
+            </form>
+        </div>
 
-    </body>
+        {% if selected_society %}
+            <h3>{{ selected_society.name }}</h3>
+            <p><i>{{ selected_society.description }}</i></p>
+            <p><strong>Email:</strong> {{ selected_society.society_email }}</p>
+            <p><strong>Founded by:</strong> {{ selected_society.founder }}</p>
+            <p><strong>Category:</strong> {{ selected_society.category }}</p>
+            <p><strong>Paid Membership:</strong> {{ selected_society.paid_membership }}</p>
+
+            <h4>Committee Members:</h4>
+            {% if committee_members %}
+                <ul>
+                    {% for member in committee_members %}
+                        <li>{{ member.get_full_name }}</li>  
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No committee members found for this society.</p>
+            {% endif %}
+        {% else %}
+            <p class="text-muted text-center">Please select a society to view details.</p>
+        {% endif %}
+    </div>
 {% endblock %}

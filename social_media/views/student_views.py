@@ -26,6 +26,9 @@ def student_dashboard(request):
         'user_events': events,
     })
 
+
+
+
 #@login_required
 def help(request):
     return render(request, 'help.html')
