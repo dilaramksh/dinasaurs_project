@@ -107,23 +107,7 @@
                         </div>
                     </div>
 
-                    <!-- Submit a Question Section -->
-                    <div class="mt-4 p-3 bg-light rounded">
-                        <h6 class="text-primary">Have a question? Submit it here:</h6>
-                        <form method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="student" value="{{ request.user.id }}">
-                            <div class="mb-3">
-                                <label for="subject" class="form-label">Subject</label>
-                                <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter the subject of your question" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="content" class="form-label">Your Question</label>
-                                <textarea class="form-control" id="content" name="content" rows="5" placeholder="Type your question here" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-warning">Submit Question</button>
-                        </form>
-                    </div>
+                    
                     <!-- Contact Support -->
                     <div class="mt-4 p-3 text-center bg-light rounded">
                         <h6 class="text-primary">Still need help? Reach out to us:</h6>
