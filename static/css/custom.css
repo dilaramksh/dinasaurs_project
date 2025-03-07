@@ -91,6 +91,7 @@ ul.errorlist {
 /*
  * Navbar
  */
+
 .navbar .navbar-nav .nav-link i {
   color: #FFC107;
   font-size: 1.5rem; 
@@ -101,8 +102,24 @@ ul.errorlist {
   color: #E6A500; 
 }
 
+#dashboardDropdown i {
+  color: #FFC107;
+  font-size: 1.5rem; 
+}
+
+/*
+ * Toggle
+ */
+.position-absolute-toggle {
+  position: absolute;
+  top: 90px; /* Adjust this value to match your navbar height */
+  left: 40px;
+  z-index: 1000; /* Ensure it's above other content but below the navbar */
+}
+
+
 /* 
- * Dropdown
+ * Profile Custom Dropdown
  */
 .custom-dropdown {
   background-color: #fdf2cf;
@@ -116,16 +133,55 @@ ul.errorlist {
 
 .custom-dropdown .dropdown-item:hover {
   background-color: #e3d7b5;
+  color: #5c3b00
 }
 
 .custom-dropdown .dropdown-divider {
   border-top: 1px solid #5c3b00;
 }
 
-.dropdown-submenu:hover .dropdown-menu {
+.custom-dropdown .dropdown-item.active,
+.custom-dropdown .dropdown-item:active {
+  background-color: #f9db60 !important; 
+  color: #5c3b00 !important;
+  font-weight: bold;
+  border-left: 3px solid #a37000 !important;
+}
+.custom-dropdown .dashboard-link {
+  color: #000;  
+  font-weight: normal;
   display: block;
-  margin-left: 100%;
-  top: 0;
+}
+
+.custom-dropdown .dashboard-link:hover {
+  background-color: #e3d7b5 !important;
+  color: #5c3b00 !important;
+}
+
+/* 
+ * Dropdown Menu 
+ */
+
+.dropdown-menu  {
+  background-color: #fdf2cf;
+}
+
+.dropdown-menu .dropdown-item.active {
+  background-color: #f9db60 !important; 
+  color: #5c3b00 !important;
+  font-weight: bold;
+  border-left: 3px solid #a37000 !important;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #e3d7b5;
+  color: #5c3b00
+}
+
+.dropdown-menu .dropdown-item {
+  padding: 8px 15px;
+  color: #333; 
+  transition: background-color 0.2s ease-in-out;
 }
 
 /*

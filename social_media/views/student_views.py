@@ -17,6 +17,8 @@ from django.shortcuts import get_object_or_404
 def student_dashboard(request):
     student = request.user
 
+    user_type = student.user_type
+
     memberships = Membership.objects.filter(user=student)
     user_societies = [membership.society_role.society for membership in memberships]
     print("User Societies:", user_societies)  # Debugging print
@@ -34,7 +36,8 @@ def student_dashboard(request):
     return render(request, 'student/student_dashboard.html', {
         'student': student,
         'user_societies': user_societies,
-        'user_events': events
+        'user_events': events,
+        'user_type': user_type
     })
 
 #Views for pages from dropdown menu in Student Navbar

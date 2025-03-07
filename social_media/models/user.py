@@ -39,6 +39,8 @@ class User(AbstractUser):
         self.delete_old_picture() 
         if not self.username:  # Automatically set username to email if not provided
             self.username = self.email
+        self.first_name = self.first_name.title()
+        self.last_name = self.last_name.title()
         super().save(*args, **kwargs)
     
 

@@ -35,6 +35,7 @@ urlpatterns = [
     path('log_out/', log_out, name='log_out'),
     
     path('dashboard/', dashboard, name='dashboard'),
+    path('student-dashboard/', get_student_dashboard, name='to_student_dashboard'),
     path('password/', PasswordView.as_view(), name='password'),
     path('profile/', ProfileUpdateView.as_view(), name='profile'),
 
@@ -59,9 +60,9 @@ urlpatterns = [
     path('student/memberships/', view_memberships, name='view_memberships'),
 
     #society paths
-    path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
+    path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'), #name different
     #path('society/dashboard/', society_dashboard, name='society_dashboard'),
-    path('society/create_event/', event_creation, name='create_event'),
+    path('society/<int:society_id>/create_event/', event_creation, name='create_event'), # name different from view name should change
     path('society/create_post/', create_post, name='create_post'),
     path('society/terminate_society/', terminate_society, name='terminate_society'),
     path('society/view_members/', view_members, name='view_members'),
