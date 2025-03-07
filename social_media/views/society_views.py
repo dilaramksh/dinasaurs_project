@@ -7,12 +7,9 @@ from social_media.models.colour_history import SocietyColorHistory
 from social_media.models import Society, Event, Membership
 from django.utils.timezone import now
 from datetime import date
+from social_media.helpers import redirect_to_society_dashboard 
 
 
-#@login_required
-def society_dashboard(request):
-
-    return render(request, 'society/society_dashboard.html')
 
 def event_creation(request):
     
@@ -23,7 +20,7 @@ def event_creation(request):
             
             event.save()
             messages.success(request, "Your event has been created.")
-            return redirect("society_dashboard") 
+            return redirect_to_society_dashboard(request)
         else:                  
             messages.error(request, "There was an error with your submission. Please try again.")
     
@@ -70,7 +67,7 @@ def create_post(request):
             post.author = request.user  
             post.save()
             messages.success(request, "Post created successfully!")  
-            return redirect("society_dashboard") 
+            return redirect_to_society_dashboard(request)
         else:
             messages.error(request, "Error in post creation. Please check the form.")
         

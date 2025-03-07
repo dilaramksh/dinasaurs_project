@@ -18,26 +18,7 @@
             <div class="row">
                 <!-- Profile Section -->
                 <div class="col-md-3">
-                    <div class="card text-center p-4 border-warning shadow-sm" style="min-height: 100%;">
-                        <h5 class="card-header">🐝 Your Profile Details</h5>
-                        <div class="card-body">
-                            {% if user.profile_picture %}
-                                <img src="{{ user.profile_picture.url }}" 
-                                    class="img-fluid rounded-circle mb-3" 
-                                    alt="Profile Picture">
-                            {% else %}
-                                <img src="https://hive-society.s3.amazonaws.com/profile_pictures/default-user.jpg" 
-                                    class="img-fluid rounded-circle mb-3" 
-                                    alt="Default Profile Picture">
-                            {% endif %}
-                            <h6>{{ user.full_name }}</h6>
-                            <hr>
-                            <p><strong>Email:</strong> {{ user.email }}</p>
-                            <p><strong>University:</strong> {{ user.university }}</p>
-                            <p><strong>Start Date:</strong> {{ user.start_date }}</p>
-                            <p><strong>Graduation Date:</strong> {{ user.end_date }}</p>
-                        </div>
-                    </div>
+                    {% include 'partials/profile_card.html' %}
                 </div>
                 
                 <!-- Main Content -->

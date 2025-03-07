@@ -36,6 +36,7 @@ urlpatterns = [
     path('log_out/', log_out, name='log_out'),
     
     path('dashboard/', dashboard, name='dashboard'),
+    path('student-dashboard/', get_student_dashboard, name='to_student_dashboard'),
     path('password/', PasswordView.as_view(), name='password'),
     path('profile/', ProfileUpdateView.as_view(), name='profile'),
     path('help/', help_page, name='help'),

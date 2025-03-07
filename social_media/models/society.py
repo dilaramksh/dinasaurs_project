@@ -47,6 +47,10 @@ class Society(models.Model):
             if self.price <= 0:
                 raise ValidationError("Price must be greater than zero for a paid membership.")
     
+    def save(self, *args, **kwargs):
+        self.name = self.name.title()  # Capitalize the name before saving
+        super().save(*args, **kwargs)
+    
     def approve(self):
         """Approve the society."""
         self.status = "approved"
@@ -58,4 +62,4 @@ class Society(models.Model):
         self.save()
 
     def __str__(self):
-        return self.name
+        return self.name.title()
