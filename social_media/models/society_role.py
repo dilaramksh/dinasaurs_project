@@ -12,6 +12,8 @@ class SocietyRole(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["society", "role_name"], name="unique_society_role")
         ]
-       
 
-    
+    def is_committee_role(self):
+        """Determine if the role is a committee role."""
+        # Change to standard member in seeder?
+        return self.role_name.lower() not in ["member", "standard member"]
