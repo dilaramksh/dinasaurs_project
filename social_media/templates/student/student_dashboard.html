@@ -81,37 +81,27 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                                <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
-                                    <h5 class="card-header">🏅 Your Current Societies</h5>
-                                    <div class="card-body">
-                                        <div class="row g-2">
-                                            {% for society in user_societies %}
-                                                {% if society.societyrole_set.all %}
-                                                    <div class="col-6">
-                                                        <div class="card p-3 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
-                                                            <a href="{% url 'student_societies' %}" class="btn btn">
-                                                                🐝{{ society.name }} -
-                                                                {% for role in society.societyrole_set.all %}
-                                                                    {{ role.role_name }}
-                                                                {% endfor %}
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                {% else %}
-                                                    <p class="text-muted text-center">You are not part of any societies yet.</p>
-                                                {% endif %}
-                                            {% empty %}
-                                                <p class="text-muted text-center">You are not part of any societies yet.</p>
-                                            {% endfor %}
+                     <div class="col-md-6">
+                        <div class="card border-warning shadow-sm p-3" style="min-height: 250px;">
+                            <h5 class="card-header">🏅 Your Current Societies</h5>
+                            <div class="card-body">
+                                <div class="row g-2">
+                                    {% for society_info in user_societies %}
+                                        <div class="col-6">
+                                            <div class="card p-3 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
+                                                <a href="{% url 'student_societies' %}" class="btn btn">
+                                                    🐝{{ society_info.society.name }} - {{ society_info.role }}
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
 
         <!-- Footer -->

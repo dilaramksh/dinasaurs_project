@@ -7,22 +7,26 @@ from django.shortcuts import render, get_object_or_404
 
 
 #@user_type_required('student')
-@login_required
 def dashboard(request):
-    """Display the current user's dashboard."""
     student = request.user
     memberships = Membership.objects.filter(user=student)
-    user_societies = [membership.society_role.society for membership in memberships]
-    user_events = Event.objects.filter(society__in=user_societies)
-    society_roles = SocietyRole.objects.filter(society__in=user_societies)
+
+    user_societies = []
+    for membership in memberships:
+        society = membership.society_role.society
+        role_name = membership.society_role.role_name
+        user_societies.append({
+            'society': society,
+            'role': role_name
+        })
+    
+    events = Event.objects.filter(society__in=[membership.society_role.society for membership in memberships])
 
     return render(request, 'student/student_dashboard.html', {
         'student': student,
         'user_societies': user_societies,
-        'user_events': user_events,
-        'society_roles':society_roles,
+        'user_events': events,
     })
-
 
 
 def student_societies(request):

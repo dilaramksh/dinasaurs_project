@@ -25,22 +25,16 @@
                 </div>
             </div>
             {% if selected_society %}
-                <h3>{{ selected_society.name }}</h3>
-                <p><i>{{ selected_society.description }}</i></p>
-                <p><strong>Email:</strong> {{ selected_society.society_email }}</p>
-                <p><strong>Founded by:</strong> {{ selected_society.founder }}</p>
-                <p><strong>Category:</strong> {{ selected_society.category }}</p>
-                <p><strong>Committee Members:</strong></p>
-                <p><strong>Paid Membership:</strong> {{ selected_society.paid_membership }}</p>
-                <p><strong>Your Roles:</strong><ul>
-                    {% for role in society_roles %}
-                        <li>{{ role.role_name }}</li>
-                    {% empty %}
-                        <li>You do not have any roles in this society.</li>
-                    {% endfor %}
-                </ul></p>
-            {% else %}
-                <p class="text-muted text-center">Please select a society to view details.</p>
-            {% endif %}
+    <h3>{{ selected_society.name }}</h3>
+    <p><i>{{ selected_society.description }}</i></p>
+    <p><strong>Email:</strong> {{ selected_society.society_email }}</p>
+    <p><strong>Founded by:</strong> {{ selected_society.founder }}</p>
+    <p><strong>Category:</strong> {{ selected_society.category }}</p>
+    <p><strong>Committee Members:</strong></p>
+    <p><strong>Paid Membership:</strong> {{ selected_society.paid_membership }}</p>
+    {% else %}
+        <p class="text-muted text-center">Please select a society to view details.</p>
+    {% endif %}
+
     </body>
 {% endblock %}
