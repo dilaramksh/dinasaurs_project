@@ -2,7 +2,7 @@ from social_media.decorators import user_type_required
 from social_media.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from social_media.forms.society_creation_form import SocietyCreationForm
 from django.shortcuts import HttpResponse
 from social_media.models import Category
@@ -38,8 +38,8 @@ def student_dashboard(request):
 
 #Views for pages from dropdown menu in Student Navbar
 #@login_required
-def help(request):
-    return render(request, 'help.html')
+def help_page(request):
+    return render(request, "partials/footer/help.html")
 
 #@login_required
 def features(request):

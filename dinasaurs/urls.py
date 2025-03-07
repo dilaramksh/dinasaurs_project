@@ -22,6 +22,7 @@ from social_media.views import *
 
 # import below this line should not be necessary -- add view to init.py
 from social_media.views.society_views import *
+from social_media.views.student_views import *
 from social_media.views.super_admin_views import *
 from social_media.views.footer_view import *
 from social_media.views.homepage_view import *
@@ -38,6 +39,7 @@ urlpatterns = [
     path('student-dashboard/', get_student_dashboard, name='to_student_dashboard'),
     path('password/', PasswordView.as_view(), name='password'),
     path('profile/', ProfileUpdateView.as_view(), name='profile'),
+    path('help/', help_page, name='help'),
 
     #homepage paths 
     path('', homepage, name='homepage'),
@@ -49,6 +51,7 @@ urlpatterns = [
     #footer path 
     path('stay_connected/', stay_connected, name='stay_connected'),
     path('contact_us/', contact_us, name='contact_us'),
+    path('partials/footer/privacy_policy/', privacy_policy, name='privacy_policy'),
 
     #student paths
     #path('student/dashboard/', student_dashboard, name='student_dashboard'),
@@ -61,13 +64,14 @@ urlpatterns = [
 
     #society paths
     path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
-    #path('society/dashboard/', society_dashboard, name='society_dashboard'),
     path('society/create_event/', event_creation, name='create_event'),
     path('society/create_post/', create_post, name='create_post'),
-    path('society/terminate_society/', terminate_society, name='terminate_society'),
-    path('society/view_members/', view_members, name='view_members'),
+    path('society/<int:society_id>/terminate_society/', terminate_society, name='terminate_society'),
+    path('society/<int:society_id>/view_members/', view_members, name='view_members'),
     path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
+    path("society/<int:society_id>/customise-society/", customise_society_view, name="customise_society"),
+    path("society/<int:society_id>/update-customise-society/", update_society_colors, name="update_customise_society"),
 
     #super-admin paths
     path('super_admin/dashboard', super_admin_dashboard, name='super_admin_dashboard'),
