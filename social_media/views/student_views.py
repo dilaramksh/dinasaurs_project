@@ -1,29 +1,38 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from social_media.decorators import user_type_required
 from social_media.models import *
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from social_media.decorators import user_type_required
-from social_media.models import User
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from social_media.forms.society_creation_form import SocietyCreationForm
+from django.shortcuts import HttpResponse
+from django.shortcuts import get_object_or_404
 
+#to do: add login required
+#to do: add user type required
 
-#Views for pages from dropdown menu in Student Navbar
-
-
-#REDUNDANT
+@user_type_required('student')
+@login_required
 def student_dashboard(request):
     student = request.user
+
     memberships = Membership.objects.filter(user=student)
     user_societies = [membership.society_role.society for membership in memberships]
+    print("User Societies:", user_societies)  # Debugging print
+
     events = Event.objects.filter(society__in=user_societies)
+    print("Events:", events)  # Debugging print
+
+    if not memberships:
+        print("No memberships found for this user")
+    if not user_societies:
+        print("No societies found for this user")
+    if not events:
+        print("No events found for this user")
+
     return render(request, 'student/student_dashboard.html', {
         'student': student,
         'user_societies': user_societies,
-        'user_events': events,
+        'user_events': events
     })
 
 
@@ -40,7 +49,6 @@ def features(request):
 #@login_required
 def pricing(request):
     return render(request, 'pricing.html')
-
 
 #@user_type_required('student')
 #@login_required
@@ -69,9 +77,6 @@ def society_creation_request(request):
 
     return render(request, 'student/submit_society_request.html', {'form': form})
 
-from django.shortcuts import HttpResponse
-from social_media.models import Category
-
 def create_temp_category(request):
     """View to create a temporary category for testing."""
     temp_category, created = Category.objects.get_or_create(name="Temporary Category")
@@ -84,3 +89,39 @@ def create_temp_category(request):
 def view_societies(request):
     return render(request, 'student/view_societies.html')
 
+def student_societies(request):
+    student = request.user
+
+    memberships = Membership.objects.filter(user=student)
+    user_societies = [membership.society_role.society for membership in memberships]
+    selected_society = None
+
+    if request.method == 'GET' and 'society_id' in request.GET:
+        society_id = request.GET['society_id']
+        selected_society = get_object_or_404(Society, id=society_id)
+        if selected_society not in user_societies:
+            selected_society = None
+
+    if selected_society:
+        society_roles = SocietyRole.objects.filter(society=selected_society)
+    else:
+        society_roles = SocietyRole.objects.filter(society__in=user_societies)
+
+    return render(request, 'student/student_societies.html', {
+        'student': student,
+        'user_societies': user_societies,
+        'selected_society': selected_society,
+        'society_roles': society_roles
+    })
+
+def student_events(request):
+    student = request.user
+    memberships = Membership.objects.filter(user=student)
+    user_societies = [membership.society_role.society for membership in memberships]
+    user_events = Event.objects.filter(society__in=user_societies)
+
+    return render(request, 'student/student_events.html', {
+        'student': student,
+        'user_societies': user_societies,
+        'user_events': user_events,
+    })

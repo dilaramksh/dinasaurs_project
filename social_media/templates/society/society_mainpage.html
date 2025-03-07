@@ -1,0 +1,174 @@
+{% extends 'base_content.html' %}
+{% load static %}
+
+{% block title %}Society Mainpage{% endblock %}
+{% block extra_head %}
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: {{ society_colour1 }} !important;
+            font-family: 'Rubik', sans-serif; /* being overridden */
+        }
+
+        .nav-items {
+            margin-right: 15px;
+        }
+        
+        .nav-link {
+            font-size: 16px;
+            color: black;
+        }
+
+        .society-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-left: 10px;
+        }
+        
+        header {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 0;
+            text-align: center;
+            background-color: {{ society_colour2 }};
+        }
+
+        header .society-name {
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            padding-top: 10px;
+        }
+        
+        
+        section {
+            padding: 40px 20px;
+        }
+
+        section h1 {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        section p {
+            font-size: 20px;
+        }
+        
+        .event-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        .card {
+            border-radius: 10px;
+            background-color: {{ society_colour2 }};
+            width: calc(33% - 20px);
+        }
+    </style>
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-white" style="padding: 10px 15px;">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'dashboard' %}">
+                <img src="{% static 'images/Logo.png' %}" alt="Logo" style="height: 60px; width: auto;">
+                <span class="society-name ms-2">{{ society.name }}</span>
+            </a>
+            {% if user.is_authenticated %}
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <a class="nav-item nav-link active" href="{% url 'dashboard' %}">
+                            <i class="fas fa-home fa-lg"></i>
+                        </a>
+                        <a class="nav-item nav-link" href="#">
+                            <i class="fas fa-compass fa-lg"></i>
+                        </a>
+                    </ul>
+                </div>
+            {% endif %}
+        
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#committee">Meet the Committee</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#events">Events</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <body>
+        <header>
+            <!-- Society Logo -->
+            <a class="navbar-brand">
+                <img src="https://www.gravatar.com/avatar/{{ member.gravatar_hash }}?s=100&d=identicon"
+                     class="img-fluid rounded-circle mb-0"
+                     alt="society logo"
+                     style="height: 100px; width: 100px;">
+            </a>
+
+            <!-- Society Name -->
+            <div class="society-name">{{ society.name }}</div>
+        </header>
+
+        <!-- Sections -->
+        <section id="about" style="color: white;">
+            <h1 class="text-center mb-5">About</h1>
+            <p class="text-center">{{ society.description }}</p>
+        </section>
+
+        <section id="committee" style="color: white;">
+            <h1 class="text-center mb-5">Meet the Committee</h1>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                {% for member in committee_members %}
+                <div style="text-align: center; padding: 10px; border: 1px solid #ddd; border-radius: 10px;">
+                    <strong>{{ member.membership_set.first.society_role.role_name }}</strong><br>
+                    <img src="https://www.gravatar.com/avatar/{{ member.gravatar_hash }}?s=100&d=identicon"
+                        alt="Profile Picture" class="gravatar" width="60" height="60" style="border-radius: 50%; margin: 10px 0;">
+                    <p>{{ member.get_full_name }}</p>
+                </div>
+                {% empty %}
+                <p>No committee members found.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="events" style="color: white;">
+            <h1 class="text-center mb-5">Events</h1>
+            {% if society_events %}
+                <div class="event-cards-container">
+                    {% for event in society_events %}
+                        <div class="card shadow-lg mb-4">
+                            <div class="card-body">
+                                <img src="{{ 'https://placecats.com/millie/300/150' }}" class="img-fluid rounded mb-3" alt="Event Image">
+                                <h5 class="card-title">{{ event.name }}</h5>
+                                <p class="card-text">{{ event.date }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-center" style="font-size: 18px; color: #ddd;">No events available.</p>
+            {% endif %}
+        </section>
+    </body>
+{% endblock %}
