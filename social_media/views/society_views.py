@@ -11,13 +11,14 @@ from social_media.helpers import redirect_to_society_dashboard
 
 
 
-def event_creation(request):
-    
+def event_creation(request, society_id):
+
+    society = get_object_or_404(Society, pk=society_id)
     if request.method == 'POST':
         form = EventCreationForm(request.POST)
         if form.is_valid():
             event = form.save(commit=False)
-            
+            event.society = society
             event.save()
             messages.success(request, "Your event has been created.")
             return redirect_to_society_dashboard(request)
@@ -54,8 +55,8 @@ def view_members(request, society_id):
     
     return render(request, "society/view_members.html", context)
 
-def view_upcoming_events(request):
-
+def view_upcoming_events(request, society_id):
+    society = get_object_or_404(Society, pk=society_id)
     events = Event.objects.filter(date__gte=date.today()).order_by("date")
     return render(request, 'society/view_upcoming_events.html', {'events': events})
 

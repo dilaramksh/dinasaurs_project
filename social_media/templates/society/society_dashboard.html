@@ -32,7 +32,7 @@
                         <h5 class="card-header bg-warning text-dark">📅 Create an Event</h5>
                         <div class="card-body">
                             <p class="card-text">Schedule events for your society and invite members to join.</p>
-                            <a href="{% url 'create_event' %}" class="btn btn-warning">Create Event</a>
+                            <a href="{% url 'create_event' society.id%}" class="btn btn-warning">Create Event</a>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                         <h5 class="card-header bg-warning text-dark">🎉 Upcoming Events</h5>
                         <div class="card-body">
                             <p class="card-text">Check out the upcoming events for your society.</p>
-                            <a href="{% url 'upcoming_events' %}" class="btn btn-warning">View Events</a>
+                            <a href="{% url 'upcoming_events' society.id %}" class="btn btn-warning">View Events</a>
                         </div>
                     </div>
                 </div>
