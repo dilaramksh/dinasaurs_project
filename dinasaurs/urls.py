@@ -26,6 +26,7 @@ from social_media.views.student_views import *
 from social_media.views.super_admin_views import *
 from social_media.views.footer_view import *
 from social_media.views.homepage_view import *
+from social_media.views.dashboard_views import *
 #from social_media.views.student_feed_view import *
 
 
@@ -36,6 +37,7 @@ urlpatterns = [
     path('log_out/', log_out, name='log_out'),
     
     path('dashboard/', dashboard, name='dashboard'),
+    path('dashboard_from_mainpage/<int:society_id>/', dashboard_from_mainpage, name='dashboard_from_mainpage'),
     path('student-dashboard/', get_student_dashboard, name='to_student_dashboard'),
     path('password/', PasswordView.as_view(), name='password'),
     path('profile/', ProfileUpdateView.as_view(), name='profile'),

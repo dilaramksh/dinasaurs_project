@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from social_media.models import Society, Membership, Event
 from social_media.models.colour_history import SocietyColorHistory
-
+from django.utils import timezone
 
 #@login_required
 def society_mainpage(request, society_id):
@@ -13,8 +13,7 @@ def society_mainpage(request, society_id):
     committee_members = [membership.user for 
                          membership in Membership.objects.filter(society=society) 
                          if membership.is_committee_member()]
-    
-    society_events = Event.objects.filter(society=society)
+    society_events = society.event_set.filter(date__gte=timezone.now()).order_by('date')
     past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')
     is_committee_member = request.user in committee_members
 
