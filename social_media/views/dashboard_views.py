@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from social_media.models import Society, Membership, Event, SocietyRole
 from django.shortcuts import get_object_or_404
+from social_media.models import Society
 from social_media.helpers import membership_required
 
 @login_required
@@ -41,8 +42,27 @@ def dashboard(request):
         }
 
         template = "student/student_dashboard.html"
+    elif user_type == 'uni_admin':
+        status_filter = request.GET.get("status", "pending")
+
+
+        if status_filter not in ["pending", "approved", "blocked"]:
+           status_filter = "pending"  # fallback
+
+
+        # Filter societies by chosen status and founder's university = admin's university
+        societies = Society.objects.filter(
+            status=status_filter,
+            founder__university=request.user.university
+        ).order_by("name") # temp
+        
+        context = {
+            "societies": societies,
+            "chosen_status": status_filter
+        }
+        template = "uni_admin/uni_admin_dashboard.html"
     else:
-        template = 'student/student_dashboard.html'
+        template = 'student/student_dashboard.html' # ???
     
     return render(request, template, context)
 

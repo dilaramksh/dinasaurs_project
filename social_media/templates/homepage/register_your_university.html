@@ -16,7 +16,6 @@
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}">
             {% include 'partials/bootstrap_form.html' with form=form submit_text="Submit"%}
-        
         </form>
     </div>
 </body>
