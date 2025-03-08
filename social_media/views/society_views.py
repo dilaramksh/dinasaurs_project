@@ -4,9 +4,10 @@ from social_media.forms.event_creation_form import EventCreationForm
 from social_media.forms.post_creation import PostForm  
 from social_media.forms.customise_society import customisationForm 
 from social_media.models.colour_history import SocietyColorHistory
-from social_media.models import Society, Event, Membership
+from social_media.models import Society, Event, Membership, EventsParticipant
 from django.utils.timezone import now
 from datetime import date
+from django.http import JsonResponse
 from social_media.helpers import redirect_to_society_dashboard 
 
 
@@ -59,6 +60,21 @@ def view_upcoming_events(request, society_id):
     society = get_object_or_404(Society, pk=society_id)
     events = Event.objects.filter(date__gte=date.today()).order_by("date")
     return render(request, 'society/view_upcoming_events.html', {'events': events})
+
+def event_details(request, event_id):
+    """Return event details as JSON for the modal popup."""
+    event = get_object_or_404(Event, pk=event_id)
+    participants = EventsParticipant.objects.filter(event=event).select_related("membership")
+
+    data = {
+        "name": event.name,
+        "date": event.date.strftime("%Y-%m-%d"),
+        "location": event.location,
+        "description": event.description,
+        "participants": [p.membership.user.username for p in participants],
+    }
+    
+    return JsonResponse(data)
 
 def create_post(request):
     if request.method == "POST":
