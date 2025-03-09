@@ -15,38 +15,16 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="post">
+                    <form method="POST" action="{% url 'customise_society' society.id %}">
                         {% csrf_token %}
                         
-                        <!-- Loop through form fields -->
-                        {% for field in form %}
-                            {% if field.name in "description price colour1 colour2" %}
-                                <div class="mb-3">
-                                    <label class="form-label">{{ field.label }}</label>
-
-                                    {% if field.name == "colour1" or field.name == "colour2" %}
-                                        <input type="color" name="{{ field.name }}" 
-                                            value="{% if field.value %}{{ field.value }}{% endif %}" 
-                                            class="form-control form-control-color">
-                                    {% else %}
-                                        {{ field|add_class:"form-control" }}
-                                    {% endif %}
-
-                                    {% if field.errors %}
-                                        <div class="text-danger">
-                                            {{ field.errors|first }}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-
+                        {% include 'partials/bootstrap_form.html' with form=form %}
+                
                         <div class="text-center">
-                            <a href="{% url 'society_dashboard' society.id%}" class="btn btn-warning">Submit</a>
+                            <button type="submit" class="btn btn-warning">Update Colours</button>
                         </div>
                     </form>
                 </div>
-            </div>
             
             <!-- Society Details Preview in a Card -->
             <div class="card shadow mt-4 border-0">

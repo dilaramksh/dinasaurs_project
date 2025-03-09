@@ -5,13 +5,23 @@
 
 {% block extra_head %}
     <style>
+        :root {
+            --primary-color: {{ society_colour1 }};
+            --secondary-color: {{ society_colour2 }};
+        }
+
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            background-color: {{ society_colour1 }} !important;
+            background-color: var(--primary-color) !important;
         }
-    </style>
+
+        .container {
+            background-color: var(--secondary-color) !important;
+        }
+</style>
+
 {% endblock %}
 
 {% block content %}

@@ -23,6 +23,10 @@ def membership_required(view_function):
         return view_function(request, society_id, *args, **kwargs)
     return modified_view_function
 
+def get_committee_members(society):
+    """Retrieve committee members for a given society."""
+    return [membership.user for membership in Membership.objects.filter(society=society) if membership.is_committee_member()]
+
 def redirect_to_society_dashboard(request, fallback='dashboard'):
     """Redirects to the correct society dashboard or falls back to the general dashboard."""
     society_id = request.session.get('active_society_id')

@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
 from social_media.forms.event_creation_form import EventCreationForm
 from social_media.forms.post_creation import PostForm  
-from social_media.forms.customise_society import customisationForm 
+from social_media.forms import CustomisationForm 
 from social_media.models.colour_history import SocietyColorHistory
 from social_media.models import Society, Event, Membership, EventsParticipant
 from django.utils.timezone import now
@@ -95,20 +95,22 @@ def create_post(request):
 
 def customise_society_view(request, society_id):
     society = get_object_or_404(Society, pk=society_id)
-    
+
     if request.method == 'POST':
-        form = customisationForm(request.POST, instance=society)
+        form = CustomisationForm(request.POST, instance=society)
         if form.is_valid():
-            past_colours = SocietyColorHistory.objects.create(
+            # Save the previous colors in history
+            SocietyColorHistory.objects.create(
                 society=society,
                 previous_colour1=society.colour1,
                 previous_colour2=society.colour2
             )
 
+            # Save the new color values
             form.save()
             return redirect('society_mainpage', society_id=society.id)
     else:
-        form = customisationForm(instance=society)
+        form = CustomisationForm(instance=society)
 
     return render(request, 'society/customise_society.html', {'form': form, 'society': society})
 
@@ -121,6 +123,8 @@ def update_society_colors(request, society_id):
         new_colour1 = request.POST.get("colour1")
         new_colour2 = request.POST.get("colour2")
 
+        print("🔄 Before update: ", society.colour1, society.colour2)
+        print("🔄 New values:", new_colour1, new_colour2)
       
         if society.colour1 != new_colour1 or society.colour2 != new_colour2:
             SocietyColorHistory.objects.create(
@@ -133,6 +137,9 @@ def update_society_colors(request, society_id):
         society.colour1 = new_colour1
         society.colour2 = new_colour2
         society.save()
+
+        print("✅ After update: ", society.colour1, society.colour2)  # Check if values change
+
 
         return redirect('society/society_mainpage', society_id=society.id)  
 
