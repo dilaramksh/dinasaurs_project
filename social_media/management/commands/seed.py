@@ -1,12 +1,10 @@
 from django.core.management.base import BaseCommand
 from django.template.defaultfilters import first
-
+from faker import Faker
 from social_media.models import *
-
 import random
 from datetime import date
 from faker import Faker
-
 
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
@@ -19,9 +17,8 @@ user_fixtures = [
 
 user_universities_mapping = {}
 
+
 # TO DO create uni_admin for each university
-
-
 
 university_fixtures = [
         {"name": "King's College London", "domain": "kcl.ac.uk", 'status': "approved", 'logo' : "university_logos/kcl.png"},
@@ -33,6 +30,7 @@ university_fixtures = [
         {"name": "University of Manchester", "domain": "man.ac.uk",'status': "pending", 'logo' : "university_logos/University_of_Manchester.png"},
         {"name": "University of Arts London", "domain": "ual.ac.uk",'status': "pending", 'logo' : "university_logos/UAL.png"},
 ]
+
 
 categories = [ 'cultural', 'academic_career', 'faith', 'political', 'sports', 'volunteering', 'other']
 
@@ -177,11 +175,11 @@ locations = ["Activity Room 1", 'Activity Room 2', 'Activity Room 3', 'Classroom
 
 
 
-
-
 class Command(BaseCommand):
     DEFAULT_PASSWORD = 'Password123'
     help = 'Seeds the database with sample data'
+    STUDENT_COUNT = 100
+
 
     def __init__(self):
         super().__init__()
@@ -235,7 +233,7 @@ class Command(BaseCommand):
         universities = University.objects.all()
         if not universities.exists():
             raise ValueError("No universities found.")
-        university = random.choice(universities) #???
+        university = random.choice(universities)
 
         first_name = self.faker.first_name()
         last_name = self.faker.last_name()
@@ -289,7 +287,6 @@ class Command(BaseCommand):
             end_date=data['end_date'],
             user_type=data['user_type'],
             university=university,
-            profile_picture=data['profile_picture'],
             password=Command.DEFAULT_PASSWORD,
         )
 
@@ -298,7 +295,7 @@ class Command(BaseCommand):
         self.stdout.write(f"Created user: {user.username} ({user.user_type})")
         return user
 
-    '''def create_students(self):'''
+    # TO DO: create admins
 
     # Seed Universities
     def create_universities(self):
@@ -323,9 +320,7 @@ class Command(BaseCommand):
     def create_university(self, data):
         university = University.objects.create(
             name=data['name'],
-            domain=data['domain'],
-            status=data['status'],
-            logo=data['logo']
+            domain=data['domain']
         )
         university.save()
         self.stdout.write(f"Created university: {university.name}")
@@ -594,6 +589,17 @@ class Command(BaseCommand):
                 f"Skipping duplicate participant for event {event.name} for member {membership.user.username}")
 
         return event_participant
+
+
+# refactoring
+def create_username(first_name, last_name):
+    return '@' + first_name.lower() + last_name.lower()
+
+def create_email(first_name, last_name, domain):
+    return first_name + last_name + '@' + domain
+
+
+
 
 
 

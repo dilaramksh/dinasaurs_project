@@ -1,4 +1,3 @@
-
 from django.core.validators import EmailValidator, MaxValueValidator, RegexValidator
 from django.core.exceptions import ValidationError
 from django.db import models
