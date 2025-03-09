@@ -243,7 +243,7 @@ class Command(BaseCommand):
         email = create_email(first_name, last_name, university.domain)
         start_date='2023-09-23'
         end_date='2023-06-05' # TO DO: randomise
-        data = {'first_name':first_name, 'last_name':last_name, 'user_type':user_type, 'university':university, 'username':username, 'email':email, 'start_date':start_date, 'end_date':end_date}
+        data = {'first_name':first_name, 'last_name':last_name, 'user_type':user_type, 'university':university, 'username':username, 'email':email, 'start_date':start_date, 'end_date':end_date, 'profile_picture': DEFAULT_PROFILE_PICTURE}
         return data
 
     # Seed User Fixtures
