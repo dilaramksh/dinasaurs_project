@@ -10,6 +10,7 @@
         <div class="col-md-8">
             <div class="card shadow">
                 <!-- Header -->
+
                 <div class="card-header text-center">
                     <h4>Customise Your Society</h4>
                 </div>
@@ -18,13 +19,11 @@
                     <form method="POST" action="{% url 'customise_society' society.id %}">
                         {% csrf_token %}
                         
-                        {% include 'partials/bootstrap_form.html' with form=form %}
-                
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-warning">Update Colours</button>
-                        </div>
+                        {% include 'partials/bootstrap_form.html' with form=form submit_text="Update Colors" %}
+                        
                     </form>
                 </div>
+            </div>
             
             <!-- Society Details Preview in a Card -->
             <div class="card shadow mt-4 border-0">

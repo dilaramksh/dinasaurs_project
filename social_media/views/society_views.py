@@ -1,8 +1,6 @@
 from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
-from social_media.forms.event_creation_form import EventCreationForm
-from social_media.forms.post_creation import PostForm  
-from social_media.forms import CustomisationForm 
+from social_media.forms import CustomisationForm, PostForm, EventCreationForm
 from social_media.models.colour_history import SocietyColorHistory
 from social_media.models import Society, Event, Membership, EventsParticipant
 from django.utils.timezone import now
@@ -123,9 +121,6 @@ def update_society_colors(request, society_id):
         new_colour1 = request.POST.get("colour1")
         new_colour2 = request.POST.get("colour2")
 
-        print("🔄 Before update: ", society.colour1, society.colour2)
-        print("🔄 New values:", new_colour1, new_colour2)
-      
         if society.colour1 != new_colour1 or society.colour2 != new_colour2:
             SocietyColorHistory.objects.create(
                 society=society,
@@ -137,8 +132,6 @@ def update_society_colors(request, society_id):
         society.colour1 = new_colour1
         society.colour2 = new_colour2
         society.save()
-
-        print("✅ After update: ", society.colour1, society.colour2)  # Check if values change
 
 
         return redirect('society/society_mainpage', society_id=society.id)  
