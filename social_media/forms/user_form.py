@@ -13,14 +13,10 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'university','start_date', 'end_date', 'profile_picture']
     
-
     
     email = forms.EmailField(disabled=True)
     university = forms.ModelChoiceField(queryset=University.objects.all(), disabled=True)
     start_date = forms.DateField(disabled=True)
     end_date = forms.DateField(disabled=True)
-    
-    
 
-        
 
