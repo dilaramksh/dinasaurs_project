@@ -320,7 +320,9 @@ class Command(BaseCommand):
     def create_university(self, data):
         university = University.objects.create(
             name=data['name'],
-            domain=data['domain']
+            domain=data['domain'],
+            status=data['status'],
+            logo=data['logo']
         )
         university.save()
         self.stdout.write(f"Created university: {university.name}")
