@@ -2,98 +2,212 @@
 {% load static %}
 
 {% block title %}Society Mainpage{% endblock %}
+
 {% block extra_head %}
     <style>
+        :root {
+            --primary-color: {{ society_colour1 }};
+            --secondary-color: {{ society_colour2 }};
+        }
+
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            background-color: {{ society_colour1 }} !important;
+            background-color: var(--primary-color) !important;
         }
 
         .container {
-            min-height: 100vh;
+            background-color: var(--secondary-color) !important;
         }
     </style>
+
 {% endblock %}
 
-
 {% block content %}
-    <body>
-        <header style="position: relative; width: 100%; overflow: hidden;">
-            <!-- Society Banner -->
-            <!-- to be customisable as well as text colour -->
-            <div class="banner-image" style="background-image: url('{{ society.banner_image|default:'https://placehold.co/1920x400' }}'); height: 275px; width: 100%; background-size: cover; background-position: center;">
-                <!-- Society Name Positioned at Bottom Left -->
-                <div class="society-name" style="position: absolute; bottom: 10px; left: 10px; color: white; font-size: 30px; font-weight: bold;">
-                    {{ society.name }}
-                </div>
-            </div>
-        </header>
-        <!-- navbar colour to be replaced with society colour1/colour2-->
-        <!-- one-page website style, navbar jumps to section via anchor tags-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white" style="padding: 10px 15px; ">
-            <div class="container-fluid">
-                <!-- Society Logo -->
-                <a class="navbar-brand" href="#">
-                    <img src="{{ user.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}"
-                         class="img-fluid rounded-circle mb-0"
-                         alt="Profile Picture"
-                         style="height: 50px; width: 50px;">
-                </a>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#about" style="font-size: 16px; font-style: normal; color: black;">
-                                About
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#committee" style="font-size: 16px; font-style: normal; color: black;">
-                                Meet the Committee
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#events" style="font-size: 16px; font-style: normal; color: black;">
-                                Events
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+<body>
+    {% if is_committee_member %}
+    <div class="position-absolute position-absolute-toggle d-flex align-items-center">
+        <span id="dashboardLabel" class="me-2 toggle-label">Dashboard</span>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="viewToggle"
+                {% if request.path == society_mainpage_url %}checked{% endif %}>
+        </div>
+        <span id="publicPageLabel" class="ms-2 toggle-label">Public Page</span>
+    </div>
+    {% endif %}
 
-        <!-- Sections-->
-        <section id="about" style="height: 100vh; padding: 20px; color: white;">
-            <h1>About</h1>
-            <p>{{ society.description }}</p>
+    <header>
+        <div class="banner-image text-white text-start d-flex align-items-end p-3" style="background-image: url('{{ society.banner_image|default:'https://placehold.co/1920x400' }}'); height: 275px; background-size: cover; background-position: center;">
+            <h1 class="fw-bold">{{ society.name }}</h1>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="{{ user.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}"
+                     class="img-fluid rounded-circle"
+                     alt="Profile Picture">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#committee">Meet the Committee</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <section id="about" class="mb-5">
+            <h2 class="text-white">About</h2>
+            <div class="container" style="background-color: white; padding: 20px; border-radius: 8px;">
+                <p class="text-dark">{{ society.description }}</p>
+            </div>
         </section>
 
-        <section id="committee" style="height: 100vh; padding: 20px; color: white;">
-            <h1>Meet the Committee</h1>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+        <section id="committee" class="mb-5">
+            <h2 class="text-white">Meet the Committee</h2>
+            <div class="row">
                 {% for member in committee_members %}
-                <div style="text-align: center; padding: 10px; border: 1px solid #ddd; border-radius: 10px;">
-                    <strong>{{ member.membership_set.first.society_role.role_name }}</strong><br>
-                    <img src="https://www.gravatar.com/avatar/{{ member.gravatar_hash }}?s=100&d=identicon" 
-                        alt="Profile Picture" class="gravatar" width="30" height="30" style="border-radius: 50%; margin: 10px 0;">
-                    <p>{{ member.get_full_name }}</p>
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ member.membership_set.first.society_role.role_name }}</h5>
+                            <img src="https://www.gravatar.com/avatar/{{ member.gravatar_hash }}?s=100&d=identicon" 
+                                alt="Profile Picture" class="rounded-circle mb-2" width="50" height="50">
+                            <p class="card-text">{{ member.get_full_name }}</p>
+                        </div>
+                    </div>
                 </div>
                 {% empty %}
-                <p>No committee members found.</p>
+                <p class="text-white">No committee members found.</p>
                 {% endfor %}
             </div>
         </section>
-
-        <section id="events" style="height: 100vh; padding: 20px; color: white;">
-            <h1>Events</h1>
-            <ul>
+        
+        <section id="events">
+            <h2 class="text-white">Events</h2>
+            <ul class="list-group">
                 {% for event in society_events %}
-                <li>{{ event.name }} - {{ event.date }}</li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5><a href="#" class="event-link" data-event-id="{{ event.id }}">{{ event.name }}</a></h5>
+                            <p class="mb-1">📍 {{ event.location }} | 🗓 {{ event.date|date:"Y-m-d" }}</p>
+                        </div>
+                    </li>
                 {% empty %}
-                <p>No events available.</p>
+                    <li class="list-group-item text-center">No upcoming events available.</li>
                 {% endfor %}
             </ul>
         </section>
-    </body>
+
+        <!-- Section where the user can join the society -->
+        <section id="join" class="mt-4">
+            <form id="joinForm" action="{% url 'dashboard_from_mainpage' society.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" id="joinButton" class="btn btn-success">
+                    Join Society
+                </button>
+                <div id="loadingSpinner" class="spinner-border text-light" role="status" style="display: none;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </form>
+        </section>
+
+        <script>
+            document.getElementById('joinForm').addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent form submission
+                const button = document.getElementById('joinButton');
+                const spinner = document.getElementById('loadingSpinner');
+
+                // Show loading spinner
+                button.style.display = 'none';
+                spinner.style.display = 'inline-block';
+
+                // Submit the form asynchronously via fetch
+                fetch(this.action, {
+                    method: 'POST',
+                    body: new FormData(this),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Handle success, e.g., show a success message
+                        alert('Successfully joined the society!');
+                        // Optionally, you can redirect or update the UI to reflect the change
+                    } else {
+                        // Handle error, e.g., user is already a member
+                        alert('You are already a member of this society.');
+                    }
+                })
+                .catch(error => {
+                    // Handle any errors that occur during the request
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                })
+                .finally(() => {
+                    // Hide the spinner and show the button again
+                    spinner.style.display = 'none';
+                    button.style.display = 'inline-block';
+                });
+            });
+        </script>
+    </div>
+
+    <!-- Event Details Modal -->
+    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 id="modalEventName"></h5>
+                    <p><strong>Date:</strong> <span id="modalEventDate"></span></p>
+                    <p><strong>Location:</strong> <span id="modalEventLocation"></span></p>
+                    <p><strong>Description:</strong> <span id="modalEventDescription"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".event-link").forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const eventId = this.dataset.eventId;
+        
+                    fetch(`/events/${eventId}/details/`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("Failed to fetch event details");
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            document.getElementById("modalEventName").textContent = data.name;
+                            document.getElementById("modalEventDate").textContent = data.date;
+                            document.getElementById("modalEventLocation").textContent = data.location;
+                            document.getElementById("modalEventDescription").textContent = data.description;
+        
+                            
+                            new bootstrap.Modal(document.getElementById("eventModal")).show();
+                        })
+                        .catch(error => {
+                            console.error("Error fetching event details:", error);
+                            alert("There was an error retrieving the event details. Please try again.");
+                        });
+                });
+            });
+        });
+        </script>
+</body>
 {% endblock %}

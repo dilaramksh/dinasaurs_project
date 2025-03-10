@@ -1,6 +1,7 @@
 {% extends 'base_content.html' %}
 {% load static %}
 {% load widget_tweaks %}
+
 {% block title %}Request a New Society{% endblock %}
 
 {% block content %}
@@ -14,36 +15,7 @@
                 <div class="card-body">
                     <form method="post">
                         {% csrf_token %}
-
-                        <!-- Iterate over form fields -->
-                        {% for field in form %}
-                            <div class="mb-3">
-                                <label class="form-label">{{ field.label }}</label>
-
-                                {% if field.name == "description" %}
-                                    <!-- Make description field larger -->
-                                    {{ field|add_class:"form-control" }}
-                                    <style>
-                                        textarea {
-                                            height: 150px !important;  /* Adjust height */
-                                            resize: vertical;  /* Allow vertical resizing */
-                                        }
-                                    </style>
-                                {% else %}
-                                    {{ field|add_class:"form-control" }}
-                                {% endif %}
-                                
-                                {% if field.errors %}
-                                    <div class="text-danger">
-                                        {{ field.errors|first }}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-warning">Submit Request</button>
-                        </div>
+                        {% include 'partials/bootstrap_form.html' %}
                     </form>
                 </div>
             </div>

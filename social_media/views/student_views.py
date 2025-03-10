@@ -2,10 +2,11 @@ from social_media.decorators import user_type_required
 from social_media.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from social_media.forms.society_creation_form import SocietyCreationForm
 from django.shortcuts import HttpResponse
 from social_media.models import Category
+from django.shortcuts import get_object_or_404
 
 
 #to do: add login required
@@ -15,6 +16,8 @@ from social_media.models import Category
 @login_required
 def student_dashboard(request):
     student = request.user
+
+    user_type = student.user_type
 
     memberships = Membership.objects.filter(user=student)
     user_societies = [membership.society_role.society for membership in memberships]
@@ -33,13 +36,14 @@ def student_dashboard(request):
     return render(request, 'student/student_dashboard.html', {
         'student': student,
         'user_societies': user_societies,
-        'user_events': events
+        'user_events': events,
+        'user_type': user_type
     })
 
 #Views for pages from dropdown menu in Student Navbar
 #@login_required
-def help(request):
-    return render(request, 'help.html')
+def help_page(request):
+    return render(request, "partials/footer/help.html")
 
 #@login_required
 def features(request):
@@ -67,7 +71,7 @@ def society_creation_request(request):
             society.founder = request.user
             society.save()
             messages.success(request, "Your society request has been submitted for approval.")
-            return redirect("student_dashboard") 
+            return redirect("dashboard") 
         else:                  
             messages.error(request, "There was an error with your request submission. Please try again.")
     

@@ -1,26 +1,37 @@
-
-<li class="list-group-item text-center fw-bold">
-  <img src="https://www.gravatar.com/avatar/{{ user.gravatar_hash }}?s=200&d=identicon" alt="Profile Picture" class="rounded-circle border" width="30" height="30">
-  {{ user.username }}
-</li>
-
-<li class="dropdown-divider"></li>
-<li class="dropdown-submenu">
-    <a class="dropdown-item dropdown-toggle" href="#">Switch Dashboard</a>
-    <ul class="dropdown-menu">
+<div class="nav-item dropdown d-flex align-items-center">
+    <div class="d-flex align-items-center px-2">
+        {% if user.profile_picture %}
+            <img src="{{ user.profile_picture.url }}" 
+            alt="Profile Picture" class="gravatar rounded-circle border" width="30" height="30">
+        {% else %}
+            <img src="https://hive-society.s3.amazonaws.com/profile_pictures/default-user.jpg" 
+            alt="Profile Picture" class="gravatar rounded-circle border" width="30" height="30">
+        {% endif %}
+        <span class="fw-bold ms-2">{{ user.username }}</span>
+    </div>
+    <button type="button" class="btn border-0 dropdown-toggle dropdown-toggle-split" id="societyDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="visually-hidden">Society Dropdown</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end custom-submenu" id="societyDropdown">
         {% for membership in user.membership_set.all %}
             {% if membership.society_role.is_committee_role %}
                 <li>
-                    <a class="dropdown-item" href="{% url 'society_dashboard' society_id=membership.society.id %}">
-                        {{ membership.society.name }}
+                    <a class="dropdown-item {% if request.session.active_society_id == membership.society.id %}active{% endif %}"
+                     href="{% url 'society_dashboard' society_id=membership.society.id %}">
+                        {{ membership.society.name }} 
                     </a>
                 </li>
             {% endif %}
-        {% empty %}
-            <li><span class="dropdown-item">No societies</span></li>
         {% endfor %}
+        {% if request.session.active_society_id %}
+            <li>
+                <a class="dropdown-item dashboard-link" href="{% url 'to_student_dashboard' %}">{{ user.username }}</a>
+            </li>
+        {% endif %}
     </ul>
-</li>
+</div>
+
+
 <li class="dropdown-divider"></li>
 
 <li><a href="{% url 'profile' %}" class="dropdown-item">Profile</a></li>
@@ -29,11 +40,6 @@
 
 <li><a href="{% url 'view_memberships' %}" class="dropdown-item">Manage Memberships</a></li>
 
-<!--
-<li><a href=# class="dropdown-item">Purchases</a></li>
-<li><a href=# class="dropdown-item">FAQ/Help</a></li>
-<li><a href=# class="dropdown-item">Settings</a></li>
--->
 
 
 <li class="dropdown-divider"></li>

@@ -49,7 +49,7 @@ AWS_SECRET_ACCESS_KEY = 'MwldO2vP3+MQCGTHAe2aOTZk8rE/2NA45mZmP2T9'
 AWS_STORAGE_BUCKET_NAME = 'society-hive'
 AWS_S3_REGION_NAME = 'eu-west-2' 
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+#DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
@@ -61,7 +61,7 @@ STORAGES = {
 
     # Static files (CSS, JS) storage
     "staticfiles": {
-        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
     },
 }
 
@@ -144,10 +144,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+STATIC_ROOT = 'staticfiles/'
+#STATICFILES_DIRS = [
+#    BASE_DIR / "static",
+#]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
