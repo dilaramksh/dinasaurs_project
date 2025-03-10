@@ -30,13 +30,13 @@ def event_creation(request, society_id):
     return render(request, 'society/event_creation.html', {'form': form})
 
 def terminate_society(request, society_id):
-    '''society = get_object_or_404(Society, founder=request.user)  
+    society = get_object_or_404(Society, pk=society_id)  
 
     if request.method == "POST":
         society.delete()
-        return redirect("society_dashboard")  
-    '''
-    #return render(request, "terminate_society.html", {"society": society})
+        request.session.pop('active_society_id', None)
+        return redirect("dashboard")  
+    
     return render(request, "society/terminate_society.html")
 
 
