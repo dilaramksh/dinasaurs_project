@@ -12,5 +12,9 @@ from .society_views import (
     event_creation, terminate_society, view_members, view_upcoming_events, create_post,
 )
 
+from .uni_admin_views import(
+   change_society_status
+)
+
 from .membership_view import view_memberships
-from .society_page_view import society_mainpage
+from .society_page_view import society_mainpage, get_latest_society_colors
