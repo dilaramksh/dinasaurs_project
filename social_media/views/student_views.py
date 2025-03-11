@@ -21,7 +21,10 @@ def student_dashboard(request):
 
     memberships = Membership.objects.filter(user=student)
     user_societies = [membership.society_role.society for membership in memberships]
-    events = Event.objects.filter(Q(date__gte=date.today()) & Q(society__in=user_societies)).order_by("date")
+    print("User Societies:", user_societies)  # Debugging print
+
+    events = Event.objects.filter(society__in=user_societies)
+    print("Events:", events)  # Debugging print
 
     if not memberships:
         print("No memberships found for this user")
