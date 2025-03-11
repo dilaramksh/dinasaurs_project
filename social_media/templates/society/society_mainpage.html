@@ -111,7 +111,9 @@
         <!-- Section where the user can join the society -->
         <section id="join" class="mt-4">
             <form id="joinForm" action="{% url 'dashboard_from_mainpage' society.id %}" method="POST">
-                {% csrf_token %}
+                <!-- CSRF Token for security -->
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                
                 <button type="submit" id="joinButton" class="btn btn-success">
                     Join Society
                 </button>
@@ -123,40 +125,40 @@
 
         <script>
             document.getElementById('joinForm').addEventListener('submit', function(e) {
-                e.preventDefault(); 
-                const button = document.getElementById('joinButton');
-                const spinner = document.getElementById('loadingSpinner');
+            e.preventDefault(); 
+            const button = document.getElementById('joinButton');
+            const spinner = document.getElementById('loadingSpinner');
 
-            
-                button.style.display = 'none';
-                spinner.style.display = 'inline-block';
+            button.style.display = 'none';
+            spinner.style.display = 'inline-block';
 
-                fetch(this.action, {
-                    method: 'POST',
-                    body: new FormData(this),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-             
-                        alert('Successfully joined the society!');
-                        
-                    } else {
-                      
-                        alert('You are already a member of this society.');
-                    }
-                })
-                .catch(error => {
-               
-                    console.error('Error:', error);
-                    alert('An error occurred. Please try again.');
-                })
-                .finally(() => {
-                   
-                    spinner.style.display = 'none';
-                    button.style.display = 'inline-block';
-                });
+            fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/x-www-form-urlencoded'  
+                },
+                body: new URLSearchParams(new FormData(this))
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('✅ Successfully joined the society!');
+                    location.reload(); 
+                } else {
+                    alert('⚠️ Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('❌ An error occurred. Please try again.');
+            })
+            .finally(() => {
+                spinner.style.display = 'none';
+                button.style.display = 'inline-block';
             });
+        });
         </script>
     </div>
 
