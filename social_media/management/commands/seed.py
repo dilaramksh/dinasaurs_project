@@ -20,10 +20,7 @@ admin_fixtures = [
     {"first_name": "daniel", "last_name": "brown", "username": "@danielbrown", "email": "daniel.brown@ucl.ac.uk", "user_type": "admin", "university": "University College London", "start_date": "2023-09-01", "end_date": "2026-06-15"},
     {"first_name": "sarah", "last_name": "wilson", "username": "@sarahwilson", "email": "sarah.wilson@imperial.ac.uk", "user_type": "admin", "university": "Imperial College London", "start_date": "2023-10-10", "end_date": "2026-07-20"},
     {"first_name": "james", "last_name": "anderson", "username": "@jamesanderson", "email": "james.anderson@lse.ac.uk", "user_type": "admin", "university": "London School of Economics", "start_date": "2023-08-15", "end_date": "2026-05-30"},
-    {"first_name": "olivia", "last_name": "martinez", "username": "@oliviamartinez", "email": "olivia.martinez@ox.ac.uk", "user_type": "admin", "university": "University of Oxford", "start_date": "2023-09-20", "end_date": "2026-06-10"},
-    {"first_name": "william", "last_name": "davis", "username": "@williamdavis", "email": "william.davis@leeds.ac.uk", "user_type": "admin", "university": "University of Leeds", "start_date": "2023-09-05", "end_date": "2026-06-05"},
-    {"first_name": "sophia", "last_name": "garcia", "username": "@sophiagarcia", "email": "sophia.garcia@man.ac.uk", "user_type": "admin", "university": "University of Manchester", "start_date": "2023-09-12", "end_date": "2026-06-12"},
-    {"first_name": "benjamin", "last_name": "moore", "username": "@benjaminmoore", "email": "benjamin.moore@ual.ac.uk", "user_type": "admin", "university": "University of Arts London", "start_date": "2023-09-18", "end_date": "2026-06-18"}
+    {"first_name": "olivia", "last_name": "martinez", "username": "@oliviamartinez", "email": "olivia.martinez@ox.ac.uk", "user_type": "admin", "university": "University of Oxford", "start_date": "2023-09-20", "end_date": "2026-06-10"}
 ]
 
 user_universities_mapping = {}
