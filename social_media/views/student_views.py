@@ -19,11 +19,14 @@ def student_dashboard(request):
 
     user_type = student.user_type
 
-    memberships = Membership.objects.filter(user=student)
+    memberships = Membership.objects.filter(
+        user=student,
+        society_role__society__status="approved"
+    )
     user_societies = [membership.society_role.society for membership in memberships]
     print("User Societies:", user_societies)  # Debugging print
 
-    events = Event.objects.filter(society__in=user_societies)
+    events = Event.objects.filter(society__in=user_societies, society__status="approved")
     print("Events:", events)  # Debugging print
 
     if not memberships:
@@ -90,7 +93,8 @@ def create_temp_category(request):
         return HttpResponse("Category already exists.")
 
 def view_societies(request):
-    societies = Society.objects.all()  # Fetch all societies
+    # Only fetch approved societies
+    societies = Society.objects.filter(status="approved")
     categories = Category.objects.all() # Get all categories for the filter
 
     # Get search query
@@ -116,13 +120,16 @@ def view_societies(request):
 def student_societies(request):
     student = request.user
 
-    memberships = Membership.objects.filter(user=student)
+    memberships = Membership.objects.filter(
+        user=student,
+        society_role__society__status="approved"
+    )
     user_societies = [membership.society_role.society for membership in memberships]
     selected_society = None
 
     if request.method == 'GET' and 'society_id' in request.GET:
         society_id = request.GET['society_id']
-        selected_society = get_object_or_404(Society, id=society_id)
+        selected_society = get_object_or_404(Society, id=society_id, status="approved")
         if selected_society not in user_societies:
             selected_society = None
 
@@ -140,9 +147,12 @@ def student_societies(request):
 
 def student_events(request):
     student = request.user
-    memberships = Membership.objects.filter(user=student)
+    memberships = Membership.objects.filter(
+        user=student,
+        society_role__society__status="approved"
+    )
     user_societies = [membership.society_role.society for membership in memberships]
-    user_events = Event.objects.filter(society__in=user_societies)
+    user_events = Event.objects.filter(society__in=user_societies, society__status="approved")
 
     return render(request, 'student/student_events.html', {
         'student': student,

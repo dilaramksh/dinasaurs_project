@@ -3,6 +3,7 @@ from django.db import models
 from .user import User
 from .society_role import SocietyRole
 from .society import Society
+from django.core.exceptions import ValidationError
 
 class Membership(models.Model):
     """Model used for recording members in a society and their roles within the society"""
@@ -18,6 +19,11 @@ class Membership(models.Model):
             models.UniqueConstraint(fields=["user", "society_role"], name="unique_user_role_in_society")
         ]
 
+    def clean(self):
+        # If society is not approved, forbid
+        if self.society.status != "approved":
+            raise ValidationError("Cannot create membership for a non-approved society.")
+            
     # Can be added to helpers
     def is_committee_member(self):
         """Returns True if the membership is a committee role."""
