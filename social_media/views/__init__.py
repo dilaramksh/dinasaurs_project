@@ -17,4 +17,4 @@ from .uni_admin_views import(
 )
 
 from .membership_view import view_memberships
-from .society_page_view import society_mainpage
+from .society_page_view import society_mainpage, get_latest_society_colors

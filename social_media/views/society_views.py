@@ -1,8 +1,6 @@
 from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
-from social_media.forms.event_creation_form import EventCreationForm
-from social_media.forms.post_creation import PostForm  
-from social_media.forms.customise_society import customisationForm 
+from social_media.forms import CustomisationForm, PostForm, EventCreationForm
 from social_media.models.colour_history import SocietyColorHistory
 from social_media.models import Society, Event, Membership, EventsParticipant
 from django.utils.timezone import now
@@ -32,13 +30,13 @@ def event_creation(request, society_id):
     return render(request, 'society/event_creation.html', {'form': form})
 
 def terminate_society(request, society_id):
-    '''society = get_object_or_404(Society, founder=request.user)  
+    society = get_object_or_404(Society, pk=society_id)  
 
     if request.method == "POST":
         society.delete()
-        return redirect("society_dashboard")  
-    '''
-    #return render(request, "terminate_society.html", {"society": society})
+        request.session.pop('active_society_id', None)
+        return redirect("dashboard")  
+    
     return render(request, "society/terminate_society.html")
 
 
@@ -95,11 +93,11 @@ def create_post(request):
 
 def customise_society_view(request, society_id):
     society = get_object_or_404(Society, pk=society_id)
-    
+    past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')
     if request.method == 'POST':
-        form = customisationForm(request.POST, instance=society)
+        form = CustomisationForm(request.POST, instance=society)
         if form.is_valid():
-            past_colours = SocietyColorHistory.objects.create(
+            SocietyColorHistory.objects.create(
                 society=society,
                 previous_colour1=society.colour1,
                 previous_colour2=society.colour2
@@ -108,32 +106,10 @@ def customise_society_view(request, society_id):
             form.save()
             return redirect('society_mainpage', society_id=society.id)
     else:
-        form = customisationForm(instance=society)
+        form = CustomisationForm(instance=society)
 
-    return render(request, 'society/customise_society.html', {'form': form, 'society': society})
-
-
-def update_society_colors(request, society_id):
-
-    society = get_object_or_404(Society, pk=society_id)
-
-    if request.method == "POST":
-        new_colour1 = request.POST.get("colour1")
-        new_colour2 = request.POST.get("colour2")
-
-      
-        if society.colour1 != new_colour1 or society.colour2 != new_colour2:
-            SocietyColorHistory.objects.create(
-                society=society,
-                previous_colour1=society.colour1,
-                previous_colour2=society.colour2
-            )
-
- 
-        society.colour1 = new_colour1
-        society.colour2 = new_colour2
-        society.save()
-
-        return redirect('society/society_mainpage', society_id=society.id)  
-
-    return render(request, 'society/society_mainpage.html', {'society': society})
+    return render(request, 'society/customise_society.html', {
+        'form': form,
+        'society': society,
+        'past_colors': past_colors 
+    })

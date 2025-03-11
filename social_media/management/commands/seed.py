@@ -15,10 +15,18 @@ user_fixtures = [
 
 ]
 
+admin_fixtures = [
+    {"first_name": "michael", "last_name": "smith", "username": "@michaelsmith", "email": "michael.smith@kcl.ac.uk", "user_type": "admin", "university": "King's College London", "start_date": "2023-09-23", "end_date": "2026-05-06"},
+    {"first_name": "daniel", "last_name": "brown", "username": "@danielbrown", "email": "daniel.brown@ucl.ac.uk", "user_type": "admin", "university": "University College London", "start_date": "2023-09-01", "end_date": "2026-06-15"},
+    {"first_name": "sarah", "last_name": "wilson", "username": "@sarahwilson", "email": "sarah.wilson@imperial.ac.uk", "user_type": "admin", "university": "Imperial College London", "start_date": "2023-10-10", "end_date": "2026-07-20"},
+    {"first_name": "james", "last_name": "anderson", "username": "@jamesanderson", "email": "james.anderson@lse.ac.uk", "user_type": "admin", "university": "London School of Economics", "start_date": "2023-08-15", "end_date": "2026-05-30"},
+    {"first_name": "olivia", "last_name": "martinez", "username": "@oliviamartinez", "email": "olivia.martinez@ox.ac.uk", "user_type": "admin", "university": "University of Oxford", "start_date": "2023-09-20", "end_date": "2026-06-10"},
+    {"first_name": "william", "last_name": "davis", "username": "@williamdavis", "email": "william.davis@leeds.ac.uk", "user_type": "admin", "university": "University of Leeds", "start_date": "2023-09-05", "end_date": "2026-06-05"},
+    {"first_name": "sophia", "last_name": "garcia", "username": "@sophiagarcia", "email": "sophia.garcia@man.ac.uk", "user_type": "admin", "university": "University of Manchester", "start_date": "2023-09-12", "end_date": "2026-06-12"},
+    {"first_name": "benjamin", "last_name": "moore", "username": "@benjaminmoore", "email": "benjamin.moore@ual.ac.uk", "user_type": "admin", "university": "University of Arts London", "start_date": "2023-09-18", "end_date": "2026-06-18"}
+]
+
 user_universities_mapping = {}
-
-
-# TO DO create uni_admin for each university
 
 university_fixtures = [
         {"name": "King's College London", "domain": "kcl.ac.uk", 'status': "approved", 'logo' : "university_logos/kcl.png"},
@@ -31,10 +39,8 @@ university_fixtures = [
         {"name": "University of Arts London", "domain": "ual.ac.uk",'status': "pending", 'logo' : "university_logos/UAL.png"},
 ]
 
-
 categories = [ 'cultural', 'academic_career', 'faith', 'political', 'sports', 'volunteering', 'other']
 
-# AI generated
 society_names = [
     'computingsoc', 'artsoc', 'gamesoc', 'musicsoc', 'filmsoc',
     'basketballsoc', 'footballsoc', 'tennissoc', 'debatesoc',
@@ -110,7 +116,6 @@ society_category_mapping = {
 
 society_role_names = ['president', 'vice president', 'treasurer', 'events manager', 'secretary', 'member']
 
-
 society_event_mapping = {
     'computingsoc': ["Hackathon", "AI Workshop", "Coding Challenge"],
     'artsoc': ["Painting Workshop", "Sculpting Workshop", "Gallery Visit"],
@@ -167,11 +172,9 @@ society_event_mapping = {
     'AIclub': ["Deep Learning Seminar", "AI Ethics Discussion", "Neural Networks Workshop"],
     'dataanalyticsclub': ["Data Science Bootcamp", "Big Data Talk", "SQL Workshop"]
 }
-
 # potentially might not make sense?
 locations = ["Activity Room 1", 'Activity Room 2', 'Activity Room 3', 'Classroom 6.01', 'Classroom 6.02', 'Classroom 6.03',
              'Theatre 1', 'Theatre 2', 'Theatre 3', 'Off-Campus', 'Student Lounge', 'Auditorium', 'The Great Hall']
-
 
 
 
@@ -185,6 +188,7 @@ class Command(BaseCommand):
         super().__init__()
         self.generated_students = []
         self.generated_users = []
+        self.generated_admins = []
         self.generated_universities = []
         self.generated_societies = []
         self.generated_society_roles = []
@@ -212,8 +216,11 @@ class Command(BaseCommand):
         self.stdout.write('Existing data cleared.\n')
 
 
-    # Seed Students via Faker
+    # Seed Users
     def create_users(self):
+        self.stdout.write('Creating Admins')
+        self.generate_admin_fixtures()
+        self.stdout.write('Admin creation completed.')
         self.stdout.write('Creating Users')
         self.generate_user_fixtures()
         self.stdout.write('User creation completed.')
@@ -221,30 +228,6 @@ class Command(BaseCommand):
         self.generate_students()
         self.stdout.write('Random students creation completed.')
 
-    def generate_students(self):
-        student_count = User.objects.filter(user_type='student').count()
-        while student_count < self.STUDENT_COUNT:
-            print(f"Seeding student {student_count}/{self.STUDENT_COUNT}", end='\r')
-            self.try_create_user(self.generate_student())
-            student_count = User.objects.filter(
-                user_type='student').count()  # NEED TO ADD TO LIST OF generated_students
-
-    def generate_student(self):
-        universities = University.objects.all()
-        if not universities.exists():
-            raise ValueError("No universities found.")
-        university = random.choice(universities)
-
-        first_name = self.faker.first_name()
-        last_name = self.faker.last_name()
-        user_type = 'student'
-        university = university
-        username = create_username(first_name, last_name)
-        email = create_email(first_name, last_name, university.domain)
-        start_date='2023-09-23'
-        end_date='2023-06-05' # TO DO: randomise
-        data = {'first_name':first_name, 'last_name':last_name, 'user_type':user_type, 'university':university, 'username':username, 'email':email, 'start_date':start_date, 'end_date':end_date, 'profile_picture': DEFAULT_PROFILE_PICTURE}
-        return data
 
     # Seed User Fixtures
     def generate_user_fixtures(self):
@@ -267,16 +250,11 @@ class Command(BaseCommand):
             self.stdout.write(f"User with username {data['username']} already exists.")
             return None
 
-        if User.objects.filter(email=data['email']).exists():
-            self.stdout.write(f"User with email {data['email']} already exists.")
+        try:
+            university = University.objects.get(name=data['university'])
+        except Exception as e:
+            self.stdout.write(f"University {data['university']} not found.")
             return None
-
-
-        universities = University.objects.all()
-        if not universities.exists():
-            raise ValueError("No universities found.")
-
-        university = random.choice(universities)
 
         user = User.objects.create_user(
             first_name=data['first_name'],
@@ -295,7 +273,107 @@ class Command(BaseCommand):
         self.stdout.write(f"Created user: {user.username} ({user.user_type})")
         return user
 
-    # TO DO: create admins
+
+    # Seed Students via Faker
+    def generate_students(self):
+        student_count = User.objects.filter(user_type='student').count()
+        while student_count < self.STUDENT_COUNT:
+            print(f"Seeding student {student_count}/{self.STUDENT_COUNT}", end='\r')
+            self.try_create_student(self.generate_student())
+            student_count = User.objects.filter(
+                user_type='student').count()
+
+    def generate_student(self):
+        universities = University.objects.all()
+        if not universities.exists():
+            raise ValueError("No universities found.")
+        university = random.choice(universities)
+
+        first_name = self.faker.first_name()
+        last_name = self.faker.last_name()
+        user_type = 'student'
+        university = university
+        username = create_username(first_name, last_name)
+        email = create_email(first_name, last_name, university.domain)
+        start_date='2023-09-23'
+        end_date='2023-06-05'
+        data = {'first_name':first_name, 'last_name':last_name, 'user_type':user_type, 'university':university, 'username':username, 'email':email, 'start_date':start_date, 'end_date':end_date, 'profile_picture': DEFAULT_PROFILE_PICTURE}
+        return data
+
+    def try_create_student(self, data):
+        try:
+            return self.create_student(data)
+        except Exception as e:
+            self.stderr.write(self.style.ERROR(f"Error creating Student {data['username']}: {str(e)}"))
+
+    def create_student(self, data):
+        if User.objects.filter(username=data['username']).exists():
+            self.stdout.write(f"User with username {data['username']} already exists.")
+            return None
+
+
+        student = User.objects.create_user(
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            username=data['username'],
+            email=data['email'],
+            start_date=data['start_date'],
+            end_date=data['end_date'],
+            user_type=data['user_type'],
+            university=data['university'],
+            password=Command.DEFAULT_PASSWORD,
+        )
+
+        student.save()
+        self.generated_students.append(student)
+        self.stdout.write(f"Created user: {student.username} ({student.user_type})")
+        return student
+
+
+    # Seed Admin Fixtures
+    def generate_admin_fixtures(self):
+        for data in admin_fixtures:
+            self.stdout.write(f"Creating Admin: {data['username']}")
+            created_admin = self.try_create_admin(data)
+            if created_admin:
+                self.generated_admins.append(created_admin)
+        self.stdout.write(f"Generated Admins: {[admin.username for admin in self.generated_admins]}")
+
+    def try_create_admin(self, data):
+        try:
+            return self.create_admin(data)
+        except Exception as e:
+            self.stderr.write(self.style.ERROR(f"Error creating Admin {data['username']}: {str(e)}"))
+
+    def create_admin(self, data):
+
+        if User.objects.filter(email=data['email']).exists():
+            self.stdout.write(f"User with email {data['email']} already exists.")
+            return None
+
+        try:
+            university = University.objects.get(name=data['university'])
+        except Exception as e:
+            self.stdout.write(f"University {data['university']} not found.")
+            return None
+
+        admin = User.objects.create_user(
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            username=data['username'],
+            email=data['email'],
+            start_date=data['start_date'],
+            end_date=data['end_date'],
+            user_type=data['user_type'],
+            university=university,
+            password=Command.DEFAULT_PASSWORD,
+        )
+
+        admin.save()
+        self.generated_admins.append(admin)
+        self.stdout.write(f"Created user: {admin.username} ({admin.user_type})")
+        return admin
+
 
     # Seed Universities
     def create_universities(self):
@@ -366,14 +444,13 @@ class Command(BaseCommand):
         except Exception as e:
             self.stdout.write(f"Error creating society {name}: {str(e)}")
 
-    #TO DO
     def create_society(self, name, category, description):
 
         students = User.objects.all().filter(user_type='student')
 
         society = Society.objects.create(
             name= name,
-            founder= random.choice(students), # NEED TO MAKE UNIQUE
+            founder= random.choice(students), # unique?
             society_email= f'{name}@kcl.ac.uk',
             description= description,
             category= category,
@@ -437,6 +514,8 @@ class Command(BaseCommand):
         for society in self.generated_societies:
             society_roles = SocietyRole.objects.filter(society=society)
 
+            society_founder_university = society.founder.university
+
             if not society_roles.exists():
                 self.stdout.write(f"No roles found for {society.name}, skipping.")
                 continue
@@ -449,8 +528,9 @@ class Command(BaseCommand):
                     self.stdout.write("Not enough unique students to assign roles.")
                     break
 
-                student = random.choice(available_students)
-                assigned_students.add(student)
+                # ensures society is in students university
+                filtered_students = [s for s in available_students if s.university == society_founder_university]
+                student = random.choice(filtered_students) if filtered_students else None
 
                 self.try_create_membership({
                     'user': student,
@@ -483,11 +563,11 @@ class Command(BaseCommand):
             )
             membership.save()
             self.stdout.write(
-                f"Created membership: {membership.society_role} in {membership.society.name} for user {user.username}")
+                f"Created membership: {membership.society_role} in {membership.society.name} for user {user.username} in university {user.university}")
         else:
             membership = existing_membership
             self.stdout.write(
-                f"Skipping duplicate membership: {membership.society_role} in {membership.society.name} for user {user.username}")
+                f"Skipping duplicate membership: {membership.society_role} in {membership.society.name} for user {user.username} ")
             return
         return membership
 

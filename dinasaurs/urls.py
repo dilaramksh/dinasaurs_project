@@ -74,7 +74,7 @@ urlpatterns = [
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
     path("society/<int:society_id>/customise-society/", customise_society_view, name="customise_society"),
     path('events/<int:event_id>/details/', event_details, name='event_details'),
-    path("society/<int:society_id>/update-customise-society/", update_society_colors, name="update_customise_society"),
+
 
     #super-admin paths
     path('super_admin/dashboard/', super_admin_dashboard, name='super_admin_dashboard'),
@@ -83,4 +83,7 @@ urlpatterns = [
     path('super_admin/registered_universities/', registered_universities, name='registered_universities'),
     path('super_admin/registered_universities/<int:university_id>/', modify_university, name='modify_university'),
     
+
+    path('society/<int:society_id>/colors/', get_latest_society_colors, name='get_latest_society_colors'),
+
 ]
