@@ -126,6 +126,7 @@
             </div>
         </section>
         
+        {% if request.user.user_type == "student" %}
         <!-- Section where the user can join the society -->
         <section id="join" class="mt-4">
             <form id="joinForm" action="{% url 'dashboard_from_mainpage' society.id %}" method="POST">
@@ -140,7 +141,8 @@
                 </div>
             </form>
         </section>
-
+        {% endif %}
+        
         <script>
             document.getElementById('joinForm').addEventListener('submit', function(e) {
             e.preventDefault(); 
