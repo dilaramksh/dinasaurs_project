@@ -19,6 +19,9 @@ class Event(models.Model):
         """Ensure that the event date is in the future."""
         if self.date < now().date():
             raise ValidationError({'date': 'The event date must be in the future.'})
+         
+        if self.society.status != "approved":
+            raise ValidationError("Cannot create an event for a non-approved society.")
 
     def __str__(self):
         return self.name  

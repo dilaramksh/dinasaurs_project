@@ -25,13 +25,18 @@ def dashboard(request):
     }
 
     if user_type == "student":
-        memberships = Membership.objects.filter(user=current_user)
+        memberships = Membership.objects.filter(
+            user=current_user,
+            society__status="approved"  # Ensures only approved societies
+        )
+
         user_societies = [membership.society_role.society for membership in memberships]
-        user_events = Event.objects.filter(Q(date__gte=date.today()) & Q(society__in=user_societies)).order_by("date")
+        user_events = Event.objects.filter(Q(date__gte=date.today()) & Q(society__in=user_societies, society__status="approved")).order_by("date")
         society_roles = SocietyRole.objects.filter(society__in=user_societies)
 
         committee_societies = Society.objects.filter(
-            membership__user=current_user
+            membership__user=current_user,
+            status="approved"
         ).exclude(
             membership__society_role__role_name__in=["member", "standard member"] 
         ).distinct()
@@ -74,7 +79,7 @@ def dashboard(request):
 @membership_required
 def get_society_dashboard(request, society_id):
     """Display the dashboard for a specific society."""
-    society = get_object_or_404(Society, pk=society_id)
+    society = get_object_or_404(Society, pk=society_id, status="approved")
 
     # Store the selected society ID
     request.session['active_society_id'] = society.id
@@ -93,16 +98,17 @@ def dashboard_from_mainpage(request, society_id):
     if not request.user.is_authenticated:
         return JsonResponse({'success': False, 'error': 'User not authenticated'}, status=401)
     
-    society = get_object_or_404(Society, id=society_id)
+    society = get_object_or_404(Society, id=society_id, status="approved")
     
     # Check if user is already a member
     if Membership.objects.filter(user=request.user, society=society).exists():
         return JsonResponse({'success': False, 'error': 'You are already a member of this society'}, status=400)
 
     # Assuming there's a default role for new members (e.g., standard member)
-    default_role = SocietyRole.objects.get(role_name="Member")  # Adjust based on your actual roles
+    default_role = SocietyRole.objects.get(society=society, role_name="Member")   # Adjust based on your actual roles
 
     # Create membership
     Membership.objects.create(user=request.user, society=society, society_role=default_role)
 
     return JsonResponse({'success': True})
+

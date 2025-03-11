@@ -38,14 +38,14 @@ def change_society_status(request, society_id):
                 )
 
         elif next_status == "blocked":
+            society.status = "blocked"
             society.save()
-            return redirect("dashboard")  
 
         else:
             society.status = "pending"
             society.save()
 
-        return redirect("dashboard")
+        return redirect(f"/dashboard/?status={next_status}")
 
 
     return HttpResponseNotAllowed(["POST"])
