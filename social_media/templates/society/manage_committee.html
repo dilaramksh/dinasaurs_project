@@ -1,0 +1,59 @@
+{% extends 'base_content.html' %}
+{% load static %}
+
+{% block title %}View Society Members{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg border-warning">
+                <div class="card-header text-center bg-warning text-dark">
+                    <h4 class="fw-bold">
+                        🐝 Manage Committee Roles 🐝
+                    </h4>
+                    <p class="mb-0 text-muted"> Assign and Revoke committee roles</p>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <table class="table table-bordered border-warning">
+                            <thead class="table-warning">
+                                <tr>
+                                    <th scope="col">Committee Role</th>
+                                    <th scope="col">Currently Assigned</th>
+                                    <th scope="col">Reassign to</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for committee in committee_members%}
+                                <tr>
+                                    <td><strong>{{committee.membership_set.first.society_role.role_name}}</strong></td>
+                                    <td>{{ committee.first_name }} {{committee.last_name}}</td>
+                                    <td>
+                                        <select class="form-select">
+                                            <option selected disabled>-- Select Member --</option>
+                                            {% for user in users %}
+                                                {%if committee.id != user.id %}
+                                                <option value= "{{ member.id }}">{{ user.first_name }} {{user.last_name}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="text-center mt-3">
+                        <button class="btn btn-warning">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'view_members' society_id %}" class="btn btn-warning"> Back </a> 
+        </div>
+        
+    </div>
+</div>
+
+{% endblock %}

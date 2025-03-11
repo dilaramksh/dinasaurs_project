@@ -50,6 +50,7 @@ def view_members(request, society_id):
     context = {
         "committee_members": committee_members,
         "users": all_users,  
+        "society_id" : society_id
     }
     
     return render(request, "society/view_members.html", context)
@@ -113,3 +114,16 @@ def customise_society_view(request, society_id):
         'society': society,
         'past_colors': past_colors 
     })
+
+def manage_committee(request, society_id):
+    memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
+    committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
+    
+    all_users = list(set(m.user for m in memberships))
+
+    context = {
+        "committee_members": committee_members,
+        "users": all_users,  
+        "society_id" : society_id
+    }
+    return render(request, 'society/manage_committee.html', context)

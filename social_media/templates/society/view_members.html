@@ -23,9 +23,15 @@
                             {% for member in committee_members %}
                             <div class="text-center border border-warning p-3 rounded shadow-sm" style="width: 200px;">
                                 <strong class="text-warning">{{ member.membership_set.first.society_role.role_name }}</strong><br>
-                                <img src="https://www.gravatar.com/avatar/{{ member.gravatar_hash }}?s=100&d=identicon" 
-                                    alt="Profile Picture" class="gravatar" width="50" height="50" 
+                                {% if member.profile_picture %}
+                                    <img src="{{ member.profile_picture.url }}" 
+                                    alt="Profile Picture" width="50" height="50" 
                                     style="border-radius: 50%; margin: 10px 0;">
+                                {% else %}
+                                    <img src="https://hive-society.s3.amazonaws.com/profile_pictures/default-user.jpg" 
+                                    alt="Profile Picture" width="50" height="50" 
+                                    style="border-radius: 50%; margin: 10px 0;">
+                                {% endif %}
                                 <p class="fw-semibold mb-0">{{ member.username }}</p>
                                 <!-- Button to trigger Modal -->
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#userModal{{ member.id }}">View Profile</button>
@@ -34,7 +40,10 @@
                             <p class="text-center text-muted">No committee members found.</p>
                             {% endfor %}
                         </div>
+                        
                     </section>
+
+                    <a href="{% url 'manage_committee' society_id %}" class="btn btn-warning btn-sm"> Manage committee roles </a> 
 
                     <!-- Search Bar -->
                     <div class="mb-4 d-flex justify-content-center">
