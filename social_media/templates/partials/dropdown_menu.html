@@ -14,7 +14,7 @@
     </button>
     <ul class="dropdown-menu dropdown-menu-end custom-submenu" id="societyDropdown">
         {% for membership in user.membership_set.all %}
-            {% if membership.society_role.is_committee_role %}
+            {% if membership.society.status == "approved" and membership.society_role.is_committee_role %}
                 <li>
                     <a class="dropdown-item {% if request.session.active_society_id == membership.society.id %}active{% endif %}"
                      href="{% url 'society_dashboard' society_id=membership.society.id %}">
