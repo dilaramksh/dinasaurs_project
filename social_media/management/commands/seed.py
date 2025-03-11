@@ -598,7 +598,6 @@ class Command(BaseCommand):
         existing_membership = Membership.objects.filter(
             user=user ,
             society=society,
-            society_role=society_role,
         ).first()
 
         if not existing_membership:
