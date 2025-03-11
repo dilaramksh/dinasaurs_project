@@ -58,6 +58,7 @@
                     <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="#committee">Meet the Committee</a></li>
                     <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#posts">View Posts</a></li>
                 </ul>
             </div>
         </div>
@@ -122,15 +123,14 @@
 
         <script>
             document.getElementById('joinForm').addEventListener('submit', function(e) {
-                e.preventDefault(); // Prevent form submission
+                e.preventDefault(); 
                 const button = document.getElementById('joinButton');
                 const spinner = document.getElementById('loadingSpinner');
 
-                // Show loading spinner
+            
                 button.style.display = 'none';
                 spinner.style.display = 'inline-block';
 
-                // Submit the form asynchronously via fetch
                 fetch(this.action, {
                     method: 'POST',
                     body: new FormData(this),
@@ -138,21 +138,21 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Handle success, e.g., show a success message
+             
                         alert('Successfully joined the society!');
-                        // Optionally, you can redirect or update the UI to reflect the change
+                        
                     } else {
-                        // Handle error, e.g., user is already a member
+                      
                         alert('You are already a member of this society.');
                     }
                 })
                 .catch(error => {
-                    // Handle any errors that occur during the request
+               
                     console.error('Error:', error);
                     alert('An error occurred. Please try again.');
                 })
                 .finally(() => {
-                    // Hide the spinner and show the button again
+                   
                     spinner.style.display = 'none';
                     button.style.display = 'inline-block';
                 });

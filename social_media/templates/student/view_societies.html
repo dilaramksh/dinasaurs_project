@@ -12,7 +12,7 @@
     <form method="GET" class="mb-4">
         <div class="row justify-content-center">
             <!-- Search Bar -->
-            <div class="col-md-5 mb-3">  <!-- Added mb-3 for spacing -->
+            <div class="col-md-5 mb-3"> 
                 <div class="input-group">
                     <span class="input-group-text bg-warning"><i class="fas fa-search"></i></span>
                     <input type="text" name="search" class="form-control" placeholder="Search societies..." value="{{ request.GET.search }}">
@@ -20,7 +20,7 @@
             </div>
 
             <!-- Category Filter -->
-            <div class="col-md-4 mb-3">  <!-- Added mb-3 for spacing -->
+            <div class="col-md-4 mb-3"> 
                 <select name="category" class="form-select">
                     <option value="">All Categories</option>
                     {% for category in categories %}
@@ -42,22 +42,25 @@
        <div class="row">
         {% for society in societies %}
         <div class="col-md-4 mb-4">
-            <div class="card shadow-sm">
-                {% if society.image and society.image.url %}
-                    <img src="{{ society.image.url }}" class="card-img-top" alt="{{ society.name }}">
-                {% else %}
-                    <img src="{% static 'images/default_soc_image.png' %}" class="card-img-top" alt="Default Image">
-                {% endif %}
-                <div class="card-body text-center">
-                    <h5 class="card-title">{{ society.name }}</h5>
-                    <p class="card-text">{{ society.description }}</p>
+            <a href="{% url 'society_mainpage' society.id %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm">
+                    {% if society.image and society.image.url %}
+                        <img src="{{ society.image.url }}" class="card-img-top" alt="{{ society.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default_soc_image.png' %}" class="card-img-top" alt="Default Image">
+                    {% endif %}
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ society.name }}</h5>
+                        <p class="card-text">{{ society.description }}</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         {% empty %}
         <p class="text-center text-muted">No societies found matching your criteria.</p>
         {% endfor %}
     </div>
+    
 </div>
 
 <!-- Add FontAwesome for search icon -->
