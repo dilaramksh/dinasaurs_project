@@ -24,6 +24,7 @@ def dashboard(request):
         'user': current_user,
     }
 
+    
     if user_type == "student":
         memberships = Membership.objects.filter(
             user=current_user,
@@ -57,8 +58,6 @@ def dashboard(request):
         if status_filter not in ["pending", "approved", "blocked"]:
            status_filter = "pending"  # fallback
 
-
-        # Filter societies by chosen status and founder's university = admin's university
         societies = Society.objects.filter(
             status=status_filter,
             founder__university=request.user.university
@@ -79,7 +78,7 @@ def dashboard(request):
 @membership_required
 def get_society_dashboard(request, society_id):
     """Display the dashboard for a specific society."""
-    society = get_object_or_404(Society, pk=society_id, status="approved")
+    society = get_object_or_404(Society, pk=society_id)
 
     # Store the selected society ID
     request.session['active_society_id'] = society.id
@@ -95,20 +94,16 @@ def get_student_dashboard(request):
 
 @login_required
 def dashboard_from_mainpage(request, society_id):
-    if not request.user.is_authenticated:
-        return JsonResponse({'success': False, 'error': 'User not authenticated'}, status=401)
-    
-    society = get_object_or_404(Society, id=society_id, status="approved")
-    
-    # Check if user is already a member
+    """Handles joining a society and redirects the user to their dashboard"""
+    society = get_object_or_404(Society, id=society_id)
+
     if Membership.objects.filter(user=request.user, society=society).exists():
         return JsonResponse({'success': False, 'error': 'You are already a member of this society'}, status=400)
 
-    # Assuming there's a default role for new members (e.g., standard member)
-    default_role = SocietyRole.objects.get(society=society, role_name="Member")   # Adjust based on your actual roles
+    default_role, created = SocietyRole.objects.get_or_create(role_name="Member")
 
-    # Create membership
+ 
     Membership.objects.create(user=request.user, society=society, society_role=default_role)
 
-    return JsonResponse({'success': True})
+    return JsonResponse({'success': True, 'message': 'Successfully joined society'})
 
