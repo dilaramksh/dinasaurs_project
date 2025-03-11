@@ -5,6 +5,6 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def view_memberships(request):
     """Display all memberships of a student user"""
-    memberships = Membership.objects.filter(user=request.user)  
+    memberships = Membership.objects.filter(user=request.user, society_role__society__status="approved")  
     print(memberships)
     return render(request, 'student/memberships.html', {'memberships': memberships})
