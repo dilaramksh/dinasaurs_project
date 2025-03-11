@@ -6,7 +6,7 @@ from social_media.models import University
 
 #@login_required
 def super_admin_dashboard(request):
-    number_pending = University.objects.filter(status="pending").count
+    number_pending = University.objects.filter(status="pending").count()
 
     return render(request, 'super_admin/super_admin_dashboard.html', {'number_pending': number_pending})
 
