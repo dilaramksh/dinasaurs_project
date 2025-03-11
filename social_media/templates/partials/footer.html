@@ -1,7 +1,20 @@
-<!-- Maybe add styling to customs.css -->
 <footer class="text-center text-dark mt-5 py-4" style="background-color: #FFF2CC;">
-    <p class="mb-0">🐝 &copy; {{ year }} HiveSociety | 
-        <a href="{% url 'stay_connected' %}" class="text-dark">Stay Connected</a> | 
-        <a href="{% url 'contact_us' %}" class="text-dark">Contact Us</a>
-    </p>
+    <div class="container">
+        <p class="mb-1">🐝 &copy; {{ year }} HiveSociety |
+            <a href="  {% url 'contact_us' %}" class="text-dark">Contact Us</a> |  
+            <a href="{% url 'help' %}" class="text-dark">Help</a> |
+            <a href="{% url 'privacy_policy' %}" class="text-dark">Privacy Policy</a>
+        </p>
+        <div class="social-icons mt-2">
+            <a href="https://twitter.com" class="text-dark mx-2" target="_blank">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://facebook.com/" class="text-dark mx-2" target="_blank">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://instagram.com" class="text-dark mx-2" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+    </div>
 </footer>

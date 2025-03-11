@@ -35,127 +35,29 @@
     <!-- Hero Section -->
     <div class="hero" style="background-color: #FFF2CC; padding: 60px 20px; text-align: center;">
         <h1 class="display-4 fw-bold">🎓 Discover Universities</h1>
-        <p class="lead">Explore our universities!</p>
+        <p class="lead">Explore and register your university!</p>
     </div>
 
     <div class="container mt-5">
         <div class="row">
-            <!-- King's College London (KCL) -->
+             {% for university in universities %}
             <div class="col-md-4 mb-4">
                 <div class="card university-card shadow-sm">
                     <div class="card-body">
                         <i class="bi bi-building"></i>
-                        <h5 class="card-title">King's College London (KCL)</h5>
+                        <img src="{{ university.logo.url }}" alt="Logo" style="height: 50px;">
+                        <h5 class="card-title">{{university.name}}</h5>
                     </div>
                 </div>
             </div>
-
-            <!-- University College London (UCL) -->
-            <div class="col-md-4 mb-4">
-                <div class="card university-card shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-building"></i>
-                        <h5 class="card-title">University College London (UCL)</h5>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Imperial College London -->
-            <div class="col-md-4 mb-4">
-                <div class="card university-card shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-building"></i>
-                        <h5 class="card-title">Imperial College London</h5>
-                    </div>
-                </div>
-            </div>
-
-            <!-- London School of Economics (LSE) -->
-            <div class="col-md-4 mb-4">
-                <div class="card university-card shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-building"></i>
-                        <h5 class="card-title">London School of Economics (LSE)</h5>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Queen Mary, University of London -->
-            <div class="col-md-4 mb-4">
-                <div class="card university-card shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-building"></i>
-                        <h5 class="card-title">Queen Mary, University of London</h5>
-                    </div>
-                </div>
-            </div>
-
-            <!-- University of Oxford -->
-            <div class="col-md-4 mb-4">
-                <div class="card university-card shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-building"></i>
-                        <h5 class="card-title">University of Oxford</h5>
-                    </div>
-                </div>
-            </div>
-
-            <!-- University of Cambridge -->
-            <div class="col-md-4 mb-4">
-                <div class="card university-card shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-building"></i>
-                        <h5 class="card-title">University of Cambridge</h5>
-                    </div>
-                </div>
-            </div>
-
-            <!-- University of Manchester -->
-            <div class="col-md-4 mb-4">
-                <div class="card university-card shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-building"></i>
-                        <h5 class="card-title">University of Manchester</h5>
-                    </div>
-                </div>
-            </div>
-
-            <!-- University of Edinburgh -->
-            <div class="col-md-4 mb-4">
-                <div class="card university-card shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-building"></i>
-                        <h5 class="card-title">University of Edinburgh</h5>
-                    </div>
-                </div>
-            </div>
-
-            <!-- University of Bristol -->
-            <div class="col-md-4 mb-4">
-                <div class="card university-card shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-building"></i>
-                        <h5 class="card-title">University of Bristol</h5>
-                    </div>
-                </div>
-            </div>
-
-            <!-- University of Warwick -->
-            <div class="col-md-4 mb-4">
-                <div class="card university-card shadow-sm">
-                    <div class="card-body">
-                        <i class="bi bi-building"></i>
-                        <h5 class="card-title">University of Warwick</h5>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
     <!-- Call to Action Section -->
     <div class="text-center py-5" style="background-color: #FFC533;">
-        <h2 class="fw-bold">Ready to Join?</h2>
-        <p class="fs-5">Take the first step towards an amazing university experience!</p>
-        <a href="{% url 'sign_up' %}" class="btn btn-lg btn-light fw-bold px-4 py-2">Create an Account</a>
+        <h2 class="fw-bold">Don't see your university?</h2>
+        <p class="fs-5">Take the first step towards registering your university with the hive!</p>
+        <a href="{% url 'register_your_university' %}" class="btn btn-lg btn-light fw-bold px-4 py-2">Register here</a>
     </div>
     <!-- Bootstrap JS & dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
