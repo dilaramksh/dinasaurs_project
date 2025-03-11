@@ -625,7 +625,7 @@ class Command(BaseCommand):
 
     def generate_event_fixtures(self):
         for society in self.generated_societies:
-            event_names = society_event_mapping.get(society.name, ["General Event"])  #default
+            event_names = society_event_mapping.get(society.name.lower().replace(" ", ""), ["default"])
 
             for _ in range(3):  # 3 per society
                 event_data = {
