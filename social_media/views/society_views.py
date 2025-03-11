@@ -74,12 +74,14 @@ def event_details(request, event_id):
     
     return JsonResponse(data)
 
-def create_post(request):
+def create_post(request, society_id):
+    society = get_object_or_404(Society, id=society_id)
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)  
-            post.author = request.user  
+            post.author = request.user
+            post.society = society  
             post.save()
             messages.success(request, "Post created successfully!")  
             return redirect_to_society_dashboard(request)
@@ -89,7 +91,7 @@ def create_post(request):
     else:
         form = PostForm()
 
-    return render(request, 'society/create_post.html', {"form": form})
+    return render(request, 'society/create_post.html', {"form": form, "society": society})
 
 def customise_society_view(request, society_id):
     society = get_object_or_404(Society, pk=society_id)
