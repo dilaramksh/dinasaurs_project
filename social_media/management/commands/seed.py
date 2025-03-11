@@ -436,6 +436,8 @@ class Command(BaseCommand):
         for society in self.generated_societies:
             society_roles = SocietyRole.objects.filter(society=society)
 
+            society_founder_university = society.founder.university
+
             if not society_roles.exists():
                 self.stdout.write(f"No roles found for {society.name}, skipping.")
                 continue
@@ -448,8 +450,8 @@ class Command(BaseCommand):
                     self.stdout.write("Not enough unique students to assign roles.")
                     break
 
-                student = random.choice(available_students)
-                assigned_students.add(student)
+                filtered_students = [s for s in available_students if s.university == society_founder_university]
+                student = random.choice(filtered_students) if filtered_students else None
 
                 self.try_create_membership({
                     'user': student,
@@ -482,11 +484,11 @@ class Command(BaseCommand):
             )
             membership.save()
             self.stdout.write(
-                f"Created membership: {membership.society_role} in {membership.society.name} for user {user.username}")
+                f"Created membership: {membership.society_role} in {membership.society.name} for user {user.username} in university {user.university}")
         else:
             membership = existing_membership
             self.stdout.write(
-                f"Skipping duplicate membership: {membership.society_role} in {membership.society.name} for user {user.username}")
+                f"Skipping duplicate membership: {membership.society_role} in {membership.society.name} for user {user.username} ")
             return
         return membership
 
