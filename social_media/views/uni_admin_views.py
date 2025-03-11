@@ -49,3 +49,28 @@ def change_society_status(request, society_id):
 
 
     return HttpResponseNotAllowed(["POST"])
+
+
+@login_required
+def society_request_details(request, society_id):
+   """Allows uni admin to view details of a pending society request."""
+
+
+   society = get_object_or_404(Society, pk=society_id)
+
+
+   if request.user.user_type != "uni_admin":
+       return HttpResponseForbidden("You must be a university admin to view this.")
+
+
+   if society.founder.university != request.user.university:
+       return HttpResponseForbidden("You can only review requests from your university.")
+
+
+   context = {
+       "society": society
+   }
+  
+   return render(request, "uni_admin/society_request_details.html", context)
+
+
