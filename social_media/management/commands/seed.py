@@ -15,14 +15,18 @@ user_fixtures = [
 ]
 
 admin_fixtures = [
-    {"first_name": "michael", "last_name": "smith", "username": "@michaelsmith", "email": "michael.smith@kcl.ac.uk", "user_type": "admin", "university": "King's College London", "start_date": "2023-09-23", "end_date": "2026-05-06"},
-    {"first_name": "daniel", "last_name": "brown", "username": "@danielbrown", "email": "daniel.brown@ucl.ac.uk", "user_type": "admin", "university": "University College London", "start_date": "2023-09-01", "end_date": "2026-06-15"},
-    {"first_name": "sarah", "last_name": "wilson", "username": "@sarahwilson", "email": "sarah.wilson@imperial.ac.uk", "user_type": "admin", "university": "Imperial College London", "start_date": "2023-10-10", "end_date": "2026-07-20"},
-    {"first_name": "james", "last_name": "anderson", "username": "@jamesanderson", "email": "james.anderson@lse.ac.uk", "user_type": "admin", "university": "London School of Economics", "start_date": "2023-08-15", "end_date": "2026-05-30"},
-    {"first_name": "olivia", "last_name": "martinez", "username": "@oliviamartinez", "email": "olivia.martinez@ox.ac.uk", "user_type": "admin", "university": "University of Oxford", "start_date": "2023-09-20", "end_date": "2026-06-10"},
-    {"first_name": "william", "last_name": "davis", "username": "@williamdavis", "email": "william.davis@leeds.ac.uk", "user_type": "admin", "university": "University of Leeds", "start_date": "2023-09-05", "end_date": "2026-06-05"},
-    {"first_name": "sophia", "last_name": "garcia", "username": "@sophiagarcia", "email": "sophia.garcia@man.ac.uk", "user_type": "admin", "university": "University of Manchester", "start_date": "2023-09-12", "end_date": "2026-06-12"},
-    {"first_name": "benjamin", "last_name": "moore", "username": "@benjaminmoore", "email": "benjamin.moore@ual.ac.uk", "user_type": "admin", "university": "University of Arts London", "start_date": "2023-09-18", "end_date": "2026-06-18"}
+    {"first_name": "michael", "last_name": "smith", "username": "@michaelsmith", "email": "michaelsmith@kcl.ac.uk", "user_type": "admin", "university": "King's College London", "start_date": "2023-09-23", "end_date": "2026-05-06"},
+    {"first_name": "daniel", "last_name": "brown", "username": "@danielbrown", "email": "danielbrown@ucl.ac.uk", "user_type": "admin", "university": "University College London", "start_date": "2023-09-01", "end_date": "2026-06-15"},
+    {"first_name": "sarah", "last_name": "wilson", "username": "@sarahwilson", "email": "sarahwilson@imperial.ac.uk", "user_type": "admin", "university": "Imperial College London", "start_date": "2023-10-10", "end_date": "2026-07-20"},
+    {"first_name": "james", "last_name": "anderson", "username": "@jamesanderson", "email": "jamesanderson@lse.ac.uk", "user_type": "admin", "university": "London School of Economics", "start_date": "2023-08-15", "end_date": "2026-05-30"},
+    {"first_name": "olivia", "last_name": "martinez", "username": "@oliviamartinez", "email": "oliviamartinez@ox.ac.uk", "user_type": "admin", "university": "University of Oxford", "start_date": "2023-09-20", "end_date": "2026-06-10"},
+    {"first_name": "william", "last_name": "davis", "username": "@williamdavis", "email": "williamdavis@leeds.ac.uk", "user_type": "admin", "university": "University of Leeds", "start_date": "2023-09-05", "end_date": "2026-06-05"},
+    {"first_name": "sophia", "last_name": "garcia", "username": "@sophiagarcia", "email": "sophiagarcia@man.ac.uk", "user_type": "admin", "university": "University of Manchester", "start_date": "2023-09-12", "end_date": "2026-06-12"},
+    {"first_name": "benjamin", "last_name": "moore", "username": "@benjaminmoore", "email": "benjaminmoore@ual.ac.uk", "user_type": "admin", "university": "University of Arts London", "start_date": "2023-09-18", "end_date": "2026-06-18"}
+]
+
+super_admin_fixture = [
+{"first_name": "michael", "last_name": "jordan", "username": "@michaeljordan", "email": "michaeljordan@kcl.ac.uk", "user_type": "super_admin", "university": "King's College London", "start_date": "2023-09-23", "end_date": "2026-05-06"},
 ]
 
 user_universities_mapping = {}
@@ -217,6 +221,9 @@ class Command(BaseCommand):
 
     # Seed Users
     def create_users(self):
+        self.stdout.write('Creating Super Admins')
+        self.generate_super_admin_fixtures()
+        self.stdout.write('Super Admin creation completed.')
         self.stdout.write('Creating Admins')
         self.generate_admin_fixtures()
         self.stdout.write('Admin creation completed.')
@@ -372,6 +379,46 @@ class Command(BaseCommand):
         self.generated_admins.append(admin)
         self.stdout.write(f"Created user: {admin.username} ({admin.user_type})")
         return admin
+
+
+    # Seed Super Admin
+    def generate_super_admin_fixtures(self):
+        for data in super_admin_fixture:
+            self.stdout.write(f"Creating Super Admin: {data['username']} of type {data['user_type']}")
+            created_super_admin = self.try_create_super_admin(data)
+
+    def try_create_super_admin(self, data):
+        try:
+            return self.create_super_admin(data)
+        except Exception as e:
+            self.stderr.write(self.style.ERROR(f"Error creating Super Admin {data['username']}: {str(e)}"))
+
+    def create_super_admin(self, data):
+        if User.objects.filter(username=data['username']).exists():
+            self.stdout.write(f"User with username {data['username']} already exists.")
+            return None
+
+        try:
+            university = University.objects.get(name=data['university'])
+        except Exception as e:
+            self.stdout.write(f"University {data['university']} not found.")
+            return None
+
+        super_admin = User.objects.create_user(
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            username=data['username'],
+            email=data['email'],
+            start_date=data['start_date'],
+            end_date=data['end_date'],
+            user_type=data['user_type'],
+            university=university,
+            password=Command.DEFAULT_PASSWORD,
+        )
+
+        super_admin.save()
+        self.stdout.write(f"Created Super Admin: {super_admin.username} ({super_admin.user_type})")
+        return super_admin #? redundant
 
 
     # Seed Universities
