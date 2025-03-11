@@ -32,6 +32,7 @@
                                         {% for event in user_events %}
                                             <div>
                                                 <p class="fw-bold">🐝 {{ event.name }}</p>
+                                                <p class="mb-1">📍 {{ event.location }} | 🗓 {{ event.date|date:"Y-m-d" }}</p>
                                             </div>
                                         {% empty %}
                                             <li class="text-muted">No upcoming events</li>
@@ -71,11 +72,9 @@
                                     <div class="row g-2">
                                        {% for society in user_societies %}
                                                 <div class="col-6">
-                                                    <div class="card p-3 text-center border-light shadow-sm" style="background-color: #FFF2CC;">
-                                                        <p class="fw-bold">🐝 {{ society.name }}</p>
-                                                    </div>
+                                                    <p class="fw-bold">🐝 {{ society.name }}</p>
                                                 </div>
-                                            </div>
+
                                         {% empty %}
                                             <p class="text-muted text-center">You are not part of any societies yet.</p>
                                         {% endfor %}

@@ -6,6 +6,8 @@ from django.shortcuts import get_object_or_404
 from social_media.models import Society
 from social_media.helpers import membership_required
 from django.http import JsonResponse
+from django.db.models import Q
+from datetime import date
 
 @login_required
 def dashboard(request):
@@ -25,7 +27,7 @@ def dashboard(request):
     if user_type == "student":
         memberships = Membership.objects.filter(user=current_user)
         user_societies = [membership.society_role.society for membership in memberships]
-        user_events = Event.objects.filter(society__in=user_societies)
+        user_events = Event.objects.filter(Q(date__gte=date.today()) & Q(society__in=user_societies)).order_by("date")
         society_roles = SocietyRole.objects.filter(society__in=user_societies)
 
         committee_societies = Society.objects.filter(
