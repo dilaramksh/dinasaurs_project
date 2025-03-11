@@ -38,6 +38,9 @@ university_fixtures = [
         {"name": "Imperial College London", "domain": "imperial.ac.uk", 'status': "approved", 'logo' : "university_logos/imperial.png"},
         {"name": "London School of Economics", "domain": "lse.ac.uk", 'status': "approved", 'logo' : "university_logos/lse.png"},
         {"name": "University of Oxford", "domain": "ox.ac.uk",'status': "approved", 'logo' : "university_logos/ox.png"},
+        {"name": "University of Leeds", "domain": "leeds.ac.uk",'status': "pending", 'logo' : "university_logos/University_of_Leeds.png"},
+        {"name": "University of Manchester", "domain": "man.ac.uk",'status': "pending", 'logo' : "university_logos/University_of_Manchester.png"},
+        {"name": "University of Arts London", "domain": "ual.ac.uk",'status': "pending", 'logo' : "university_logos/UAL.png"},
 ]
 super_admin_fixture = [
 {"first_name": "michael", "last_name": "jordan", "username": "@michaeljordan", "email": "michaeljordan@kcl.ac.uk", "user_type": "super_admin", "university": "King's College London", "start_date": "2023-09-23", "end_date": "2026-05-06"},
