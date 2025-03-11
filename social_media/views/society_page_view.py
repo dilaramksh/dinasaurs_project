@@ -39,11 +39,12 @@ def society_mainpage(request, society_id):
 
     return render(request, 'society/society_mainpage.html', context)
 
+
 def get_latest_society_colors(request, society_id):
     society = Society.objects.get(pk=society_id)
     latest_color = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at').first()
 
     return JsonResponse({
-        "colour1": latest_color.colour1 if latest_color else society.colour1,
-        "colour2": latest_color.colour2 if latest_color else society.colour2
+        "colour1": latest_color.previous_colour1 if latest_color else society.colour1,
+        "colour2": latest_color.previous_colour2 if latest_color else society.colour2
     })

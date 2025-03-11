@@ -94,13 +94,16 @@ def create_post(request, society_id):
 
     return render(request, 'society/create_post.html', {"form": form, "society": society})
 
+
 def customise_society_view(request, society_id):
     society = get_object_or_404(Society, pk=society_id)
-    
+  
     past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')
+
     if request.method == 'POST':
         form = CustomisationForm(request.POST, instance=society)
         if form.is_valid():
+           
             SocietyColorHistory.objects.create(
                 society=society,
                 previous_colour1=society.colour1,
@@ -115,5 +118,5 @@ def customise_society_view(request, society_id):
     return render(request, 'society/customise_society.html', {
         'form': form,
         'society': society,
-        'past_colors': past_colors 
+        'past_colors': past_colors  
     })
