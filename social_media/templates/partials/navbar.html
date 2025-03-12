@@ -7,30 +7,6 @@
       <img src="{% static 'images/Logo.png' %}" alt="Logo" style="height: 60px; width: auto;">
     </a>
 
-    <!-- Switch Dashboard functionality here?
-    <div class="nav-item dropdown d-flex align-items-center">
-      <button type="button" class="btn border-0 dropdown-toggle" id="dashboardDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-home fa-lg"></i>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end custom-submenu" id="dashboardDropdownMenu">
-          {% for membership in user.membership_set.all %}
-              {% if membership.society_role.is_committee_role %}
-                  <li>
-                      <a class="dropdown-item {% if request.session.active_society_id == membership.society.id %}active{% endif %}"
-                       href="{% url 'society_dashboard' society_id=membership.society.id %}">
-                          {{ membership.society.name }} Dashboard
-                      </a>
-                  </li>
-              {% endif %}
-          {% endfor %}
-          {% if request.session.active_society_id %}
-              <li>
-                  <a class="dropdown-item dashboard-link" href="{% url 'to_student_dashboard' %}">{{ user.first_name }}'s Dashboard</a>
-              </li>
-          {% endif %}
-      </ul>
-    </div>
-    -->
     <!-- Icons/page (student only??)-->
     {% if user.is_authenticated %}
       <div class="collapse navbar-collapse" id="navbarNav">
