@@ -38,14 +38,19 @@ class StudentViewTestCase(TestCase):
         self.assertEqual(response.context['user'].user_type, 'student')
 
 
-    """def test_help_view(self):
+    def test_help_view(self):
         response = self.client.get(reverse('help'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('student/help.html')
         self.assertIn('user', response.context)
-        self.assertEqual(response.context['user'].user_type, 'student')"""
+        self.assertEqual(response.context['user'].user_type, 'student')
 
-    '''def test_features_view(self):'''
+    '''def test_features_view(self):
+        response = self.client.get(reverse('featu'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed('student/help.html')
+        self.assertIn('user', response.context)
+        self.assertEqual(response.context['user'].user_type, 'student')'''
 
     '''def test_pricing_view(self):'''
 
