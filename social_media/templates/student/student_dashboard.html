@@ -18,18 +18,7 @@
             <div class="row">
                 <!-- Profile Section -->
                 <div class="col-md-3">
-                    <div class="card text-center p-4 border-warning shadow-sm" style="min-height: 100%;">
-                        <h5 class="card-header">🐝 Your Profile Details</h5>
-                        <div class="card-body">
-                            <img src="{{ user.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}" class="img-fluid rounded-circle mb-3" alt="Profile Picture">
-                            <h6>{{ user.full_name }}</h6>
-                            <hr>
-                            <p><strong>Email:</strong> {{ user.email }}</p>
-                            <p><strong>University:</strong> {{ user.university }}</p>
-                            <p><strong>Start Date:</strong> {{ user.start_date }}</p>
-                            <p><strong>Graduation Date:</strong> {{ user.end_date }}</p>
-                        </div>
-                    </div>
+                    {% include 'partials/profile_card.html' %}
                 </div>
                 
                 <!-- Main Content -->
