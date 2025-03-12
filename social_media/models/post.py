@@ -14,7 +14,4 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-    def clean(self):
-        # If society is not approved, forbid
-        if self.society.status != "approved":
-            raise ValidationError("Cannot create membership for a non-approved society.")
+    
