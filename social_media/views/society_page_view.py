@@ -18,6 +18,8 @@ def society_mainpage(request, society_id):
     society_events = society.event_set.filter(date__gte=timezone.now()).order_by('date')
     past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')
     is_committee_member = request.user in committee_members
+    is_member = Membership.objects.filter(society=society, user=request.user).exists()
+
 
     society_colour1 = society.colour1
     society_colour2 = society.colour2
@@ -31,6 +33,7 @@ def society_mainpage(request, society_id):
         'society_colour1': society_colour1,
         'society_colour2': society_colour2,
         'is_committee_member': is_committee_member,
+        'is_member': is_member,
         'past_colors': past_colors, 
 
     }
