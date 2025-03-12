@@ -13,7 +13,7 @@ from .society_views import (
 )
 
 from .uni_admin_views import(
-   change_society_status
+   change_society_status, society_request_details, 
 )
 
 from .membership_view import view_memberships

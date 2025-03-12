@@ -42,7 +42,7 @@
                         <h5 class="card-header bg-warning text-dark">📝 Create a Post</h5>
                         <div class="card-body">
                             <p class="card-text">Share updates and announcements with your society members.</p>
-                            <a href="{% url 'create_post' %}" class="btn btn-warning">Create Post</a>
+                            <a href="{% url 'create_post' society.id %}" class="btn btn-warning">Create Post</a>
                         </div>
                     </div>
                 </div>
