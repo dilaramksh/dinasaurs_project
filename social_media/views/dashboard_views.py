@@ -104,14 +104,14 @@ def dashboard_from_mainpage(request, society_id):
     if Membership.objects.filter(user=request.user, society=society).exists():
         return JsonResponse({'success': False, 'error': 'You are already a member of this society'}, status=400)
 
-    # Ensure society is included in get_or_create
     default_role, created = SocietyRole.objects.get_or_create(
         role_name="Member",
-        society=society  # Fix: Adding society to avoid NULL constraint error
+        society=society  
     )
 
  
     Membership.objects.create(user=request.user, society=society, society_role=default_role)
 
     return JsonResponse({'success': True, 'message': 'Successfully joined society'})
+    
 
