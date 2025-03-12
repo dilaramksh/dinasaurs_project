@@ -28,7 +28,7 @@ from social_media.views.footer_view import *
 from social_media.views.homepage_view import *
 from social_media.views.dashboard_views import *
 #from social_media.views.student_feed_view import *
-
+from social_media.views.membership_view import join_society
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -62,6 +62,7 @@ urlpatterns = [
     path('student/societies', student_societies, name='student_societies'),
     path('student/events', student_events, name='student_events'),
     path('student/memberships/', view_memberships, name='view_memberships'),
+    path('society/<int:society_id>/join/', join_society, name='join_society'),
 
     #society paths
     path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
