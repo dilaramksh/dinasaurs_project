@@ -2,13 +2,14 @@ from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
 from social_media.forms import CustomisationForm, PostForm, EventCreationForm
 from social_media.models.colour_history import SocietyColorHistory
-from social_media.models import Society, Event, Membership, EventsParticipant
+from social_media.models import Society, Event, Membership, EventsParticipant, Competition, Team, TeamMembership
 from django.utils.timezone import now
 from datetime import date
 from django.http import JsonResponse
 from social_media.helpers import redirect_to_society_dashboard 
-
-
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden, HttpResponseNotAllowed
+from social_media.forms.competition_creation_form import CompetitionForm
 
 def event_creation(request, society_id):
 
@@ -117,3 +118,50 @@ def customise_society_view(request, society_id):
         'society': society,
         'past_colors': past_colors 
     })
+
+# Competition-related views
+
+@login_required
+def create_competition(request, society_id):
+    if not request.user.is_committee_member():
+        return HttpResponseForbidden("You are not a committee member in this society.")
+
+    if request.method == "POST":
+        form = CompetitionForm(request.POST)
+        if form.is_valid():
+            competition = form.save(commit=False)
+            competition.society_id = society_id
+            competition.save()
+            return redirect("manage_competitions", society_id=society_id)
+    else:
+        form = CompetitionForm()
+
+    return render(request, "competitions/create_competition.html", {"form": form, "society_id": society_id})
+
+     
+# once match is scheduled, participants cant withdraw
+# students should have the same option (without matchmaking power)-just withdraw
+def manage_competitions(request, society_id):
+    if not request.user.is_committee_member():
+        return HttpResponseForbidden("You are not a committee member in this society.")
+
+    competitions = Competition.objects.filter(society_id=society_id)
+    return render(request, "competitions/manage_competitions.html", {
+        "society_id": society_id,
+        "competitions": competitions,
+    })
+
+
+
+
+@login_required
+def finalize_competition(request, competition_id):
+    """Allows for finalizing lineup so no new joins/leaves."""
+    competition = get_object_or_404(Competition, pk=competition_id)
+    if not request.user.is_committee_member():
+        return HttpResponseForbidden("You are not a committee member in this society.")
+
+    # Finalize the competition lineup
+    competition.is_finalized = True
+    competition.save()
+    return redirect("", competition_id=competition_id)

@@ -73,6 +73,7 @@ urlpatterns = [
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
     path("society/<int:society_id>/customise-society/", customise_society_view, name="customise_society"),
     path('events/<int:event_id>/details/', event_details, name='event_details'),
+    path('competitions/<int:society_id>/manage_competitions/', manage_competitions, name='manage_competitions'),
 
     #university paths
     path("university/dashboard/change_status/<int:society_id>/", change_society_status, name="change_society_status"),

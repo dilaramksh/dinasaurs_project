@@ -5,9 +5,9 @@ from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from social_media.forms.society_creation_form import SocietyCreationForm
 from django.shortcuts import HttpResponse
-from social_media.models import Category
+from social_media.models import Category, Competition, CompetitionParticipant
 from django.shortcuts import get_object_or_404
-
+from django.http import HttpResponseForbidden, HttpResponseNotAllowed
 
 #to do: add login required
 #to do: add user type required
@@ -159,3 +159,33 @@ def student_events(request):
         'user_societies': user_societies,
         'user_events': user_events,
     })
+
+@login_required
+def join_competition(request, competition_id):
+    competition = get_object_or_404(Competition, pk=competition_id, is_active=True)
+    
+    # joining not allowed if finalized
+    if competition.is_finalized:
+        return HttpResponseForbidden("You can no longer join this competition; it's finalized.")
+
+    # ensure user not already joined
+    if CompetitionParticipant.objects.filter(user=request.user, competition=competition).exists():
+        messages.error(request, "You have already joined this competition.")
+        return redirect("dashboard") 
+
+    CompetitionParticipant.objects.create(user=request.user, competition=competition)
+    messages.error(request, "You successfully signed up for this competition")
+    return redirect("dashboard") 
+
+
+@login_required
+def leave_competition(request, competition_id):
+    competition = get_object_or_404(Competition, pk=competition_id)
+    # leaving not allowed if finalized
+    if competition.is_finalized:
+        return HttpResponseForbidden("Competition is finalized. You can't leave now.")
+
+    participant = get_object_or_404(CompetitionParticipant, user=request.user, competition=competition)
+    participant.delete()
+    return redirect("dashboard")
+

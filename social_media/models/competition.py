@@ -10,6 +10,10 @@ class Competition(models.Model):
     end_date = models.DateTimeField(blank=True, null=True)
     is_ongoing = models.BooleanField(default=True)
     is_team_based = models.BooleanField(default=False)
+    is_finalized = models.BooleanField(
+        default=False,
+        help_text="If True, no new participants or teams can join or be modified."
+    )
 
     def __str__(self):
         return f"{self.society.name}: {self.name}"
