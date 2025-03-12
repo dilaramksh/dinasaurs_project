@@ -84,7 +84,7 @@ def create_post(request, society_id):
             post.society = society  
             post.save()
             messages.success(request, "Post created successfully!")  
-            return redirect_to_society_dashboard(request)
+            return redirect('society_mainpage', society_id=society.id) 
         else:
             messages.error(request, "Error in post creation. Please check the form.")
         
@@ -95,6 +95,7 @@ def create_post(request, society_id):
 
 def customise_society_view(request, society_id):
     society = get_object_or_404(Society, pk=society_id)
+    
     past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')
     if request.method == 'POST':
         form = CustomisationForm(request.POST, instance=society)

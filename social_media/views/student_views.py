@@ -20,11 +20,14 @@ def student_dashboard(request):
 
     user_type = student.user_type
 
-    memberships = Membership.objects.filter(user=student)
+    memberships = Membership.objects.filter(
+        user=student,
+        society_role__society__status="approved"
+    )
     user_societies = [membership.society_role.society for membership in memberships]
     print("User Societies:", user_societies)  # Debugging print
 
-    events = Event.objects.filter(society__in=user_societies)
+    events = Event.objects.filter(society__in=user_societies, society__status="approved")
     print("Events:", events)  # Debugging print
 
     if not memberships:
@@ -91,8 +94,7 @@ def create_temp_category(request):
         return HttpResponse("Category already exists.")
 
 def view_societies(request):
-    #societies = Society.objects.all()  # Fetch all societies
-    societies = Society.objects.filter(status = "approved").prefetch_related('posts')
+    societies = Society.objects.filter(status = "approved").prefetch_related('posts') # Only fetch approved societies and related posts
     categories = Category.objects.all() # Get all categories for the filter
 
     # Get search query
@@ -120,7 +122,6 @@ def view_societies(request):
 
 def student_societies(request):
     student = request.user
-
     memberships = Membership.objects.filter(user=student)
     user_societies = [membership.society_role.society for membership in memberships]
     selected_society = None
@@ -133,21 +134,34 @@ def student_societies(request):
 
     if selected_society:
         society_roles = SocietyRole.objects.filter(society=selected_society)
+        committee_members = [
+            membership.user for membership in Membership.objects.filter(society_role__society=selected_society)
+            if membership.is_committee_member()
+        ]
     else:
         society_roles = SocietyRole.objects.filter(society__in=user_societies)
+
+        committee_members = [
+            membership.user for membership in Membership.objects.filter(society_role__society__in=user_societies)
+            if membership.is_committee_member()
+        ]
 
     return render(request, 'student/student_societies.html', {
         'student': student,
         'user_societies': user_societies,
         'selected_society': selected_society,
-        'society_roles': society_roles
+        'society_roles': society_roles,
+        'committee_members': committee_members,
     })
 
 def student_events(request):
     student = request.user
-    memberships = Membership.objects.filter(user=student)
+    memberships = Membership.objects.filter(
+        user=student,
+        society_role__society__status="approved"
+    )
     user_societies = [membership.society_role.society for membership in memberships]
-    user_events = Event.objects.filter(society__in=user_societies)
+    user_events = Event.objects.filter(society__in=user_societies, society__status="approved")
 
     return render(request, 'student/student_events.html', {
         'student': student,

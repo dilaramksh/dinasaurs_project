@@ -56,7 +56,6 @@ urlpatterns = [
     path('partials/footer/privacy_policy/', privacy_policy, name='privacy_policy'),
 
     #student paths
-    #path('student/dashboard/', student_dashboard, name='student_dashboard'),
     path('student/homepage/', society_browser, name='society_browser'),
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
@@ -67,7 +66,6 @@ urlpatterns = [
     #society paths
     path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
     path('society/<int:society_id>/create_event/', event_creation, name='create_event'),
-    #path('society/create_post/', create_post, name='create_post'),
     path('society/create_post/<int:society_id>/', create_post, name='create_post'),
     path('society/<int:society_id>/terminate_society/', terminate_society, name='terminate_society'),
     path('society/<int:society_id>/view_members/', view_members, name='view_members'),

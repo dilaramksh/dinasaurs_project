@@ -146,9 +146,7 @@ USE_TZ = True
 
 STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
 STATIC_ROOT = 'staticfiles/'
-#STATICFILES_DIRS = [
-#    BASE_DIR / "static",
-#]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -160,5 +158,5 @@ AUTH_USER_MODEL = 'social_media.User'
 LOGIN_URL = 'log_in'
 # URL where @login_prohibited redirects to (needs to be added)
 REDIRECT_URL_WHEN_LOGGED_IN = 'dashboard'
-#REDIRECT_TO_UNI_ADMIN_WHEN_LOGGED_IN = 'uni_admin_dashboard'
-#REDIRECT_TO_SOCIETY_WHEN_LOGGED_IN = 'society_dashboard'
+DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
+

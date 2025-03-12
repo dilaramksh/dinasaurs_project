@@ -13,7 +13,7 @@
     <form method="GET" class="mb-4">
         <div class="row justify-content-center">
             <!-- Search Bar -->
-            <div class="col-md-5 mb-3">  <!-- Added mb-3 for spacing -->
+            <div class="col-md-5 mb-3"> 
                 <div class="input-group">
                     <span class="input-group-text bg-warning"><i class="fas fa-search"></i></span>
                     <input type="text" name="search" class="form-control" placeholder="Search societies..." value="{{ request.GET.search }}">
@@ -21,7 +21,7 @@
             </div>
 
             <!-- Category Filter -->
-            <div class="col-md-4 mb-3">  <!-- Added mb-3 for spacing -->
+            <div class="col-md-4 mb-3"> 
                 <select name="category" class="form-select">
                     <option value="">All Categories</option>
                     {% for category in categories %}
@@ -74,6 +74,7 @@
         <p class="text-center text-muted">No societies found matching your criteria.</p>
         {% endfor %}
     </div>
+    
 </div>
 
 <!-- Add FontAwesome for search icon -->
