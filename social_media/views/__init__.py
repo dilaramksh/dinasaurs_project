@@ -9,7 +9,7 @@ from .student_views import (
     society_browser, view_societies, society_creation_request, student_societies, student_events
 )
 from .society_views import (
-    event_creation, terminate_society, view_members, view_upcoming_events, create_post,
+    event_creation, terminate_society, view_members, view_upcoming_events, create_post, edit_roles
 )
 
 from .uni_admin_views import(

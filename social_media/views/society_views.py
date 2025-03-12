@@ -1,8 +1,8 @@
 from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
-from social_media.forms import CustomisationForm, PostForm, EventCreationForm
+from social_media.forms import CustomisationForm, PostForm, EventCreationForm, DeleteRoleForm, SocietyRoleForm
 from social_media.models.colour_history import SocietyColorHistory
-from social_media.models import Society, Event, Membership, EventsParticipant
+from social_media.models import Society, Event, Membership, EventsParticipant, SocietyRole
 from django.utils.timezone import now
 from datetime import date
 from django.http import JsonResponse
@@ -130,3 +130,35 @@ def manage_committee(request, society_id):
         "society_id" : society_id
     }
     return render(request, 'society/manage_committee.html', context)
+
+def edit_roles(request, society_id):
+    society = get_object_or_404(Society, id=society_id)
+    roles = SocietyRole.objects.filter(society=society) 
+
+    committee_roles = [role for role in roles if role.is_committee_role()]
+
+    if request.method == "POST":
+        if 'add_role' in request.POST:
+            add_form = SocietyRoleForm(request.POST)
+            if add_form.is_valid():
+                new_role = add_form.save(commit=False)
+                new_role.society = society
+                new_role.save()
+                return redirect('edit_roles', society_id=society.id)
+
+        elif 'delete_role' in request.POST:
+            delete_form = DeleteRoleForm(request.POST, society=society)
+            if delete_form.is_valid():
+                role_to_delete = delete_form.cleaned_data['role']
+                role_to_delete.delete()
+                return redirect('edit_roles', society_id=society.id)
+    else:
+        add_form = SocietyRoleForm()
+        delete_form = DeleteRoleForm(society=society)
+
+    return render(request, 'society/edit_roles.html', {
+        'society': society,
+        'committee_roles': committee_roles,
+        'add_form': add_form,
+        'delete_form': delete_form
+    })
