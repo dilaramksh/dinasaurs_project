@@ -20,7 +20,7 @@ def society_mainpage(request, society_id):
     
     past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')
 
-    posts = society.post_set.all().order_by('-created_at')
+    posts = society.posts.all().order_by('-created_at')
     is_committee_member = request.user in committee_members
 
     society_colour1 = society.colour1
