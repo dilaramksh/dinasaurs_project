@@ -1,0 +1,13 @@
+{
+    "builds": [{
+        "src": "dinasaurs/wsgi.py",
+        "use": "@vercel/python3.9.6",
+        "config": { "maxLambdaSize": "15mb", "runtime": "python"}
+    }],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "dinasaurs/wsgi.py"
+        }
+    ]
+}
