@@ -97,6 +97,7 @@ def customise_society_view(request, society_id):
     if request.method == 'POST':
         form = CustomisationForm(request.POST, instance=society)
         if form.is_valid():
+            print(f"Before update: {society.colour1}, {society.colour2}")  # Debugging
             SocietyColorHistory.objects.create(
                 society=society,
                 previous_colour1=society.colour1,
@@ -104,7 +105,12 @@ def customise_society_view(request, society_id):
             )
 
             form.save()
+            print(f"After update: {society.colour1}, {society.colour2}")  # Debugging
+
             return redirect('society_mainpage', society_id=society.id)
+        else:
+            print("Form is not valid:", form.errors)
+
     else:
         form = CustomisationForm(instance=society)
 

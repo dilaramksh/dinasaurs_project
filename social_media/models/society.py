@@ -37,6 +37,7 @@ class Society(models.Model):
     termination_reason = models.CharField(max_length=50, choices=[('operational', 'Operational reasons'), ('low_interest', 'Low Interest'), ('financial', 'Financial reasons'), ('other', 'Other reason') ])
     status = models.CharField(max_length=20, choices=[("pending", "Pending"), ("approved", "Approved"), ("blocked", "Blocked")], default="pending")
     
+    """
     def clean(self):
         super().clean()  # Call any default validation logic
 
@@ -46,6 +47,7 @@ class Society(models.Model):
         else:
             if self.price <= 0:
                 raise ValidationError("Price must be greater than zero for a paid membership.")
+    """
     
     def save(self, *args, **kwargs):
         self.name = self.name.title()  # Capitalize the name before saving

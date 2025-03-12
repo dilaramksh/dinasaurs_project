@@ -72,7 +72,7 @@ urlpatterns = [
     path('society/<int:society_id>/view_members/', view_members, name='view_members'),
     path('society/<int:society_id>/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
-    path("society/<int:society_id>/customise-society/", customise_society_view, name="customise_society"),
+    path("society/<int:society_id>/customise_society/", customise_society_view, name="customise_society"),
     path('events/<int:event_id>/details/', event_details, name='event_details'),
 
 
