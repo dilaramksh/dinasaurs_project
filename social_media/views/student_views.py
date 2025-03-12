@@ -7,6 +7,7 @@ from social_media.forms.society_creation_form import SocietyCreationForm
 from django.shortcuts import HttpResponse
 from social_media.models import Category
 from django.shortcuts import get_object_or_404
+from social_media.models import Post
 
 
 #to do: add login required
@@ -93,8 +94,7 @@ def create_temp_category(request):
         return HttpResponse("Category already exists.")
 
 def view_societies(request):
-    # Only fetch approved societies
-    societies = Society.objects.filter(status="approved")
+    societies = Society.objects.filter(status = "approved").prefetch_related('posts') # Only fetch approved societies and related posts
     categories = Category.objects.all() # Get all categories for the filter
 
     # Get search query
@@ -107,11 +107,14 @@ def view_societies(request):
     if category_id:
         societies = societies.filter(category_id=category_id)
 
+    society_posts = {society.id: society.posts.all() for society in societies}
+
     return render(request, 'student/view_societies.html', {
         'societies': societies,
         'categories': categories,
         'search_query': search_query,
         'selected_category': category_id,
+        'society_posts': society_posts
     })
 
     return render(request, 'student/view_societies.html', {'societies': societies})
