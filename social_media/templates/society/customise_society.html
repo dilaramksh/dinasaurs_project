@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{% url 'society_dashboard' society.id %}">
+                    <form method="POST" action="{% url 'society_mainpage' society.id %}">
                         {% csrf_token %}
                         
                         {% include 'partials/bootstrap_form.html' with form=form submit_text="Update Colors" %}
@@ -61,7 +61,6 @@
                                           style="background-color: {{ color.previous_colour1 }}; color: #fff;">
                                         {{ color.previous_colour1 }}
                                     </span>
-                                    →
                                     <span class="badge px-3 py-2 rounded-pill" 
                                           style="background-color: {{ color.previous_colour2 }}; color: #fff;">
                                         {{ color.previous_colour2 }}

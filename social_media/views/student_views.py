@@ -25,10 +25,10 @@ def student_dashboard(request):
         society_role__society__status="approved"
     )
     user_societies = [membership.society_role.society for membership in memberships]
-    print("User Societies:", user_societies)  # Debugging print
+    print("User Societies:", user_societies) 
 
     events = Event.objects.filter(society__in=user_societies, society__status="approved")
-    print("Events:", events)  # Debugging print
+    print("Events:", events) 
 
     if not memberships:
         print("No memberships found for this user")
@@ -63,14 +63,10 @@ def society_browser(request):
     return render(request, 'student/society_browser.html')
 
 def society_creation_request(request):
-    # if request.user.user_type != "student":
-    #     messages.error(request, "Only students can request a new society.")
-    #     return redirect("society_homepage")
     if request.method == 'POST':
         form = SocietyCreationForm(request.POST)
         if form.is_valid():
             society = form.save(commit=False)
-            # Save with status 'Pending'
             society.status = "pending" 
             society.founder = request.user
             society.save()

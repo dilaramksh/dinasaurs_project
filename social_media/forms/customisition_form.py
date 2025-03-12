@@ -14,4 +14,3 @@ class CustomisationForm(forms.ModelForm):
         model = Society
         fields = ['colour1', 'colour2']
 
-    
