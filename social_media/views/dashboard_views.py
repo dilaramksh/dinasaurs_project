@@ -51,6 +51,7 @@ def dashboard(request):
         }
 
         template = "student/student_dashboard.html"
+
     elif user_type == 'uni_admin':
         status_filter = request.GET.get("status", "pending")
 
@@ -68,8 +69,11 @@ def dashboard(request):
             "chosen_status": status_filter
         }
         template = "uni_admin/uni_admin_dashboard.html"
+    
+    elif user_type == 'super_admin':
+        template = "super_admin/super_admin_dashboard.html"
     else:
-        template = 'student/student_dashboard.html' # ???
+        template = 'student/student_dashboard.html' 
     
     return render(request, template, context)
 

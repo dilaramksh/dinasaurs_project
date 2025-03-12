@@ -51,11 +51,11 @@ urlpatterns = [
     path('homepage/register_your_university', register_your_university, name='register_your_university'),
 
     #footer path 
+    path('stay_connected/', stay_connected, name='stay_connected'),
     path('contact_us/', contact_us, name='contact_us'),
     path('partials/footer/privacy_policy/', privacy_policy, name='privacy_policy'),
 
     #student paths
-    #path('student/dashboard/', student_dashboard, name='student_dashboard'),
     path('student/homepage/', society_browser, name='society_browser'),
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
@@ -74,14 +74,14 @@ urlpatterns = [
     path("society/<int:society_id>/customise-society/", customise_society_view, name="customise_society"),
     path('events/<int:event_id>/details/', event_details, name='event_details'),
 
-    #university paths
-    path("university/dashboard/change_status/<int:society_id>/", change_society_status, name="change_society_status"),
-    path("society/request/<int:society_id>/", society_request_details, name="society_request_details"),
-    
+
     #super-admin paths
     path('super_admin/dashboard', super_admin_dashboard, name='super_admin_dashboard'),
     path('super_admin/requests', university_requests, name='university_requests'),
     path('super_admin/university_requests/<int:university_id>/<str:new_status>/', update_university_status, name='update_university_status'),
     path('super_admin/registered_universities', registered_universities, name='registered_universities'),
     
+
+    path('society/<int:society_id>/colors/', get_latest_society_colors, name='get_latest_society_colors'),
+
 ]
