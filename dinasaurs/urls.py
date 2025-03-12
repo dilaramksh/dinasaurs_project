@@ -55,7 +55,6 @@ urlpatterns = [
     path('partials/footer/privacy_policy/', privacy_policy, name='privacy_policy'),
 
     #student paths
-    #path('student/dashboard/', student_dashboard, name='student_dashboard'),
     path('student/homepage/', society_browser, name='society_browser'),
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
@@ -66,7 +65,7 @@ urlpatterns = [
     #society paths
     path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
     path('society/<int:society_id>/create_event/', event_creation, name='create_event'),
-    path('society/create_post/', create_post, name='create_post'),
+    path('society/<int:society_id>/create_post/', create_post, name='create_post'),
     path('society/<int:society_id>/terminate_society/', terminate_society, name='terminate_society'),
     path('society/<int:society_id>/view_members/', view_members, name='view_members'),
     path('society/<int:society_id>/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
@@ -75,9 +74,7 @@ urlpatterns = [
     path('events/<int:event_id>/details/', event_details, name='event_details'),
     path('society/<int:society_id>/manage_committee', manage_committee, name='manage_committee'),
 
-    #university paths
-    path("university/dashboard/change_status/<int:society_id>/", change_society_status, name="change_society_status"),
-  
+
     #super-admin paths
     path('super_admin/dashboard/', super_admin_dashboard, name='super_admin_dashboard'),
     path('super_admin/requests/', university_requests, name='university_requests'),
