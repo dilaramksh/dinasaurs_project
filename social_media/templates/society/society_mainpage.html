@@ -38,7 +38,7 @@
     {% endif %}
 
     <header>
-        <div class="banner-image text-white text-start d-flex align-items-end p-3" style="background-image: url('{{ society.banner_image|default:'https://placehold.co/1920x400' }}'); height: 275px; background-size: cover; background-position: center;">
+        <div>
             <h1 class="fw-bold">{{ society.name }}</h1>
         </div>
     </header>
@@ -46,9 +46,17 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="{{ user.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}"
-                     class="img-fluid rounded-circle"
-                     alt="Profile Picture">
+                {% if society.logo %}
+                    <img src="{{ society.logo.url }}" 
+                    alt="{{ society.name }}" 
+                    width="100" height="100" 
+                    style="border-radius: 50%; margin: 10px 0;">
+                {% else %}
+                    <img src="{% static 'society_logos/default.png' %}" 
+                    alt="Default Image"
+                    width="100" height="100" 
+                    style="border-radius: 50%; margin: 10px 0;">>
+                {% endif %}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
