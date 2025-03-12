@@ -51,7 +51,6 @@ urlpatterns = [
     path('homepage/register_your_university', register_your_university, name='register_your_university'),
 
     #footer path 
-    path('stay_connected/', stay_connected, name='stay_connected'),
     path('contact_us/', contact_us, name='contact_us'),
     path('partials/footer/privacy_policy/', privacy_policy, name='privacy_policy'),
 

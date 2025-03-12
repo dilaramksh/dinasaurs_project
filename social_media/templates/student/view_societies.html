@@ -43,10 +43,10 @@
         {% for society in societies %}
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm">
-                {% if society.image %}
-                    <img src="{{ society.image.url }}" class="card-img-top" alt="{{ society.name }}">
+                {% if society.logo %}
+                    <img src="{{ society.logo.url }}" class="card-img-top" alt="{{ society.name }}">
                 {% else %}
-                    <img src="{% static 'images/default_society.jpg' %}" class="card-img-top" alt="Default Image">
+                    <img src="{% static 'society_logos/default.jpg' %}" class="card-img-top" alt="Default Image">
                 {% endif %}
                 <div class="card-body text-center">
                     <h5 class="card-title">{{ society.name }}</h5>

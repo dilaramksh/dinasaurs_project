@@ -16,14 +16,14 @@ user_fixtures = [
 ]
 
 admin_fixtures = [
-    {"first_name": "Michael", "last_name": "Smith", "username": "@michaelsmith", "email": "michaelsmith@kcl.ac.uk", "user_type": "admin", "university": "King's College London", "start_date": "2023-09-23", "end_date": "2026-05-06"},
-    {"first_name": "Daniel", "last_name": "Brown", "username": "@danielbrown", "email": "danielbrown@ucl.ac.uk", "user_type": "admin", "university": "University College London", "start_date": "2023-09-01", "end_date": "2026-06-15"},
-    {"first_name": "Sarah", "last_name": "Wilson", "username": "@sarahwilson", "email": "sarahwilson@imperial.ac.uk", "user_type": "admin", "university": "Imperial College London", "start_date": "2023-10-10", "end_date": "2026-07-20"},
-    {"first_name": "James", "last_name": "Anderson", "username": "@jamesanderson", "email": "jamesanderson@lse.ac.uk", "user_type": "admin", "university": "London School of Economics", "start_date": "2023-08-15", "end_date": "2026-05-30"},
-    {"first_name": "Olivia", "last_name": "Martinez", "username": "@oliviamartinez", "email": "oliviamartinez@ox.ac.uk", "user_type": "admin", "university": "University of Oxford", "start_date": "2023-09-20", "end_date": "2026-06-10"},
-    {"first_name": "William", "last_name": "Davis", "username": "@williamdavis", "email": "williamdavis@leeds.ac.uk", "user_type": "admin", "university": "University of Leeds", "start_date": "2023-09-05", "end_date": "2026-06-05"},
-    {"first_name": "Sophia", "last_name": "Garcia", "username": "@sophiagarcia", "email": "sophiagarcia@man.ac.uk", "user_type": "admin", "university": "University of Manchester", "start_date": "2023-09-12", "end_date": "2026-06-12"},
-    {"first_name": "Benjamin", "last_name": "Moore", "username": "@benjaminmoore", "email": "benjaminmoore@ual.ac.uk", "user_type": "admin", "university": "University of Arts London", "start_date": "2023-09-18", "end_date": "2026-06-18"}
+    {"first_name": "Michael", "last_name": "Smith", "username": "@michaelsmith", "email": "michaelsmith@kcl.ac.uk", "user_type": "uni_admin", "university": "King's College London", "start_date": "2023-09-23", "end_date": "2026-05-06"},
+    {"first_name": "Daniel", "last_name": "Brown", "username": "@danielbrown", "email": "danielbrown@ucl.ac.uk", "user_type": "uni_admin", "university": "University College London", "start_date": "2023-09-01", "end_date": "2026-06-15"},
+    {"first_name": "Sarah", "last_name": "Wilson", "username": "@sarahwilson", "email": "sarahwilson@imperial.ac.uk", "user_type": "uni_admin", "university": "Imperial College London", "start_date": "2023-10-10", "end_date": "2026-07-20"},
+    {"first_name": "James", "last_name": "Anderson", "username": "@jamesanderson", "email": "jamesanderson@lse.ac.uk", "user_type": "uni_admin", "university": "London School of Economics", "start_date": "2023-08-15", "end_date": "2026-05-30"},
+    {"first_name": "Olivia", "last_name": "Martinez", "username": "@oliviamartinez", "email": "oliviamartinez@ox.ac.uk", "user_type": "uni_admin", "university": "University of Oxford", "start_date": "2023-09-20", "end_date": "2026-06-10"},
+    {"first_name": "William", "last_name": "Davis", "username": "@williamdavis", "email": "williamdavis@leeds.ac.uk", "user_type": "uni_admin", "university": "University of Leeds", "start_date": "2023-09-05", "end_date": "2026-06-05"},
+    {"first_name": "Sophia", "last_name": "Garcia", "username": "@sophiagarcia", "email": "sophiagarcia@man.ac.uk", "user_type": "uni_admin", "university": "University of Manchester", "start_date": "2023-09-12", "end_date": "2026-06-12"},
+    {"first_name": "Benjamin", "last_name": "Moore", "username": "@benjaminmoore", "email": "benjaminmoore@ual.ac.uk", "user_type": "uni_admin", "university": "University of Arts London", "start_date": "2023-09-18", "end_date": "2026-06-18"}
 ]
 
 super_admin_fixture = [
@@ -509,6 +509,7 @@ class Command(BaseCommand):
             colour1= self.faker.hex_color(),
             colour2= self.faker.hex_color(),
             status= 'approved',
+            logo=f"society_logos/{name}.png"
         )
         society.save()
         return society
