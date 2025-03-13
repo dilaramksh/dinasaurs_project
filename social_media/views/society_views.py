@@ -1,8 +1,8 @@
 from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
-from social_media.forms import CustomisationForm, PostForm, EventCreationForm
+from social_media.forms import CustomisationForm, PostForm, EventCreationForm, TeamCreationForm
 from social_media.models.colour_history import SocietyColorHistory
-from social_media.models import Society, Event, Membership, EventsParticipant, Competition, Team, TeamMembership
+from social_media.models import Society, Event, Membership, EventsParticipant, Competition, Team, TeamMembership, CompetitionParticipant
 from django.utils.timezone import now
 from datetime import date
 from django.http import JsonResponse
@@ -152,6 +152,35 @@ def manage_competitions(request, society_id):
     })
 
 
+@login_required
+def create_team(request, competition_id):
+    """Allow society admin to create a team and assign members to it."""
+    competition = get_object_or_404(Competition, pk=competition_id, is_active=True, is_team_based=True)
+
+    if not request.user.is_committee_member():
+        return HttpResponseForbidden("You are not a committee member in this society.")
+
+    if request.method == "POST":
+        form = TeamCreationForm(competition=competition, data=request.POST)
+        if form.is_valid():
+            # Create the team
+            team_name = form.cleaned_data["team_name"]
+            new_team = Team.objects.create(competition=competition, name=team_name)
+
+            # create a TeamMembership for each selected participant 
+            selected_participants = form.cleaned_data["participants"] 
+            for part_id in selected_participants:
+                participant = CompetitionParticipant.objects.get(pk=part_id, competition=competition)
+                TeamMembership.objects.create(user=participant.user, team=new_team)
+
+            return redirect("competition_detail", competition_id=competition_id)
+    else:
+        form = TeamCreationForm(competition=competition)
+
+    return render(request, "competitions/create_team.html", {
+        "competition": competition,
+        "form": form
+    })
 
 
 @login_required
@@ -164,4 +193,4 @@ def finalize_competition(request, competition_id):
     # Finalize the competition lineup
     competition.is_finalized = True
     competition.save()
-    return redirect("", competition_id=competition_id)
+    return redirect("competition_detail", competition_id=competition_id)
