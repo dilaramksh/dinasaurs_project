@@ -6,12 +6,12 @@ from django.shortcuts import redirect, render
 from social_media.forms.society_creation_form import SocietyCreationForm
 from django.shortcuts import HttpResponse
 from social_media.models import Category
+from django.shortcuts import get_object_or_404
 
 
-#to do: add login required
-#to do: add user type required
 
-@user_type_required('student')
+# REDUNDANT, view dashboard in dashboard views
+'''@user_type_required('student')
 @login_required
 def student_dashboard(request):
     student = request.user
@@ -37,20 +37,20 @@ def student_dashboard(request):
         'user_societies': user_societies,
         'user_events': events,
         'user_type': user_type
-    })
+    })'''
 
 #Views for pages from dropdown menu in Student Navbar
 #@login_required
-def help(request):
-    return render(request, 'help.html')
+'''def help(request):
+    return render(request, 'help.html')'''
 
-#@login_required
+'''#@login_required
 def features(request):
     return render(request, 'features.html')
 
 #@login_required
 def pricing(request):
-    return render(request, 'pricing.html')
+    return render(request, 'pricing.html')'''
 
 #@user_type_required('student')
 #@login_required
@@ -70,7 +70,7 @@ def society_creation_request(request):
             society.founder = request.user
             society.save()
             messages.success(request, "Your society request has been submitted for approval.")
-            return redirect("student_dashboard") 
+            return redirect("dashboard") # changed to dashboard rather than student_dashboard
         else:                  
             messages.error(request, "There was an error with your request submission. Please try again.")
     
@@ -79,14 +79,15 @@ def society_creation_request(request):
 
     return render(request, 'student/submit_society_request.html', {'form': form})
 
-def create_temp_category(request):
+# redundant now?
+'''def create_temp_category(request):
     """View to create a temporary category for testing."""
     temp_category, created = Category.objects.get_or_create(name="Temporary Category")
     
     if created:
         return HttpResponse(f"Created category: {temp_category.name}")
     else:
-        return HttpResponse("Category already exists.")
+        return HttpResponse("Category already exists.")'''
 
 def view_societies(request):
     societies = Society.objects.all()  # Fetch all societies

@@ -58,7 +58,7 @@ urlpatterns = [
     path('student/memberships/', view_memberships, name='view_memberships'),
 
     #society paths
-    path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
+    path('society/<int:society_id>/dashboard/', get_society_dashboard, name='get_society_dashboard'), #changed to match
     #path('society/dashboard/', society_dashboard, name='society_dashboard'),
     path('society/create_event/', event_creation, name='create_event'),
     path('society/create_post/', create_post, name='create_post'),
@@ -68,7 +68,8 @@ urlpatterns = [
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
 
     #super-admin paths
-    path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard')
+    path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard'),
 
-    
+    #other
+
 ]
