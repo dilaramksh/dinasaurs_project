@@ -31,7 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '*.vercel.app',
-    'dinasaursproject.vercel.app',
+    'hivesociety.vercel.app',
     'localhost',
 ]
 
