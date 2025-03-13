@@ -15,7 +15,7 @@
                     <p class="mb-0 text-muted"> Assign and Revoke committee roles</p>
                 </div>
                 <div class="card-body">
-                    <form method="POST">
+                    <form method="POST" action="{% url 'update_committee' society_id %}">
                         {% csrf_token %}
                         <table class="table table-bordered border-warning">
                             <thead class="table-warning">
@@ -31,7 +31,7 @@
                                     <td><strong>{{committee.membership_set.first.society_role.role_name}}</strong></td>
                                     <td>{{ committee.first_name }} {{committee.last_name}}</td>
                                     <td>
-                                        <select class="form-select">
+                                        <select class="form-select" name="role_{{ committee.id }}">
                                             <option selected disabled>-- Select Member --</option>
                                             {% for user in users %}
                                                 {%if committee.id != user.id %}
@@ -44,15 +44,15 @@
                                 {% endfor %}
                             </tbody>
                         </table>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-warning">Save Changes</button>
+                        </div>
                     </form>
 
                     <div class="d-flex justify-content-between mt-3">
                         <a href="{% url 'edit_roles' society_id %}" class="btn btn-warning">Edit Roles</a>
                     </div>
 
-                    <div class="text-center mt-3">
-                        <button class="btn btn-warning">Save Changes</button>
-                    </div>
                 </div>
             </div>
             <a href="{% url 'view_members' society_id %}" class="btn btn-warning"> Back </a> 

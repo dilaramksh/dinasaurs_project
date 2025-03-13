@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
 from social_media.forms import CustomisationForm, PostForm, EventCreationForm, DeleteRoleForm, SocietyRoleForm
 from social_media.models.colour_history import SocietyColorHistory
-from social_media.models import Society, Event, Membership, EventsParticipant, SocietyRole
+from social_media.models import Society, Event, Membership, EventsParticipant, SocietyRole, User
 from django.utils.timezone import now
 from datetime import date
 from django.http import JsonResponse
@@ -130,6 +130,33 @@ def manage_committee(request, society_id):
         "society_id" : society_id
     }
     return render(request, 'society/manage_committee.html', context)
+
+
+
+
+def update_committee(request, society_id):
+    if request.method == "POST":
+        society = get_object_or_404(Society, id=society_id)
+        committee_memberships = Membership.objects.filter(society=society, society_role__isnull=False)
+
+        for membership in committee_memberships:
+            role_key = f"role_{membership.user.id}"
+            new_member_id = request.POST.get(role_key)
+
+            if new_member_id and new_member_id != str(membership.user.id):  
+                new_member = get_object_or_404(User, id=new_member_id)
+
+                # Update the membership to the new user
+                membership.user = new_member
+                membership.save()
+
+        messages.success(request, "Committee roles updated successfully.")
+        return redirect('manage_committee', society_id=society_id)
+
+    return redirect('manage_committee', society_id=society_id) 
+
+    
+
 
 def edit_roles(request, society_id):
     society = get_object_or_404(Society, id=society_id)

@@ -74,6 +74,7 @@ urlpatterns = [
     path('society/<int:society_id>/customise-society/', customise_society_view, name='customise_society'),
     path('events/<int:event_id>/details/', event_details, name='event_details'),
     path('society/<int:society_id>/manage_committee', manage_committee, name='manage_committee'),
+    path('society/<int:society_id>/update_committee', update_committee, name='update_committee'),
     path('society/<int:society_id>/edit_roles/', edit_roles, name='edit_roles'),
     path('society/<int:society_id>/join/', join_society, name='join_society'),
 
