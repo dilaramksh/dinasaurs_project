@@ -22,7 +22,25 @@
                 </div>
             </div>
 
-            
+            <!-- Display Posts Created by the User 
+            <div class="card shadow mt-4 border-0"></div>
+                <div class="card-header bg-light text-center">
+                    <h5>Your Posts</h5>
+                {% if posts %}
+                    <ul class="list-group">
+                        {% for post in posts %}
+                            <li class="list-group-item">
+                                <h6>{{ post.title }}</h6>
+                                <p>{{ post.content|truncatewords:20 }}</p>
+                                <a href="{% url 'view_post' post.id %}" class="btn btn-link">View Post</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No posts found. Start by creating a new post!</p>
+                {% endif %}
+                </div>
+            </div> -->
         </div>
     </div>
 </div>

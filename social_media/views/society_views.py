@@ -76,14 +76,13 @@ def event_details(request, event_id):
     return JsonResponse(data)
 
 def create_post(request, society_id):
-    society = get_object_or_404(Society, id=society_id) 
-
+    society = get_object_or_404(Society, id=society_id)
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user  
-            post.society = society 
+            post = form.save(commit=False)  
+            post.author = request.user
+            post.society = society  
             post.save()
             messages.success(request, "Post created successfully!")  
             return redirect('society_mainpage', society_id=society.id) 
