@@ -7,10 +7,6 @@ from django.views.generic.edit import UpdateView, FormView
 from social_media.models import User
 from social_media.forms import UserForm, PasswordForm
 from django.contrib.auth import login, logout
-import boto3
-import os
-
-DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     """Display user profile editing screen, and handle profile modifications."""
@@ -22,50 +18,25 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         """Return the user to be updated."""
         return self.request.user
-
+    
     def form_valid(self, form):
-        """Handle valid profile update, remove old picture (if necessary), and upload new one."""
-        user = self.request.user
-        new_picture = self.request.FILES.get('profile_picture')
-
-        # Initialize S3 client
-        s3 = boto3.client(
-            's3',
-            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-            region_name=settings.AWS_S3_REGION_NAME
-        )
-
-        # delete old picture
-        if new_picture and user.profile_picture != DEFAULT_PROFILE_PICTURE:
-            try:
-                s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=user.profile_picture.name)
-            except Exception as e:
-                messages.warning(self.request, f"Could not delete old profile picture: {e}")
-
-        # upload new picture
-        if new_picture:
-            file_extension = os.path.splitext(new_picture.name)[1]
-            s3.upload_fileobj(
-                new_picture,
-                settings.AWS_STORAGE_BUCKET_NAME,
-                f"profile_pictures/{user.username}{file_extension}",
-                ExtraArgs={"ACL": "public-read", "ContentType": new_picture.content_type}
-            )
-            user.profile_picture = f"profile_pictures/{user.username}{file_extension}"
-
-        user.save()
-
-        messages.success(self.request, "Profile updated successfully!")
+        messages.success(self.request, "Profile updated!")
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "Profile could not be updated.")
+        messages.error(self.request, "Please could not be updated")
         return super().form_invalid(form)
 
     def get_success_url(self):
         """Return the redirect URL after a successful update."""
         return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
+
+    """
+    def get_success_url(self):
+        Return redirect URL after successful update.
+        messages.add_message(self.request, messages.SUCCESS, "Profile updated!")
+        return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
+    """
 
 class PasswordView(LoginRequiredMixin, FormView):
     """Display password change screen and handle password change requests."""

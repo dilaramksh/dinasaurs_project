@@ -6,6 +6,3 @@ def stay_connected(request):
 def contact_us(request):
     return render(request, 'partials/footer/contact_us.html')
 
-def privacy_policy(request):
-    return render(request, 'partials/footer/privacy_policy.html')
-

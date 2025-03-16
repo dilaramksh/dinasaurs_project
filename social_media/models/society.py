@@ -1,3 +1,4 @@
+
 from django.core.validators import EmailValidator, MaxValueValidator, RegexValidator
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -47,10 +48,6 @@ class Society(models.Model):
             if self.price <= 0:
                 raise ValidationError("Price must be greater than zero for a paid membership.")
     
-    def save(self, *args, **kwargs):
-        self.name = self.name.title()  # Capitalize the name before saving
-        super().save(*args, **kwargs)
-    
     def approve(self):
         """Approve the society."""
         self.status = "approved"
@@ -62,4 +59,4 @@ class Society(models.Model):
         self.save()
 
     def __str__(self):
-        return self.name.title()
+        return self.name

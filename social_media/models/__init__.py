@@ -9,4 +9,3 @@ from .society_role import SocietyRole
 from .society import Society
 from .university import University
 from .user import User
-from .post import Post

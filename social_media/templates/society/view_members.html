@@ -16,34 +16,14 @@
                 </div>
 
                 <div class="card-body">
-                    <!-- Committee Members Section -->
-                    <section id="committee" class="mb-4">
-                        <h3 class="text-center fw-bold text-warning">Meet the Committee</h3>
-                        <div class="d-flex justify-content-center flex-wrap gap-3">
-                            {% for member in committee_members %}
-                            <div class="text-center border border-warning p-3 rounded shadow-sm" style="width: 200px;">
-                                <strong class="text-warning">{{ member.membership_set.first.society_role.role_name }}</strong><br>
-                                <img src="https://www.gravatar.com/avatar/{{ member.gravatar_hash }}?s=100&d=identicon" 
-                                    alt="Profile Picture" class="gravatar" width="50" height="50" 
-                                    style="border-radius: 50%; margin: 10px 0;">
-                                <p class="fw-semibold mb-0">{{ member.username }}</p>
-                                <!-- Button to trigger Modal -->
-                                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#userModal{{ member.id }}">View Profile</button>
-                            </div>
-                            {% empty %}
-                            <p class="text-center text-muted">No committee members found.</p>
-                            {% endfor %}
-                        </div>
-                    </section>
-
-                    <!-- Search Bar -->
+                    
                     <div class="mb-4 d-flex justify-content-center">
                         <input type="text" id="searchInput" class="form-control w-75 shadow-sm" 
                             placeholder="🔍 Search members..."
                             style="border: 2px solid #ffc107; border-radius: 25px; padding: 10px;">
                     </div>
 
-                    <!-- Table for Desktop View -->
+                    
                     <div class="table-responsive d-none d-md-block">
                         <table class="table table-striped table-hover">
                             <thead class="table-warning">
@@ -55,9 +35,7 @@
                             <tbody id="usersTable">
                                 {% for user in users %}
                                 <tr>
-                                    <td class="fw-semibold">
-                                        <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#userModal{{ user.id }}">{{ user.full_name }}</button>
-                                    </td>
+                                    <td class="fw-semibold">{{ user.full_name }}</td>
                                     <td class="text-muted">{{ user.email }}</td>
                                 </tr>
                                 {% empty %}
@@ -69,14 +47,12 @@
                         </table>
                     </div>
 
-                    <!-- Card View for Mobile -->
+                    
                     <div class="d-md-none">
                         {% for user in users %}
                         <div class="card mb-3 border-warning shadow-sm">
                             <div class="card-body text-center">
-                                <h5 class="fw-bold">
-                                    <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#userModal{{ user.id }}">{{ user.full_name }}</button>
-                                </h5>
+                                <h5 class="fw-bold">{{ user.full_name }}</h5>
                                 <p class="text-muted mb-0">{{ user.email }}</p>
                             </div>
                         </div>
@@ -84,39 +60,12 @@
                         <p class="text-center text-muted">No users found.</p>
                         {% endfor %}
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Modal Template (Will be dynamically generated for each user) -->
-{% for user in users %}
-<div class="modal fade" id="userModal{{ user.id }}" tabindex="-1" aria-labelledby="userModalLabel{{ user.id }}" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-warning text-dark">
-                <h5 class="modal-title" id="userModalLabel{{ user.id }}">{{ user.full_name }}'s Profile</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <ul class="list-unstyled">
-                    <li><strong>Email:</strong> {{ user.email }}</li>
-                    <li><strong>Username:</strong> {{ user.username }}</li>
-                    <li><strong>University:</strong> {{ user.university }}</li>
-                    <li><strong>Role:</strong> {{ user.membership_set.first.society_role.role_name }}</li>
-                    <li><strong>Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-{% empty %}
-<p class="text-center text-muted">No users found.</p>
-{% endfor %}
 
 <!-- JavaScript for Filtering -->
 <script>

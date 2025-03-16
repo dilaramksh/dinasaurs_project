@@ -1,0 +1,17 @@
+
+{% load static %}
+
+{% if user and user.is_authenticated %}
+    {% if user.user_type == "student" %}
+        {% include "partials/navbars/student_navbar.html" %}
+    {% elif user.user_type == "uni_admin" %}
+        {% include "partials/navbars/admin_navbar.html" %}
+    {% else %}
+        <!-- fallback for authenticated users -->
+        {% include "partials/navbars/student_navbar.html" %}
+    {% endif %}
+
+{% else %}
+    <!-- Unauthenticated -->
+    {% include "partials/navbars/homepage_navbar.html" %}
+{% endif %}
