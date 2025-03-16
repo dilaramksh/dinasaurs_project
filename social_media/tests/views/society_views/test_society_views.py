@@ -47,27 +47,23 @@ class SocietyPageViewTestCase(TestCase):
         }
 
 
-        self.url = reverse('create_event', kwargs={'society_id': self.society.id})
+        self.url = reverse('event_creation', kwargs={'society_id': self.society.id})
 
     def test_society_dashboard_view(self):
-        #login_success = self.client.login(username='@janedoe', password='Password123') # society account
-        #self.assertTrue(login_success)
-        # check successful retrieval
-        response = self.client.get(reverse('society_dashboard'))
+        response = self.client.get(reverse('get_society_dashboard'), kwargs={'society_id':self.society.id})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/society_dashboard.html')
-        #self.assertIn('user', response.context)
-        #self.assertEqual(response.context['user'].user_type, 'society')
+
 
     def test_get_event_creation_view(self):
-        response = self.client.get(reverse('create_event'))
+        response = self.client.get(reverse('event_creation', kwargs={'society_id':self.society.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/event_creation.html')
 
     def test_post_event_creation_view(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.post(self.url, data=self.form_data)
-        self.assertRedirects(response, reverse('society_dashboard', kwargs={'society_id': self.society.id}))
+        self.assertRedirects(response, reverse('get_society_dashboard', kwargs={'society_id': self.society.id}))
         created_event = Event.objects.filter(name='nba finals')
         self.assertTrue(created_event.exists())
         test_event = created_event.first()

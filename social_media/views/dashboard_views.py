@@ -36,8 +36,8 @@ def dashboard(request):
         }
 
         template = "student/student_dashboard.html"
-    else:
-        template = 'student/student_dashboard.html' # TO DO MARYAM REDIRECT
+    '''else:
+        template = 'student/student_dashboard.html' ''' #REDUNDANT?
     
     return render(request, template, context)
 
