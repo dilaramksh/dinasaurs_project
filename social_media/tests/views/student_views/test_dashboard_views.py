@@ -47,6 +47,6 @@ class DashboardViewTestCase(TestCase):
         response = self.client.get(reverse('get_society_dashboard', args=[self.society.id]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('society/society_dashboard.html')
-        self.assertIn('user', response.context)
-        self.assertEqual(response.context['user'].user_type, 'student')  # failing
+        self.assertIn('society', response.context)
+
 

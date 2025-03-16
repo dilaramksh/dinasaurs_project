@@ -58,7 +58,7 @@ urlpatterns = [
     path('student/memberships/', view_memberships, name='view_memberships'),
 
     #society paths
-    path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'), #name different
+    path('society/<int:society_id>/dashboard/', get_society_dashboard, name='get_society_dashboard'), #name different
     #path('society/dashboard/', society_dashboard, name='society_dashboard'),
     path('society/<int:society_id>/create_event/', event_creation, name='create_event'), # name different from view name should change
     path('society/create_post/', create_post, name='create_post'),
