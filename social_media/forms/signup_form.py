@@ -7,15 +7,17 @@ from django.utils.timezone import now
 class SignUpForm(NewPasswordMixin, forms.ModelForm):
     """Form enabling unregistered users to sign up."""
 
+    profile_picture = forms.ImageField(required=False)
+
     university = forms.ModelChoiceField(
-        queryset=University.objects.all(), 
+        queryset=University.objects.filter(status='approved'),
         empty_label="Select a University",
         label="University"
-    )
+    ) 
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'university', 'email', 'start_date', 'end_date']
+        fields = ['first_name', 'last_name', 'username', 'university', 'email', 'start_date', 'end_date', 'profile_picture']
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'end_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
@@ -60,6 +62,7 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
 
         return email
 
+
     def save(self):
         """Create a new user."""
         
@@ -77,7 +80,9 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
             end_date=self.cleaned_data.get('end_date'),
             password=self.cleaned_data.get('new_password'),
             user_type="student",
+            profile_picture = self.cleaned_data["profile_picture"]
         )
-    
+
         return user
+        
  

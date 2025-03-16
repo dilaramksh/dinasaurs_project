@@ -26,10 +26,9 @@ body {
     background-color: #3e2800;
 }
 
-
 .btn-back {
     background-color: transparent;
-    color: #5c3b00;
+    color: #5c3b00; 
     border: 2px solid #5c3b00;
 }
 
@@ -38,8 +37,12 @@ body {
     color: white;
 }
 
-
 h1, h2 {
     font-family: 'Fredoka One';
     color: #d19f00;
 }
+
+
+
+
+

@@ -6,7 +6,7 @@ class EventCreationForm(forms.ModelForm):
     
     class Meta:
         model = Event
-        fields = ["name", "society", "description", "date", "location"]
+        fields = ["name", "description", "date", "location"]
 
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
