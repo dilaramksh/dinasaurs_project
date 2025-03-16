@@ -5,12 +5,21 @@
 
 {% block content %}
     <body>
+        <div class="position-absolute position-absolute-toggle d-flex align-items-center">
+            <span id="dashboardLabel" class="me-2 toggle-label">Dashboard</span>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="viewToggle"
+                    {% if request.path == society_mainpage_url %}checked{% endif %}>
+            </div>
+            <span id="publicPageLabel" class="ms-2 toggle-label">Public Page</span>
+        </div>
+        
         <title>Society Homepage</title>
 
         <!-- Header with honeycomb pattern -->
         <header class="text-dark text-center py-4 mb-4" 
             style="background: url('https://www.transparenttextures.com/patterns/honeycomb.png') #FFFFCC;">
-            <div class="container">
+            <div class="container position-relative">
                 <h1 class="display-4 fw-bold">🐝 Welcome to {{ society.name }} Dashboard! 🐝</h1>
             </div>
         </header>
@@ -23,33 +32,21 @@
                         <h5 class="card-header bg-warning text-dark">📅 Create an Event</h5>
                         <div class="card-body">
                             <p class="card-text">Schedule events for your society and invite members to join.</p>
-                            <a href="{% url 'create_event' society_id=society.id %}" class="btn btn-warning">Create Event</a>
+                            <a href="{% url 'create_event' society.id%}" class="btn btn-warning">Create Event</a>
                         </div>
                     </div>
                 </div>
-
-                <!-- Society Termination -->
-                <div class="col-md-6 mb-3">
-                    <div class="card text-center p-4 border-warning shadow-sm h-80">
-                        <h5 class="card-header bg-warning text-dark">⚠️ Terminate Society</h5>
-                        <div class="card-body">
-                            <p class="card-text">If necessary, you can request to terminate your society.</p>
-                            <a href="{% url 'terminate_society' %}" class="btn btn-warning">Terminate Society</a>
-
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Create Post -->
                 <div class="col-md-6 mb-3">
                     <div class="card text-center p-4 border-warning shadow-sm h-80">
                         <h5 class="card-header bg-warning text-dark">📝 Create a Post</h5>
                         <div class="card-body">
                             <p class="card-text">Share updates and announcements with your society members.</p>
-                            <a href="{% url 'create_post' %}" class="btn btn-warning">Create Post</a>
+                            <a href="{% url 'create_post' society.id %}" class="btn btn-warning">Create Post</a>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- View Members -->
                 <div class="col-md-6 mb-3">
@@ -57,21 +54,44 @@
                         <h5 class="card-header bg-warning text-dark">👥 View Society Members</h5>
                         <div class="card-body">
                             <p class="card-text">Check who is part of your society and manage memberships.</p>
-                            <a href="{% url 'view_members' %}" class="btn btn-warning">View Members</a>
+                            <a href="{% url 'view_members' society.id %}"class="btn btn-warning">View Members</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Upcoming Events -->
-                <div class="col-md-12 mb-3">
+                <div class="col-md-6 mb-3">
                     <div class="card text-center p-4 border-warning shadow-sm h-80">
                         <h5 class="card-header bg-warning text-dark">🎉 Upcoming Events</h5>
                         <div class="card-body">
                             <p class="card-text">Check out the upcoming events for your society.</p>
-                            <a href="{% url 'upcoming_events' %}" class="btn btn-warning">View Events</a>
+                            <a href="{% url 'upcoming_events' society.id %}" class="btn btn-warning">View Events</a>
                         </div>
                     </div>
                 </div>
+
+                <!-- Customise Society -->
+                <div class="col-md-6 mb-3">
+                    <div class="card text-center p-4 border-warning shadow-sm h-80">
+                        <h5 class="card-header bg-warning text-dark">🎨 Customise Society</h5>
+                        <div class="card-body">
+                            <p class="card-text">Modify your society details including name, colors, and description.</p>
+                            <a href="{% url 'customise_society' society.id %}" class="btn btn-warning">Customise Society</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Society Termination -->
+                <div class="col-md-6 mb-3">
+                    <div class="card text-center p-4 border-warning shadow-sm h-80">
+                        <h5 class="card-header bg-warning text-dark">⚠️ Terminate Society</h5>
+                        <div class="card-body">
+                            <p class="card-text">If necessary, you can request to terminate your society.</p>
+                            <a href="{% url 'terminate_society' society.id %}" class="btn btn-warning">Terminate Society</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </body>

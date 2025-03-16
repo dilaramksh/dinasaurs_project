@@ -1,0 +1,53 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white" style="padding: 10px 15px;">
+  <div class="container-fluid">
+    <!-- Logo (all navbars)-->
+     
+    <a class="navbar-brand" href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'homepage' %}{% endif %}">
+      <img src="{% static 'images/Logo.png' %}" alt="Logo" style="height: 60px; width: auto;">
+    </a>
+
+    <!-- Icons/page (student only??)-->
+    {% if user.is_authenticated %}
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+        
+          <a class="nav-item nav-link active" href="{% url 'dashboard' %}">
+            <i class="fas fa-home fa-lg"></i>
+          </a>
+        </ul>
+      </div>
+    {% endif %}
+
+    <!-- Profile(logged in users only)-->
+    {% if user.is_authenticated %}
+      <div class="nav-item dropdown">
+        <button type="button" class="btn border-0 dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% if user.profile_picture %}
+              <img src="{{ user.profile_picture.url }}" 
+              alt="Profile Picture" class="gravatar rounded-circle border" width="50" height="50">
+            {% else %}
+              <img src="https://hive-society.s3.amazonaws.com/profile_pictures/default-user.jpg" 
+              alt="Profile Picture" class="gravatar rounded-circle border" width="50" height="50">
+            {% endif %}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end custom-dropdown" aria-labelledby="profileDropdown">
+          {% include 'partials/dropdown_menu.html' %}
+        </ul>
+      </div>
+    {% else %}
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+              <a href="{% url 'log_in' %}" class="btn btn-warning text-white me-2">Log In</a>
+          </li>
+          <li class="nav-item">
+              <a href="{% url 'sign_up' %}" class="btn btn-warning text-white me-2">Sign Up</a>
+          </li>
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</nav>
+{% endblock %}
+

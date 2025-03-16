@@ -22,11 +22,13 @@ from social_media.views import *
 
 # import below this line should not be necessary -- add view to init.py
 from social_media.views.society_views import *
+from social_media.views.student_views import *
 from social_media.views.super_admin_views import *
 from social_media.views.footer_view import *
 from social_media.views.homepage_view import *
+from social_media.views.dashboard_views import *
 #from social_media.views.student_feed_view import *
-
+from social_media.views.membership_view import join_society
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,40 +37,52 @@ urlpatterns = [
     path('log_out/', log_out, name='log_out'),
     
     path('dashboard/', dashboard, name='dashboard'),
+    path('dashboard_from_mainpage/<int:society_id>/', dashboard_from_mainpage, name='dashboard_from_mainpage'),
+    path('student-dashboard/', get_student_dashboard, name='to_student_dashboard'),
     path('password/', PasswordView.as_view(), name='password'),
     path('profile/', ProfileUpdateView.as_view(), name='profile'),
+    path('help/', help_page, name='help'),
 
     #homepage paths 
     path('', homepage, name='homepage'),
     path('homepage/discover_societies', discover_universities, name='discover_universities'),
     path('homepage/why_join_society', why_join_society, name='why_join_society'),
     path('homepage/latest_news', latest_news, name='latest_news'),
+    path('homepage/register_your_university', register_your_university, name='register_your_university'),
 
     #footer path 
-    path('stay-connected/', stay_connected, name='stay_connected'),
+    path('stay_connected/', stay_connected, name='stay_connected'),
     path('contact_us/', contact_us, name='contact_us'),
+    path('partials/footer/privacy_policy/', privacy_policy, name='privacy_policy'),
 
     #student paths
-    #path('student/dashboard/', student_dashboard, name='student_dashboard'),
     path('student/homepage/', society_browser, name='society_browser'),
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
     path('student/societies', student_societies, name='student_societies'),
     path('student/events', student_events, name='student_events'),
     path('student/memberships/', view_memberships, name='view_memberships'),
+    path('society/<int:society_id>/join/', join_society, name='join_society'),
 
     #society paths
-    path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'), #name different
-    #path('society/dashboard/', society_dashboard, name='society_dashboard'),
-    path('society/<int:society_id>/create_event/', event_creation, name='create_event'), # name different from view name should change
-    path('society/create_post/', create_post, name='create_post'),
-    path('society/terminate_society/', terminate_society, name='terminate_society'),
-    path('society/view_members/', view_members, name='view_members'),
-    path('society/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
+    path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
+    path('society/<int:society_id>/create_event/', event_creation, name='create_event'),
+    path('society/create_post/<int:society_id>/', create_post, name='create_post'),
+    path('society/<int:society_id>/terminate_society/', terminate_society, name='terminate_society'),
+    path('society/<int:society_id>/view_members/', view_members, name='view_members'),
+    path('society/<int:society_id>/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
+    path("society/<int:society_id>/customise-society/", customise_society_view, name="customise_society"),
+    path('events/<int:event_id>/details/', event_details, name='event_details'),
+
 
     #super-admin paths
-    path('super-admin/dashboard', super_admin_dashboard, name='super_admin_dashboard')
-
+    path('super_admin/dashboard', super_admin_dashboard, name='super_admin_dashboard'),
+    path('super_admin/requests', university_requests, name='university_requests'),
+    path('super_admin/university_requests/<int:university_id>/<str:new_status>/', update_university_status, name='update_university_status'),
+    path('super_admin/registered_universities', registered_universities, name='registered_universities'),
     
+
+    path('society/<int:society_id>/colors/', get_latest_society_colors, name='get_latest_society_colors'),
+
 ]

@@ -2,10 +2,12 @@ from social_media.decorators import user_type_required
 from social_media.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from social_media.forms.society_creation_form import SocietyCreationForm
 from django.shortcuts import HttpResponse
 from social_media.models import Category
+from django.shortcuts import get_object_or_404
+from social_media.models import Post
 
 
 #to do: add login required
@@ -18,11 +20,14 @@ def student_dashboard(request):
 
     user_type = student.user_type
 
-    memberships = Membership.objects.filter(user=student)
+    memberships = Membership.objects.filter(
+        user=student,
+        society_role__society__status="approved"
+    )
     user_societies = [membership.society_role.society for membership in memberships]
     print("User Societies:", user_societies)  # Debugging print
 
-    events = Event.objects.filter(society__in=user_societies)
+    events = Event.objects.filter(society__in=user_societies, society__status="approved")
     print("Events:", events)  # Debugging print
 
     if not memberships:
@@ -41,8 +46,8 @@ def student_dashboard(request):
 
 #Views for pages from dropdown menu in Student Navbar
 #@login_required
-def help(request):
-    return render(request, 'help.html')
+def help_page(request):
+    return render(request, "partials/footer/help.html")
 
 #@login_required
 def features(request):
@@ -70,7 +75,7 @@ def society_creation_request(request):
             society.founder = request.user
             society.save()
             messages.success(request, "Your society request has been submitted for approval.")
-            return redirect("student_dashboard") 
+            return redirect("dashboard") 
         else:                  
             messages.error(request, "There was an error with your request submission. Please try again.")
     
@@ -89,7 +94,7 @@ def create_temp_category(request):
         return HttpResponse("Category already exists.")
 
 def view_societies(request):
-    societies = Society.objects.all()  # Fetch all societies
+    societies = Society.objects.filter(status = "approved").prefetch_related('posts') # Only fetch approved societies and related posts
     categories = Category.objects.all() # Get all categories for the filter
 
     # Get search query
@@ -102,11 +107,14 @@ def view_societies(request):
     if category_id:
         societies = societies.filter(category_id=category_id)
 
+    society_posts = {society.id: society.posts.all() for society in societies}
+
     return render(request, 'student/view_societies.html', {
         'societies': societies,
         'categories': categories,
         'search_query': search_query,
         'selected_category': category_id,
+        'society_posts': society_posts
     })
 
     return render(request, 'student/view_societies.html', {'societies': societies})
@@ -114,7 +122,6 @@ def view_societies(request):
 
 def student_societies(request):
     student = request.user
-
     memberships = Membership.objects.filter(user=student)
     user_societies = [membership.society_role.society for membership in memberships]
     selected_society = None
@@ -127,21 +134,34 @@ def student_societies(request):
 
     if selected_society:
         society_roles = SocietyRole.objects.filter(society=selected_society)
+        committee_members = [
+            membership.user for membership in Membership.objects.filter(society_role__society=selected_society)
+            if membership.is_committee_member()
+        ]
     else:
         society_roles = SocietyRole.objects.filter(society__in=user_societies)
+
+        committee_members = [
+            membership.user for membership in Membership.objects.filter(society_role__society__in=user_societies)
+            if membership.is_committee_member()
+        ]
 
     return render(request, 'student/student_societies.html', {
         'student': student,
         'user_societies': user_societies,
         'selected_society': selected_society,
-        'society_roles': society_roles
+        'society_roles': society_roles,
+        'committee_members': committee_members,
     })
 
 def student_events(request):
     student = request.user
-    memberships = Membership.objects.filter(user=student)
+    memberships = Membership.objects.filter(
+        user=student,
+        society_role__society__status="approved"
+    )
     user_societies = [membership.society_role.society for membership in memberships]
-    user_events = Event.objects.filter(society__in=user_societies)
+    user_events = Event.objects.filter(society__in=user_societies, society__status="approved")
 
     return render(request, 'student/student_events.html', {
         'student': student,

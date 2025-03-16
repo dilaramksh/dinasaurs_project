@@ -1,0 +1,124 @@
+{% extends 'base_content.html' %}
+{% load static %}
+
+
+{% block title %}University Admin Dashboard{% endblock %}
+
+
+{% block content %}
+<body>
+    <header class="text-dark text-center py-4 mb-4"
+        style="background: url('https://www.transparenttextures.com/patterns/honeycomb.png') #FFFFCC;">
+        <div class="container">
+            <h1 class="display-4 fw-bold">🐝 University Admin Dashboard 🐝</h1>
+            <p>Manage society requests.</p>
+        </div>
+    </header>
+
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-center mb-3">
+            <a href="?status=pending"
+                class="btn {% if chosen_status == 'pending' %}btn-warning{% else %}btn-outline-warning{% endif %} mx-2">
+                Pending
+            </a>
+            <a href="?status=approved"
+                class="btn {% if chosen_status == 'approved' %}btn-success{% else %}btn-outline-success{% endif %} mx-2">
+                Approved
+            </a>
+            <a href="?status=blocked"
+                class="btn {% if chosen_status == 'blocked' %}btn-danger{% else %}btn-outline-danger{% endif %} mx-2">
+                Blocked
+            </a>
+        </div>
+
+
+
+
+        <!-- Societies Table -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-dark text-center">
+                <h5 class="mb-0">Currently Viewing: {{ chosen_status|title }}</h5>
+            </div>
+            <div class="card-body">
+                {% if societies %}
+                    <table class="table table-hover">
+                        <thead class="table-warning">
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for soc in societies %}
+                            <tr>
+                                <td>{{ soc.name }}</td>
+                                <td>{{ soc.society_email }}</td>
+                                <td>{{ soc.category }}</td>
+                                <td>
+                                    {% if soc.status == "pending" %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    {% elif soc.status == "approved" %}
+                                        <span class="badge bg-success">Approved</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Blocked</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    
+                                    {% if soc.status == "pending" %}
+                                        <a href="{% url 'society_request_details' soc.id %}" class="btn btn-info btn-sm" style="margin-right:4px;">
+                                        View Request
+                                        </a>
+                                    {% endif %}
+
+                                    {% if soc.status == "approved" %}
+                                        <a href="{% url 'society_mainpage' soc.id %}" class="btn btn-primary btn-sm" style="margin-right:4px;">
+                                        View Mainpage
+                                        </a>
+                                    {% endif %}
+                                    
+                                    {% if soc.status != "approved" %}
+                                    <!-- Approve button -->
+                                    <form method="post" action="{% url 'change_society_status' soc.id %}" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="next_status" value="approved">
+                                        <button class="btn btn-success btn-sm" type="submit">Approve</button>
+                                    </form>
+                                    {% endif %}
+
+                                    {% if soc.status != "blocked" %}
+                                    <!-- Block button -->
+                                    <form method="post" action="{% url 'change_society_status' soc.id %}" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="next_status" value="blocked">
+                                        <button class="btn btn-danger btn-sm" type="submit">Block</button>
+                                    </form>
+                                    {% endif %}
+
+                                    {% if soc.status != "pending" %}
+                                    <!-- Revert to Pending button -->
+                                    <form method="post" action="{% url 'change_society_status' soc.id %}" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="next_status" value="pending">
+                                        <button class="btn btn-warning btn-sm" type="submit">Revert</button>
+                                    </form>
+                                    {% endif %}
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-muted">No societies found in this category.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</body>
+{% endblock %}
