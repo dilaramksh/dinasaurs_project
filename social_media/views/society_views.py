@@ -1,5 +1,3 @@
-
-
 from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib import messages
 from social_media.forms.event_creation_form import EventCreationForm
@@ -27,17 +25,11 @@ def event_creation(request, society_id):
         else:
             print(form.errors)
             messages.error(request, "There was an error with your submission. Please try again.")
-
-
+    
     else:
         form = EventCreationForm()
 
-    context = {
-        'society':society,
-        'form':form
-    }
-
-    return render(request, 'society/event_creation.html', context)
+    return render(request, 'society/event_creation.html', {'form': form})
 
 def terminate_society(request):
     '''society = get_object_or_404(Society, founder=request.user)  
