@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from social_media.models import Event
 from social_media.forms import EventCreationForm
-'''
+
 class EventCreationViewTest(TestCase):
 
     def setUp(self):
@@ -47,4 +47,3 @@ class EventCreationViewTest(TestCase):
         self.assertContains(response, 'Create a New Event')
         self.assertContains(response, 'Submit')
         self.assertContains(response, 'Event Description')
-'''

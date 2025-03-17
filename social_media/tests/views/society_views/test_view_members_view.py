@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from social_media.models import Society, Membership, SocietyRole
-'''
+
 class ViewMembersTests(TestCase):
 
     def setUp(self):
@@ -75,4 +75,3 @@ class ViewMembersTests(TestCase):
 
  
         self.assertNotContains(response, "Committee Member")
-'''

@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from social_media.models import Society, Membership
-'''
+
 User = get_user_model()
 
 class TerminateSocietyViewTest(TestCase):
@@ -93,4 +93,3 @@ class TerminateSocietyViewTest(TestCase):
         self.client.post(self.url)
 
         self.assertNotIn('active_society_id', self.client.session)
-'''

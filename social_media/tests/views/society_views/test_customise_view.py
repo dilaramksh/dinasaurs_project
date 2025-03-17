@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from social_media.models import Society, SocietyColorHistory
 from social_media.forms import customisationForm
 
-'''
+
 class CustomiseSocietyViewTest(TestCase):
 
     def setUp(self):
@@ -81,4 +81,3 @@ class CustomiseSocietyViewTest(TestCase):
         self.assertContains(response, 'Previous Colour History')
         self.assertContains(response, '#FFFFFF')
         self.assertContains(response, '#000000')
-'''
