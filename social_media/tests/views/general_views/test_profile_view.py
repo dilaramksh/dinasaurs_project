@@ -17,6 +17,10 @@ class ProfileViewTest(TestCase):
         'social_media/tests/fixtures/default_user.json',
         'social_media/tests/fixtures/other_users.json'
     ]
+    fixtures = [
+        'social_media/tests/fixtures/default_user.json',
+        'social_media/tests/fixtures/other_users.json'
+    ]
 
     def setUp(self):
 
@@ -31,6 +35,8 @@ class ProfileViewTest(TestCase):
 
     def test_profile_url(self):
         self.assertEqual(self.url, '/profile/')
+    def test_profile_url(self):
+        self.assertEqual(self.url, '/profile/')
 
     def test_get_profile(self):
         self.client.login(username=self.user.username, password='Password123')
@@ -41,6 +47,10 @@ class ProfileViewTest(TestCase):
         self.assertTrue(isinstance(form, UserForm))
         self.assertEqual(form.instance, self.user)
 
+    def test_get_profile_redirects_when_not_logged_in(self):
+        redirect_url = reverse_with_next('log_in', self.url)
+        response = self.client.get(self.url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
     def test_get_profile_redirects_when_not_logged_in(self):
         redirect_url = reverse_with_next('log_in', self.url)
         response = self.client.get(self.url)
@@ -102,3 +112,74 @@ class ProfileViewTest(TestCase):
         response = self.client.post(self.url, self.form_input)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
+
+
+    @patch('boto3.client')
+    def test_profile_picture_upload(self, mock_s3_client):
+        """Test successful profile picture upload."""
+        self.client.login(username=self.user.username, password='Password123')
+        mock_s3 = mock_s3_client.return_value
+
+        # Simulate an image upload
+        image = SimpleUploadedFile("profile.jpg", b"image data", content_type="image/jpeg")
+
+        response = self.client.post(self.url, {'profile_picture': image}, follow=True)
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.profile_picture, "profile_pictures/johndoe.jpg")
+
+        # Check if S3 upload was called
+        mock_s3.upload_fileobj.assert_called_once()
+
+        messages_list = list(response.context['messages'])
+        self.assertTrue(any(msg.message == "Profile updated successfully!" for msg in messages_list))
+
+    @patch('boto3.client')
+    def test_profile_picture_replacement(self, mock_s3_client):
+        """Test replacing an existing profile picture."""
+        self.client.login(username=self.user.username, password='Password123')
+        mock_s3 = mock_s3_client.return_value
+
+        # Assign an old profile picture
+        self.user.profile_picture = "profile_pictures/old_picture.jpg"
+        self.user.save()
+
+        # Upload a new picture
+        new_image = SimpleUploadedFile("new_profile.jpg", b"new image data", content_type="image/jpeg")
+        response = self.client.post(self.url, {'profile_picture': new_image}, follow=True)
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.profile_picture, "profile_pictures/johndoe.jpg")
+
+        # Ensure old picture is deleted and new one is uploaded
+        mock_s3.delete_object.assert_called_once_with(Bucket='your_bucket_name', Key='profile_pictures/old_picture.jpg')
+        mock_s3.upload_fileobj.assert_called_once()
+
+        messages_list = list(response.context['messages'])
+        self.assertTrue(any(msg.message == "Profile updated successfully!" for msg in messages_list))
+
+    @patch('boto3.client')
+    def test_profile_picture_deletion_failure(self, mock_s3_client):
+        """Test when deleting an old profile picture fails."""
+        self.client.login(username=self.user.username, password='Password123')
+        mock_s3 = mock_s3_client.return_value
+
+        # Simulate deletion failure
+        mock_s3.delete_object.side_effect = Exception("S3 deletion failed")
+
+        # Assign an old profile picture
+        self.user.profile_picture = "profile_pictures/old_picture.jpg"
+        self.user.save()
+
+        # Upload a new picture
+        new_image = SimpleUploadedFile("new_profile.jpg", b"new image data", content_type="image/jpeg")
+        response = self.client.post(self.url, {'profile_picture': new_image}, follow=True)
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.profile_picture, "profile_pictures/johndoe.jpg")
+
+        # Ensure deletion was attempted
+        mock_s3.delete_object.assert_called_once()
+
+        messages_list = list(response.context['messages'])
+        self.assertTrue(any("Could not delete old profile picture" in msg.message for msg in messages_list))

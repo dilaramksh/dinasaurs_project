@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from social_media.models import University
+from django.contrib.auth.decorators import login_required
 
 
-#@login_required
+@login_required
 def super_admin_dashboard(request):
     number_pending = University.objects.filter(status="pending").count()
 

@@ -143,17 +143,19 @@
         
         {% if request.user.user_type == "student" %}
         <!-- Section where the user can join the society -->
-        <section id="join" class="mt-4">
-            <form id="joinForm" action="{% url 'dashboard_from_mainpage' society.id %}" method="POST">
-                {% csrf_token %}
-                <button type="submit" id="joinButton" class="btn btn-success">
-                    Join Society
-                </button>
-                <div id="loadingSpinner" class="spinner-border text-light" role="status" style="display: none;">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </form>
-        </section>
+            {% if not is_member and not is_committee_member%}
+                <section id="join" class="mt-4">
+                    <form id="joinForm" action="{% url 'dashboard_from_mainpage' society.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" id="joinButton" class="btn btn-success">
+                            Join Society
+                        </button>
+                        <div id="loadingSpinner" class="spinner-border text-light" role="status" style="display: none;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </form>
+                </section>
+            {% endif %}
         {% endif %}
         
         <script>
