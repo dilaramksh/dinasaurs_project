@@ -33,7 +33,7 @@ class Society(models.Model):
             )
         ]
     )
-    #logo = models.ImageField(upload_to='news_images/', blank=False) #stores image of the logo
+    logo = models.ImageField(upload_to='society_logos/', blank=False)
     termination_reason = models.CharField(max_length=50, choices=[('operational', 'Operational reasons'), ('low_interest', 'Low Interest'), ('financial', 'Financial reasons'), ('other', 'Other reason') ])
     status = models.CharField(max_length=20, choices=[("pending", "Pending"), ("approved", "Approved"), ("blocked", "Blocked")], default="pending")
     
