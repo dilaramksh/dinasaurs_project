@@ -109,6 +109,11 @@ DATABASES = {
     'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
 
+# Test Database
+DATABASES['default']['TEST'] = {
+    'NAME': 'test_dinosaurs_project',
+}
+
 """
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
