@@ -13,7 +13,7 @@ class SocietyPageViewTestCase(TestCase):
         category_name = 'sports'
         category, created = Category.objects.get_or_create(name=category_name)
 
-        user = User.objects.create(
+        self.user = User.objects.create(
             first_name='john',
             last_name='doe',
             email='johndoe@kcl.ac.uk',
@@ -22,19 +22,42 @@ class SocietyPageViewTestCase(TestCase):
             start_date='2023-09-23',
             end_date='2026-05-06',
             username='@johndoe',
+            password='Password123'
         )
 
         self.society = Society.objects.create(
             name='basketballclub',
-            founder=user,
+            founder=self.user,
             society_email='basketballclub@kcl.ac.uk',
             description='basketball club',
             category=category,
             paid_membership=False,
+            colour1='#FF0000',
+            colour2= '#00FF00'
         )
+
+        self.latest_society_colors_url = reverse('get_latest_society_colors', args=[self.society.id])
 
     def test_society_mainpage_view(self):
         response = self.client.get(reverse('society_mainpage', args=[self.society.id]))
         self.assertEqual(response.status_code, 200)
-        # check correct template
         self.assertTemplateUsed(response, 'society/society_mainpage.html')
+        self.assertIn('society', response.context)
+        self.assertIn('committee_members', response.context)
+        self.assertIn('society_events', response.context)
+        self.assertIn('posts', response.context)
+        self.assertIn('society_colour1', response.context)
+        self.assertIn('society_colour2', response.context)
+        self.assertIn('is_committee_member', response.context)
+        self.assertIn('past_colors', response.context)
+
+
+    def test_get_latest_society_colors(self):
+        response = self.client.get(self.latest_society_colors_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {
+            "colour1": "#FF0000",
+            "colour2": "#00FF00"
+        })
+
+
