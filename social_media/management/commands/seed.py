@@ -4,6 +4,7 @@ from faker import Faker
 from social_media.models import *
 import random
 from datetime import date
+from faker import Faker
 
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
@@ -445,8 +446,8 @@ class Command(BaseCommand):
         university = University.objects.create(
             name=data['name'],
             domain=data['domain'],
-            logo=data['logo'],
-            status=data['status']
+            status=data['status'],
+            logo=data['logo']
         )
         university.save()
         self.stdout.write(f"Created university: {university.name}")
