@@ -54,21 +54,7 @@
                         <h5 class="card-title society-title">{{ society.name }}</h5>
                         <p class="card-text">{{ society.description }}</p>
                     </div>
-                
-                    <!-- Posts Feed Section -->
-                    <div class="card-footer bg-light">
-                        <h6 class="text-center">Latest Posts</h6>
-                        <div class="posts-feed">
-                            {% for post in society_posts|get_item:society.id %}
-                                <div class="post mb-2 p-2 border rounded">
-                                    <p><strong>{{ post.author.username }}</strong> - {{ post.created_at|date:"M d, Y" }}</p>
-                                    <p>{{ post.content|truncatewords:20 }}</p>
-                                </div>
-                            {% empty %}
-                                <p class="text-muted text-center">No posts yet.</p>
-                            {% endfor %}
-                        </div>
-                    </div>
+            
                 </div>
             </a>
         </div>
