@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from social_media.models import Society, Membership
+from social_media.models import Society, Membership, Event
 
 User = get_user_model()
 
@@ -93,3 +93,15 @@ class TerminateSocietyViewTest(TestCase):
         self.client.post(self.url)
 
         self.assertNotIn('active_society_id', self.client.session)
+
+    def test_terminate_society_with_upcoming_events(self):
+            """Test if society with upcoming events gets handled properly when terminated."""
+            event = Event.objects.create(society=self.society, name="Test Event", date="2025-01-01")
+            
+            response = self.client.post(self.url)
+            
+            # Check if the event is deleted (or handled correctly, depending on your design)
+            self.assertFalse(Event.objects.filter(id=event.id).exists())
+            
+            # Check society deletion
+            self.assertFalse(Society.objects.filter(id=self.society.id).exists())

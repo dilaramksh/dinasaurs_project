@@ -2,11 +2,11 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 from social_media.models import Society, SocietyColorHistory
-from social_media.forms import customisationForm
+from social_media.forms import CustomisationForm
 
 
 class CustomiseSocietyViewTest(TestCase):
-
+    
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='password123')
         self.society = Society.objects.create(
@@ -30,7 +30,7 @@ class CustomiseSocietyViewTest(TestCase):
         self.assertContains(response, 'Submit')
         self.assertContains(response, 'Current Society Details')
 
-    def test_customise_society_view_post_valid_data(self):
+    def test_customise_society_view_post_valid_data_creates_colour_history(self):
         self.client.login(username='testuser', password='password123')
         form_data = {
             'description': 'Updated description',

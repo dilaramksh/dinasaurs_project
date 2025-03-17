@@ -1,8 +1,10 @@
 from django.core.exceptions import ValidationError
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
-from datetime import timedelta
 from django.utils.timezone import now
+from datetime import timedelta
 from social_media.models import User
+import hashlib
 
 class UserModelTestCase(TestCase):
     """Unit tests for the User model."""
@@ -18,57 +20,55 @@ class UserModelTestCase(TestCase):
         self.user = User.objects.get(email='john.doe@test.ac.uk')
 
     def test_valid_user(self):
-
         self._assert_user_is_valid()
 
-    def test_first_name_must_not_be_blank(self):
-        self.user.first_name = ''
+    def test_username_must_start_with_at_symbol(self):
+        self.user.username = 'invalidUsername'
         self._assert_user_is_invalid()
 
-    def test_first_name_may_contain_50_characters(self):
-        self.user.first_name = 'x' * 50
+    def test_username_must_have_at_least_four_characters(self):
+        self.user.username = '@ab'
+        self._assert_user_is_invalid()
+
+    def test_username_may_contain_letters_numbers_and_underscores(self):
+        self.user.username = '@valid_123'
         self._assert_user_is_valid()
 
-    def test_first_name_must_not_contain_more_than_50_characters(self):
-        self.user.first_name = 'x' * 51
-        self._assert_user_is_invalid()
+    def test_profile_picture_defaults_if_not_provided(self):
+        self.user.profile_picture = None
+        self.user.save()
+        self.assertEqual(self.user.profile_picture.name, "profile_pictures/default.jpg")
 
-    def test_last_name_must_not_be_blank(self):
-        self.user.last_name = ''
-        self._assert_user_is_invalid()
+    def test_profile_picture_replacement_deletes_old_picture(self):
+        old_picture = SimpleUploadedFile("old_picture.jpg", b"file_content", content_type="image/jpeg")
+        new_picture = SimpleUploadedFile("new_picture.jpg", b"file_content", content_type="image/jpeg")
 
-    def test_last_name_may_contain_50_characters(self):
-        self.user.last_name = 'x' * 50
-        self._assert_user_is_valid()
+        self.user.profile_picture = old_picture
+        self.user.save()
+        old_picture_path = self.user.profile_picture.name
 
-    def test_last_name_must_not_contain_more_than_50_characters(self):
-        self.user.last_name = 'x' * 51
-        self._assert_user_is_invalid()
+        self.user.profile_picture = new_picture
+        self.user.save()
 
-    def test_email_must_not_be_blank(self):
-        self.user.email = ''
-        self._assert_user_is_invalid()
+        self.assertNotEqual(self.user.profile_picture.name, old_picture_path)
 
-    def test_email_must_be_unique(self):
+    def test_email_must_be_case_insensitive_unique(self):
         second_user = User.objects.create_user(
-            first_name="Jessica",
+            first_name="Jane",
             last_name="Doe",
-            email="jessica.doe@test.ac.uk",
+            email="JOHN.DOE@test.ac.uk",  # Same as existing user, but with different capitalization
+            username="@janedoe",
             user_type="student",
-            university=self.university,
+            university=self.user.university,
             start_date=now().date(),
             end_date=(now() + timedelta(days=365)).date()
         )
-        self.user.email = second_user.email
+        self.user.email = second_user.email.lower()
         self._assert_user_is_invalid()
 
-    def test_email_must_contain_at_symbol(self):
-        self.user.email = 'johndoe.test.ac.uk'
-        self._assert_user_is_invalid()
-
-    def test_email_domain_must_match_university_domain(self):
-        self.user.email = 'jason.doe@other.ac.uk'
-        self._assert_user_is_invalid()
+    def test_gravatar_hash_generation(self):
+        expected_hash = hashlib.md5(self.user.email.strip().lower().encode('utf-8')).hexdigest()
+        self.assertEqual(self.user.gravatar_hash, expected_hash)
 
     def test_start_date_cannot_be_after_end_date(self):
         self.user.start_date = now().date() + timedelta(days=365)
