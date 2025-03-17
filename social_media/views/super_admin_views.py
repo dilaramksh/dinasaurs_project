@@ -25,5 +25,12 @@ def update_university_status(request, university_id, new_status):
     return HttpResponseForbidden("Invalid request method.")
 
 def registered_universities(request):
-    registered_universities = University.objects.filter(status="approved")
-    return render(request, 'super_admin/registered_universities.html', {'registered_universities': registered_universities})
+    context = {
+        'registered': University.objects.filter(status="approved"),
+        'blocked': University.objects.filter(status="blocked")
+    }
+    return render(request, 'super_admin/registered_universities.html', context)
+
+def modify_university(request, university_id):
+    university = get_object_or_404(University, id=university_id)
+    return render(request, 'super_admin/modify_university.html', {'university': university})

@@ -14,26 +14,17 @@
                         <img src="{{ user.profile_picture.url }}" alt="Profile Picture" 
                              class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
                     {% else %}
-                        <img src="{% static 'images/default_profile.png' %}" alt="Default Profile Picture"
+                        <img src="{% static 'profile_pictures/default.jpg' %}" alt="Default Profile Picture"
                              class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
                     {% endif %}
-                    <div class="mt-3">
-                        <label for="id_profile_picture" class="btn btn-outline-secondary">Change Profile Picture</label>
-                        <input type="file" name="profile_picture" id="id_profile_picture" class="d-none">
-                    </div>
                 </div>
 
                 <!-- Form for other fields, excluding profile_picture -->
                 <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ next }}">
-
-                    {% include 'partials/bootstrap_form.html' with form=form exclude_fields="profile_picture" submit_text="Update Profile" %}
-                    
-                    <input type="file" name="profile_picture" id="id_profile_picture_hidden" class="d-none" />
-
+                    {% include 'partials/bootstrap_form.html' with form=form submit_text="Update Profile" %}
                 </form>
-                
             </div>
         </div>
     </div>
