@@ -4,6 +4,8 @@ from django.db import models
 from .user import User
 from .category import Category
 
+DEFAULT_SOCIETY_LOGO = "society_logos/default.jpg"
+
 class Society(models.Model):
     """Model used for information on societies"""
     name = models.CharField(max_length=50, blank=False)
