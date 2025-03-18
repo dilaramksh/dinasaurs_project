@@ -9,7 +9,6 @@ from django.http import JsonResponse
 from social_media.helpers import redirect_to_society_dashboard 
 
 
-
 def event_creation(request, society_id):
 
     society = get_object_or_404(Society, pk=society_id)
@@ -18,6 +17,11 @@ def event_creation(request, society_id):
         if form.is_valid():
             event = form.save(commit=False)
             event.society = society
+
+            uploaded_file = request.FILES.get("picture")
+            if uploaded_file:
+                event.picture = uploaded_file
+
             event.save()
             messages.success(request, "Your event has been created.")
             return redirect_to_society_dashboard(request)

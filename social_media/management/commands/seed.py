@@ -7,6 +7,7 @@ from datetime import date
 from faker import Faker
 
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
+DEFAULT_PICTURE = "events_picture/default.jpg"
 
 user_fixtures = [
 
@@ -661,6 +662,7 @@ class Command(BaseCommand):
                 description=data['description'],
                 date=data['date'],
                 location=data['location'],
+                picture=DEFAULT_PICTURE,
             )
             self.stdout.write(f"Created event: {event.name}")
         else:
