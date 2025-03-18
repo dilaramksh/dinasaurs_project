@@ -14,13 +14,11 @@
             {% for membership in memberships %}
                 <div class="list-group-item d-flex justify-content-between align-items-center flex-wrap" id="membership-{{ membership.id }}">
                     <div>
-                        <h5 class="mb-1">{{ membership.society.name }}</h5>
-                        <small class="text-muted">{{ membership.society_role.role_name }}</small>
-                        <div class="mt-2">
-                            <a href="{% url 'society_mainpage' membership.society.id %}" class="btn btn-warning btn-sm">
-                                Visit Society Page
-                            </a>
-                        </div>
+                        <a href="{% url 'society_mainpage' membership.society.id %}" class="fw-bold text-dark text-decoration-underline">
+                            {{ membership.society.name }}
+                        </a>
+                        </h5>
+                        <small class="text-muted">({{ membership.society_role.role_name }})</small>
                     </div>
                     <button 
                         type="button" 
