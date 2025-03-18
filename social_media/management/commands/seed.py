@@ -647,7 +647,7 @@ class Command(BaseCommand):
                 self.stdout.write(f"Category '{category_name}' does not exist.")
                 category = Category.objects.create(name=category_name)
 
-            description = f"A {name} for students passionate about {name.split('soc')[0]}."
+            description = f"A society for students passionate about {name.split('soc')[0]}."
             created_society = self.try_create_society(name, category, description)
             if created_society:
                 self.generated_societies.append(created_society)
