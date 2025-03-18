@@ -39,30 +39,28 @@
         </div>
     </form>
 
-       <!-- Society Cards -->
-       <div class="row">
+      <!-- Society Cards -->
+    <div class="row">
         {% for society in societies %}
         <div class="col-md-4 mb-4">
             <a href="{% url 'society_mainpage' society.id %}" class="text-decoration-none">
                 <div class="card shadow-sm society-card">
-                    {% if society.image and society.image.url %}
-                        <img src="{{ society.image.url }}" class="card-img-top" alt="{{ society.name }}">
+                    {% if society.logo and society.logo.url %}
+                        <img src="{{ society.logo.url }}" class="card-img-top" alt="{{ society.name }}">
                     {% else %}
-                        <img src="{% static 'images/default_soc_image.png' %}" class="card-img-top" alt="Default Image">
+                        <img src="{% static 'society_logos/default.png' %}" class="card-img-top" alt="Default Image">
                     {% endif %}
                     <div class="card-body text-center">
                         <h5 class="card-title society-title">{{ society.name }}</h5>
                         <p class="card-text">{{ society.description }}</p>
                     </div>
-            
                 </div>
-            </div>
+            </a>
         </div>
         {% empty %}
         <p class="text-center text-muted">No societies found matching your criteria.</p>
         {% endfor %}
     </div>
-</div>
 
 <!-- Add FontAwesome for search icon -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

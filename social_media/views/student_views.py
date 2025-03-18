@@ -113,9 +113,6 @@ def view_societies(request):
         'society_posts': society_posts
     })
 
-    return render(request, 'student/view_societies.html', {'societies': societies})
-    #return render(request, 'student/view_societies.html')
-
 def student_societies(request):
     student = request.user
     memberships = Membership.objects.filter(user=student)

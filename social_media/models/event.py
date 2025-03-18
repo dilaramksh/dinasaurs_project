@@ -13,6 +13,7 @@ class Event(models.Model):
     description = models.CharField(max_length=1000, blank=False)
     date = models.DateField(blank=False) 
     location = models.CharField(max_length=250, blank=False)
+    picture = models.ImageField(upload_to="events_picture/", blank=True, null=True, default=DEFAULT_PICTURE)
 
     def save(self, *args, **kwargs):
         """Ensure that the event date is in the future and the society is approved before saving."""
