@@ -511,7 +511,6 @@ class Command(BaseCommand):
             colour2= self.faker.hex_color(),
             logo= f'society_logos/{name}.png',
             status= 'approved',
-            logo=f"society_logos/{name}.png"
         )
         society.save()
         return society
