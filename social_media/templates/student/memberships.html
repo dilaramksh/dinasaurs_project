@@ -4,11 +4,65 @@
     {% if memberships %}
         <ul>
             {% for membership in memberships %}
-                <li>{{ membership.society.name }} - {{ membership.society_role.role_name }}</li>
+                <li id="membership-{{ membership.id }}">
+                    {{ membership.society.name }} - {{ membership.society_role.role_name }}
+                    <button 
+                        type="button" 
+                        class="btn btn-danger leave-society-btn" 
+                        data-membership-id="{{ membership.id }}" 
+                        data-society-name="{{ membership.society.name }}">
+                        Leave Society
+                    </button>
+                </li>
             {% endfor %}
         </ul>
     {% else %}
         <p>You have no memberships.</p>
     {% endif %}
+
+    <p id="leave-message" style="display: none;"></p>
+
+    <!-- CSRF Token for JavaScript Fetch Requests -->
+    <form id="csrf-token-form">
+        {% csrf_token %}
+    </form>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".leave-society-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                if (!confirm("Are you sure you want to leave this society?")) return;
+
+                let membershipId = this.getAttribute("data-membership-id");
+                let societyName = this.getAttribute("data-society-name");
+                let membershipItem = document.getElementById(`membership-${membershipId}`);
+                let messageBox = document.getElementById("leave-message");
+
+                let csrfToken = document.querySelector("#csrf-token-form input[name='csrfmiddlewaretoken']").value;
+
+                fetch(`/remove-membership/${membershipId}/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ membership_id: membershipId })  // Ensure a body is sent
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        membershipItem.remove();  // Remove membership from the list
+                        messageBox.textContent = `You have successfully left ${societyName}.`;
+                        messageBox.style.display = "block";
+                        messageBox.style.color = "red";  // Optional: Highlight message
+                    } else {
+                        alert(data.error);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            });
+        });
+    });
+    </script>
 
 {% endblock %}
