@@ -42,11 +42,7 @@
                                         <select class="form-select" name="role_{{ role.id }}">
                                             <option selected disabled>-- Select Member --</option>
                                             {% for student in all_students %}
-                                                {% with assigned_members=committee_members|dictsort:"id" %}
-                                                    {% if student not in assigned_members %}
-                                                        <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</option>
-                                                    {% endif %}
-                                                {% endwith %}
+                                                <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</option>     
                                             {% endfor %}
                                         </select>     
                                     </td>
