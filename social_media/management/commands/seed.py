@@ -509,6 +509,7 @@ class Command(BaseCommand):
             price= '5.0' if random.choice([True, False]) else '0.0',
             colour1= self.faker.hex_color(),
             colour2= self.faker.hex_color(),
+            logo= f'society_logos/{name}.png',
             status= 'approved',
             logo=f"society_logos/{name}.png"
         )
