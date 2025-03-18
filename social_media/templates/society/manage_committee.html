@@ -26,26 +26,36 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for committee in committee_members%}
+                                {% for role in committee_roles %}
                                 <tr>
-                                    <td><strong>{{committee.membership_set.first.society_role.role_name}}</strong></td>
-                                    <td>{{ committee.first_name }} {{committee.last_name}}</td>
+                                    <td><strong>{{ role.role_name }}</strong></td>
                                     <td>
-                                        <select class="form-select" name="role_{{ committee.id }}">
-                                            <option selected disabled>-- Select Member --</option>
-                                            {% for user in users %}
-                                                {%if committee.id != user.id %}
-                                                <option value= "{{ member.id }}">{{ user.first_name }} {{user.last_name}}</option>
+                                        <ul>
+                                            {% for member in committee_members %}
+                                                {% if member.membership_set.first.society_role.role_name == role.role_name %}
+                                                    <li>{{ member.first_name }} {{ member.last_name }}</li>
                                                 {% endif %}
                                             {% endfor %}
-                                        </select>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <select class="form-select" name="role_{{ role.id }}">
+                                            <option selected disabled>-- Select Member --</option>
+                                            {% for student in all_students %}
+                                                {% with assigned_members=committee_members|dictsort:"id" %}
+                                                    {% if student not in assigned_members %}
+                                                        <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</option>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            {% endfor %}
+                                        </select>     
                                     </td>
                                 </tr>
-                                {% endfor %}
+                            {% endfor %}
                             </tbody>
                         </table>
                         <div class="text-center mt-3">
-                            <button class="btn btn-warning">Save Changes</button>
+                            <button type="submit" class="btn btn-warning">Save Changes</button>
                         </div>
                     </form>
 
