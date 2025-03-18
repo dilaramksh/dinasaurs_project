@@ -141,7 +141,7 @@ class DashboardViewTestCase(TestCase):
         self.assertRedirects(response, reverse('society_dashboard', kwargs={'society_id': 1}))
 
     # PASSES
-    def test_uni_admin_society_dashboard_view(self):
+    def test_approved_uni_admin_society_dashboard_view(self):
         login_success = self.client.login(username='@michaeljordan', password='Password123')
         self.assertTrue(login_success)
         response = self.client.get(reverse('dashboard'))
@@ -165,7 +165,6 @@ class DashboardViewTestCase(TestCase):
         self.assertEqual(response.context['chosen_status'], 'pending')
         self.assertTemplateUsed(response, 'uni_admin/uni_admin_dashboard.html')
         self.assertEqual(response.context['user'].user_type, 'uni_admin')
-
 
     # PASSES
     def test_super_admin_society_dashboard_view(self):
