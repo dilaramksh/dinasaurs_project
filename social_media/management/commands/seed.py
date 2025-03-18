@@ -731,7 +731,6 @@ class Command(BaseCommand):
 
         for society in self.generated_societies:
             society_roles = SocietyRole.objects.filter(society=society)
-
             society_founder_university = society.founder.university
 
             if not society_roles.exists():
@@ -742,19 +741,25 @@ class Command(BaseCommand):
 
             for role in society_roles:
                 available_students = list(set(self.generated_students) - assigned_students)
+
                 if not available_students:
                     self.stdout.write("Not enough unique students to assign roles.")
                     break
 
-                # ensures society is in students university
                 filtered_students = [s for s in available_students if s.university == society_founder_university]
-                student = random.choice(filtered_students) if filtered_students else None
 
-                self.try_create_membership({
-                    'user': student,
-                    'society': society,
-                    'society_role': role,
-                })
+                if filtered_students:
+                    student = random.choice(filtered_students)
+                    assigned_students.add(student)
+
+                    self.try_create_membership({
+                        'user': student,
+                        'society': society,
+                        'society_role': role,
+                    })
+                else:
+                    self.stdout.write(
+                        f"No available students from {society_founder_university} for the role: {role.role_name}.")
 
     def try_create_membership(self, data):
         try:
@@ -768,7 +773,7 @@ class Command(BaseCommand):
         society_role = data['society_role']
 
         existing_membership = Membership.objects.filter(
-            user=user ,
+            user=user,
             society=society,
         ).first()
 
@@ -784,7 +789,7 @@ class Command(BaseCommand):
         else:
             membership = existing_membership
             self.stdout.write(
-                f"Skipping duplicate membership: {membership.society_role} in {membership.society.name} for user {user.username} ")
+                f"Skipping duplicate membership: {membership.society_role} in {membership.society.name} for user {user.username}")
             return
         return membership
 
