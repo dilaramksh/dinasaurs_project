@@ -106,13 +106,16 @@ WSGI_APPLICATION = 'dinasaurs.wsgi.application'
 load_dotenv()
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join('/tmp', 'db.sqlite3'),
+    }
 }
 
 # Test Database
-DATABASES['default']['TEST'] = {
-    'NAME': 'test_dinosaurs_project',
-}
+#DATABASES['default']['TEST'] = {
+#    'NAME': 'test_dinosaurs_project',
+#}
 
 """
     'default': {
