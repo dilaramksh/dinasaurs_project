@@ -497,11 +497,12 @@ class Command(BaseCommand):
     def create_society(self, name, category, description):
 
         students = User.objects.all().filter(user_type='student')
+        founder = random.choice(students)
 
         society = Society.objects.create(
             name= name,
-            founder= random.choice(students), # unique?
-            society_email= f'{name}@kcl.ac.uk',
+            founder=founder,
+            society_email= f'{name}@{founder.university.domain}',
             description= description,
             category= category,
             paid_membership = random.choice([True, False]),
