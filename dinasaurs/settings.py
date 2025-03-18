@@ -115,6 +115,12 @@ DATABASES = {
 }
 
 
+
+# Test Database
+#DATABASES['default']['TEST'] = {
+#    'NAME': 'test_dinosaurs_project',
+#}
+
 """
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
