@@ -6,6 +6,7 @@ from social_media.forms import SignUpForm
 from social_media.models import User, University
 from social_media.tests.helpers import LogInTester
 from django.conf import settings
+from unittest.mock import patch
 import os
 
 class SignUpViewTestCase(TestCase, LogInTester):
@@ -26,11 +27,6 @@ class SignUpViewTestCase(TestCase, LogInTester):
             'new_password': 'Password123',
             'password_confirmation': 'Password123',
         }
-        
-        self.profile_picture = SimpleUploadedFile(
-            "profile.jpg", b"profile_picture_content", content_type="image/jpeg"
-        )
-        
     
         self.user = User.objects.create_user(
             username='@johndoe',
@@ -81,11 +77,16 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertTrue(check_password('Password123', user.password))
         self.assertTrue(self._is_logged_in())
 
+
+    #Testing image uploading needs to be fixed
     def test_successful_sign_up_with_profile_picture(self):
-        self.form_input['profile_picture'] = self.profile_picture
+        image = SimpleUploadedFile("profile.jpg", b"image data", content_type="image/jpeg")
+        self.form_input['profile_picture'] = image
+
         before_count = User.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = User.objects.count()
+        self.user.refresh_from_db()
         self.assertEqual(after_count, before_count + 1)
         user = User.objects.get(username='@janedoe')
         self.assertTrue(user.profile_picture.name.startswith('profile_pictures/@janedoe'))
