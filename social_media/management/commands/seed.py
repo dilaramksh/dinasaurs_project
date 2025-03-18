@@ -3,7 +3,7 @@ from django.template.defaultfilters import first
 from faker import Faker
 from social_media.models import *
 import random
-from datetime import date
+from datetime import date, timedelta
 from faker import Faker
 
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
@@ -305,8 +305,8 @@ class Command(BaseCommand):
         university = university
         username = create_username(first_name, last_name)
         email = create_email(first_name, last_name, university.domain)
-        start_date='2023-09-23'
-        end_date='2023-06-05'
+        start_date = self.faker.date_between(start_date=date(2020, 1, 1), end_date=date(2025, 12, 31)),
+        end_date = start_date + timedelta(days=random.randint(3 * 365, 3 * 365 + 365)),
         data = {'first_name':first_name, 'last_name':last_name, 'user_type':user_type, 'university':university, 'username':username, 'email':email, 'start_date':start_date, 'end_date':end_date, 'profile_picture': DEFAULT_PROFILE_PICTURE}
         return data
 
