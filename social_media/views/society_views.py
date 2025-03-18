@@ -56,8 +56,8 @@ def view_members(request, society_id):
 
 def view_upcoming_events(request, society_id):
     society = get_object_or_404(Society, pk=society_id)
-    events = Event.objects.filter(date__gte=date.today()).order_by("date")
-    return render(request, 'society/view_upcoming_events.html', {'events': events})
+    events = Event.objects.filter(society=society, date__gte=date.today()).order_by("date")  
+    return render(request, 'society/view_upcoming_events.html', {'events': events, 'society': society})
 
 def event_details(request, event_id):
     """Return event details as JSON for the modal popup."""
@@ -95,7 +95,6 @@ def create_post(request, society_id):
 
 
 def customise_society_view(request, society_id):
-    print("🔍 customise_society_view was called!")  # Debugging
 
     society = get_object_or_404(Society, pk=society_id)
     past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')
