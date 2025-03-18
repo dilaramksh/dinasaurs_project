@@ -13,7 +13,7 @@ class Event(models.Model):
     description = models.CharField(max_length=1000, blank=False)
     date = models.DateField(blank=False) 
     location = models.CharField(max_length=250, blank=False)
-    picture = models.ImageField(upload_to="event_picture/", blank=True, null=True, default=DEFAULT_PICTURE)
+    picture = models.ImageField(upload_to="events_picture/", blank=True, null=True, default=DEFAULT_PICTURE)
 
     # ensure date is in the future
     #clean() is called automatically when Django validates the model
@@ -21,9 +21,7 @@ class Event(models.Model):
         """Ensure that the event date is in the future."""
         if self.date < now().date():
             raise ValidationError({'date': 'The event date must be in the future.'})
-         
-        if self.society.status != "approved":
-            raise ValidationError("Cannot create an event for a non-approved society.")
+
 
     def __str__(self):
         return self.name  

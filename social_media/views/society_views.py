@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from social_media.helpers import redirect_to_society_dashboard 
 
 
+
 def event_creation(request, society_id):
 
     society = get_object_or_404(Society, pk=society_id)
@@ -62,6 +63,7 @@ def view_members(request, society_id):
 def view_upcoming_events(request, society_id):
     society = get_object_or_404(Society, pk=society_id)
     events = Event.objects.filter(date__gte=date.today()).order_by("date")
+    print(events)
     return render(request, 'society/view_upcoming_events.html', {'events': events})
 
 def event_details(request, event_id):
