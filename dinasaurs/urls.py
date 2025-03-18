@@ -29,6 +29,7 @@ from social_media.views.homepage_view import *
 from social_media.views.dashboard_views import *
 #from social_media.views.student_feed_view import *
 from social_media.views.membership_view import join_society
+from social_media.views.membership_view import remove_membership
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -62,6 +63,8 @@ urlpatterns = [
     path('student/societies', student_societies, name='student_societies'),
     path('student/events', student_events, name='student_events'),
     path('student/memberships/', view_memberships, name='view_memberships'),
+    path('society/<int:society_id>/join/', join_society, name='join_society'),
+    path('remove-membership/<int:membership_id>/', remove_membership, name='remove_membership'),
 
     #society paths
     path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
@@ -71,7 +74,7 @@ urlpatterns = [
     path('society/<int:society_id>/view_members/', view_members, name='view_members'),
     path('society/<int:society_id>/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
-    path('society/<int:society_id>/customise-society/', customise_society_view, name='customise_society'),
+    path("society/<int:society_id>/customise_society/", customise_society_view, name="customise_society"),
     path('events/<int:event_id>/details/', event_details, name='event_details'),
     path('society/<int:society_id>/manage_committee', manage_committee, name='manage_committee'),
     path('society/<int:society_id>/update_committee', update_committee, name='update_committee'),

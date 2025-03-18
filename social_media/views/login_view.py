@@ -11,7 +11,6 @@ from social_media.mixins import LoginProhibitedMixin
 class LogInView(LoginProhibitedMixin, View):
     """Display login screen and handle user login."""
 
-    # Handles only get and post requests
     http_method_names = ['get', 'post']
 
     # Ensures that users that are already logged in will not access the login page. 

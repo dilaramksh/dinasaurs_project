@@ -94,11 +94,15 @@ def create_post(request, society_id):
 
     return render(request, 'society/create_post.html', {"form": form, "society": society})
 
+
 def customise_society_view(request, society_id):
+    print("🔍 customise_society_view was called!")  # Debugging
+
     society = get_object_or_404(Society, pk=society_id)
-    
     past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')
+
     if request.method == 'POST':
+
         form = CustomisationForm(request.POST, instance=society)
         if form.is_valid():
             SocietyColorHistory.objects.create(
@@ -108,84 +112,15 @@ def customise_society_view(request, society_id):
             )
 
             form.save()
+
             return redirect('society_mainpage', society_id=society.id)
+        else:
+            print("Form is not valid:", form.errors)
     else:
         form = CustomisationForm(instance=society)
 
     return render(request, 'society/customise_society.html', {
         'form': form,
         'society': society,
-        'past_colors': past_colors 
-    })
-
-def manage_committee(request, society_id):
-    memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
-    committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
-    
-    all_users = list(set(m.user for m in memberships))
-
-    context = {
-        "committee_members": committee_members,
-        "users": all_users,  
-        "society_id" : society_id
-    }
-    return render(request, 'society/manage_committee.html', context)
-
-
-
-
-def update_committee(request, society_id):
-    if request.method == "POST":
-        society = get_object_or_404(Society, id=society_id)
-        committee_memberships = Membership.objects.filter(society=society, society_role__isnull=False)
-
-        for membership in committee_memberships:
-            role_key = f"role_{membership.user.id}"
-            new_member_id = request.POST.get(role_key)
-
-            if new_member_id and new_member_id != str(membership.user.id):  
-                new_member = get_object_or_404(User, id=new_member_id)
-
-                # Update the membership to the new user
-                membership.user = new_member
-                membership.save()
-
-        messages.success(request, "Committee roles updated successfully.")
-        return redirect('manage_committee', society_id=society_id)
-
-    return redirect('manage_committee', society_id=society_id) 
-
-    
-
-
-def edit_roles(request, society_id):
-    society = get_object_or_404(Society, id=society_id)
-    roles = SocietyRole.objects.filter(society=society) 
-
-    committee_roles = [role for role in roles if role.is_committee_role()]
-
-    if request.method == "POST":
-        if 'add_role' in request.POST:
-            add_form = SocietyRoleForm(request.POST)
-            if add_form.is_valid():
-                new_role = add_form.save(commit=False)
-                new_role.society = society
-                new_role.save()
-                return redirect('edit_roles', society_id=society.id)
-
-        elif 'delete_role' in request.POST:
-            delete_form = DeleteRoleForm(request.POST, society=society)
-            if delete_form.is_valid():
-                role_to_delete = delete_form.cleaned_data['role']
-                role_to_delete.delete()
-                return redirect('edit_roles', society_id=society.id)
-    else:
-        add_form = SocietyRoleForm()
-        delete_form = DeleteRoleForm(society=society)
-
-    return render(request, 'society/edit_roles.html', {
-        'society': society,
-        'committee_roles': committee_roles,
-        'add_form': add_form,
-        'delete_form': delete_form
+        'past_colors': past_colors  
     })
