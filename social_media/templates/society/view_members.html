@@ -43,7 +43,11 @@
                         
                     </section>
 
-                    <a href="{% url 'manage_committee' society_id %}" class="btn btn-warning btn-sm"> Manage committee roles </a> 
+                    <div class="d-flex justify-content-center mt-4 mb-4">
+                        <a href="{% url 'manage_committee' society_id %}" class="manage-committee-link">
+                            Manage committee roles
+                        </a>
+                    </div>
 
                     <!-- Search Bar -->
                     <div class="mb-4 d-flex justify-content-center">

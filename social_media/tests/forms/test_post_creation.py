@@ -1,6 +1,6 @@
 from django.test import TestCase
 from social_media.forms import PostForm
-'''
+
 class PostFormTest(TestCase):
     def test_valid_form(self):
         """Test if PostForm is valid with correct data."""
@@ -44,4 +44,3 @@ class PostFormTest(TestCase):
             self.assertIn("title", form.errors)
         else:
             self.assertTrue(form.is_valid())  
-'''

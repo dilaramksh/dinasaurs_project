@@ -1,9 +1,9 @@
 from django.db import models
-from .society import Society
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
 
 DEFAULT_PICTURE = "events_picture/default.jpg"
+from .society import Society
 
 class Event(models.Model):
     """Model used for events in the societies"""
@@ -13,15 +13,20 @@ class Event(models.Model):
     description = models.CharField(max_length=1000, blank=False)
     date = models.DateField(blank=False) 
     location = models.CharField(max_length=250, blank=False)
-    picture = models.ImageField(upload_to="events_picture/", blank=True, null=True, default=DEFAULT_PICTURE)
 
-    # ensure date is in the future
-    #clean() is called automatically when Django validates the model
-    def clean(self):
-        """Ensure that the event date is in the future."""
+    def save(self, *args, **kwargs):
+        """Ensure that the event date is in the future and the society is approved before saving."""
         if self.date < now().date():
             raise ValidationError({'date': 'The event date must be in the future.'})
 
+        if not self.society:  
+            raise ValidationError("Cannot save an event without an associated society.")
+
+        if self.society.status != "approved":
+            raise ValidationError("Cannot create an event for a non-approved society.")
+
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name  
+        return self.name
