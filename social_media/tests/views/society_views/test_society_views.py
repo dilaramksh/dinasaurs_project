@@ -16,8 +16,6 @@ class SocietyPageViewTestCase(TestCase):
 
     def setUp(self):
         university = University.objects.create(name="King's College London")
-        category_name = 'sports'
-        category, created = Category.objects.get_or_create(name=category_name)
 
         self.user = User.objects.create_user(
             first_name='john',
@@ -31,12 +29,16 @@ class SocietyPageViewTestCase(TestCase):
             password='Password123'
         )
 
+        self.category = Category.objects.create(
+            name='sports'
+        )
+
         self.society = Society.objects.create(
             name='basketballclub',
             founder=self.user,
             society_email='basketballclub@kcl.ac.uk',
             description='basketball club',
-            category=category,
+            category=self.category,
             paid_membership=False,
             colour1='#FFFFFF',
             colour2='#FFFFFF'
@@ -112,6 +114,7 @@ class SocietyPageViewTestCase(TestCase):
             'colour2': ''
         }
 
+        # URLs
         self.url = reverse('create_event', kwargs={'society_id': self.society.id})
 
     # PASSES
@@ -120,6 +123,9 @@ class SocietyPageViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/event_creation.html')
         self.assertIn('form', response.context)
+
+
+
 
 
     # FAILING
@@ -146,6 +152,9 @@ class SocietyPageViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'society/event_creation.html')
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "There was an error with your submission. Please try again.")
+
+
+
 
 
 

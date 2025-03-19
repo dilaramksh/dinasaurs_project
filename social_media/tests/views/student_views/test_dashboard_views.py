@@ -8,8 +8,7 @@ class DashboardViewTestCase(TestCase):
     def setUp(self):
         university = University.objects.create(name="King's College London", status='approved', domain='kcl.ac.uk')
         university2 = University.objects.create(name="SOAS", status='other', domain='@soas.ac.uk')
-        category_name = 'sports'
-        category, created = Category.objects.get_or_create(name=category_name)
+
 
         self.student = User.objects.create_user(
             first_name='jane',
@@ -83,12 +82,16 @@ class DashboardViewTestCase(TestCase):
             password='Password123'
         )
 
+        self.category = Category.objects.create(
+            name='sports'
+        )
+
         self.society = Society.objects.create(
             name='basketballclub',
             founder=self.student,
             society_email='basketballclub@kcl.ac.uk',
             description='basketball club',
-            category=category,
+            category=self.category,
             paid_membership=False,
         )
 
@@ -113,7 +116,7 @@ class DashboardViewTestCase(TestCase):
 
         )
 
-        self.login_url = reverse('log_in')
+        # URLs
         self.dashboard_mainpage_url = reverse('dashboard_from_mainpage', args=[self.society.id])
 
 
@@ -155,9 +158,7 @@ class DashboardViewTestCase(TestCase):
     def test_other_status_uni_admin_dashboard_view(self):
         login_success = self.client.login(username='@paulpoe', password='Password123')
         self.assertTrue(login_success)
-        self.assertNotEqual(self.uni_admin2.university.status, 'pending')
-        self.assertNotEqual(self.uni_admin2.university.status, 'approved')
-        self.assertNotEqual(self.uni_admin2.university.status, 'blocked')
+        self.assertEqual(self.uni_admin2.university.status, 'other')
         response = self.client.get(reverse('dashboard'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('societies', response.context)

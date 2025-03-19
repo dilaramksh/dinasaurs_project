@@ -1,5 +1,6 @@
 from unicodedata import category
 
+from django.contrib.auth import login
 from django.test import TestCase
 from django.urls import reverse
 
@@ -13,7 +14,7 @@ class SocietyPageViewTestCase(TestCase):
         category_name = 'sports'
         category, created = Category.objects.get_or_create(name=category_name)
 
-        self.user = User.objects.create(
+        self.user = User.objects.create_user(
             first_name='john',
             last_name='doe',
             email='johndoe@kcl.ac.uk',
@@ -25,21 +26,29 @@ class SocietyPageViewTestCase(TestCase):
             password='Password123'
         )
 
+        self.category = Category.objects.create(
+            name='sports'
+        )
+
         self.society = Society.objects.create(
             name='basketballclub',
             founder=self.user,
             society_email='basketballclub@kcl.ac.uk',
             description='basketball club',
-            category=category,
+            category=self.category,
             paid_membership=False,
             colour1='#FF0000',
             colour2= '#00FF00'
         )
 
+        # URLs
         self.latest_society_colors_url = reverse('get_latest_society_colors', args=[self.society.id])
 
+    # PASSES
     def test_society_mainpage_view(self):
-        response = self.client.get(reverse('society_mainpage', args=[self.society.id]))
+        login_success = self.client.login(username='@johndoe', password='Password123')
+        self.assertTrue(login_success)
+        response = self.client.get(reverse('society_mainpage', kwargs={'society_id':self.society.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/society_mainpage.html')
         self.assertIn('society', response.context)
@@ -51,8 +60,10 @@ class SocietyPageViewTestCase(TestCase):
         self.assertIn('is_committee_member', response.context)
         self.assertIn('past_colors', response.context)
 
-
+    # PASSES
     def test_get_latest_society_colors(self):
+        login_success = self.client.login(username='@johndoe', password='Password123')
+        self.assertTrue(login_success)
         response = self.client.get(self.latest_society_colors_url)
         self.assertEqual(response.status_code, 200)
         self.assertJSONEqual(response.content, {

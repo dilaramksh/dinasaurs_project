@@ -10,7 +10,6 @@ class StudentViewTestCase(TestCase):
 
     def setUp(self):
         university = University.objects.create(name="King's College London")
-        self.category = Category.objects.get_or_create(name='sports')
 
         self.user = User.objects.create_user(
             first_name='jane',
@@ -51,7 +50,6 @@ class StudentViewTestCase(TestCase):
             colour1='#FFFFFF',
             colour2='#FFFFFF'
         )
-        self.society.save()
 
         self.role = SocietyRole.objects.create(
             society=self.society,
@@ -63,7 +61,6 @@ class StudentViewTestCase(TestCase):
             society=self.society,
             society_role=self.role
         )
-
 
         self.valid_form_data = {
             'name':'Baseballclub',
@@ -88,7 +85,6 @@ class StudentViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('/help')
 
-
     # PASSES
     def test_society_browser_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
@@ -98,7 +94,6 @@ class StudentViewTestCase(TestCase):
         self.assertTemplateUsed('student/society_browser.html')
         self.assertIn('user', response.context)
         self.assertEqual(response.context['user'].user_type, 'student')
-
 
     # PASSES
     def test_valid_society_creation_request_view(self):
@@ -116,7 +111,6 @@ class StudentViewTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "Your society request has been submitted for approval.")
         self.assertRedirects(response, reverse('dashboard'))
-
 
     # PASSES
     def test_invalid_society_creation_request_view(self):
@@ -137,7 +131,6 @@ class StudentViewTestCase(TestCase):
         self.assertIsInstance(form, SocietyCreationForm)
         self.assertIn('form', response.context)
 
-
     # PASSES
     def test_no_filters_view_societies(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
@@ -147,7 +140,6 @@ class StudentViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'student/view_societies.html')
         self.assertIn('societies', response.context)
 
-
     # PASSES
     def test_search_query_view_societies(self):
         response = self.client.get(reverse('view_societies'), {'search': 'basketballclub'})
@@ -155,7 +147,6 @@ class StudentViewTestCase(TestCase):
         societies = response.context['societies']
         self.assertEqual(len(societies), 1)
         self.assertIn(self.society, societies)
-
 
     # PASSES
     def test_category_filter_view_societies(self):
