@@ -7,7 +7,8 @@ from django.contrib.messages import get_messages
 from social_media.forms import CustomisationForm, PostForm
 from social_media.models import *
 from social_media.models.colour_history import SocietyColorHistory
-from datetime import datetime
+from datetime import date, datetime
+
 from social_media.views import *
 
 
@@ -37,6 +38,7 @@ class SocietyPageViewTestCase(TestCase):
             name='basketballclub',
             founder=self.user,
             society_email='basketballclub@kcl.ac.uk',
+            status='approved',
             description='basketball club',
             category=self.category,
             paid_membership=False,
@@ -48,7 +50,7 @@ class SocietyPageViewTestCase(TestCase):
             name='3 on 3',
             society=self.society,
             description='3 on 3 tournament',
-            date='2025-05-05',
+            date=date(2025, 5, 5),
             location='basketball court'
         )
 
@@ -78,7 +80,7 @@ class SocietyPageViewTestCase(TestCase):
         }
 
         self.invalid_form_data = {
-            'name': None,
+            'name': '',
             'society': 'footballclub',
             'description': 'fifa world cup watch party',
             'date': '2025-09-15',
@@ -124,39 +126,33 @@ class SocietyPageViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'society/event_creation.html')
         self.assertIn('form', response.context)
 
-
-
-
-
-    # FAILING
+    # PASSES
     def test_post_valid_event_creation(self):
         self.client.login(username='@johndoe', password='Password123')
+        session = self.client.session
+        session.pop('active_society_id', None)
+        session.save()
         response = self.client.post(reverse('create_event', args=[self.society.id]), self.form_data)
-        self.assertEqual(Event.objects.count(), 1)
-        event = Event.objects.first()
+        self.assertRedirects(response, reverse('dashboard'))
+        self.assertEqual(Event.objects.count(), 2)
+        event = Event.objects.latest('id')
         self.assertEqual(event.name, 'nba finals')
         self.assertEqual(event.society_id, self.society.id)
         self.assertEqual(event.description, self.form_data['description'])
-        self.assertEqual(event.date, self.form_data['date'])
+        self.assertEqual(event.date, datetime.strptime(self.form_data['date'], "%Y-%m-%d").date())
         self.assertEqual(event.location, self.form_data['location'])
-        self.assertRedirects(response, reverse('society_dashboard', args=[self.society.id]))
         self.assertEqual(response.status_code, 302)
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "Your event has been created.")
 
-    # FAILING
+    # PASSES
     def test_post_invalid_event_creation(self):
         response = self.client.post(reverse('create_event', args=[self.society.id]), self.invalid_form_data)
-        self.assertEqual(Event.objects.count(), 0)
+        self.assertEqual(Event.objects.count(), 1)
         self.assertFormError(response, 'form', 'name', 'This field is required.')
         self.assertTemplateUsed(response, 'society/event_creation.html')
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "There was an error with your submission. Please try again.")
-
-
-
-
-
 
     # PASSES
     def test_terminate_society_view(self):

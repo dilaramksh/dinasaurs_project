@@ -100,7 +100,7 @@ class DashboardViewTestCase(TestCase):
             founder=self.student2,
             society_email='footballclub@kcl.ac.uk',
             description='footballclub',
-            category=category,
+            category=self.category,
             paid_membership=False,
         )
 
