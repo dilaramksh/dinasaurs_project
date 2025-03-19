@@ -150,8 +150,6 @@ class SocietyPageViewTestCase(TestCase):
 
 
 
-
-
     # PASSES
     def test_terminate_society_view(self):
         self.client.login(username='@johndoe', password='Password123')

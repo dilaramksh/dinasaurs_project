@@ -2,6 +2,8 @@ from lib2to3.fixes.fix_input import context
 
 from django.test import TestCase
 from django.urls import reverse
+
+from social_media.forms.society_creation_form import SocietyCreationForm
 from social_media.models import *
 from django.contrib.messages import get_messages
 
@@ -10,7 +12,7 @@ class StudentViewTestCase(TestCase):
 
     def setUp(self):
         university = University.objects.create(name="King's College London")
-        category = Category.objects.get_or_create(name='sports')
+        self.category = Category.objects.get_or_create(name='sports')
 
         self.user = User.objects.create_user(
             first_name='jane',
@@ -23,35 +25,36 @@ class StudentViewTestCase(TestCase):
             username='@janedoe',
             password='Password123'
         )
-        self.user.save()
-        self.login_url = reverse('log_in')
 
-        self.form_data = {
-            'name':'basketballclub',
+        self.category = Category.objects.create(
+            name='sports'
+        )
+
+        self.valid_form_data = {
+            'name':'Basketballclub',
             'society_email':'basketballclub@kcl.ac.uk',
             'description':'basketball club',
-            'category':category
+            'category':self.category.id
         }
-        self.society_creation_url = reverse('society_creation_request')
+
+        self.invalid_form_data = {
+            'name': '',
+            'society_email': 'basketballclub@kcl.ac.uk',
+            'description': 'basketball club',
+            'category': self.category.id
+        }
 
 
-    # TO DO: ADD SOCIETIES FOR USER TESTING Í
-
-    # REDUNDANT? already tested in test_dashboard_views
-    '''def test_student_dashboard_view(self):
+    # PASSES
+    def test_help_page_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
-        # check successful login
         self.assertTrue(login_success)
-        # check successful retrieval
-        response = self.client.get(reverse('dashboard'))
+        response = self.client.get(reverse('help'))
         self.assertEqual(response.status_code, 200)
-        # check correct template
-        self.assertTemplateUsed(response, 'student/student_dashboard.html')
-        # check correct user type
-        self.assertIn('user', response.context)
-        self.assertEqual(response.context['user'].user_type, 'student')'''
+        self.assertTemplateUsed('/help')
 
 
+    # PASSES
     def test_society_browser_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -61,24 +64,44 @@ class StudentViewTestCase(TestCase):
         self.assertIn('user', response.context)
         self.assertEqual(response.context['user'].user_type, 'student')
 
-    # FAILING
-    def test_society_creation_request_view(self):
+
+    # PASSES
+    def test_valid_society_creation_request_view(self):
         self.client.login(username='@janedoe', password='Password123')
-        response = self.client.post(self.society_creation_url, data=self.form_data)
+        url = reverse('society_creation_request')
+        response = self.client.post(url, data=self.valid_form_data)
+        self.assertEqual(Society.objects.count(), 1)
+        created_society = Society.objects.first()
+        self.assertEqual(created_society.name, self.valid_form_data['name'])
+        self.assertEqual(created_society.society_email, self.valid_form_data['society_email'])
+        self.assertEqual(created_society.description, self.valid_form_data['description'])
+        self.assertEqual(created_society.category.name, Category.objects.get(id=self.valid_form_data['category']).name)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[0]), "Your society request has been submitted for approval.")
         self.assertRedirects(response, reverse('dashboard'))
-        societies = Society.objects.filter(name='basketballclub')
-        self.assertTrue(societies.exists())
-        created_society = societies.first()
-        self.assertEqual(created_society.name, self.form_data['name'])
-        self.assertEqual(created_society.society_email, self.form_data['society_email'])
-        self.assertEqual(created_society.description, self.form_data['description'])
-        self.assertEqual(created_society.category.name,self.form_data['category'])
 
-        invalid_form_data = self.form_data.copy()
-        invalid_form_data['name'] = ''
 
-        response_invalid = self.client.post(self.society_creation_url, data=invalid_form_data)
-        self.assertTemplateUsed(response_invalid, 'student/submit_society_request.html')
+    # PASSES
+    def test_invalid_society_creation_request_view(self):
+        self.client.login(username='@janedoe', password='Password123')
+        url = reverse('society_creation_request')
+        response = self.client.post(url, data=self.invalid_form_data)
+        self.assertEqual(Society.objects.count(), 0)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[0]), "There was an error with your request submission. Please try again.")
+
+    # PASSES
+    def test_else_society_creation_form(self):
+        self.client.login(username='@janedoe', password='Password123')
+        url = reverse('society_creation_request')
+        response = self.client.get(reverse('society_creation_request'))
+        self.assertTemplateUsed(response, 'student/submit_society_request.html')
+        form = response.context['form']
+        self.assertIsInstance(form, SocietyCreationForm)
+        self.assertIn('form', response.context)
+
+
+
 
     # FAILING
     def test_view_societies_view(self):
