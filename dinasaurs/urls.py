@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-#from social_media.student_views import student_dashboard
 from social_media.views import *
 #from django.conf import settings
 

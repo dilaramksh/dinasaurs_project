@@ -95,8 +95,6 @@ def create_post(request, society_id):
 
 
 def customise_society_view(request, society_id):
-    print("🔍 customise_society_view was called!")  # Debugging
-
     society = get_object_or_404(Society, pk=society_id)
     past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')
 

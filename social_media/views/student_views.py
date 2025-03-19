@@ -40,16 +40,6 @@ def society_creation_request(request):
     return render(request, 'student/submit_society_request.html', {'form': form})
 
 
-def create_temp_category(request):
-    """View to create a temporary category for testing."""
-    temp_category, created = Category.objects.get_or_create(name="Temporary Category")
-    
-    if created:
-        return HttpResponse(f"Created category: {temp_category.name}")
-    else:
-        return HttpResponse("Category already exists.")
-
-
 def view_societies(request):
     societies = Society.objects.filter(status = "approved").prefetch_related('posts') # Only fetch approved societies and related posts
     categories = Category.objects.all()

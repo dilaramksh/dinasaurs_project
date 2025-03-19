@@ -41,7 +41,6 @@ class SocietyPageViewTestCase(TestCase):
             colour1='#FFFFFF',
             colour2='#FFFFFF'
         )
-        self.society.save()
 
         self.event = Event.objects.create(
             name='3 on 3',
