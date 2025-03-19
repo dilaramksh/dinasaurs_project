@@ -30,8 +30,8 @@ SECRET_KEY = 'django-insecure-048$05y)ar037ha8w&3!(6%@264f+(y4f@zo*v%#bbya(kj5a0
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '*.vercel.app',
-    'hivesociety.vercel.app',
+    #'*.vercel.app',
+    #'hivesociety.vercel.app',
     'localhost',
     '127.0.0.1',
 ]
@@ -107,13 +107,19 @@ WSGI_APPLICATION = 'dinasaurs.wsgi.application'
 load_dotenv()
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join('/tmp', 'db.sqlite3'),
+    }
+    #'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
 
+
+
 # Test Database
-DATABASES['default']['TEST'] = {
-    'NAME': 'test_dinosaurs_project',
-}
+#DATABASES['default']['TEST'] = {
+#    'NAME': 'test_dinosaurs_project',
+#}
 
 """
     'default': {

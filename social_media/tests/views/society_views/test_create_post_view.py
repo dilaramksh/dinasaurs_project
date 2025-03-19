@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.shortcuts import resolve_url
 from social_media.models import Post
 from social_media.forms import PostForm
-'''
+
 class CreatePostViewTest(TestCase):
 
     def setUp(self):
@@ -70,4 +70,3 @@ class CreatePostViewTest(TestCase):
 
         self.assertFormError(response, 'form', 'title', 'This field is required.')
         self.assertFormError(response, 'form', 'content', 'This field is required.')
-'''

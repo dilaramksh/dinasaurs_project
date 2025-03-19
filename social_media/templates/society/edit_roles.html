@@ -1,0 +1,58 @@
+{% extends 'base_content.html' %}
+{% load static %}
+
+{% block title %}Manage Society Roles{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-warning">
+                <div class="card-header bg-warning text-dark text-center">
+                    <h4 class="fw-bold"> Edit Society Roles </h4>
+                    <p class="mb-0 text-muted">Add or Remove Committee Roles</p>
+                </div>
+                <div class="card-body">
+                    
+                    <!-- Display Existing Roles -->
+                    <h5 class="mb-3">Committee Roles in {{ society.name }}</h5>
+                    <ul class="list-group mb-4">
+                        {% for role in committee_roles %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ role.role_name }}
+                                <span class="badge bg-warning text-dark">Committee</span>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item text-muted">No roles added yet.</li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Add Role -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_role_name" class="form-label">New Role</label>
+                            {{ add_form.role_name }}
+                        </div>
+                        <button type="submit" name="add_role" class="btn btn-warning w-100">Add Role</button>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <!-- Delete Role -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_role" class="form-label">Delete Role</label>
+                            {{ delete_form.role }}
+                        </div>
+                        <button type="submit" name="delete_role" class="btn btn-danger w-100">Delete Role</button>
+                    </form>
+
+                </div>
+            </div>
+            <a href="{% url 'manage_committee' society.id %}" class="btn btn-warning mt-3">Back</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
