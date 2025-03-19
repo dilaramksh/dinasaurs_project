@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from social_media.models import Society, Membership, SocietyRole
-'''
+from social_media.models import Society, Membership, SocietyRole, User
+
 class ViewMembersTests(TestCase):
 
     def setUp(self):
@@ -75,4 +75,18 @@ class ViewMembersTests(TestCase):
 
  
         self.assertNotContains(response, "Committee Member")
-'''
+
+    def test_view_members_unauthenticated(self):
+        """Test if unauthenticated users are redirected to login."""
+        self.client.logout()
+        
+        response = self.client.get(self.url)
+        self.assertRedirects(response, f"/login/?next={self.url}")
+
+    def test_search_no_results(self):
+        """Test search when no members match the query."""
+        response = self.client.get(self.url, {'searchInput': 'nonexistentuser'})
+        
+        # Check if the correct message appears for no results
+        self.assertContains(response, "No users found.")
+    

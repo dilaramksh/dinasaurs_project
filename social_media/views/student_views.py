@@ -10,57 +10,16 @@ from django.shortcuts import get_object_or_404
 from social_media.models import Post
 
 
-#to do: add login required
-#to do: add user type required
 
-@user_type_required('student')
-@login_required
-def student_dashboard(request):
-    student = request.user
-
-    user_type = student.user_type
-
-    memberships = Membership.objects.filter(
-        user=student,
-        society_role__society__status="approved"
-    )
-    user_societies = [membership.society_role.society for membership in memberships]
-    print("User Societies:", user_societies) 
-
-    events = Event.objects.filter(society__in=user_societies, society__status="approved")
-    print("Events:", events) 
-
-    if not memberships:
-        print("No memberships found for this user")
-    if not user_societies:
-        print("No societies found for this user")
-    if not events:
-        print("No events found for this user")
-
-    return render(request, 'student/student_dashboard.html', {
-        'student': student,
-        'user_societies': user_societies,
-        'user_events': events,
-        'user_type': user_type
-    })
-
-#Views for pages from dropdown menu in Student Navbar
 #@login_required
 def help_page(request):
     return render(request, "partials/footer/help.html")
 
-#@login_required
-def features(request):
-    return render(request, 'features.html')
 
-#@login_required
-def pricing(request):
-    return render(request, 'pricing.html')
-
-#@user_type_required('student')
 #@login_required
 def society_browser(request):
     return render(request, 'student/society_browser.html')
+
 
 def society_creation_request(request):
     if request.method == 'POST':
@@ -80,18 +39,10 @@ def society_creation_request(request):
 
     return render(request, 'student/submit_society_request.html', {'form': form})
 
-def create_temp_category(request):
-    """View to create a temporary category for testing."""
-    temp_category, created = Category.objects.get_or_create(name="Temporary Category")
-    
-    if created:
-        return HttpResponse(f"Created category: {temp_category.name}")
-    else:
-        return HttpResponse("Category already exists.")
 
 def view_societies(request):
     societies = Society.objects.filter(status = "approved").prefetch_related('posts') # Only fetch approved societies and related posts
-    categories = Category.objects.all() # Get all categories for the filter
+    categories = Category.objects.all()
 
     # Get search query
     search_query = request.GET.get('search', '')
@@ -114,7 +65,7 @@ def view_societies(request):
     })
 
     return render(request, 'student/view_societies.html', {'societies': societies})
-    #return render(request, 'student/view_societies.html')
+
 
 def student_societies(request):
     student = request.user
@@ -149,6 +100,7 @@ def student_societies(request):
         'society_roles': society_roles,
         'committee_members': committee_members,
     })
+
 
 def student_events(request):
     student = request.user

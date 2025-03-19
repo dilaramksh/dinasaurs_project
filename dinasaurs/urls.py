@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-#from social_media.student_views import student_dashboard
 from social_media.views import *
 #from django.conf import settings
 
@@ -29,6 +28,7 @@ from social_media.views.homepage_view import *
 from social_media.views.dashboard_views import *
 #from social_media.views.student_feed_view import *
 from social_media.views.membership_view import join_society
+from social_media.views.membership_view import remove_membership
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -63,6 +63,7 @@ urlpatterns = [
     path('student/events', student_events, name='student_events'),
     path('student/memberships/', view_memberships, name='view_memberships'),
     path('society/<int:society_id>/join/', join_society, name='join_society'),
+    path('remove-membership/<int:membership_id>/', remove_membership, name='remove_membership'),
 
     #society paths
     path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
@@ -74,7 +75,14 @@ urlpatterns = [
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
     path("society/<int:society_id>/customise_society/", customise_society_view, name="customise_society"),
     path('events/<int:event_id>/details/', event_details, name='event_details'),
+    path('society/<int:society_id>/manage_committee', manage_committee, name='manage_committee'),
+    path('society/<int:society_id>/update_committee', update_committee, name='update_committee'),
+    path('society/<int:society_id>/edit_roles/', edit_roles, name='edit_roles'),
+    path('society/<int:society_id>/join/', join_society, name='join_society'),
 
+    #uni-admin paths
+    path("university/dashboard/change_status/<int:society_id>/", change_society_status, name="change_society_status"),
+    path("society/request/<int:society_id>/", society_request_details, name="society_request_details"),
 
     #super-admin paths
     path('super_admin/dashboard/', super_admin_dashboard, name='super_admin_dashboard'),

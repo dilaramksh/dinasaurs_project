@@ -1,0 +1,70 @@
+{% extends 'base_content.html' %}
+{% load static %}
+
+{% block title %}View Society Members{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg border-warning">
+                <div class="card-header text-center bg-warning text-dark">
+                    <h4 class="fw-bold">
+                        🐝 Manage Committee Roles 🐝
+                    </h4>
+                    <p class="mb-0 text-muted"> Assign and Revoke committee roles</p>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'update_committee' society_id %}">
+                        {% csrf_token %}
+                        <table class="table table-bordered border-warning">
+                            <thead class="table-warning">
+                                <tr>
+                                    <th scope="col">Committee Role</th>
+                                    <th scope="col">Currently Assigned</th>
+                                    <th scope="col">Reassign to</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for role in committee_roles %}
+                                <tr>
+                                    <td><strong>{{ role.role_name }}</strong></td>
+                                    <td>
+                                        <ul>
+                                            {% for member in committee_members %}
+                                                {% if member.membership_set.first.society_role.role_name == role.role_name %}
+                                                    <li>{{ member.first_name }} {{ member.last_name }}</li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <select class="form-select" name="role_{{ role.id }}">
+                                            <option selected disabled>-- Select Member --</option>
+                                            {% for student in all_students %}
+                                                <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</option>     
+                                            {% endfor %}
+                                        </select>     
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-warning">Save Changes</button>
+                        </div>
+                    </form>
+
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="{% url 'edit_roles' society_id %}" class="btn btn-warning">Edit Roles</a>
+                    </div>
+
+                </div>
+            </div>
+            <a href="{% url 'view_members' society_id %}" class="btn btn-warning"> Back </a> 
+        </div>
+        
+    </div>
+</div>
+
+{% endblock %}

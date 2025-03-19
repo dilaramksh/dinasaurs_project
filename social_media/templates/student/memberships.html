@@ -1,14 +1,88 @@
 {% extends 'base_content.html' %}
+
 {% block content %}
-    <h1>Your Memberships</h1>
+
+<header class="text-dark text-center py-4 mb-4" style="background: url('https://www.transparenttextures.com/patterns/honeycomb.png') #FFFFCC;">
+    <div class="container">
+        <h1 class="display-4 fw-bold">🐝Memberships🐝</h1>
+    </div>
+</header>
+
+<div class="container mt-4">
     {% if memberships %}
-        <ul>
+        <div class="list-group">
             {% for membership in memberships %}
-                <li>{{ membership.society.name }} - {{ membership.society_role.role_name }}</li>
+                <div class="list-group-item d-flex justify-content-between align-items-center flex-wrap" id="membership-{{ membership.id }}">
+                    <div>
+                        <a href="{% url 'society_mainpage' membership.society.id %}" class="fw-bold text-dark text-decoration-underline">
+                            {{ membership.society.name }}
+                        </a>
+                        </h5>
+                        <small class="text-muted">({{ membership.society_role.role_name }})</small>
+                    </div>
+                    <button 
+                        type="button" 
+                        class="btn btn-warning leave-society-btn" 
+                        data-membership-id="{{ membership.id }}" 
+                        data-society-name="{{ membership.society.name }}">
+                        Leave
+                    </button>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
-        <p>You have no memberships.</p>
+        <div class="alert alert-warning text-center">
+            You have no memberships.
+        </div>
     {% endif %}
+
+    <div id="leave-message" class="alert alert-danger mt-3 text-center" style="display: none;"></div>
+
+    <!-- CSRF Token for JavaScript Fetch Requests -->
+    <form id="csrf-token-form">
+        {% csrf_token %}
+    </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".leave-society-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            if (!confirm("Are you sure you want to leave this society?")) return;
+
+            let membershipId = this.getAttribute("data-membership-id");
+            let societyName = this.getAttribute("data-society-name");
+            let membershipItem = document.getElementById(`membership-${membershipId}`);
+            let messageBox = document.getElementById("leave-message");
+
+            let csrfToken = document.querySelector("#csrf-token-form input[name='csrfmiddlewaretoken']").value;
+
+            fetch(`/remove-membership/${membershipId}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ membership_id: membershipId })  // Ensure a body is sent
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    membershipItem.remove();  // Remove membership from the list
+                    messageBox.textContent = `You have successfully left ${societyName}.`;
+                    messageBox.style.display = "block";
+                    setTimeout(() => {
+                        messageBox.style.opacity = "0";
+                        setTimeout(() => messageBox.style.display = "none", 500);
+                    }, 3000);
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    });
+});
+</script>
 
 {% endblock %}

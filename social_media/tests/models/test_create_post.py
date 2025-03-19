@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from social_media.models import Post, Society
 
 User = get_user_model()
-'''
+
 class PostModelTest(TestCase):
     def setUp(self):
         """Set up test data before each test."""
@@ -38,4 +38,3 @@ class PostModelTest(TestCase):
         self.post.delete()
         with self.assertRaises(Post.DoesNotExist):
             Post.objects.get(id=post_id)
-'''

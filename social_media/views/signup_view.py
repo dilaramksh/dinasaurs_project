@@ -7,6 +7,7 @@ from social_media.forms import SignUpForm
 import os
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from social_media.models import User
 
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
@@ -18,7 +19,10 @@ class SignUpView(LoginProhibitedMixin, FormView):
     redirect_when_logged_in_url = settings.REDIRECT_URL_WHEN_LOGGED_IN
 
     def form_valid(self, form):
+        print(f"Users before: {User.objects.count()}")
         user = form.save()
+        print(f"Users after form.save(): {User.objects.count()}")
+
         uploaded_file = self.request.FILES.get("profile_picture")
 
         if uploaded_file:
@@ -32,6 +36,8 @@ class SignUpView(LoginProhibitedMixin, FormView):
             user.profile_picture = DEFAULT_PROFILE_PICTURE
 
         user.save()
+        print(f"Users after user.save(): {User.objects.count()}")
+
         login(self.request, user)
 
         return super().form_valid(form)
