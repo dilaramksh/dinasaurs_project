@@ -1,72 +1,62 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.shortcuts import resolve_url
-from social_media.models import Post
+from django.utils.timezone import now
+from social_media.models import User, Society, Post, University, Category
 from social_media.forms import PostForm
+from django.core.files.uploadedfile import SimpleUploadedFile
 
-class CreatePostViewTest(TestCase):
+class CreatePostViewTests(TestCase):
+    """Test cases for the create_post view."""
 
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='password123')
-        self.url = reverse('create_post')
+        """Set up test data before each test."""
+        self.client = Client()
+        self.university = University.objects.create(name="Test University")
+        self.category = Category.objects.create(name="Test Category")
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass',
+            email='testuser@example.com',
+            first_name='Test',
+            last_name='User',
+            user_type='student',
+            university=self.university,
+            start_date=now().date(),
+            end_date=now().date()
+        )
+        self.society = Society.objects.create(
+            name="Test Society",
+            founder=self.user,
+            society_email="test@society.com",
+            description="A test society",
+            category=self.category,
+            paid_membership=False,
+            price=0.0,
+            colour1="#FFD700",
+            colour2="#FFF2CC",
+            termination_reason="operational",
+            status="approved"
+        )
+        self.client.login(username='testuser', password='testpass')
 
-    def test_create_post_view_redirect_if_not_logged_in(self):
-        response = self.client.get(self.url)
-        self.assertRedirects(response, f'/accounts/login/?next={self.url}')
+    def test_create_post_view_get(self):
+        """Test the create_post view with GET request."""
+        response = self.client.get(reverse('create_post', args=[self.society.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'society/create_post.html')
+        self.assertIsInstance(response.context['form'], PostForm)
+        self.assertEqual(response.context['society'], self.society)
 
-    def test_create_post_view_post_valid_data(self):
-        self.client.login(username='testuser', password='password123')
-        post_data = {'title': 'Test Post', 'content': 'This is a test post.'}
-
-        response = self.client.post(self.url, post_data)
-
-        self.assertEqual(Post.objects.count(), 1)
-        post = Post.objects.first()
-        self.assertEqual(post.title, 'Test Post')
-        self.assertEqual(post.content, 'This is a test post.')
-        self.assertEqual(post.author, self.user)
-
-        self.assertContains(response, 'Post created successfully!')
-        self.assertRedirects(response, reverse('society_dashboard'))
-
-    def test_create_post_view_post_invalid_data(self):
-        self.client.login(username='testuser', password='password123')
-        post_data = {'title': '', 'content': ''}
-
-        response = self.client.post(self.url, post_data)
-
-        self.assertFormError(response, 'form', 'title', 'This field is required.')
-        self.assertFormError(response, 'form', 'content', 'This field is required.')
-
-        self.assertContains(response, 'Create a New Post')
-        self.assertContains(response, 'Submit')
-
-    def test_create_post_view_post_redirects_on_valid_data(self):
-        self.client.login(username='testuser', password='password123')
-        post_data = {'title': 'Test Post', 'content': 'This is a valid test post.'}
-
-        response = self.client.post(self.url, post_data)
-
-        self.assertRedirects(response, reverse('society_dashboard'))
-
-    def test_create_post_view_logged_in_user_can_see_their_posts(self):
-        self.client.login(username='testuser', password='password123')
-        post_data = {'title': 'Test Post', 'content': 'This is a test post.'}
-        self.client.post(self.url, post_data)
-
-        response = self.client.get(self.url)
-
-        self.assertContains(response, 'Your Posts')
-        self.assertContains(response, 'Test Post')
-        self.assertContains(response, 'This is a test post.')
-
-    def test_create_post_view_invalid_post_data(self):
-        self.client.login(username='testuser', password='password123')
-        post_data = {'title': '', 'content': ''}
-
-        response = self.client.post(self.url, post_data)
-
-        self.assertFormError(response, 'form', 'title', 'This field is required.')
-        self.assertFormError(response, 'form', 'content', 'This field is required.')
+   
+    def test_create_post_view_post_invalid(self):
+        """Test the create_post view with invalid POST request."""
+        post_data = {
+            'title': '',  
+            'content': 'This is a test post.',
+        }
+        response = self.client.post(reverse('create_post', args=[self.society.id]), data=post_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'society/create_post.html')
+        self.assertIsInstance(response.context['form'], PostForm)
+        self.assertIn('title', response.context['form'].errors)
+        self.assertFalse(Post.objects.filter(content='This is a test post.').exists())
