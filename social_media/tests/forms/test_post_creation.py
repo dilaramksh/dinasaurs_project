@@ -31,16 +31,15 @@ class PostFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("content", form.errors)
 
+
     def test_title_length(self):
         """Test if PostForm handles long titles."""
-        long_title = "A" * 300  
+        long_title = "A" * 300 
         form_data = {
             "title": long_title,
             "content": "This is valid content."
         }
         form = PostForm(data=form_data)
-        if "title" in form.fields and form.fields["title"].max_length:
-            self.assertFalse(form.is_valid())
-            self.assertIn("title", form.errors)
-        else:
-            self.assertTrue(form.is_valid())  
+
+        self.assertFalse(form.is_valid())  
+        self.assertIn("title", form.errors)
