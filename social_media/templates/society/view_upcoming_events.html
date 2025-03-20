@@ -32,10 +32,12 @@
                 </div>
                 <div class="modal-body">
                     <h5 id="modalEventName"></h5>
+                    <img id="modalEventImage" src="" alt="Event Image" class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;">
                     <p><strong>Date:</strong> <span id="modalEventDate"></span></p>
                     <p><strong>Location:</strong> <span id="modalEventLocation"></span></p>
                     <p><strong>Description:</strong> <span id="modalEventDescription"></span></p>
                     <h6>Participants:</h6>
+
                     <ul id="modalEventParticipants" class="list-group"></ul>
                 </div>
             </div>
@@ -61,7 +63,8 @@
                             document.getElementById("modalEventDate").textContent = data.date;
                             document.getElementById("modalEventLocation").textContent = data.location;
                             document.getElementById("modalEventDescription").textContent = data.description;
-        
+                            document.getElementById("modalEventImage").src = data.picture;
+                            document.getElementById("modalEventImage").style.display = "block";
                             const participantsList = document.getElementById("modalEventParticipants");
                             participantsList.innerHTML = "";
                             if (data.participants.length > 0) {

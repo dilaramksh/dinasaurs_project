@@ -37,18 +37,21 @@
     </div>
     {% endif %}
 
-    <header>
-        <div class="banner-image text-white text-start d-flex align-items-end p-3" style="background-image: url('{{ society.banner_image|default:'https://placehold.co/1920x400' }}'); height: 275px; background-size: cover; background-position: center;">
-            <h1 class="fw-bold">{{ society.name }}</h1>
-        </div>
-    </header>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="{{ user.gravatar|default:'https://via.placeholder.com/120/000000/FFFFFF?text=User' }}"
-                     class="img-fluid rounded-circle"
-                     alt="Profile Picture">
+                <h1 class="fw-bold">{{ society.name }}</h1>
+                {% if society.logo %}
+                    <img src="{{ society.logo.url }}" 
+                    alt="{{ society.name }}" 
+                    width="100" height="100" 
+                    style="border-radius: 50%; margin: 10px 0;">
+                {% else %}
+                    <img src="{% static 'society_logos/default.png' %}" 
+                    alt="Default Image"
+                    width="100" height="100" 
+                    style="border-radius: 50%; margin: 10px 0;">>
+                {% endif %} 
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -118,15 +121,23 @@
             <h2 class="text-white">Society Posts</h2>
             <div class="container bg-white p-4 rounded">
                 {% if posts %}
-                    <ul class="list-group">
+                    <div class="row">
                         {% for post in posts %}
-                            <li class="list-group-item">
-                                <h5 class="fw-bold">{{ post.title }}</h5>
-                                <p class="text-muted">{{ post.author.get_full_name }} - {{ post.created_at|date:"F j, Y" }}</p>
-                                <p>{{ post.content|truncatewords:30 }}</p>
-                            </li>
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 shadow-sm" style="min-height: 300px;">
+                                    {% if post.picture %}
+                                        <img src="{{ post.picture.url }}" 
+                                            alt="Post Picture" style="height: 300px; object-fit: cover;">
+                                    {% endif %}
+                                    <div class="card-body p-2">
+                                        <h6 class="fw-bold mb-1 text-truncate">{{ post.title }}</h6>
+                                        <p class="text-muted small mb-1">{{ post.author.get_full_name }} - {{ post.created_at|date:"F j, Y" }}</p>
+                                        <p class="small text-truncate" style="max-height: 50px; overflow: hidden;">{{ post.content|truncatewords:20 }}</p>
+                                    </div>
+                                </div>
+                            </div>
                         {% endfor %}
-                    </ul>
+                    </div>
                 {% else %}
                     <p class="text-muted text-center">No posts yet!</p>
                 {% endif %}
@@ -199,6 +210,7 @@
                 </div>
                 <div class="modal-body">
                     <h5 id="modalEventName"></h5>
+                    <img id="modalEventImage" src="" alt="Event Image" class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;">
                     <p><strong>Date:</strong> <span id="modalEventDate"></span></p>
                     <p><strong>Location:</strong> <span id="modalEventLocation"></span></p>
                     <p><strong>Description:</strong> <span id="modalEventDescription"></span></p>
@@ -226,7 +238,8 @@
                             document.getElementById("modalEventDate").textContent = data.date;
                             document.getElementById("modalEventLocation").textContent = data.location;
                             document.getElementById("modalEventDescription").textContent = data.description;
-        
+                            document.getElementById("modalEventImage").src = data.picture;
+                            document.getElementById("modalEventImage").style.display = "block";
                             
                             new bootstrap.Modal(document.getElementById("eventModal")).show();
                         })

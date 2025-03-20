@@ -114,6 +114,10 @@
             </div>
             <div class="modal-body">
                 <ul class="list-unstyled">
+                    <li><img src="{{ user.profile_picture.url }}" 
+                    class="img-fluid rounded-circle mx-auto d-block"
+                    alt="Profile Picture" 
+                    style="width: 200px; height: 200px; object-fit: cover;"></li>
                     <li><strong>Email:</strong> {{ user.email }}</li>
                     <li><strong>Username:</strong> {{ user.username }}</li>
                     <li><strong>University:</strong> {{ user.university }}</li>

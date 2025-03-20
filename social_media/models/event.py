@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
+
+DEFAULT_PICTURE = "events_picture/default.jpg"
 from .society import Society
 
 class Event(models.Model):
@@ -11,6 +13,7 @@ class Event(models.Model):
     description = models.CharField(max_length=1000, blank=False)
     date = models.DateField(blank=False) 
     location = models.CharField(max_length=250, blank=False)
+    picture = models.ImageField(upload_to="events_picture/", blank=True, null=True, default=DEFAULT_PICTURE)
 
     def save(self, *args, **kwargs):
         """Ensure that the event date is in the future and the society is approved before saving."""
@@ -22,6 +25,7 @@ class Event(models.Model):
 
         if self.society.status != "approved":
             raise ValidationError("Cannot create an event for a non-approved society.")
+
 
         super().save(*args, **kwargs)
 

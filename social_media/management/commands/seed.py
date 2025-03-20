@@ -7,6 +7,7 @@ from datetime import date, timedelta
 from faker import Faker
 
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
+DEFAULT_PICTURE = "events_picture/default.jpg"
 
 user_fixtures = [
 
@@ -647,7 +648,12 @@ class Command(BaseCommand):
                 self.stdout.write(f"Category '{category_name}' does not exist.")
                 category = Category.objects.create(name=category_name)
 
-            description = f"A society for students passionate about {name.split('soc')[0]}."
+            if 'soc' in name:
+                description = f"A society for students passionate about {name.split('soc')[0]}."
+            else:
+                if name.lower().endswith('club'):
+                    description = f"A society for students passionate about {name[:-4]}."  
+
             created_society = self.try_create_society(name, category, description)
             if created_society:
                 self.generated_societies.append(created_society)
@@ -676,7 +682,7 @@ class Command(BaseCommand):
             colour1= self.faker.hex_color(),
             colour2= self.faker.hex_color(),
             logo= f'society_logos/{name}.png',
-            status= 'approved',
+            status= "approved",
         )
         society.save()
         return society
@@ -702,7 +708,6 @@ class Command(BaseCommand):
         except Exception as e:
             self.stderr.write(self.style.ERROR(
                 f"Error creating society role {society_role} for society {society}: {str(e)}"))
-
 
     def create_society_role(self, society, society_role):
         if not society:
@@ -809,11 +814,16 @@ class Command(BaseCommand):
 
                 event_description = event_descriptions.get(event_name, "No description available for this event.")
 
+                event_date = self.faker.date_between(start_date=date(2025, 1, 1), end_date=date(2025, 12, 31))
+
+                while event_date <= date.today():
+                    event_date = self.faker.date_between(start_date=date(2025, 1, 1), end_date=date(2025, 12, 31))
+
                 event_data = {
                     'name': event_name,
                     'society': society,
                     'description': event_description,  
-                    'date': self.faker.date_between(start_date=date(2025, 1, 1), end_date=date(2025, 12, 31)),
+                    'date': event_date,
                     'location': random.choice(locations),
                 }
 
@@ -837,6 +847,7 @@ class Command(BaseCommand):
                 description=data['description'],
                 date=data['date'],
                 location=data['location'],
+                picture=DEFAULT_PICTURE,
             )
             self.stdout.write(f"Created event: {event.name}")
         else:
