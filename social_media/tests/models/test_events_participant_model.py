@@ -1,52 +1,84 @@
 from django.test import TestCase
-from django.test import TestCase
-from social_media.models import Category, Society, Event, User, Membership, SocietyRole, EventsParticipant
-from django.core.exceptions import ValidationError
-from django.test import TestCase
-from datetime import date, timedelta
+from django.db.utils import IntegrityError
+from social_media.models import Event, Membership, EventsParticipant, Society, Category, User, University, SocietyRole
+from django.utils.timezone import now
 
-class EventsParticipantModelTestCase(TestCase):
-    """Unit tests for the Events Participant Model"""
-
-    fixtures = [
-        'social_media/tests/fixtures/default_user.json'
-    ]
+class EventsParticipantModelTest(TestCase):
+    """Test cases for the EventsParticipant model."""
 
     def setUp(self):
-        self.category = Category.objects.create(name="cultural")
+        """Set up test data before each test."""
+        self.university = University.objects.create(name="Test University")
+        self.user = User.objects.create_user(
+            username="testuser",
+            password="testpass",
+            email="testuser@example.com",
+            first_name="Test",
+            last_name="User",
+            user_type="student",
+            university=self.university,
+            start_date=now().date(),
+            end_date=now().date()
+        )
+        self.category = Category.objects.create(name="Test Category")
         self.society = Society.objects.create(
-            name="A Soc",
-            society_email="asoc@test.ac.uk",
-            founder = User.objects.get(email="john.doe@test.ac.uk"),
-            description="A desc.",
+            name="Test Society",
+            founder=self.user,
+            society_email="test@society.com",
+            description="A test society",
             category=self.category,
-            paid_membership=True,
-            price=10.0,
-            colour1="#FFF0FF",
-            colour2="#000022",
+            paid_membership=False,
+            price=0.0,
+            colour1="#FFD700",
+            colour2="#FFF2CC",
             termination_reason="operational",
-            status="pending",
+            status="approved"
         )
         self.event = Event.objects.create(
-            name = "Test Event",
-            society =  self.society,
-            description =  "Our test desc!",
-            date =  date.today() + timedelta(days=1),
-            location =  "Here",
+            name="Test Event",
+            society=self.society,
+            description="This is a test event.",
+            date=now().date(),
+            location="Test Location"
+        )
+        # Adjust the fields according to the actual SocietyRole model
+        self.society_role = SocietyRole.objects.create(role_name="Member")
+        self.membership = Membership.objects.create(
+            user=self.user,
+            society=self.society,
+            society_role=self.society_role
+        )
+        self.events_participant = EventsParticipant.objects.create(
+            event=self.event,
+            membership=self.membership
+        )
+
+    def test_events_participant_creation(self):
+        """Test if an EventsParticipant instance is correctly created."""
+        self.assertEqual(self.events_participant.event, self.event)
+        self.assertEqual(self.events_participant.membership, self.membership)
+
+    def test_unique_events_participant_constraint(self):
+        """Test the unique constraint on event and membership fields."""
+        with self.assertRaises(IntegrityError):
+            EventsParticipant.objects.create(
+                event=self.event,
+                membership=self.membership
             )
-        
-        self.user = User.objects.get(email="john.doe@test.ac.uk")
-        self.society_role = SocietyRole.objects.create(society=self.society, role_name="MyRole")
-        self.membership = Membership.objects.create(user=self.user, society_role=self.society_role)
-        
-    def test_create_event_participant(self):
-        events_parti = EventsParticipant(event=self.event, membership=self.membership)
-        events_parti.full_clean()
-        events_parti.save()
-        self.assertEqual(EventsParticipant.objects.count(), 1)
-    
-    def test_unique_event_participant(self):
-        EventsParticipant.objects.create(event=self.event, membership=self.membership)
-        duplicate = EventsParticipant(event=self.event, membership=self.membership)
-        with self.assertRaises(ValidationError):
-            duplicate.full_clean()
+
+    def test_events_participant_str_representation(self):
+        """Test the string representation of an EventsParticipant instance."""
+        expected_str = f"{self.membership.user.username} - {self.event.name}"
+        self.assertEqual(str(self.events_participant), expected_str)
+
+    def test_events_participant_retrieval(self):
+        """Test if the EventsParticipant instance can be retrieved from the database."""
+        retrieved_participant = EventsParticipant.objects.get(id=self.events_participant.id)
+        self.assertEqual(retrieved_participant, self.events_participant)
+
+    def test_events_participant_deletion(self):
+        """Test if an EventsParticipant instance is successfully deleted."""
+        participant_id = self.events_participant.id
+        self.events_participant.delete()
+        with self.assertRaises(EventsParticipant.DoesNotExist):
+            EventsParticipant.objects.get(id=participant_id)

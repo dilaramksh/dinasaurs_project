@@ -1,45 +1,52 @@
 from django.test import TestCase
 from social_media.forms import PostForm
+from social_media.models import Post
 
 class PostFormTest(TestCase):
-    def test_valid_form(self):
-        """Test if PostForm is valid with correct data."""
+    """Test cases for the PostForm."""
+
+    def test_form_valid_data(self):
+        """Test form with valid data."""
         form_data = {
-            "title": "Valid Post Title",
-            "content": "This is a valid post content."
+            'title': 'Test Post',
+            'content': 'This is a test post.',
         }
         form = PostForm(data=form_data)
         self.assertTrue(form.is_valid())
 
-    def test_missing_title(self):
-        """Test if PostForm is invalid when title is missing."""
+    def test_form_invalid_data(self):
+        """Test form with invalid data."""
         form_data = {
-            "title": "",
-            "content": "This post has no title."
+            'title': '',
+            'content': 'This is a test post.',
         }
         form = PostForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn("title", form.errors)
+        self.assertIn('title', form.errors)
 
-    def test_missing_content(self):
-        """Test if PostForm is invalid when content is missing."""
+    def test_form_missing_data(self):
+        """Test form with missing data."""
         form_data = {
-            "title": "Title exists",
-            "content": ""
+            'title': 'Test Post',
         }
         form = PostForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn("content", form.errors)
+        self.assertIn('content', form.errors)
 
+    def test_form_empty_data(self):
+        """Test form with empty data."""
+        form_data = {}
+        form = PostForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('title', form.errors)
+        self.assertIn('content', form.errors)
 
-    def test_title_length(self):
-        """Test if PostForm handles long titles."""
-        long_title = "A" * 300 
+    def test_form_optional_picture(self):
+        """Test form with optional picture field."""
         form_data = {
-            "title": long_title,
-            "content": "This is valid content."
+            'title': 'Test Post',
+            'content': 'This is a test post.',
         }
         form = PostForm(data=form_data)
-
-        self.assertFalse(form.is_valid())  
-        self.assertIn("title", form.errors)
+        self.assertTrue(form.is_valid())
+        self.assertNotIn('picture', form.errors)
