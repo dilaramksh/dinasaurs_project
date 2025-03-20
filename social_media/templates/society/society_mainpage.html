@@ -121,18 +121,20 @@
             <h2 class="text-white">Society Posts</h2>
             <div class="container bg-white p-4 rounded">
                 {% if posts %}
-                    <div class="row">
+                    <div class="row align-items-stretch">
                         {% for post in posts %}
                             <div class="col-md-4 mb-3">
-                                <div class="card h-100 shadow-sm" style="min-height: 300px;">
+                                <div class="card shadow-sm">
                                     {% if post.picture %}
                                         <img src="{{ post.picture.url }}" 
-                                            alt="Post Picture" style="height: 300px; object-fit: cover;">
+                                            alt="Post Picture" class="card-img-top" style="object-fit: contain;">
                                     {% endif %}
                                     <div class="card-body p-2">
-                                        <h6 class="fw-bold mb-1 text-truncate">{{ post.title }}</h6>
-                                        <p class="text-muted small mb-1">{{ post.author.get_full_name }} - {{ post.created_at|date:"F j, Y" }}</p>
-                                        <p class="small text-truncate" style="max-height: 50px; overflow: hidden;">{{ post.content|truncatewords:20 }}</p>
+                                        <h6 class="fw-bold mb-1">{{ post.title }}</h6>
+                                        <p class="text-muted small mb-1">
+                                            {{ post.author.get_full_name }} - {{ post.created_at|date:"F j, Y" }}
+                                        </p>
+                                        <p class="small" style="max-height: none;">{{ post.content|truncatewords:20 }}</p>
                                     </div>
                                 </div>
                             </div>
