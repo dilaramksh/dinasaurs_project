@@ -8,7 +8,8 @@ from datetime import date
 from django.http import JsonResponse
 from social_media.helpers import redirect_to_society_dashboard 
 from django.conf import settings
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 def event_creation(request, society_id):
@@ -48,8 +49,8 @@ def terminate_society(request, society_id):
 
 def view_members(request, society_id):
  
-    memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
-    committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
+    memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role').all()
+    committee_members = [m.user for m in memberships if m.society_role.refresh_from_db() or m.society_role.is_committee_role()]
     
     all_users = list(set(m.user for m in memberships))
 
@@ -161,6 +162,7 @@ def manage_committee(request, society_id):
     return render(request, 'society/manage_committee.html', context)
 
 
+
 def update_committee(request, society_id):
     society = get_object_or_404(Society, id=society_id)
 
@@ -177,6 +179,7 @@ def update_committee(request, society_id):
                 if user_membership:
                     user_membership.society_role = role
                     user_membership.save()
+                    user_membership.refresh_from_db()
 
                     saved_membership = Membership.objects.get(id=user_membership.id)
                     print(f"Saved Membership: User={saved_membership.user}, Role={saved_membership.society_role}, Society={saved_membership.society}")
@@ -184,8 +187,7 @@ def update_committee(request, society_id):
                         request,
                         f"{selected_member.first_name} {selected_member.last_name} has been reassigned as {role.role_name}.",
                     )
-
-        return redirect("view_members", society_id=society.id)
+        return HttpResponseRedirect(reverse("view_members", args=[society.id]))
 
     return redirect("manage_committee", society_id=society.id)
 
