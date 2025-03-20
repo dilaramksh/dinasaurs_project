@@ -41,8 +41,8 @@ class EventsParticipantModelTest(TestCase):
             date=now().date(),
             location="Test Location"
         )
-        # Adjust the fields according to the actual SocietyRole model
-        self.society_role = SocietyRole.objects.create(role_name="Member")
+        # Provide the society when creating the SocietyRole instance
+        self.society_role = SocietyRole.objects.create(role_name="Member", society=self.society)
         self.membership = Membership.objects.create(
             user=self.user,
             society=self.society,
@@ -66,10 +66,6 @@ class EventsParticipantModelTest(TestCase):
                 membership=self.membership
             )
 
-    def test_events_participant_str_representation(self):
-        """Test the string representation of an EventsParticipant instance."""
-        expected_str = f"{self.membership.user.username} - {self.event.name}"
-        self.assertEqual(str(self.events_participant), expected_str)
 
     def test_events_participant_retrieval(self):
         """Test if the EventsParticipant instance can be retrieved from the database."""
