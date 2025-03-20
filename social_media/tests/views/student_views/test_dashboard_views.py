@@ -6,9 +6,9 @@ from social_media.views import *
 class DashboardViewTestCase(TestCase):
 
     def setUp(self):
-        university = University.objects.create(name="King's College London")
-        category_name = 'sports'
-        category, created = Category.objects.get_or_create(name=category_name)
+        university = University.objects.create(name="King's College London", status='approved', domain='kcl.ac.uk')
+        university2 = University.objects.create(name="SOAS", status='other', domain='@soas.ac.uk')
+
 
         self.student = User.objects.create_user(
             first_name='jane',
@@ -45,6 +45,19 @@ class DashboardViewTestCase(TestCase):
             username='@michaeljordan',
             password='Password123'
         )
+
+        self.uni_admin2 = User.objects.create_user(
+            first_name='paul',
+            last_name='poe',
+            email='paulpoe@soas.ac.uk',
+            user_type='uni_admin',
+            university=university2,
+            start_date='2023-09-23',
+            end_date='2026-05-06',
+            username='@paulpoe',
+            password='Password123'
+        )
+
         self.super_admin = User.objects.create_user(
             first_name='lebron',
             last_name='james',
@@ -69,14 +82,16 @@ class DashboardViewTestCase(TestCase):
             password='Password123'
         )
 
-        self.login_url = reverse('log_in')
+        self.category = Category.objects.create(
+            name='sports'
+        )
 
         self.society = Society.objects.create(
             name='basketballclub',
             founder=self.student,
             society_email='basketballclub@kcl.ac.uk',
             description='basketball club',
-            category=category,
+            category=self.category,
             paid_membership=False,
         )
 
@@ -85,7 +100,7 @@ class DashboardViewTestCase(TestCase):
             founder=self.student2,
             society_email='footballclub@kcl.ac.uk',
             description='footballclub',
-            category=category,
+            category=self.category,
             paid_membership=False,
         )
 
@@ -101,7 +116,7 @@ class DashboardViewTestCase(TestCase):
 
         )
 
-        self.login_url = reverse('log_in')
+        # URLs
         self.dashboard_mainpage_url = reverse('dashboard_from_mainpage', args=[self.society.id])
 
 
@@ -125,13 +140,11 @@ class DashboardViewTestCase(TestCase):
         session['active_society_id'] = 1
         session.save()
         response = self.client.get(reverse('dashboard'))
-        print("Session Active Society ID:", self.client.session.get('active_society_id'))
-        print("Response Status Code:", response.status_code)
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('society_dashboard', kwargs={'society_id': 1}))
 
     # PASSES
-    def test_uni_admin_society_dashboard_view(self):
+    def test_approved_uni_admin_society_dashboard_view(self):
         login_success = self.client.login(username='@michaeljordan', password='Password123')
         self.assertTrue(login_success)
         response = self.client.get(reverse('dashboard'))
@@ -139,6 +152,19 @@ class DashboardViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'uni_admin/uni_admin_dashboard.html')
         self.assertIn('societies', response.context)
         self.assertIn('chosen_status', response.context)
+        self.assertEqual(response.context['user'].user_type, 'uni_admin')
+
+    #
+    def test_other_status_uni_admin_dashboard_view(self):
+        login_success = self.client.login(username='@paulpoe', password='Password123')
+        self.assertTrue(login_success)
+        self.assertEqual(self.uni_admin2.university.status, 'other')
+        response = self.client.get(reverse('dashboard'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('societies', response.context)
+        self.assertIn('chosen_status', response.context)
+        self.assertEqual(response.context['chosen_status'], 'pending')
+        self.assertTemplateUsed(response, 'uni_admin/uni_admin_dashboard.html')
         self.assertEqual(response.context['user'].user_type, 'uni_admin')
 
     # PASSES
@@ -175,25 +201,22 @@ class DashboardViewTestCase(TestCase):
     def test_get_student_dashboard_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
-
         session = self.client.session
         session['active_society_id'] = 1
         session.save()
-
         self.assertIn('active_society_id', self.client.session)
         response = self.client.get(reverse('to_student_dashboard'))
-
         self.assertNotIn('active_society_id', self.client.session)
-
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('dashboard'))
 
 
-    # FAILING
-    def test_join_society_success(self):
-        self.client.login(username='@janedoe', password='Password123')
+    # PASSES
+    def test_join_society_non_member(self):
+        login_success = self.client.login(username='@janedoe', password='Password123')
+        self.assertTrue(login_success)
         self.assertFalse(Membership.objects.filter(user=self.student, society=self.society2).exists())
-        url = reverse('dashboard_from_mainpage', args=[self.society.id])
+        url = reverse('dashboard_from_mainpage', args=[self.society2.id])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 200)
         self.assertJSONEqual(str(response.content, encoding='utf8'), {'success': True, 'message': 'Successfully joined society'})
@@ -201,9 +224,10 @@ class DashboardViewTestCase(TestCase):
         self.assertTrue(membership.exists())
 
     # PASSES
-    def test_already_a_member(self):
+    def test_join_society_already_a_member(self):
         self.client.login(username='@janedoe', password='Password123')
         url = reverse('dashboard_from_mainpage', args=[self.society.id])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(str(response.content, encoding='utf8'),{'success': False, 'error': 'You are already a member of this society'})
+

@@ -7,4 +7,4 @@ class Category(models.Model):
     name = models.CharField(max_length=30, choices=[('cultural', 'Cultural'), ('academic_career', 'Academic and Career'), ('faith', 'Faith'), ('political', 'Political'), ('sports', 'Sports'), ('volunteering', 'Volunteering'), ('other', 'Other')])
 
     def __str__(self):
-        return self.name
+        return self.get_name_display()
