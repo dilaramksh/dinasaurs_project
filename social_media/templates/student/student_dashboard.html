@@ -115,6 +115,7 @@
                     </div>
                     <div class="modal-body">
                         <h5 id="modalEventName"></h5>
+                        <img id="modalEventImage" src="" alt="Event Image" class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;">
                         <p><strong>Date:</strong> <span id="modalEventDate"></span></p>
                         <p><strong>Location:</strong> <span id="modalEventLocation"></span></p>
                         <p><strong>Description:</strong> <span id="modalEventDescription"></span></p>
@@ -143,7 +144,9 @@
                                 document.getElementById("modalEventDate").textContent = data.date;
                                 document.getElementById("modalEventLocation").textContent = data.location;
                                 document.getElementById("modalEventDescription").textContent = data.description;
-
+                                document.getElementById("modalEventDescription").textContent = data.description;
+                                document.getElementById("modalEventImage").src = data.picture;
+                                document.getElementById("modalEventImage").style.display = "block";
                                 new bootstrap.Modal(document.getElementById("eventModal")).show();
                             })
                             .catch(error => {

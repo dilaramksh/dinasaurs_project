@@ -46,6 +46,7 @@
                         <thead class="table-warning">
                             <tr>
                                 <th>Name</th>
+                                <th>Logo</th>
                                 <th>Email</th>
                                 <th>Category</th>
                                 <th>Status</th>
@@ -56,6 +57,7 @@
                         {% for soc in societies %}
                             <tr>
                                 <td>{{ soc.name }}</td>
+                                <td><img src="{{ soc.logo.url }}" alt="Logo" style="height: 50px;"></td>
                                 <td>{{ soc.society_email }}</td>
                                 <td>{{ soc.category }}</td>
                                 <td>

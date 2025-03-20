@@ -8,8 +8,11 @@ from django.shortcuts import HttpResponse
 from social_media.models import Category
 from django.shortcuts import get_object_or_404
 from social_media.models import Post
+import os
+from django.core.files.storage import default_storage
 
 
+DEFAULT_SOCIETY_LOGO = "society_logos/default.jpg"
 
 #@login_required
 def help_page(request):
@@ -28,6 +31,21 @@ def society_creation_request(request):
             society = form.save(commit=False)
             society.status = "pending" 
             society.founder = request.user
+
+            uploaded_file = request.FILES.get("logo")
+
+            if uploaded_file:
+                file_extension = os.path.splitext(uploaded_file.name)[1]
+                new_filename = f"society_logos/{society.name}{file_extension}"
+
+                saved_path = default_storage.save(new_filename, uploaded_file)
+                society.logo = saved_path
+
+            else:
+                society.logo = DEFAULT_SOCIETY_LOGO
+
+
+
             society.save()
             messages.success(request, "Your society request has been submitted for approval.")
             return redirect("dashboard") 
