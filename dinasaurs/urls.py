@@ -60,7 +60,6 @@ urlpatterns = [
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
     path('student/societies', student_societies, name='student_societies'),
-    path('student/events', student_events, name='student_events'),
     path('student/memberships/', view_memberships, name='view_memberships'),
     path('society/<int:society_id>/join/', join_society, name='join_society'),
     path('remove-membership/<int:membership_id>/', remove_membership, name='remove_membership'),

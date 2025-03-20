@@ -4,77 +4,79 @@
 {% block title %}Student Societies{% endblock %}
 
 {% block content %}
-    <div class="container" style="min-height: 80vh; display: flex; flex-direction: column; padding-bottom: 60px;">
+    <div class="container" style="min-height: 80vh; display: flex; flex-direction: column; padding-bottom: 40px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 15px;">
+            <!-- Society Logo & Name as Button -->
+            <div style="display: flex; align-items: center; gap: 12px;">
+                {% if selected_society %}
+                    <a href="{% url 'society_mainpage' society_id=selected_society.id %}" 
+                       style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+                        {% if selected_society.logo %}
+                            <img src="{{ selected_society.logo.url }}" alt="Society Logo" 
+                                 style="width: 40px; height: 40px; border-radius: 50%;">
+                        {% endif %}
+                        <h3 style="font-size: 24px; font-weight: bold; color: #007bff; margin: 0; transition: 0.2s ease; padding: 10px;">
+                            {{ selected_society.name }}
+                        </h3>
+                    </a>
+                {% endif %}
+            </div>
+            <div class="dropdown-container" style="width: 280px;">
+                <form method="GET" action="{% url 'student_societies' %}" style="width: 100%; display: flex; gap: 8px; align-items: center;">
+                    <select id="societySelect" name="society_id" class="form-select"
+                            style="width: 100%; font-size: 14px; padding: 8px; border-radius: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">
+                        <option value="" disabled selected style="color: #aaa;">Society</option>
+                        {% for society in user_societies %}
+                            <option value="{{ society.id }}" {% if selected_society and selected_society.id == society.id %} selected {% endif %}>
+                                {{ society.name }}
+                            </option>
+                        {% empty %}
+                            <option value="" disabled>No societies found</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-warning" style="padding: 6px 12px; font-size: 12px; font-weight: bold; border-radius: 6px; background-color: #ff9900; color: white; border: none;">
+                        View
+                    </button>
+                </form>
+            </div>
+        </div>
 
         {% if selected_society %}
-            <!-- Flex container to align title and dropdown inline -->
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px;">
-                <!-- Society Title -->
-                <h3 style="font-size: 28px; font-weight: bold; color: #333;">{{ selected_society.name }}</h3>
-
-                <!-- Dropdown Container -->
-                <div class="dropdown-container" style="width: 300px;">
-                    <form method="GET" action="{% url 'student_societies' %}" style="width: 100%;">
-                        <div class="mb-3">
-                            <label for="societySelect" class="form-label" style="font-size: 14px; font-weight: bold; color: #333;">Select a Society:</label>
-                            <select id="societySelect" name="society_id" class="form-select form-select-sm"
-                                    style="width: 100%; max-width: 350px; font-size: 14px; padding: 10px; border-radius: 5px; border: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); background-color: #f9f9f9;">
-                                <option value="" disabled selected style="color: #aaa;">Select a society</option>
-                                {% for society in user_societies %}
-                                    <option value="{{ society.id }}" {% if selected_society and selected_society.id == society.id %} selected {% endif %}>
-                                        {{ society.name }}
-                                    </option>
-                                {% empty %}
-                                    <option value="" disabled>No societies found</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-warning btn-sm" style="font-weight: bold; border-radius: 5px; padding: 10px 20px; background-color: #ff9900; color: #fff; border: none; transition: background-color 0.3s;">
-                            View
-                        </button>
-                    </form>
-                </div>
+            <div style="margin-top: 20px; padding: 10px; border-top: 1px solid #ddd;">
+                <p style="color: #555; font-size: 15px;"><i>{{ selected_society.description }}</i></p>
+                <p><strong>Email:</strong> <span style="color: #007bff;">{{ selected_society.society_email }}</span></p>
+                <p><strong>Founded by:</strong> {{ selected_society.founder.full_name }}</p>
+                <p><strong>Category:</strong> {{ selected_society.category }}</p>
+                <p><strong>Paid Membership:</strong> {% if selected_society.paid_membership %} Yes - ${{ selected_society.membership_price }} {% else %} No {% endif %}</p>
             </div>
-
-            <!-- Society Details -->
-            <p><i style="color: #777;">{{ selected_society.description }}</i></p>
-            <p><strong>Email:</strong> <span style="color: #007bff;">{{ selected_society.society_email }}</span></p>
-            <p><strong>Founded by:</strong> {{ selected_society.founder.full_name }}</p>
-            <p><strong>Category:</strong> {{ selected_society.category }}</p>
-            <p><strong>Paid Membership:</strong> {% if selected_society.paid_membership %} Yes {% else %} No {% endif %}</p>
-
-            <h4 class="mt-4" style="font-size: 20px; font-weight: bold; color: #333;">Committee Members:</h4>
+            
+            
+            <h4 class="mt-4" style="font-size: 18px; font-weight: bold; color: #333;">Committee Members</h4>
             {% if committee_members %}
-                <div class="row">
+                <div class="row" style="margin-top: 20px;">
                     {% for member in committee_members %}
-                        <div class="col-md-4 col-sm-6 mb-4">
-                            <!-- Card Container -->
-                            <div class="card text-center" style="border-radius: 15px; background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                                <div class="card-body"
-                                     style="background-color: white; padding: 20px; border-radius: 10px; color: #333; font-size: 16px; text-align: center;">
-                                    <!-- Society Role Name -->
-                                    <h5 class="card-title" style="font-size: 18px; font-weight: bold; margin-bottom: 15px; color: black;">
-                                        {{ member.membership_set.first.society_role.role_name}}
+                        <div class="col-md-4 col-sm-6 mb-3">
+                            <div class="card text-center" style="border-radius: 12px; background-color: white; padding: 15px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease;">
+                                <div class="card-body" style="background-color: white; padding: 15px; border-radius: 10px; color: #333; font-size: 15px; text-align: center;">
+                                    <h5 class="card-title" style="font-size: 16px; font-weight: bold; margin-bottom: 10px; color: black;">
+                                        {{ member.society_role.role_name }}
                                     </h5>
-                                    <!-- Profile Picture -->
                                     {% if member.profile_picture %}
-                                        <img src="{{ member.profile_picture.url }}" alt="Profile Picture" width="50" height="50" style="border-radius: 50%; margin: 10px 0;">
+                                        <img src="{{ member.profile_picture.url }}" alt="Profile Picture" width="45" height="45" style="border-radius: 50%; margin: 8px 0;">
                                     {% else %}
-                                        <img src="https://hive-society.s3.amazonaws.com/profile_pictures/default-user.jpg" alt="Profile Picture" width="50" height="50" style="border-radius: 50%; margin: 10px 0;">
+                                        <img src="https://hive-society.s3.amazonaws.com/profile_pictures/default-user.jpg" alt="Profile Picture" width="45" height="45" style="border-radius: 50%; margin: 8px 0;">
                                     {% endif %}
-
-                                    <!-- Member Full Name -->
-                                    <p class="card-text" style="font-size: 16px; color: #333; font-weight: bold;">{{ member.get_full_name }}</p>
+                                    <p class="card-text" style="font-size: 14px; color: #333; font-weight: bold;">{{ member.user.full_name }}</p>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
             {% else %}
-                <p class="text-white">No committee members found.</p>
+                <p class="text-muted">No committee members found.</p>
             {% endif %}
         {% else %}
-            <p class="text-muted text-center">Please select a society to view details.</p>
+            <p class="text-muted text-center" style="margin-top: 20px;">Please select a society to view details.</p>
         {% endif %}
     </div>
 {% endblock %}
