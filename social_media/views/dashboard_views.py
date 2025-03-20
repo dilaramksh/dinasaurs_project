@@ -48,6 +48,7 @@ def dashboard(request):
             'user_events': user_events,
             'society_roles': society_roles,
             'committee_societies': committee_societies,
+            'memberships':memberships
         }
 
         template = "student/student_dashboard.html"

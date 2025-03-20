@@ -1,4 +1,3 @@
-'''
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from social_media.forms import EventCreationForm
@@ -92,5 +91,3 @@ class EventCreationFormTest(TestCase):
         expected_fields = ['name', 'society', 'description', 'date', 'location']
         for field in expected_fields:
             self.assertIn(field, form.fields)
-
-'''
