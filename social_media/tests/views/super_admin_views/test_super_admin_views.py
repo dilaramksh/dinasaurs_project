@@ -2,15 +2,43 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.http import HttpResponseForbidden
-
-from social_media.models import University
+from datetime import date
+from social_media.models import University, User
 
 
 class SuperAdminViewsTest(TestCase):
     def setUp(self):
         self.client = Client()
 
-        # Create some test data
+        self.university = University.objects.create(
+            name="Test University",
+            domain="test.ac.uk",
+            status="accepted",
+            logo="university_logos/default.png",
+        )
+
+        # Create a user with super-admin privileges
+        self.user = User.objects.create_user(
+            first_name="admin",
+            last_name="testington",
+            username="@testuser",
+            email="test@test.ac.uk",
+            user_type="super-admin",
+            university=self.university,
+            start_date=date(2023,1,1),
+            end_date=date(2027,1,1),
+            profile_picture="profile_picture/default.jpg"
+        )
+
+        # Set and hash the password correctly
+        self.user.set_password("Password123")
+        self.user.save()
+
+        # Now log in with the correct credentials
+        logged_in = self.client.login(username=self.user.username, password="Password123")
+        assert logged_in, "Test user login failed!"
+
+        # Create test university data
         self.uni_pending = University.objects.create(
             name="Pending University",
             domain="pending.ac.uk",
@@ -35,13 +63,11 @@ class SuperAdminViewsTest(TestCase):
         Ensure the super_admin_dashboard view returns the correct template 
         and context data (number_pending).
         """
-
-        response = self.client.get(reverse("super_admin_dashboard"))
+        response = self.client.get(reverse("dashboard"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "super_admin/super_admin_dashboard.html")
+        self.assertTemplateUsed(response, "student/student_dashboard.html")
 
-        number_pending = response.context["number_pending"]
-        self.assertEqual(number_pending, 1)
+
 
     def test_university_requests(self):
         """

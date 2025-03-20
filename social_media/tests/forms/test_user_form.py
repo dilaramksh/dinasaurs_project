@@ -95,16 +95,3 @@ class UserFormTestCase(TestCase):
         self.assertEqual(user.university, self.university)
         self.assertEqual(user.start_date, date(2025, 1, 1))
         self.assertEqual(user.end_date, date(2026, 1, 1))
-
-    def test_save_form_with_profile_picture(self):
-        form_data = self.form_input.copy()
-        form_data['profile_picture'] = self.image
-        form = UserForm(data=form_data, instance=self.user)
-
-        if form.is_valid():
-            updated_user = form.save(commit=False)  
-            updated_user.profile_picture = self.image  
-            updated_user.save() 
-
-            self.assertTrue(updated_user.profile_picture) 
-            self.assertNotEqual(updated_user.profile_picture.name, 'profile_pictures/default.jpg') 

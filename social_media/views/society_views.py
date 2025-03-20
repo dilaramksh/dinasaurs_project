@@ -7,6 +7,7 @@ from django.utils.timezone import now
 from datetime import date
 from django.http import JsonResponse
 from social_media.helpers import redirect_to_society_dashboard 
+from django.conf import settings
 
 
 
@@ -18,6 +19,11 @@ def event_creation(request, society_id):
         if form.is_valid():
             event = form.save(commit=False)
             event.society = society
+
+            uploaded_file = request.FILES.get("picture")
+            if uploaded_file:
+                event.picture = uploaded_file
+
             event.save()
             messages.success(request, "Your event has been created.")
             return redirect_to_society_dashboard(request)
@@ -65,11 +71,18 @@ def event_details(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     participants = EventsParticipant.objects.filter(event=event).select_related("membership")
 
+    if event.picture:
+        image_url = request.build_absolute_uri(event.picture.url)
+    else:
+        image_url = request.build_absolute_uri(f"{settings.MEDIA_URL}post_pictures/default.jpg")
+
+
     data = {
         "name": event.name,
         "date": event.date.strftime("%Y-%m-%d"),
         "location": event.location,
         "description": event.description,
+        "picture": image_url,
         "participants": [p.membership.user.username for p in participants],
     }
     
@@ -83,6 +96,11 @@ def create_post(request, society_id):
             post = form.save(commit=False)  
             post.author = request.user
             post.society = society  
+
+            uploaded_file = request.FILES.get("picture")
+            if uploaded_file:
+                post.picture = uploaded_file
+
             post.save()
             messages.success(request, "Post created successfully!")  
             return redirect('society_mainpage', society_id=society.id) 

@@ -4,12 +4,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from social_media.forms.society_creation_form import SocietyCreationForm
-from django.shortcuts import HttpResponse
 from social_media.models import Category
 from django.shortcuts import get_object_or_404
-from social_media.models import Post
+import os
+from django.core.files.storage import default_storage
 
 
+DEFAULT_SOCIETY_LOGO = "society_logos/default.jpg"
 
 #@login_required
 def help_page(request):
@@ -28,6 +29,21 @@ def society_creation_request(request):
             society = form.save(commit=False)
             society.status = "pending" 
             society.founder = request.user
+
+            uploaded_file = request.FILES.get("logo")
+
+            if uploaded_file:
+                file_extension = os.path.splitext(uploaded_file.name)[1]
+                new_filename = f"society_logos/{society.name}{file_extension}"
+
+                saved_path = default_storage.save(new_filename, uploaded_file)
+                society.logo = saved_path
+
+            else:
+                society.logo = DEFAULT_SOCIETY_LOGO
+
+
+
             society.save()
             messages.success(request, "Your society request has been submitted for approval.")
             return redirect("dashboard") 
@@ -41,7 +57,9 @@ def society_creation_request(request):
 
 
 def view_societies(request):
-    societies = Society.objects.filter(status = "approved").prefetch_related('posts') # Only fetch approved societies and related posts
+    student = request.user
+    print(student.university)
+    societies = Society.objects.filter(founder__university=student.university, status="approved").prefetch_related('posts')    
     categories = Category.objects.all()
 
     # Get search query
@@ -64,7 +82,6 @@ def view_societies(request):
         'society_posts': society_posts
     })
 
-    return render(request, 'student/view_societies.html', {'societies': societies})
 
 
 def student_societies(request):

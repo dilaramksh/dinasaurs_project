@@ -7,6 +7,7 @@ from datetime import date, timedelta
 from faker import Faker
 
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
+DEFAULT_PICTURE = "events_picture/default.jpg"
 
 user_fixtures = [
 
@@ -677,11 +678,11 @@ class Command(BaseCommand):
             description= description,
             category= category,
             paid_membership = random.choice([True, False]),
-            price= '5.0' if random.choice([True, False]) else '0.0',
+            price= 5.0 if random.choice([True, False]) else 0.0,
             colour1= self.faker.hex_color(),
             colour2= self.faker.hex_color(),
             logo= f'society_logos/{name}.png',
-            status= 'approved',
+            status= "approved",
         )
         society.save()
         return society
@@ -721,9 +722,6 @@ class Command(BaseCommand):
 
 
     # Seed Memberships-- assigns one user to each role of the society to form entire committees + members
-    """
-    Adjusted seeder, accidental randomization of membership - em:)
-    """
     def create_memberships(self):
         self.stdout.write('Creating memberships...')
         self.generate_membership_fixtures()
@@ -846,6 +844,7 @@ class Command(BaseCommand):
                 description=data['description'],
                 date=data['date'],
                 location=data['location'],
+                picture=DEFAULT_PICTURE,
             )
             self.stdout.write(f"Created event: {event.name}")
         else:
