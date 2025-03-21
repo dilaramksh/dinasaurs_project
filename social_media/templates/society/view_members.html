@@ -22,7 +22,11 @@
                         <div class="d-flex justify-content-center flex-wrap gap-3">
                             {% for member in committee_members %}
                             <div class="text-center border border-warning p-3 rounded shadow-sm" style="width: 200px;">
-                                <strong class="text-warning">{{ member.membership_set.first.society_role.role_name }}</strong><br>
+                                {% for membership in member.membership_set.all %}
+                                    {% if membership.society_id == society_id and membership.society_role.is_committee_role %}
+                                        <strong class="text-warning">{{ membership.society_role.role_name }}</strong><br>
+                                    {% endif %}
+                                {% endfor %}
                                 {% if member.profile_picture %}
                                     <img src="{{ member.profile_picture.url }}" 
                                     alt="Profile Picture" width="50" height="50" 
