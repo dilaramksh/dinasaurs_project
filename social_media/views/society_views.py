@@ -197,6 +197,9 @@ def edit_roles(request, society_id):
 
     committee_roles = [role for role in roles if role.is_committee_role()]
 
+    add_form = SocietyRoleForm()
+    delete_form = DeleteRoleForm(society=society)
+
     if request.method == "POST":
         if 'add_role' in request.POST:
             add_form = SocietyRoleForm(request.POST)
