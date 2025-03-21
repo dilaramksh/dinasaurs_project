@@ -30,9 +30,10 @@ SECRET_KEY = 'django-insecure-048$05y)ar037ha8w&3!(6%@264f+(y4f@zo*v%#bbya(kj5a0
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '*.vercel.app',
-    'hivesociety.vercel.app',
+    #'*.vercel.app',
+    #'hivesociety.vercel.app',
     'localhost',
+    '127.0.0.1',
 ]
 
 
@@ -52,12 +53,11 @@ INSTALLED_APPS = [
 ]
 
 
-AWS_ACCESS_KEY_ID = 'AKIA5CBGTMB6UGUEZ5BU'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = 'society-hive'
 AWS_S3_REGION_NAME = 'eu-west-2' 
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-#DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
@@ -106,13 +106,19 @@ WSGI_APPLICATION = 'dinasaurs.wsgi.application'
 load_dotenv()
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join('/tmp', 'db.sqlite3'),
+    }
+    #'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
 
+
+
 # Test Database
-DATABASES['default']['TEST'] = {
-    'NAME': 'test_dinosaurs_project',
-}
+#DATABASES['default']['TEST'] = {
+#    'NAME': 'test_dinosaurs_project',
+#}
 
 """
     'default': {

@@ -9,29 +9,26 @@
         {% endif %}
         <span class="fw-bold ms-2">{{ user.username }}</span>
     </div>
-
-    {% if user.user_type == 'student' %}
-        <button type="button" class="btn border-0 dropdown-toggle dropdown-toggle-split" id="societyDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="visually-hidden">Society Dropdown</span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end custom-submenu" id="societyDropdown">
-            {% for membership in user.membership_set.all %}
-                {% if membership.society.status == "approved" and membership.society_role.is_committee_role %}
-                    <li>
-                        <a class="dropdown-item {% if request.session.active_society_id == membership.society.id %}active{% endif %}"
-                        href="{% url 'society_dashboard' society_id=membership.society.id %}">
-                            {{ membership.society.name }} 
-                        </a>
-                    </li>
-                {% endif %}
-            {% endfor %}
-            {% if request.session.active_society_id %}
+    <button type="button" class="btn border-0 dropdown-toggle dropdown-toggle-split" id="societyDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="visually-hidden">Society Dropdown</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end custom-submenu" id="societyDropdown">
+        {% for membership in user.membership_set.all %}
+            {% if membership.society.status == "approved" and membership.society_role.is_committee_role %}
                 <li>
-                    <a class="dropdown-item dashboard-link" href="{% url 'to_student_dashboard' %}">{{ user.username }}</a>
+                    <a class="dropdown-item {% if request.session.active_society_id == membership.society.id %}active{% endif %}"
+                     href="{% url 'society_dashboard' society_id=membership.society.id %}">
+                        {{ membership.society.name }} 
+                    </a>
                 </li>
             {% endif %}
-        </ul>
-    {% endif %}
+        {% endfor %}
+        {% if request.session.active_society_id %}
+            <li>
+                <a class="dropdown-item dashboard-link" href="{% url 'to_student_dashboard' %}">{{ user.username }}</a>
+            </li>
+        {% endif %}
+    </ul>
 </div>
 
 
@@ -39,9 +36,10 @@
 
 <li><a href="{% url 'profile' %}" class="dropdown-item">Profile</a></li>
 <li><a href="{% url 'password' %}" class="dropdown-item">Change Password</a></li>
-{% if user.user_type == 'student' %}
-    <li><a href="{% url 'view_memberships' %}" class="dropdown-item">Manage Memberships</a></li>
-{% endif %}
+
+
+<li><a href="{% url 'view_memberships' %}" class="dropdown-item">Manage Memberships</a></li>
+
 
 
 <li class="dropdown-divider"></li>

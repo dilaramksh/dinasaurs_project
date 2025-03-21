@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-#from social_media.student_views import student_dashboard
 from social_media.views import *
 #from django.conf import settings
 
@@ -52,7 +51,6 @@ urlpatterns = [
     path('homepage/register_your_university', register_your_university, name='register_your_university'),
 
     #footer path 
-    path('stay_connected/', stay_connected, name='stay_connected'),
     path('contact_us/', contact_us, name='contact_us'),
     path('partials/footer/privacy_policy/', privacy_policy, name='privacy_policy'),
 
@@ -61,7 +59,6 @@ urlpatterns = [
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
     path('student/societies', student_societies, name='student_societies'),
-    path('student/events', student_events, name='student_events'),
     path('student/memberships/', view_memberships, name='view_memberships'),
     path('society/<int:society_id>/join/', join_society, name='join_society'),
     path('remove-membership/<int:membership_id>/', remove_membership, name='remove_membership'),
@@ -74,9 +71,16 @@ urlpatterns = [
     path('society/<int:society_id>/view_members/', view_members, name='view_members'),
     path('society/<int:society_id>/view_upcoming_events/', view_upcoming_events, name='upcoming_events'),
     path('society/<int:society_id>/mainpage/', society_mainpage, name='society_mainpage'),
-    path("society/<int:society_id>/customise_society/", customise_society_view, name="customise_society"),
+    path("society/<int:society_id>/customise/", customise_society_view, name="customise_society"),
     path('events/<int:event_id>/details/', event_details, name='event_details'),
+    path('society/<int:society_id>/manage_committee', manage_committee, name='manage_committee'),
+    path('society/<int:society_id>/update_committee', update_committee, name='update_committee'),
+    path('society/<int:society_id>/edit_roles/', edit_roles, name='edit_roles'),
+    path('society/<int:society_id>/join/', join_society, name='join_society'),
 
+    #uni-admin paths
+    path("university/dashboard/change_status/<int:society_id>/", change_society_status, name="change_society_status"),
+    path("society/request/<int:society_id>/", society_request_details, name="society_request_details"),
 
     #super-admin paths
     path('super_admin/dashboard/', super_admin_dashboard, name='super_admin_dashboard'),

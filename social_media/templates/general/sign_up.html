@@ -14,8 +14,6 @@
       <form action="{% url 'sign_up' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
-        
-    
         {% include 'partials/bootstrap_form.html' with form=form submit_text="Sign up"%}
     </form>
   </div>

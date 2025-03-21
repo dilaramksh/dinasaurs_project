@@ -13,7 +13,7 @@
                     <h4>Request a New Society</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% include 'partials/bootstrap_form.html' %}
                     </form>
