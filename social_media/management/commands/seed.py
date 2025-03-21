@@ -50,13 +50,13 @@ super_admin_fixture = [
 categories = [ 'cultural', 'academic_career', 'faith', 'political', 'sports', 'volunteering', 'other']
 
 society_names = [
-    'computingsoc', 'artsoc', 'gamesoc', 'musicsoc', 'filmsoc',
+    'computingsoc', 'artsoc', 'gamessoc', 'musicsoc', 'filmsoc',
     'basketballsoc', 'footballsoc', 'tennissoc', 'debatesoc',
-    'roboticsoc', 'politicssoc', 'volunteersoc', 'literarysoc',
-    'photographysoc', 'dancingsoc', 'codingclub', 'chesssoc',
-    'environmentalsoc', 'animessoc', 'theatresoc', 'boardgamesoc',
+    'roboticssoc', 'politicssoc', 'volunteeringsoc', 'literarysoc',
+    'photographysoc', 'dancesoc', 'codingclub', 'chesssoc',
+    'environmentalsoc', 'animessoc', 'theatresoc', 'boardgamessoc',
     'musicproductionclub', 'fashionclub', 'writingclub', 'gamingsoc',
-    'historicalsoc', 'scienceclub', 'socialimpactclub', 'mathsoc',
+    'historicalsoc', 'scienceclub', 'socialimpactclub', 'mathssoc',
     'engineeringclub', 'geographysoc', 'languageclub', 'psychologysoc',
     'medicalsoc', 'lawclub', 'biologyclub', 'chemistrysoc', 'physicsclub',
     'artclub', 'bookclubsoc', 'yogasoc', 'travelclubsoc', 'cyclingclub',
@@ -68,25 +68,25 @@ society_names = [
 society_category_mapping = {
     'computingsoc': 'academic_career',
     'artsoc': 'cultural',
-    'gamesoc': 'sports',
+    'gamessoc': 'sports',
     'musicsoc': 'cultural',
     'filmsoc': 'cultural',
     'basketballsoc': 'sports',
     'footballsoc': 'sports',
     'tennissoc': 'sports',
     'debatesoc': 'political',
-    'roboticsoc': 'academic_career',
+    'roboticssoc': 'academic_career',
     'politicssoc': 'political',
-    'volunteersoc': 'volunteering',
+    'volunteeringsoc': 'volunteering',
     'literarysoc': 'cultural',
     'photographysoc': 'cultural',
-    'dancingsoc': 'cultural',
+    'dancesoc': 'cultural',
     'codingclub': 'academic_career',
     'chesssoc': 'sports',
     'environmentalsoc': 'volunteering',
     'animessoc': 'cultural',
     'theatresoc': 'cultural',
-    'boardgamesoc': 'sports',
+    'boardgamessoc': 'sports',
     'musicproductionclub': 'cultural',
     'fashionclub': 'cultural',
     'writingclub': 'cultural',
@@ -94,7 +94,7 @@ society_category_mapping = {
     'historicalsoc': 'cultural',
     'scienceclub': 'academic_career',
     'socialimpactclub': 'volunteering',
-    'mathsoc': 'academic_career',
+    'mathssoc': 'academic_career',
     'engineeringclub': 'academic_career',
     'geographysoc': 'academic_career',
     'languageclub': 'cultural',
@@ -122,7 +122,7 @@ society_category_mapping = {
     'dataanalyticsclub': 'academic_career'
 }
 
-society_role_names = ['President', 'Vice president', 'Treasurer', 'Events manager', 'Secretary', 'Member']
+society_role_names = ['President', 'Vice President', 'Treasurer', 'Events Manager', 'Secretary', 'Member']
 
 society_event_mapping = {
     'computingsoc': ["Hackathon", "AI Workshop", "Coding Challenge"],
@@ -649,10 +649,10 @@ class Command(BaseCommand):
                 category = Category.objects.create(name=category_name)
 
             if 'soc' in name:
-                description = f"A society for students passionate about {name.split('soc')[0]}."
+                description = f"A society for students passionate about {name.split('soc')[0]}"
             else:
                 if name.lower().endswith('club'):
-                    description = f"A society for students passionate about {name[:-4]}."  
+                    description = f"A society for students passionate about {name[:-4]}"
 
             created_society = self.try_create_society(name, category, description)
             if created_society:

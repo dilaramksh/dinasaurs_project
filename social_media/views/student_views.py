@@ -103,7 +103,6 @@ def student_societies(request):
             if membership.is_committee_member()
         ]
 
-
     else:
         society_roles = SocietyRole.objects.filter(society__in=user_societies)
 
