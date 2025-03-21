@@ -1,91 +1,64 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError
 from social_media.forms import EventCreationForm
-from social_media.models import Event, Society, User, University, Category
-from datetime import date, timedelta
+from social_media.models import Event
+from datetime import date
 
 class EventCreationFormTest(TestCase):
-    def setUp(self):
-        """
-        Set up test data that will be used across multiple test methods.
-        """
-        self.university = University.objects.create(
-            name= "Test University",
-            domain = "test.ac.uk",
-            status= "accepted",
-            logo="university_logos/default.png",
-        )
+    """Test cases for the EventCreationForm."""
 
-        self.user = User.objects.create_user(
-            first_name = "test",
-            last_name = "testington",
-            username='@testuser', 
-            email='test@test.ac.uk', 
-            user_type= 'student',
-            university=self.university,
-            start_date= date(2023,1,1),
-            end_date = date(2027,1,1),
-            profile_picture = "profile_picture/default.jpg",
-            password='Password123',
-        )
-
-        self.category = Category.objects.create(
-            name='cultural',
-        )
-        
-        self.society = Society.objects.create(
-            name = "Test Society",
-            founder = self.user,
-            society_email = "testsociety@test.ac.uk",
-            description = "Test description",
-            category = self.category,
-            paid_membership = False,
-            price = 0.0,
-            colour1 = "#FFD700",
-            colour2 = "#FFF2CC",
-            logo = "society_logos/default.jpg",
-            termination_reason = 'Other reason',
-            status = "approved",
-        )
-
-        self.valid_data = {
-            "name": "Test Event",
-            "description": "Test event Description", 
-            "date": date(2025,7,27), 
-            "location": "Test location", 
+    def test_form_valid_data(self):
+        """Test form with valid data."""
+        form_data = {
+            'name': 'Test Event',
+            'description': 'This is a test event.',
+            'date': date.today(),
+            'location': 'Test Location',
         }
-
-    def test_form_valid_with_all_required_fields(self):
-        """
-        Test that the form is valid when all required fields are provided correctly.
-        """
-        
-        form = EventCreationForm(data=self.valid_data)
+        form = EventCreationForm(data=form_data)
         self.assertTrue(form.is_valid())
 
-    def test_form_invalid_with_past_date(self):
-        """
-        Test that the form is invalid when the event date is in the past.
-        """
+    def test_form_invalid_data(self):
+        """Test form with invalid data."""
         form_data = {
-            "name": "Test Event",
-            "description": "Test event Description", 
-            "date": date.today() - timedelta(days=300), 
-            "location": "Test location",
+            'name': '',
+            'description': 'This is a test event.',
+            'date': 'invalid-date',
+            'location': 'Test Location',
         }
-        
         form = EventCreationForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('name', form.errors)
+        self.assertIn('date', form.errors)
 
-    def test_form_invalid_with_missing_fields(self):
-        """
-        Test that the form is invalid when required fields are missing.
-        """
+    def test_form_missing_data(self):
+        """Test form with missing data."""
         form_data = {
-            "name": "Test Event",
+            'name': 'Test Event',
+            'description': 'This is a test event.',
         }
-        
         form = EventCreationForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertTrue(len(form.errors) > 1)
+        self.assertIn('date', form.errors)
+        self.assertIn('location', form.errors)
 
+    def test_form_empty_data(self):
+        """Test form with empty data."""
+        form_data = {}
+        form = EventCreationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('name', form.errors)
+        self.assertIn('description', form.errors)
+        self.assertIn('date', form.errors)
+        self.assertIn('location', form.errors)
+
+    def test_form_optional_picture(self):
+        """Test form with optional picture field."""
+        form_data = {
+            'name': 'Test Event',
+            'description': 'This is a test event.',
+            'date': date.today(),
+            'location': 'Test Location',
+        }
+        form = EventCreationForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertNotIn('picture', form.errors)

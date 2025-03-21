@@ -31,6 +31,15 @@ class LogInFormTestCase(TestCase):
         self.form_input['password'] = ''
         form = LogInForm(data=self.form_input)
         self.assertFalse(form.is_valid())
+    
+    def test_user_does_not_exist(self):
+        form_input = {
+            "email_or_username": "nonexistentuser",
+            "password": "testpassword"
+        }
+        form = LogInForm(data=form_input)
+        self.assertTrue(form.is_valid())
+        self.assertIsNone(form.get_user())
 
     def test_form_accepts_incorrect_username_or_email(self):
         self.form_input['email_or_username'] = 'ja'
