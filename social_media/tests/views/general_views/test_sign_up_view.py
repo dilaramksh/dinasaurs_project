@@ -1,81 +1,207 @@
-# """Tests of the sign up view."""
-# from django.contrib.auth.hashers import check_password
-# from django.test import TestCase
-# from django.urls import reverse
-# from tutorials.forms import SignUpForm
-# from tutorials.models import User
-# from tutorials.tests.helpers import LogInTester
+from django.contrib.auth.hashers import check_password
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase
+from django.urls import reverse
+from social_media.forms import SignUpForm
+from social_media.models import User, University
+from social_media.tests.helpers import LogInTester
+from django.conf import settings
+from unittest.mock import patch
+from django.core.files.storage import default_storage
+import os
 
-# class SignUpViewTestCase(TestCase, LogInTester):
-#     """Tests of the sign up view."""
+class SignUpViewTestCase(TestCase, LogInTester):
+    """Tests of the sign up view."""
 
-#     fixtures = ['tutorials/tests/fixtures/default_user.json']
+    def setUp(self):
+        self.url = reverse('sign_up')
+        self.university = University.objects.create(name="Test University", domain="test.ac.uk", status="approved")
+        
+        self.form_input = {
+            'first_name': 'Jane',
+            'last_name': 'Doe',
+            'username': '@janedoe',
+            'email': 'janedoe@test.ac.uk',
+            'university': self.university.id,
+            'start_date': '2021-09-01',
+            'end_date': '2025-06-30',
+            'new_password': 'Password123',
+            'password_confirmation': 'Password123',
+        }
+    
+        self.user = User.objects.create_user(
+            username='@johndoe',
+            email='johndoe@test.ac.uk',
+            university=self.university,
+            start_date='2023-09-15',
+            end_date='2026-06-15',
+            password='Password123',
+        )
+        
 
-#     def setUp(self):
-#         self.url = reverse('sign_up')
-#         self.form_input = {
-#             'first_name': 'Jane',
-#             'last_name': 'Doe',
-#             'username': '@janedoe',
-#             'email': 'janedoe@example.org',
-#             'new_password': 'Password123',
-#             'password_confirmation': 'Password123'
-#         }
-#         self.user = User.objects.get(username='@johndoe')
+    def test_sign_up_url(self):
+        self.assertEqual(self.url, '/sign_up/')
 
-#     def test_sign_up_url(self):
-#         self.assertEqual(self.url,'/sign_up/')
+    def test_get_sign_up(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'general/sign_up.html')
+        form = response.context['form']
+        self.assertIsInstance(form, SignUpForm)
+        self.assertFalse(form.is_bound)
 
-#     def test_get_sign_up(self):
-#         response = self.client.get(self.url)
-#         self.assertEqual(response.status_code, 200)
-#         self.assertTemplateUsed(response, 'sign_up.html')
-#         form = response.context['form']
-#         self.assertTrue(isinstance(form, SignUpForm))
-#         self.assertFalse(form.is_bound)
+    def test_redirect_if_logged_in(self):
+        self.client.login(username=self.user.username, password="Password123")
+        response = self.client.get(self.url, follow=True)
+        self.assertRedirects(response, reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN))
 
-#     def test_get_sign_up_redirects_when_logged_in(self):
-#         self.client.login(username=self.user.username, password="Password123")
-#         response = self.client.get(self.url, follow=True)
-#         redirect_url = reverse('dashboard')
-#         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-#         self.assertTemplateUsed(response, 'dashboard.html')
+    def test_unsuccessful_sign_up(self):
+        self.form_input['username'] = 'bad_username'  # Assuming it fails validation
+        before_count = User.objects.count()
+        response = self.client.post(self.url, self.form_input)
+        after_count = User.objects.count()
+        self.assertEqual(after_count, before_count)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'general/sign_up.html')
+        self.assertFalse(self._is_logged_in())
 
-#     def test_unsuccesful_sign_up(self):
-#         self.form_input['username'] = 'BAD_USERNAME'
-#         before_count = User.objects.count()
-#         response = self.client.post(self.url, self.form_input)
-#         after_count = User.objects.count()
-#         self.assertEqual(after_count, before_count)
-#         self.assertEqual(response.status_code, 200)
-#         self.assertTemplateUsed(response, 'sign_up.html')
-#         form = response.context['form']
-#         self.assertTrue(isinstance(form, SignUpForm))
-#         self.assertTrue(form.is_bound)
-#         self.assertFalse(self._is_logged_in())
+    def test_successful_sign_up(self):
+        before_count = User.objects.count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = User.objects.count()
+        self.assertEqual(after_count, before_count + 1)
+        self.assertRedirects(response, reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN))
+        user = User.objects.get(username='@janedoe')
+        self.assertEqual(user.first_name, 'Jane')
+        self.assertEqual(user.last_name, 'Doe')
+        self.assertEqual(user.email, 'janedoe@test.ac.uk')
+        self.assertTrue(check_password('Password123', user.password))
+        self.assertTrue(self._is_logged_in())
 
-#     def test_succesful_sign_up(self):
-#         before_count = User.objects.count()
-#         response = self.client.post(self.url, self.form_input, follow=True)
-#         after_count = User.objects.count()
-#         self.assertEqual(after_count, before_count+1)
-#         response_url = reverse('dashboard')
-#         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-#         self.assertTemplateUsed(response, 'dashboard.html')
-#         user = User.objects.get(username='@janedoe')
-#         self.assertEqual(user.first_name, 'Jane')
-#         self.assertEqual(user.last_name, 'Doe')
-#         self.assertEqual(user.email, 'janedoe@example.org')
-#         is_password_correct = check_password('Password123', user.password)
-#         self.assertTrue(is_password_correct)
-#         self.assertTrue(self._is_logged_in())
+    @patch("django.core.files.storage.default_storage.save")
+    def test_successful_sign_up_with_profile_picture(self, mock_save):
+        """Test signup with profile picture upload."""
+        uploaded_file = SimpleUploadedFile(
+            "test_picture.jpg",
+            b"file_content",
+            content_type="image/jpeg"
+        )
+        mock_save.return_value = 'profile_pictures/@janedoe.jpg'
 
-#     def test_post_sign_up_redirects_when_logged_in(self):
-#         self.client.login(username=self.user.username, password="Password123")
-#         before_count = User.objects.count()
-#         response = self.client.post(self.url, self.form_input, follow=True)
-#         after_count = User.objects.count()
-#         self.assertEqual(after_count, before_count)
-#         redirect_url = reverse('dashboard')
-#         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-#         self.assertTemplateUsed(response, 'dashboard.html')
+        before_count = User.objects.count()
+        response = self.client.post(self.url, data={**self.form_input}, files={'profile_picture': uploaded_file})
+
+        form = response.context.get('form')
+        if form.errors:
+            print("Form errors:", form.errors)
+            self.assertEqual(response.status_code, 302) 
+            after_count = User.objects.count()
+            self.assertEqual(after_count, before_count + 1)
+
+        user = User.objects.get(username='@janedoe')
+        expected_file_path = 'profile_pictures/@janedoe.jpg'
+        self.assertTrue(user.profile_picture.name.startswith(expected_file_path))
+        self.assertIn(expected_file_path, user.profile_picture.name)
+
+    
+    def test_default_profile_picture_if_none_uploaded(self):
+        before_count = User.objects.count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = User.objects.count()
+        self.assertEqual(after_count, before_count + 1)
+        user = User.objects.get(username='@janedoe')
+        self.assertEqual(user.profile_picture, settings.DEFAULT_PROFILE_PICTURE)
+
+    def test_redirect_after_sign_up(self):
+        response = self.client.post(self.url, self.form_input, follow=True)
+        self.assertRedirects(response, reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN))
+        self.assertTrue(self._is_logged_in())
+
+    def test_post_sign_up_redirects_when_logged_in(self):
+        self.client.login(username=self.user.username, password="Password123")
+        before_count = User.objects.count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = User.objects.count()
+        self.assertEqual(after_count, before_count) 
+        self.assertRedirects(response, reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN))
+
+    """File Upload Test"""
+
+    @patch("django.core.files.storage.default_storage.save")
+    def test_file_upload_with_valid_extension(self, mock_save):
+        """Test file upload with a valid image file extension."""
+        mock_save.return_value = "profile_pictures/testuser.jpg"
+
+        uploaded_file = SimpleUploadedFile(
+            "profile_pic.jpg",
+            b"file_content",
+            content_type="image/jpeg"
+        )
+
+        file_extension = os.path.splitext(uploaded_file.name)[1]
+        new_filename = f"profile_pictures/{self.user.username}{file_extension}"
+
+        saved_path = default_storage.save(new_filename, uploaded_file)
+        self.user.profile_picture.name = saved_path
+
+        mock_save.assert_called_once_with(new_filename, uploaded_file)
+        self.assertEqual(self.user.profile_picture.name, "profile_pictures/testuser.jpg")
+
+    
+    @patch("django.core.files.storage.default_storage.save")
+    def test_file_upload_with_different_extension(self, mock_save):
+        mock_save.return_value = "profile_pictures/testuser.png"
+
+        uploaded_file = SimpleUploadedFile(
+            "avatar.png",
+            b"file_content",
+            content_type="image/png"
+        )
+
+        file_extension = os.path.splitext(uploaded_file.name)[1]
+        new_filename = f"profile_pictures/{self.user.username}{file_extension}"
+
+        saved_path = default_storage.save(new_filename, uploaded_file)
+        self.user.profile_picture.name = saved_path
+
+        mock_save.assert_called_once_with(new_filename, uploaded_file)
+        self.assertEqual(self.user.profile_picture.name, "profile_pictures/testuser.png")
+    
+
+    @patch("django.core.files.storage.default_storage.save")
+    def test_file_upload_with_no_extension(self, mock_save):
+        mock_save.return_value = "profile_pictures/testuser"
+
+        uploaded_file = SimpleUploadedFile(
+            "no_extension",
+            b"file_content",
+            content_type="image/jpeg"
+        )
+
+        file_extension = os.path.splitext(uploaded_file.name)[1]
+        new_filename = f"profile_pictures/{self.user.username}{file_extension}"
+
+        saved_path = default_storage.save(new_filename, uploaded_file)
+        self.user.profile_picture.name = saved_path
+
+        mock_save.assert_called_once_with(new_filename, uploaded_file)
+        self.assertEqual(self.user.profile_picture.name, "profile_pictures/testuser")
+
+    @patch("django.core.files.storage.default_storage.save")
+    def test_file_upload_with_large_file(self, mock_save):
+        mock_save.return_value = "profile_pictures/testuser_large.jpg"
+
+        large_file = SimpleUploadedFile(
+            "large_file.jpg",
+            b"x" * 5 * 1024 * 1024,  # 5 MB file
+            content_type="image/jpeg"
+        )
+
+        file_extension = os.path.splitext(large_file.name)[1]
+        new_filename = f"profile_pictures/{self.user.username}{file_extension}"
+
+        saved_path = default_storage.save(new_filename, large_file)
+        self.user.profile_picture.name = saved_path
+
+        mock_save.assert_called_once_with(new_filename, large_file)
+        self.assertEqual(self.user.profile_picture.name, "profile_pictures/testuser_large.jpg")

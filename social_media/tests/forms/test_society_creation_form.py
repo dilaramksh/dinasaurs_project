@@ -13,7 +13,7 @@ class SocietyCreationFormTestCase(TestCase):
     def setUp(self):
         university = University.objects.create(
             name="King's College London 2",
-            domain='@kcl2.ac.uk', #kcl2 because kcl fails unique constraint
+            domain='@kcl2.ac.uk',
         )
 
         user = User.objects.create(
@@ -40,16 +40,12 @@ class SocietyCreationFormTestCase(TestCase):
         )
 
         self.form_input = {
-            'name': 'footballclub',
+            'name': 'Footballclub',
             'society_email': 'footballclub@kcl.ac.uk',
             'description': 'football club',
             'category': self.society.category.id
         }
 
-    """def test_valid_form(self): # FAILING
-        form = SocietyCreationForm(data=self.form_input)
-        self.assertTrue(form.is_valid())
-        print(form.errors)"""
 
     def test_form_has_necessary_fields(self):
         form = SocietyCreationForm(data=self.form_input)
@@ -58,22 +54,14 @@ class SocietyCreationFormTestCase(TestCase):
         self.assertIn('description', form.fields)
         self.assertIn('category', form.fields)
 
-    '''def test_form_uses_model_validation(self):
-        self.form_input['name'] = 'invalid name' #these need to be added to form
-        self.form_input['society'] = 'invalid email'
-        self.form_input['description'] = 'invalid description'
-        self.form_input['category'] = 'invalid category'
-        form = SocietyCreationForm(data=self.form_input)
-        self.assertFalse(form.is_valid())'''
-
     def test_form_must_save_correctly(self):
-        society = Society.objects.get(name='footballclub')
+        society = Society.objects.get(name='Footballclub')
         form = SocietyCreationForm(instance=society, data=self.form_input)
         before_count = Society.objects.count()
         form.save()
         after_count = Society.objects.count()
         self.assertEqual(after_count, before_count)
-        self.assertEqual(society.name, 'footballclub')
+        self.assertEqual(society.name, 'Footballclub')
         self.assertEqual(society.society_email, 'footballclub@kcl.ac.uk')
         self.assertEqual(society.category.name, 'sports')
         self.assertEqual(society.status, 'pending')

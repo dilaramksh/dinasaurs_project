@@ -1,6 +1,8 @@
 from django.core.validators import RegexValidator
 from django.db import models
 
+DEFAULT_LOGO= "university_logos/default.png"
+
 class University(models.Model):
     """Model used for infromation of different universities"""
 
@@ -14,7 +16,7 @@ class University(models.Model):
         )]
     )
     status = models.CharField(max_length=20, choices=[("pending", "Pending"), ("approved", "Approved"), ("blocked", "Blocked")], default="pending")
-    logo = models.ImageField(upload_to="university_logos/", blank=True, null=True)
+    logo = models.ImageField(upload_to="university_logos/", blank=True, null=True, default=DEFAULT_LOGO)
 
     def __str__(self):
         return self.name  

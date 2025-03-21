@@ -3,90 +3,138 @@ from django.contrib.auth.hashers import check_password
 from django import forms
 from django.test import TestCase
 from social_media.forms import SignUpForm
-from social_media.models import User
+from social_media.models import User, University
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.utils.timezone import now, timedelta
+from django.core.validators import EmailValidator, ValidationError
+
+
 
 class SignUpFormTestCase(TestCase):
     """Unit tests of the sign up form."""
 
     def setUp(self):
+        self.university = University.objects.create(name="Test University", domain="test.ac.uk", status="approved")
+
         self.form_input = {
             'first_name': 'Jane',
             'last_name': 'Doe',
             'username': '@janedoe',
-            'university': 'University College London',
-            'email': 'janedoe@ucl.ac.uk',
-            'start_date': '2021-09-01',
-            'end_date': '2024-06-30',
+            'email': 'janedoe@test.ac.uk',
+            'university': self.university.id,
+            'start_date': '2022-09-01',
+            'end_date': '2025-06-30',
             'new_password': 'Password123',
-            'password_confirmation': 'Password123'
+            'password_confirmation': 'Password123',
+            'profile_picture' : SimpleUploadedFile("profile.jpg", b"profile_picture_content", content_type="image/jpeg")
+
         }
 
-    def test_valid_sign_up_form(self):
+    def test_valid_form(self):
+        """Test that form is valid."""
         form = SignUpForm(data=self.form_input)
         self.assertTrue(form.is_valid())
 
-    def test_form_has_necessary_fields(self):
+    def test_form_has_required_fields(self):
+        """Test thatf form has all required fields."""
         form = SignUpForm()
-        self.assertIn('first_name', form.fields)
-        self.assertIn('last_name', form.fields)
-        self.assertIn('username', form.fields)
-        self.assertIn('university', form.fields)
-        university_field = form.fields['university']
-        self.assertTrue(isinstance(university_field, forms.ModelChoiceField))
-        self.assertIn('email', form.fields)
-        self.assertIn('start_date', form.fields)
-        start_date_widget = form.fields['start_date'].widget
-        self.assertTrue(isinstance(start_date_widget, forms.DateInput))
-        self.assertIn('end_date', form.fields)
-        end_date_widget = form.fields['end_date'].widget
-        self.assertTrue(isinstance(end_date_widget, forms.DateInput))
-        self.assertIn('new_password', form.fields)
-        new_password_widget = form.fields['new_password'].widget
-        self.assertTrue(isinstance(new_password_widget, forms.PasswordInput))
-        self.assertIn('password_confirmation', form.fields)
-        password_confirmation_widget = form.fields['password_confirmation'].widget
-        self.assertTrue(isinstance(password_confirmation_widget, forms.PasswordInput))
+        expected_fields = {"first_name", "last_name", "username", "university", "email", "start_date", "end_date", "profile_picture", "new_password", "password_confirmation"}
+        self.assertEqual(set(form.fields.keys()), expected_fields)
 
-
-
-    def test_form_uses_model_validation(self):
-        self.form_input['username'] = 'badusername'
+    def test_valid_form_submission(self):
+        """Test that form submits correctly."""
         form = SignUpForm(data=self.form_input)
-        self.assertFalse(form.is_valid())
-
-    def test_password_must_contain_uppercase_character(self):
-        self.form_input['new_password'] = 'password123'
-        self.form_input['password_confirmation'] = 'password123'
-        form = SignUpForm(data=self.form_input)
-        self.assertFalse(form.is_valid())
-
-    def test_password_must_contain_lowercase_character(self):
-        self.form_input['new_password'] = 'PASSWORD123'
-        self.form_input['password_confirmation'] = 'PASSWORD123'
-        form = SignUpForm(data=self.form_input)
-        self.assertFalse(form.is_valid())
-
-    def test_password_must_contain_number(self):
-        self.form_input['new_password'] = 'PasswordABC'
-        self.form_input['password_confirmation'] = 'PasswordABC'
-        form = SignUpForm(data=self.form_input)
-        self.assertFalse(form.is_valid())
-
-    def test_new_password_and_password_confirmation_are_identical(self):
-        self.form_input['password_confirmation'] = 'WrongPassword123'
-        form = SignUpForm(data=self.form_input)
-        self.assertFalse(form.is_valid())
-
-    def test_form_must_save_correctly(self):
-        form = SignUpForm(data=self.form_input)
-        before_count = User.objects.count()
         self.assertTrue(form.is_valid())
-        form.save()
-        after_count = User.objects.count()
-        self.assertEqual(after_count, before_count+1)
-        user = User.objects.get(username='@janedoe')
-        self.assertEqual(user.first_name, 'Jane')
-        self.assertEqual(user.last_name, 'Doe')
-        self.assertEqual(user.email, 'janedoe@example.org')
-        is_password_correct = check_password('Password123', user.password)
-        self.assertTrue(is_password_correct)
+
+    def test_missing_email_field(self):
+        """Test that missing email triggers ValidationError."""
+        form = SignUpForm(data=self.form_input)
+        form.cleaned_data = self.form_input 
+        form.cleaned_data['email'] = ""      
+
+        with self.assertRaises(ValidationError) as cm:
+            form.clean_email()
+        self.assertEqual(str(cm.exception), "['Email is required.']")
+
+    def test_invalid_email_format(self):
+        """Test invalid email format."""
+        form = SignUpForm(data=self.form_input)
+        form.cleaned_data = self.form_input
+        form.cleaned_data['email'] = "invalid-email"
+
+        with self.assertRaises(ValidationError) as cm:
+            form.clean_email()
+        self.assertEqual(
+            str(cm.exception),
+            "['Invalid email format. Please enter your university email.']"
+        )
+
+    def test_email_must_match_university_domain(self):
+        """Test that email domain matches that of selected university."""
+        self.form_input["email"] = "janedoe@gmail.com"
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+        self.assertIn("email", form.errors)
+    
+    def test_missing_university_field(self):
+        """Test that univeristy is selected."""
+        self.form_input.pop("university") 
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+        self.assertFormError(form, "university", "Please select a university.")
+
+
+    def test_start_date_must_be_before_end_date(self):
+        """Test that selected start date is before end date."""
+        self.form_input["start_date"] = (now() + timedelta(days=10)).date()
+        self.form_input["end_date"] = now().date()
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+        self.assertIn("end_date", form.errors)
+
+    def test_end_date_must_be_in_future(self):
+        """Test that selected end date is after current date."""
+        self.form_input["end_date"] = (now() - timedelta(days=10)).date()
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+        self.assertIn("end_date", form.errors)
+
+    def test_password_requires_uppercase(self):
+        """Test that password contains uppercase letter."""
+        self.form_input["new_password"] = "password123"
+        self.form_input["password_confirmation"] = "password123"
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_password_requires_lowercase(self):
+        """Test that password contains lowecase letter."""
+        self.form_input["new_password"] = "PASSWORD123"
+        self.form_input["password_confirmation"] = "PASSWORD123"
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_password_requires_number(self):
+        """Test that password contains number letter."""
+        self.form_input["new_password"] = "PasswordABC"
+        self.form_input["password_confirmation"] = "PasswordABC"
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_passwords_must_match(self):
+        """Test that password input and confirmation are identical. """
+        self.form_input["password_confirmation"] = "WrongPassword123"
+        form = SignUpForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+        self.assertIn("password_confirmation", form.errors)
+
+    def test_form_save_creates_user(self):
+        """Test that new users are saved correctly in database"""
+        form = SignUpForm(data=self.form_input)
+        self.assertTrue(form.is_valid())
+        user = form.save()
+        self.assertEqual(user.username, self.form_input["username"])
+        self.assertEqual(user.email, self.form_input["email"])
+        self.assertEqual(user.university.id, self.form_input["university"])
+        self.assertTrue(check_password("Password123", user.password))
+
+

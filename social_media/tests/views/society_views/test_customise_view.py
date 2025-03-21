@@ -1,84 +1,91 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
-from django.contrib.auth.models import User
-from social_media.models import Society, SocietyColorHistory
-from social_media.forms import customisationForm
+from django.utils.timezone import now
+from social_media.models import User, Society, University, Category
+from social_media.models.colour_history import SocietyColorHistory
+from social_media.forms import CustomisationForm
 
-'''
-class CustomiseSocietyViewTest(TestCase):
+class CustomiseSocietyViewTests(TestCase):
+    """Test cases for the customise_society_view."""
 
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='password123')
+        """Set up test data before each test."""
+        self.client = Client()
+        self.university = University.objects.create(name="Test University")
+        self.category = Category.objects.create(name="Test Category")
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass',
+            email='testuser@example.com',
+            first_name='Test',
+            last_name='User',
+            user_type='student',
+            university=self.university,
+            start_date=now().date(),
+            end_date=now().date()
+        )
         self.society = Society.objects.create(
-            name='Test Society', 
-            description='Test description', 
-            price=10.0, 
-            colour1='#FFFFFF', 
-            colour2='#000000'
+            name="Test Society",
+            founder=self.user,
+            society_email="test@society.com",
+            description="A test society",
+            category=self.category,
+            paid_membership=False,
+            price=0.0,
+            colour1="#FFD700",
+            colour2="#FFF2CC",
+            termination_reason="operational",
+            status="approved"
         )
-        self.url = reverse('customise_society', args=[self.society.id])
+        self.client.login(username='testuser', password='testpass')
 
-    def test_customise_society_view_redirect_if_not_logged_in(self):
-        response = self.client.get(self.url)
-        self.assertRedirects(response, f'/accounts/login/?next={self.url}')
+    def test_customise_society_view_get(self):
+        """Test the customise_society_view with GET request."""
+        response = self.client.get(reverse('customise_society', args=[self.society.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'society/customise_society.html')
+        self.assertIsInstance(response.context['form'], CustomisationForm)
+        self.assertEqual(response.context['society'], self.society)
+        self.assertQuerysetEqual(response.context['past_colors'], [])
 
-    def test_customise_society_view_get_logged_in_user(self):
-        self.client.login(username='testuser', password='password123')
-        response = self.client.get(self.url)
-        
-        self.assertContains(response, 'Customise Your Society')
-        self.assertContains(response, 'Submit')
-        self.assertContains(response, 'Current Society Details')
-
-    def test_customise_society_view_post_valid_data(self):
-        self.client.login(username='testuser', password='password123')
-        form_data = {
-            'description': 'Updated description',
-            'price': 15.0,
-            'colour1': '#FF0000',
-            'colour2': '#00FF00',
+    def test_customise_society_view_post_valid(self):
+        """Test the customise_society_view with valid POST request."""
+        post_data = {
+            'colour1': '#000000',
+            'colour2': '#FFFFFF',
         }
-        
-        response = self.client.post(self.url, form_data)
-        
-        self.society.refresh_from_db()
-        self.assertEqual(self.society.description, 'Updated description')
-        self.assertEqual(self.society.price, 15.0)
-        self.assertEqual(self.society.colour1, '#FF0000')
-        self.assertEqual(self.society.colour2, '#00FF00')
-        
-        past_color_history = SocietyColorHistory.objects.first()
-        self.assertEqual(past_color_history.previous_colour1, '#FFFFFF')
-        self.assertEqual(past_color_history.previous_colour2, '#000000')
-
+        response = self.client.post(reverse('customise_society', args=[self.society.id]), data=post_data)
+        self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('society_mainpage', args=[self.society.id]))
+        self.society.refresh_from_db()
+        self.assertEqual(self.society.colour1, '#000000')
+        self.assertEqual(self.society.colour2, '#FFFFFF')
+        self.assertTrue(SocietyColorHistory.objects.filter(society=self.society).exists())
 
-    def test_customise_society_view_post_invalid_data(self):
-        self.client.login(username='testuser', password='password123')
-        form_data = {
-            'description': '',  # Invalid empty description
-            'price': 15.0,
-            'colour1': '#FF0000',
-            'colour2': '#00FF00',
+    def test_customise_society_view_post_invalid(self):
+        """Test the customise_society_view with invalid POST request."""
+        post_data = {
+            'colour1': '',  # Invalid data
+            'colour2': '#FFFFFF',
         }
-        
-        response = self.client.post(self.url, form_data)
-        
-        self.assertFormError(response, 'form', 'description', 'This field is required.')
+        response = self.client.post(reverse('customise_society', args=[self.society.id]), data=post_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'society/customise_society.html')
+        self.assertIsInstance(response.context['form'], CustomisationForm)
+        self.assertIn('colour1', response.context['form'].errors)
+        self.assertFalse(SocietyColorHistory.objects.filter(society=self.society).exists())
 
-    def test_customise_society_view_logged_in_user_can_see_previous_colors(self):
-        self.client.login(username='testuser', password='password123')
-        
-        # Create previous color history
-        SocietyColorHistory.objects.create(
-            society=self.society,
-            previous_colour1='#FFFFFF',
-            previous_colour2='#000000'
-        )
-        
-        response = self.client.get(self.url)
-        
-        self.assertContains(response, 'Previous Colour History')
-        self.assertContains(response, '#FFFFFF')
-        self.assertContains(response, '#000000')
-'''
+
+    def test_customise_society_view_post_partial_change(self):
+        """Test the customise_society_view with partial change in POST request."""
+        post_data = {
+            'colour1': '#000000',
+            'colour2': self.society.colour2,
+        }
+        response = self.client.post(reverse('customise_society', args=[self.society.id]), data=post_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('society_mainpage', args=[self.society.id]))
+        self.society.refresh_from_db()
+        self.assertEqual(self.society.colour1, '#000000')
+        self.assertEqual(self.society.colour2, '#FFF2CC')
+        self.assertTrue(SocietyColorHistory.objects.filter(society=self.society).exists())

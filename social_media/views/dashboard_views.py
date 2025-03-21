@@ -48,9 +48,11 @@ def dashboard(request):
             'user_events': user_events,
             'society_roles': society_roles,
             'committee_societies': committee_societies,
+            'memberships':memberships
         }
 
         template = "student/student_dashboard.html"
+
     elif user_type == 'uni_admin':
         status_filter = request.GET.get("status", "pending")
 
@@ -68,8 +70,11 @@ def dashboard(request):
             "chosen_status": status_filter
         }
         template = "uni_admin/uni_admin_dashboard.html"
+    
+    elif user_type == 'super_admin':
+        template = "super_admin/super_admin_dashboard.html"
     else:
-        template = 'student/student_dashboard.html' # ???
+        template = 'student/student_dashboard.html' 
     
     return render(request, template, context)
 
@@ -100,10 +105,14 @@ def dashboard_from_mainpage(request, society_id):
     if Membership.objects.filter(user=request.user, society=society).exists():
         return JsonResponse({'success': False, 'error': 'You are already a member of this society'}, status=400)
 
-    default_role, created = SocietyRole.objects.get_or_create(role_name="Member")
+    default_role, created = SocietyRole.objects.get_or_create(
+        role_name="Member",
+        society=society  
+    )
 
  
     Membership.objects.create(user=request.user, society=society, society_role=default_role)
 
     return JsonResponse({'success': True, 'message': 'Successfully joined society'})
+    
 

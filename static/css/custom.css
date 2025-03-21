@@ -239,3 +239,21 @@ h5 {
   object-fit: cover;
 }
 
+/*
+ * Manage Committee link
+ */
+
+.manage-committee-link {
+  color: #996515; 
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.manage-committee-link:hover {
+  text-decoration: underline;
+  color: #734d0d; 
+}
+
+
+

@@ -1,8 +1,10 @@
-from django.core.validators import EmailValidator, MaxValueValidator, RegexValidator
+from django.core.validators import EmailValidator, MinValueValidator, MaxValueValidator, RegexValidator
 from django.core.exceptions import ValidationError
 from django.db import models
 from .user import User
 from .category import Category
+
+DEFAULT_SOCIETY_LOGO = "society_logos/default.jpg"
 
 class Society(models.Model):
     """Model used for information on societies"""
@@ -12,7 +14,13 @@ class Society(models.Model):
     description = models.CharField(max_length=2000, blank=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     paid_membership = models.BooleanField(default=False, blank=False) #all memberships are free by default
-    price = models.FloatField(default=0.0, validators=[MaxValueValidator(50.0)])
+    price = price = models.FloatField(
+        default=0.0,
+        validators=[
+            MinValueValidator(0.0, message="Price cannot be negative."),
+            MaxValueValidator(50.0)
+        ]
+    )
     colour1 = models.CharField(
         max_length=7,
         default= "#FFD700",
@@ -33,10 +41,11 @@ class Society(models.Model):
             )
         ]
     )
-    #logo = models.ImageField(upload_to='news_images/', blank=False) #stores image of the logo
+    logo = models.ImageField(upload_to="society_logos/", blank=True, null=True, default=DEFAULT_SOCIETY_LOGO)
     termination_reason = models.CharField(max_length=50, choices=[('operational', 'Operational reasons'), ('low_interest', 'Low Interest'), ('financial', 'Financial reasons'), ('other', 'Other reason') ])
     status = models.CharField(max_length=20, choices=[("pending", "Pending"), ("approved", "Approved"), ("blocked", "Blocked")], default="pending")
     
+    """
     def clean(self):
         super().clean()  # Call any default validation logic
 
@@ -46,9 +55,13 @@ class Society(models.Model):
         else:
             if self.price <= 0:
                 raise ValidationError("Price must be greater than zero for a paid membership.")
+
+    """
     
     def save(self, *args, **kwargs):
         self.name = self.name.title()  # Capitalize the name before saving
+        if self.price < 0:
+            raise ValidationError("Price cannot be negative.")
         super().save(*args, **kwargs)
     
     def approve(self):

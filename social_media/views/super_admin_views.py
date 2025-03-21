@@ -2,11 +2,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from social_media.models import University
+from django.contrib.auth.decorators import login_required
 
 
-#@login_required
+@login_required
 def super_admin_dashboard(request):
-    number_pending = University.objects.filter(status="pending").count
+    number_pending = University.objects.filter(status="pending").count()
 
     return render(request, 'super_admin/super_admin_dashboard.html', {'number_pending': number_pending})
 
@@ -25,5 +26,12 @@ def update_university_status(request, university_id, new_status):
     return HttpResponseForbidden("Invalid request method.")
 
 def registered_universities(request):
-    registered_universities = University.objects.filter(status="approved")
-    return render(request, 'super_admin/registered_universities.html', {'registered_universities': registered_universities})
+    context = {
+        'registered': University.objects.filter(status="approved"),
+        'blocked': University.objects.filter(status="blocked")
+    }
+    return render(request, 'super_admin/registered_universities.html', context)
+
+def modify_university(request, university_id):
+    university = get_object_or_404(University, id=university_id)
+    return render(request, 'super_admin/modify_university.html', {'university': university})

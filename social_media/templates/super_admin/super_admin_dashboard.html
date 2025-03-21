@@ -9,13 +9,14 @@
     <header class="text-dark text-center py-4 mb-4" 
         style="background: url('https://www.transparenttextures.com/patterns/honeycomb.png') #FFFFCC;">
         <div class="container">
-            <h1 class="display-4 fw-bold">🐝 Welcome Queen Bee🐝</h1>
+            <h1 class="display-4 fw-bold">🐝 Welcome Queen Bee 🐝</h1>
+            <h2 class="display-10"> Manage your hive here </h2>
         </div>
     </header>
     <div class="container">
         <div class="row">
             <!-- Requests to join SocietyHive --> 
-            <div class="col-md-12 mb-3">
+            <div class="col-md-6 mb-3">
                 <div class="card text-center p-4 border-warning shadow-sm h-100">
                     <h5 class="card-header bg-warning text-dark"> ⚠️ Requests to Join the Hive ⚠️ </h5>
                     <div class="card-body">
@@ -28,41 +29,19 @@
                     </div>
                 </div>
             </div>
-
-
+        
             <!-- View of Registered Universities -->
             <div class="col-md-6 mb-3">
                 <div class="card text-center p-4 border-warning shadow-sm h-100">
-                    <h5 class="card-header bg-warning text-dark">  ✅ Registered Universities ✅ </h5>
+                    <h5 class="card-header bg-warning text-dark">  ✅ Registered ✅ and ❌ Blocked ❌ <br> Universities </h5>
                     <div class="card-body">
                         <p class="card-text"> View all universities in the hive </p>
                         <a href="{% url 'registered_universities' %}" class="btn btn-warning"> View </a> 
                     </div>
                 </div>
             </div>
-
-            <!-- Data Activity  -->
-            <div class="col-md-6 mb-3">
-                <div class="card text-center p-4 border-warning shadow-sm h-100">
-                    <h5 class="card-header bg-warning text-dark"> 🍯 Activity in the Hive 🍯</h5>
-                    <div class="card-body">
-                        <p class="card-text"> View activity and data of the current Hive </p>
-                        <a  class="btn btn-warning"> View </a>
-                    </div>
-                </div>
-            </div>
-
-            
-
-            
         </div>
     </div>
-
-
-
-    <!-- Bootstrap JS & dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
 
 {% endblock %}
