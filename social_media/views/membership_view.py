@@ -22,9 +22,9 @@ def join_society(request, society_id):
     if Membership.objects.filter(user=request.user, society=society).exists():
         return JsonResponse({'success': False, 'error': 'You are already a member of this society.'})
     
-    # Otherwise, create a new membership (you can also set a default role here)
+    # Otherwise, create a new membership 
     try:
-        Membership.objects.create(user=request.user, society=society, society_role=None)  # Adjust role if needed
+        Membership.objects.create(user=request.user, society=society, society_role=None)  
         return JsonResponse({'success': True})
     except ValidationError as e:
         return JsonResponse({'success': False, 'error': str(e)})
@@ -36,7 +36,7 @@ def remove_membership(request, membership_id):
 
     membership = get_object_or_404(Membership, id=membership_id, user=request.user)
     society_name = membership.society.name  # Store society name before deleting
-    membership.delete()  # Delete the membership
+    membership.delete()  
 
     return JsonResponse({
         "success": True,
