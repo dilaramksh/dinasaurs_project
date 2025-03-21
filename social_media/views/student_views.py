@@ -99,9 +99,10 @@ def student_societies(request):
     if selected_society:
         society_roles = SocietyRole.objects.filter(society=selected_society)
         committee_members = [
-            membership.user for membership in Membership.objects.filter(society_role__society=selected_society)
+            membership for membership in Membership.objects.filter(society_role__society=selected_society)
             if membership.is_committee_member()
         ]
+
     else:
         society_roles = SocietyRole.objects.filter(society__in=user_societies)
 
@@ -118,18 +119,3 @@ def student_societies(request):
         'committee_members': committee_members,
     })
 
-
-def student_events(request):
-    student = request.user
-    memberships = Membership.objects.filter(
-        user=student,
-        society_role__society__status="approved"
-    )
-    user_societies = [membership.society_role.society for membership in memberships]
-    user_events = Event.objects.filter(society__in=user_societies, society__status="approved")
-
-    return render(request, 'student/student_events.html', {
-        'student': student,
-        'user_societies': user_societies,
-        'user_events': user_events,
-    })

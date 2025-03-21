@@ -1,4 +1,4 @@
-from django.core.validators import EmailValidator, MaxValueValidator, RegexValidator
+from django.core.validators import EmailValidator, MinValueValidator, MaxValueValidator, RegexValidator
 from django.core.exceptions import ValidationError
 from django.db import models
 from .user import User
@@ -14,7 +14,13 @@ class Society(models.Model):
     description = models.CharField(max_length=2000, blank=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     paid_membership = models.BooleanField(default=False, blank=False) #all memberships are free by default
-    price = models.FloatField(default=0.0, validators=[MaxValueValidator(50.0)])
+    price = price = models.FloatField(
+        default=0.0,
+        validators=[
+            MinValueValidator(0.0, message="Price cannot be negative."),
+            MaxValueValidator(50.0)
+        ]
+    )
     colour1 = models.CharField(
         max_length=7,
         default= "#FFD700",
@@ -54,6 +60,8 @@ class Society(models.Model):
     
     def save(self, *args, **kwargs):
         self.name = self.name.title()  # Capitalize the name before saving
+        if self.price < 0:
+            raise ValidationError("Price cannot be negative.")
         super().save(*args, **kwargs)
     
     def approve(self):

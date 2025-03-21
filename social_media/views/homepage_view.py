@@ -11,17 +11,52 @@ DEFAULT_UNIVERSITY_LOGO = "university_logos/default.png"
 
 @login_prohibited
 def homepage(request):
+    """
+    Render the homepage.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The rendered homepage.
+    """
     return render(request, 'homepage.html')
 
 def discover_universities(request):
+    """
+    Render the discover universities page with a list of approved universities.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The rendered discover universities page with the list of approved universities.
+    """
     universities = University.objects.filter(status='approved')
-    return render(request, 'homepage/discover_universities.html',{'universities': universities})
+    return render(request, 'homepage/discover_universities.html', {'universities': universities})
 
 def why_join_society(request):
+    """
+    Render the why join society page with popular societies, their first members, and upcoming events.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The rendered why join society page with context data.
+    """
     popular_societies = Society.objects.annotate(member_count=Count("membership")).order_by("-member_count")[:4]
 
-
     def get_first_member(society):
+        """
+        Get the first member of a society.
+
+        Args:
+            society (Society): The society object.
+
+        Returns:
+            Membership: The first membership object of the society, or None if no members exist.
+        """
         if society:
             return Membership.objects.filter(society=society).order_by("id").first()
         return None
@@ -36,20 +71,37 @@ def why_join_society(request):
 
     upcoming_events = Event.objects.filter(date__gte=timezone.now()).order_by("date")[:3]
 
-    context ={
-        'popular_societies':popular_societies,
-        'art_member':art_member,
-        'gaming_member':gaming_member,
-        'swim_member':swim_member,
-        'upcoming_events':upcoming_events,
+    context = {
+        'popular_societies': popular_societies,
+        'art_member': art_member,
+        'gaming_member': gaming_member,
+        'swim_member': swim_member,
+        'upcoming_events': upcoming_events,
     }
     return render(request, 'homepage/why_join_society.html', context)
 
-
 def latest_news(request):
+    """
+    Render the latest news page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The rendered latest news page.
+    """
     return render(request, 'homepage/latest_news.html')
 
 def register_your_university(request):
+    """
+    Handle the university registration form submission.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The rendered register your university page with the form.
+    """
     if request.method == 'POST':
         form = UniversityCreationForm(request.POST, request.FILES)
 

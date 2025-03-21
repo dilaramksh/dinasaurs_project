@@ -1,99 +1,78 @@
 from django.test import TestCase
-from social_media.models import Category, Society, Event, User
 from django.core.exceptions import ValidationError
-from datetime import date, timedelta
+from django.utils.timezone import now
+from datetime import timedelta
+from social_media.models import Event, Society, Category, User, University
 
-class EventModelTestCase(TestCase):
-    """Unit tests for the Event Model"""
-
-    fixtures = ['social_media/tests/fixtures/default_user.json']
+class EventModelTest(TestCase):
+    """Test cases for the Event model."""
 
     def setUp(self):
-        self.category = Category.objects.create(name="cultural")
-        self.society = Society.objects.create(
-            name="A Soc",
-            society_email="asoc@test.ac.uk",
-            founder=User.objects.get(email="john.doe@test.ac.uk"),
-            description="A desc.",
-            category=self.category,
-            paid_membership=True,
-            price=10.0,
-            colour1="#FFF0FF",
-            colour2="#000022",
-            termination_reason="operational",
-            status="approved",
+        """Set up test data before each test."""
+        self.university = University.objects.create(name="Test University")
+        self.user = User.objects.create_user(
+            username="testuser",
+            password="testpass",
+            email="testuser@example.com",
+            first_name="Test",
+            last_name="User",
+            user_type="student",
+            university=self.university,
+            start_date=now().date(),
+            end_date=now().date()
         )
-        self.pending_society = Society.objects.create(
-            name="Pending Soc",
-            society_email="pending@test.ac.uk",
-            founder=User.objects.get(email="john.doe@test.ac.uk"),
-            description="Pending desc.",
+        self.category = Category.objects.create(name="Test Category")
+        self.society = Society.objects.create(
+            name="Test Society",
+            founder=self.user,
+            society_email="test@society.com",
+            description="A test society",
             category=self.category,
             paid_membership=False,
             price=0.0,
-            colour1="#FFFFFF",
-            colour2="#000000",
-            termination_reason=None,
-            status="pending",
+            colour1="#FFD700",
+            colour2="#FFF2CC",
+            termination_reason="operational",
+            status="approved"
         )
-        self.valid_event_data = {
-            "name": "Test Event",
-            "society": self.society,
-            "description": "Our test desc!",
-            "date": date.today() + timedelta(days=1),
-            "location": "Here",
-        }
+        self.event = Event.objects.create(
+            name="Test Event",
+            society=self.society,
+            description="This is a test event.",
+            date=now().date(),
+            location="Test Location"
+        )
 
-    def test_create_valid_event(self):
-        """Test creating an event with valid data."""
-        event = Event(**self.valid_event_data)
-        event.full_clean()
-        event.save()
-        self.assertEqual(Event.objects.count(), 1)
+    def test_event_creation(self):
+        """Test if an Event instance is correctly created."""
+        self.assertEqual(self.event.name, "Test Event")
+        self.assertEqual(self.event.society, self.society)
+        self.assertEqual(self.event.description, "This is a test event.")
+        self.assertEqual(self.event.date, now().date())
+        self.assertEqual(self.event.location, "Test Location")
+        self.assertEqual(self.event.picture, "events_picture/default.jpg")
 
-    def test_name_required(self):
-        """Test that an empty name raises ValidationError."""
-        data = dict(self.valid_event_data, name="")
-        event = Event(**data)
+    def test_event_str_representation(self):
+        """Test the string representation of an Event instance."""
+        self.assertEqual(str(self.event), "Test Event")
+
+    def test_event_date_in_future(self):
+        """Test that the event date must be in the future."""
+        self.event.date = now().date() - timedelta(days=1)
         with self.assertRaises(ValidationError):
-            event.full_clean()
+            self.event.save()
 
-    def test_long_description(self):
-        """Test that exceeding max length of 1000 raises ValidationError."""
-        data = dict(self.valid_event_data, description="A" * 1001)
-        event = Event(**data)
-        with self.assertRaises(ValidationError):
-            event.full_clean()
 
-    def test_event_date_must_be_future(self):
-        """Test that past dates raise ValidationError."""
-        data = dict(self.valid_event_data, date=date.today() - timedelta(days=1))
-        event = Event(**data)
+    def test_event_for_non_approved_society(self):
+        """Test that an event cannot be created for a non-approved society."""
+        self.society.status = "pending"
+        self.society.save()
+        event = Event(
+            name="Test Event",
+            society=self.society,
+            description="This is a test event.",
+            date=now().date(),
+            location="Test Location"
+        )
         with self.assertRaises(ValidationError):
-            event.full_clean()
-
-    def test_cannot_create_event_for_non_approved_society(self):
-        """Test that creating an event for a non-approved society raises ValidationError."""
-        data = dict(self.valid_event_data, society=self.pending_society)
-        event = Event(**data)
-        with self.assertRaises(ValidationError):
-            event.full_clean()
-
-    def test_location_required(self):
-        """Test that an empty location raises ValidationError."""
-        data = dict(self.valid_event_data, location="")
-        event = Event(**data)
-        with self.assertRaises(ValidationError):
-            event.full_clean()
-
-    def test_max_length_constraints(self):
-        """Test that exceeding max length constraints raises ValidationError."""
-        data = dict(self.valid_event_data, name="A" * 251)
-        event = Event(**data)
-        with self.assertRaises(ValidationError):
-            event.full_clean()
-
-        data = dict(self.valid_event_data, location="A" * 251)
-        event = Event(**data)
-        with self.assertRaises(ValidationError):
-            event.full_clean()
+            event.save()

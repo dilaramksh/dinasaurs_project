@@ -4,7 +4,6 @@ from .category import Category
 from .events_participant import EventsParticipant 
 from .event import Event
 from .membership import Membership
-from .news import News
 from .society_role import SocietyRole
 from .society import Society
 from .university import University
