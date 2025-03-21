@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from social_media.models import University, Society, Membership
 from django.contrib.auth.models import AnonymousUser
 from django.utils import timezone
+from datetime import date
 
 User = get_user_model()
 
@@ -16,10 +17,13 @@ class MembershipViewsTestCase(TestCase):
         )
 
         self.user = User.objects.create_user(
-            username="@jane",
-            email="jane@kcl.ac.uk",
-            password="password123",
-            university=self.university
+            username='@jane',
+            email='jane@kcl.ac.uk',
+            password='password123',
+            university=self.university,
+            start_date=date(2023, 9, 1),  
+            end_date=date(2026, 6, 30),   
+            user_type='student'          
         )
 
         self.society = Society.objects.create(
