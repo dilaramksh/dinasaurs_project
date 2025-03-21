@@ -55,7 +55,7 @@ class MembershipViewsTestCase(TestCase):
     def test_join_society_already_member(self):
         Membership.objects.create(user=self.user, society=self.society, society_role=self.role)
         response = self.client.post(reverse('dashboard_from_mainpage', args=[self.society.id]))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(response.content, {'success': False, 'error': 'You are already a member of this society.'})
 
     def test_remove_membership_success(self):
