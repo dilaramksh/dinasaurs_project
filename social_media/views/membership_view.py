@@ -12,10 +12,10 @@ def view_memberships(request):
     print(memberships)
     return render(request, 'student/memberships.html', {'memberships': memberships})
 
-
+"""
 @login_required
 def join_society(request, society_id):
-    """Allow a student to join a society"""
+        Allow a student to join a society
     society = get_object_or_404(Society, pk=society_id)
     
     # Check if the student is already a member
@@ -28,7 +28,7 @@ def join_society(request, society_id):
         return JsonResponse({'success': True})
     except ValidationError as e:
         return JsonResponse({'success': False, 'error': str(e)})
-
+"""
 @login_required
 def remove_membership(request, membership_id):
     if request.method != "POST":
