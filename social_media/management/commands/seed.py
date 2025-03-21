@@ -50,13 +50,13 @@ super_admin_fixture = [
 categories = [ 'cultural', 'academic_career', 'faith', 'political', 'sports', 'volunteering', 'other']
 
 society_names = [
-    'computingsoc', 'artsoc', 'gamessoc', 'musicsoc', 'filmsoc',
+    'computingsoc', 'artsoc', 'gamesoc', 'musicsoc', 'filmsoc',
     'basketballsoc', 'footballsoc', 'tennissoc', 'debatesoc',
-    'roboticssoc', 'politicssoc', 'volunteeringsoc', 'literarysoc',
-    'photographysoc', 'dancesoc', 'codingclub', 'chesssoc',
-    'environmentalsoc', 'animessoc', 'theatresoc', 'boardgamessoc',
+    'roboticsoc', 'politicssoc', 'volunteersoc', 'literarysoc',
+    'photographysoc', 'dancingsoc', 'codingclub', 'chesssoc',
+    'environmentalsoc', 'animessoc', 'theatresoc', 'boardgamesoc',
     'musicproductionclub', 'fashionclub', 'writingclub', 'gamingsoc',
-    'historicalsoc', 'scienceclub', 'socialimpactclub', 'mathssoc',
+    'historicalsoc', 'scienceclub', 'socialimpactclub', 'mathsoc',
     'engineeringclub', 'geographysoc', 'languageclub', 'psychologysoc',
     'medicalsoc', 'lawclub', 'biologyclub', 'chemistrysoc', 'physicsclub',
     'artclub', 'bookclubsoc', 'yogasoc', 'travelclubsoc', 'cyclingclub',
@@ -68,25 +68,25 @@ society_names = [
 society_category_mapping = {
     'computingsoc': 'academic_career',
     'artsoc': 'cultural',
-    'gamessoc': 'sports',
+    'gamesoc': 'sports',
     'musicsoc': 'cultural',
     'filmsoc': 'cultural',
     'basketballsoc': 'sports',
     'footballsoc': 'sports',
     'tennissoc': 'sports',
     'debatesoc': 'political',
-    'roboticssoc': 'academic_career',
+    'roboticsoc': 'academic_career',
     'politicssoc': 'political',
-    'volunteeringsoc': 'volunteering',
+    'volunteersoc': 'volunteering',
     'literarysoc': 'cultural',
     'photographysoc': 'cultural',
-    'dancesoc': 'cultural',
+    'dancingsoc': 'cultural',
     'codingclub': 'academic_career',
     'chesssoc': 'sports',
     'environmentalsoc': 'volunteering',
     'animessoc': 'cultural',
     'theatresoc': 'cultural',
-    'boardgamessoc': 'sports',
+    'boardgamesoc': 'sports',
     'musicproductionclub': 'cultural',
     'fashionclub': 'cultural',
     'writingclub': 'cultural',
@@ -94,7 +94,7 @@ society_category_mapping = {
     'historicalsoc': 'cultural',
     'scienceclub': 'academic_career',
     'socialimpactclub': 'volunteering',
-    'mathssoc': 'academic_career',
+    'mathsoc': 'academic_career',
     'engineeringclub': 'academic_career',
     'geographysoc': 'academic_career',
     'languageclub': 'cultural',
@@ -122,7 +122,7 @@ society_category_mapping = {
     'dataanalyticsclub': 'academic_career'
 }
 
-society_role_names = ['President', 'Vice President', 'Treasurer', 'Events Manager', 'Secretary', 'Member']
+society_role_names = ['President', 'Vice president', 'Treasurer', 'Events manager', 'Secretary', 'Member']
 
 society_event_mapping = {
     'computingsoc': ["Hackathon", "AI Workshop", "Coding Challenge"],
@@ -346,7 +346,7 @@ event_descriptions = {
     "SQL Workshop": "A workshop where students learn how to use SQL for data querying and management."
 }
 
-event_picture = {
+event_pictures = {
     "Hackathon": "events_picture/Hackathon.png",
     "AI Workshop": "events_picture/AI_Workshop.png",
     "Coding Challenge": "events_picture/Coding_Challenge.png",
@@ -749,10 +749,10 @@ class Command(BaseCommand):
                 category = Category.objects.create(name=category_name)
 
             if 'soc' in name:
-                description = f"A society for students passionate about {name.split('soc')[0]}"
+                description = f"A society for students passionate about {name.split('soc')[0]}."
             else:
                 if name.lower().endswith('club'):
-                    description = f"A society for students passionate about {name[:-4]}"
+                    description = f"A society for students passionate about {name[:-4]}."  
 
             created_society = self.try_create_society(name, category, description)
             if created_society:
@@ -778,7 +778,7 @@ class Command(BaseCommand):
             description= description,
             category= category,
             paid_membership = random.choice([True, False]),
-            price= 5.0 if random.choice([True, False]) else 0.0,
+            price= '5.0' if random.choice([True, False]) else '0.0',
             colour1= self.faker.hex_color(),
             colour2= self.faker.hex_color(),
             logo= f'society_logos/{name}.png',
@@ -822,6 +822,9 @@ class Command(BaseCommand):
 
 
     # Seed Memberships-- assigns one user to each role of the society to form entire committees + members
+    """
+    Adjusted seeder, accidental randomization of membership - em:)
+    """
     def create_memberships(self):
         self.stdout.write('Creating memberships...')
         self.generate_membership_fixtures()
@@ -910,7 +913,7 @@ class Command(BaseCommand):
                 event_name = random.choice(event_names)
 
                 event_description = event_descriptions.get(event_name, "No description available for this event.")
-                event_picture = event_picture.get(event_name, DEFAULT_PICTURE)
+                event_picture = event_pictures.get(event_name, DEFAULT_PICTURE)
 
                 event_date = self.faker.date_between(start_date=date(2025, 1, 1), end_date=date(2025, 12, 31))
 
