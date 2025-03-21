@@ -49,7 +49,7 @@ class MembershipViewsTestCase(TestCase):
     def test_join_society_success(self):
         response = self.client.post(reverse('dashboard_from_mainpage', args=[self.society.id]))
         self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, {'success': True})
+        self.assertJSONEqual(response.content, {'success': True, 'message': 'Successfully joined society'})
         self.assertTrue(Membership.objects.filter(user=self.user, society=self.society).exists())
 
     def test_join_society_already_member(self):
