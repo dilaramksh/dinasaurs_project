@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from social_media.forms.society_creation_form import SocietyCreationForm
-from django.shortcuts import HttpResponse
 from social_media.models import Category, Competition, CompetitionParticipant
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponseForbidden
 import os
 from django.core.files.storage import default_storage
 
@@ -139,6 +139,7 @@ def student_events(request):
 def join_competition(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id, is_active=True)
     
+
     # joining not allowed if finalized
     if competition.is_finalized:
         return HttpResponseForbidden("You can no longer join this competition; it's finalized.")
