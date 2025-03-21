@@ -50,25 +50,25 @@ super_admin_fixture = [
 categories = [ 'cultural', 'academic_career', 'faith', 'political', 'sports', 'volunteering', 'other']
 
 society_names = [
-    'computingsoc', 'artsoc', 'gamessoc', 'musicsoc', 'filmsoc',
+    'computingsoc', 'artsoc', 'musicsoc', 'filmsoc',
     'basketballsoc', 'footballsoc', 'tennissoc', 'debatesoc',
     'roboticssoc', 'politicssoc', 'volunteeringsoc', 'literarysoc',
-    'photographysoc', 'dancesoc', 'codingclub', 'chesssoc',
-    'environmentalsoc', 'animessoc', 'theatresoc', 'boardgamessoc',
+    'photographysoc', 'dancesoc', 'codingsoc', 'chesssoc',
+    'environmentalsoc', 'animessoc', 'theatresoc', 'gamessoc',
     'musicproductionclub', 'fashionclub', 'writingclub', 'gamingsoc',
     'historicalsoc', 'scienceclub', 'socialimpactclub', 'mathssoc',
     'engineeringclub', 'geographysoc', 'languageclub', 'psychologysoc',
     'medicalsoc', 'lawclub', 'biologyclub', 'chemistrysoc', 'physicsclub',
-    'artclub', 'bookclubsoc', 'yogasoc', 'travelclubsoc', 'cyclingclub',
+    'artclub', 'bookclubsoc', 'yogasoc', 'travelsoc', 'cyclingclub',
     'runningclub', 'swimmingsoc', 'hikingclub', 'culturalsoc', 'diversitysoc',
-    'interfaithsoc', 'mentoringclub', 'startupsoc', 'aerospaceclub', 'AIclub',
+    'interfaithsoc', 'mentoringclub', 'startupsoc', 'aerospaceclub', 'aiclub',
     'dataanalyticsclub'
 ]
+
 
 society_category_mapping = {
     'computingsoc': 'academic_career',
     'artsoc': 'cultural',
-    'gamessoc': 'sports',
     'musicsoc': 'cultural',
     'filmsoc': 'cultural',
     'basketballsoc': 'sports',
@@ -80,13 +80,13 @@ society_category_mapping = {
     'volunteeringsoc': 'volunteering',
     'literarysoc': 'cultural',
     'photographysoc': 'cultural',
-    'dancesoc': 'cultural',
-    'codingclub': 'academic_career',
+    'dancesoc': 'sports',
+    'codingsoc': 'academic_career',
     'chesssoc': 'sports',
     'environmentalsoc': 'volunteering',
     'animessoc': 'cultural',
-    'theatresoc': 'cultural',
-    'boardgamessoc': 'sports',
+    'theatresoc': 'other',
+    'gamessoc': 'other',
     'musicproductionclub': 'cultural',
     'fashionclub': 'cultural',
     'writingclub': 'cultural',
@@ -107,7 +107,7 @@ society_category_mapping = {
     'artclub': 'cultural',
     'bookclubsoc': 'cultural',
     'yogasoc': 'sports',
-    'travelclubsoc': 'social',
+    'travelsoc': 'social',
     'cyclingclub': 'sports',
     'runningclub': 'sports',
     'swimmingsoc': 'sports',
@@ -118,34 +118,34 @@ society_category_mapping = {
     'mentoringclub': 'volunteering',
     'startupsoc': 'academic_career',
     'aerospaceclub': 'academic_career',
-    'AIclub': 'academic_career',
+    'aiclub': 'academic_career',
     'dataanalyticsclub': 'academic_career'
 }
+
 
 society_role_names = ['President', 'Vice President', 'Treasurer', 'Events Manager', 'Secretary', 'Member']
 
 society_event_mapping = {
     'computingsoc': ["Hackathon", "AI Workshop", "Coding Challenge"],
     'artsoc': ["Painting Workshop", "Sculpting Workshop", "Gallery Visit"],
-    'gamesoc': ["Gaming Night", "Board Games Evening", "Esports Tournament"],
     'musicsoc': ["Live Concert", "Music Production Workshop", "Open Mic Night"],
     'filmsoc': ["Movie Screening", "Filmmaking Workshop", "Director's Talk"],
     'basketballsoc': ["Basketball Tournament", "Skills Workshop", "Friendly Match"],
     'footballsoc': ["Football Tournament", "Tactics Workshop", "Charity Match"],
     'tennissoc': ["Tennis Coaching", "Doubles Tournament", "Racket Skills Workshop"],
     'debatesoc': ["Debate Competition", "Public Speaking Workshop", "Political Debate"],
-    'roboticsoc': ["Robot Building Workshop", "AI & Robotics Talk", "Hackathon"],
+    'roboticssoc': ["Robot Building Workshop", "AI & Robotics Talk", "Hackathon"],
     'politicssoc': ["Policy Discussion", "Guest Speaker Event", "Political Debate"],
-    'volunteersoc': ["Community Cleanup", "Fundraising Event", "Charity Drive"],
+    'volunteeringsoc': ["Community Cleanup", "Fundraising Event", "Charity Drive"],
     'literarysoc': ["Poetry Reading", "Book Club Meetup", "Creative Writing Workshop"],
     'photographysoc': ["Photography Walk", "Editing Workshop", "Portrait Session"],
-    'dancingsoc': ["Dance Battle", "Choreography Workshop", "Salsa Night"],
-    'codingclub': ["Code Jam", "Web Dev Workshop", "Python Bootcamp"],
+    'dancesoc': ["Dance Battle", "Choreography Workshop", "Salsa Night"],
+    'codingsoc': ["Code Jam", "Web Dev Workshop", "Python Bootcamp"],
     'chesssoc': ["Chess Tournament", "Grandmaster Talk", "Blitz Chess Night"],
     'environmentalsoc': ["Tree Planting", "Sustainability Seminar", "Climate Change Discussion"],
     'animessoc': ["Anime Marathon", "Cosplay Contest", "Manga Drawing Workshop"],
     'theatresoc': ["Drama Performance", "Acting Workshop", "Scriptwriting Session"],
-    'boardgamesoc': ["Tabletop Night", "Strategy Games Meetup", "Dungeons & Dragons Session"],
+    'gamessoc': ["Gaming Night", "Board Games Evening", "Esports Tournament"],
     'musicproductionclub': ["Studio Recording Session", "Mixing & Mastering Workshop", "DJ Night"],
     'fashionclub': ["Fashion Show", "Styling Workshop", "Design Your Own Outfit"],
     'writingclub': ["Short Story Contest", "Writing Retreat", "Poetry Open Mic"],
@@ -153,7 +153,7 @@ society_event_mapping = {
     'historicalsoc': ["History Lecture", "Museum Visit", "Debate on Historical Events"],
     'scienceclub': ["Science Fair", "Lab Experiment Showcase", "Guest Scientist Talk"],
     'socialimpactclub': ["Charity Fundraiser", "Volunteer Training", "Community Discussion"],
-    'mathsoc': ["Math Olympiad", "Puzzle Challenge", "Applied Mathematics Workshop"],
+    'mathssoc': ["Math Olympiad", "Puzzle Challenge", "Applied Mathematics Workshop"],
     'engineeringclub': ["3D Printing Workshop", "Engineering Hackathon", "Robotics Challenge"],
     'geographysoc': ["Map-Making Workshop", "Field Trip", "GIS Software Tutorial"],
     'languageclub': ["Language Exchange", "Culture Night", "Pronunciation Workshop"],
@@ -166,7 +166,7 @@ society_event_mapping = {
     'artclub': ["Sketching Meetup", "Mural Painting", "Photography & Art Fusion"],
     'bookclubsoc': ["Monthly Book Discussion", "Author Q&A", "Classic Literature Night"],
     'yogasoc': ["Morning Yoga", "Mindfulness Meditation", "Flexibility Training"],
-    'travelclubsoc': ["Weekend Trip", "Backpacking Workshop", "Cultural Exploration"],
+    'travelsoc': ["Weekend Trip", "Backpacking Workshop", "Cultural Exploration"],
     'cyclingclub': ["City Cycling Tour", "Bike Maintenance Workshop", "Mountain Biking Adventure"],
     'runningclub': ["Marathon Training", "Trail Running Session", "Endurance Challenge"],
     'swimmingsoc': ["Swim Meet", "Lifeguard Training", "Water Polo Tournament"],
@@ -177,9 +177,10 @@ society_event_mapping = {
     'mentoringclub': ["Career Guidance Session", "Peer Mentoring Workshop", "Alumni Networking"],
     'startupsoc': ["Pitch Night", "Entrepreneurship Workshop", "Startup Demo Day"],
     'aerospaceclub': ["Rocket Building", "Space Exploration Talk", "Flight Simulator Experience"],
-    'AIclub': ["Deep Learning Seminar", "AI Ethics Discussion", "Neural Networks Workshop"],
+    'aiclub': ["Deep Learning Seminar", "AI Ethics Discussion", "Neural Networks Workshop"],
     'dataanalyticsclub': ["Data Science Bootcamp", "Big Data Talk", "SQL Workshop"]
 }
+
 
 event_descriptions = {
     "Hackathon": "A coding competition where students build innovative software projects.",
