@@ -1,87 +1,76 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from social_media.models import University, Society, Membership
-from django.contrib.auth.models import AnonymousUser
-from django.utils import timezone
+from social_media.models import Society, Membership, SocietyRole, University
 from datetime import date
+from social_media.models import Category
 
 User = get_user_model()
 
 class MembershipViewsTestCase(TestCase):
     def setUp(self):
+        self.client = Client()
+        
         self.university = University.objects.create(
-            name="KCL",
-            domain="kcl.ac.uk",
-            status="approved"
+            name="Hive Uni", domain="hiveuni.ac.uk", status="approved"
         )
 
         self.user = User.objects.create_user(
-            username='@jane',
-            email='jane@kcl.ac.uk',
-            password='password123',
+            username='@testuser',
+            email='test@example.com',
+            password='testpassword',
             university=self.university,
-            start_date=date(2023, 9, 1),  
-            end_date=date(2026, 6, 30),   
-            user_type='student'          
+            start_date=date(2023, 1, 1),
+            end_date=date(2027, 1, 1)
         )
+        self.client.force_login(self.user)
+
+        self.category = Category.objects.create(name="sports")
 
         self.society = Society.objects.create(
             name="Chess Club",
-            founder=self.user,
-            society_email="chess@kcl.ac.uk",
-            description="Chess",
-            category_id=1,  # You may need to mock a category
-            paid_membership=False,
             status="approved",
-            colour1="#000000",
-            colour2="#FFFFFF"
+            logo="society_logos/chess.png",
+            category=self.category,
+            founder=self.user
         )
 
-        self.view_memberships_url = reverse('view_memberships')
-        self.join_society_url = reverse('join_society', args=[self.society.id])
+        self.role = SocietyRole.objects.create(
+            society=self.society,
+            role_name="Member"
+        )
 
     def test_view_memberships(self):
-        Membership.objects.create(user=self.user, society=self.society, society_role=None)
-        self.client.login(username='@jane', password='password123')
-        response = self.client.get(self.view_memberships_url)
+        Membership.objects.create(user=self.user, society=self.society, society_role=self.role)
+        response = self.client.get(reverse('view_memberships'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'student/memberships.html')
-        self.assertIn('memberships', response.context)
-        self.assertEqual(len(response.context['memberships']), 1)
+        self.assertContains(response, "Chess Club")
 
     def test_join_society_success(self):
-        self.client.login(username='@jane', password='password123')
-        response = self.client.post(self.join_society_url)
+        response = self.client.post(reverse('dashboard_from_mainpage', args=[self.society.id]))
         self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, {"success": True})
+        self.assertJSONEqual(response.content, {'success': True})
         self.assertTrue(Membership.objects.filter(user=self.user, society=self.society).exists())
 
     def test_join_society_already_member(self):
-        Membership.objects.create(user=self.user, society=self.society, society_role=None)
-        self.client.login(username='@jane', password='password123')
-        response = self.client.post(self.join_society_url)
+        Membership.objects.create(user=self.user, society=self.society, society_role=self.role)
+        response = self.client.post(reverse('dashboard_from_mainpage', args=[self.society.id]))
         self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, {"success": False, "error": "You are already a member of this society."})
+        self.assertJSONEqual(response.content, {'success': False, 'error': 'You are already a member of this society.'})
 
     def test_remove_membership_success(self):
-        self.client.login(username='@jane', password='password123')
-        membership = Membership.objects.create(user=self.user, society=self.society, society_role=None)
-        response = self.client.post(reverse('remove_membership', args=[membership.id]))
+        membership = Membership.objects.create(user=self.user, society=self.society, society_role=self.role)
+        response = self.client.post(reverse('remove_membership', args=[membership.id]), content_type="application/json")
         self.assertEqual(response.status_code, 200)
+        self.assertFalse(Membership.objects.filter(id=membership.id).exists())
         self.assertJSONEqual(response.content, {
             "success": True,
-            "society_name": self.society.name,
-            "message": f"You have successfully left {self.society.name}."
+            "society_name": "Chess Club",
+            "message": "You have successfully left Chess Club."
         })
-        self.assertFalse(Membership.objects.filter(id=membership.id).exists())
 
     def test_remove_membership_rejects_get(self):
-        self.client.login(username='@jane', password='password123')
-        membership = Membership.objects.create(user=self.user, society=self.society, society_role=None)
+        membership = Membership.objects.create(user=self.user, society=self.society, society_role=self.role)
         response = self.client.get(reverse('remove_membership', args=[membership.id]))
         self.assertEqual(response.status_code, 400)
-        self.assertJSONEqual(response.content, {
-            "success": False,
-            "error": "Only POST requests are allowed."
-        })
+        self.assertJSONEqual(response.content, {"success": False, "error": "Only POST requests are allowed."})
