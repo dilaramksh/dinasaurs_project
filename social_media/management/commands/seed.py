@@ -346,6 +346,106 @@ event_descriptions = {
     "SQL Workshop": "A workshop where students learn how to use SQL for data querying and management."
 }
 
+event_picture = {
+    "Hackathon": "events_picture/Hackathon.png",
+    "AI Workshop": "events_picture/AI_Workshop.png",
+    "Coding Challenge": "events_picture/Coding_Challenge.png",
+    "Painting Workshop": "events_picture/Painting_Workshop.png",
+    "Sculpting Workshop": "events_picture/Sculpting_Workshop.png",
+    "Gallery Visit": "events_picture/Gallery_Visit.png",
+    "Gaming Night": "events_picture/Gaming_Night.png",
+    "Board Games Evening": "events_picture/Board_Games_Evening.png",
+    "Esports Tournament": "events_picture/Esports_Tournament.png",
+    "Live Concert": "events_picture/Live_Concert.png",
+    "Music Production Workshop": "events_picture/Music_Production_Workshop.png",
+    "Open Mic Night": "events_picture/Open_Mic_Night.png",
+    "Movie Screening": "events_picture/Movie_Screening.png",
+    "Filmmaking Workshop": "events_picture/Filmmaking_Workshop.png",
+    "Director's Talk": "events_picture/Directors_Talk.png",
+    "Basketball Tournament": "events_picture/Basketball_Tournament.png",
+    "Skills Workshop": "events_picture/Skills_Workshop.png",
+    "Friendly Match": "events_picture/Friendly_Match.png",
+    "Football Tournament": "events_picture/Football_Tournament.png",
+    "Tactics Workshop": "events_picture/Tactics_Workshop.png",
+    "Charity Match": "events_picture/Charity_Match.png",
+    "Tennis Coaching": "events_picture/Tennis_Coaching.png",
+    "Doubles Tournament": "events_picture/Doubles_Tournament.png",
+    "Racket Skills Workshop": "events_picture/Racket_Skills_Workshop.png",
+    "Debate Competition": "events_picture/Debate_Competition.png",
+    "Public Speaking Workshop": "events_picture/Public_Speaking_Workshop.png",
+    "Political Debate": "events_picture/Political_Debate.png",
+    "Robot Building Workshop": "events_picture/Robot_Building_Workshop.png",
+    "AI & Robotics Talk": "events_picture/AI_&_Robotics_Talk.png",
+    "Policy Discussion": "events_picture/Policy_Discussion.png",
+    "Guest Speaker Event": "events_picture/Guest_Speaker_Event.png",
+    "Community Cleanup": "events_picture/Community_Cleanup.png",
+    "Fundraising Event": "events_picture/Fundraising_Event.png",
+    "Charity Drive": "events_picture/Charity_Drive.png",
+    "Poetry Reading": "events_picture/Poetry_Reading.png",
+    "Book Club Meetup": "events_picture/Book_Club_Meetup.png",
+    "Creative Writing Workshop": "events_picture/Creative_Writing_Workshop.png",
+    "Photography Walk": "events_picture/Photography_Walk.png",
+    "Editing Workshop": "events_picture/Editing_Workshop.png",
+    "Portrait Session": "events_picture/Portrait_Session.png",
+    "Dance Battle": "events_picture/Dance_Battle.png",
+    "Choreography Workshop": "events_picture/Choreography_Workshop.png",
+    "Salsa Night": "events_picture/Salsa_Night.png",
+    "Code Jam": "events_picture/Code_Jam.png",
+    "Web Dev Workshop": "events_picture/Web_Dev_Workshop.png",
+    "Python Bootcamp": "events_picture/Python_Bootcamp.png",
+    "Chess Tournament": "events_picture/Chess_Tournament.png",
+    "Grandmaster Talk": "events_picture/Grandmaster_Talk.png",
+    "Blitz Chess Night": "events_picture/Blitz_Chess_Night.png",
+    "Tree Planting": "events_picture/Tree_Planting.png",
+    "Sustainability Seminar": "events_picture/Sustainability_Seminar.png",
+    "Climate Change Discussion": "events_picture/Climate_Change_Discussion.png",
+    "Anime Marathon": "events_picture/Anime_Marathon.png",
+    "Cosplay Contest": "events_picture/Cosplay_Contest.png",
+    "Manga Drawing Workshop": "events_picture/Manga_Drawing_Workshop.png",
+    "Drama Performance": "events_picture/Drama_Performance.png",
+    "Acting Workshop": "events_picture/Acting_Workshop.png",
+    "Scriptwriting Session": "events_picture/Scriptwriting_Session.png",
+    "Tabletop Night": "events_picture/Tabletop_Night.png",
+    "Strategy Games Meetup": "events_picture/Strategy_Games_Meetup.png",
+    "Dungeons & Dragons Session": "events_picture/Dungeons_&_Dragons_Session.png",
+    "Studio Recording Session": "events_picture/Studio_Recording_Session.png",
+    "Mixing & Mastering Workshop": "events_picture/Mixing_&_Mastering_Workshop.png",
+    "DJ Night": "events_picture/DJ_Night.png",
+    "Fashion Show": "events_picture/Fashion_Show.png",
+    "Styling Workshop": "events_picture/Styling_Workshop.png",
+    "Design Your Own Outfit": "events_picture/Design_Your_Own_Outfit.png",
+    "Short Story Contest": "events_picture/Short_Story_Contest.png",
+    "Writing Retreat": "events_picture/Writing_Retreat.png",
+    "Poetry Open Mic": "events_picture/Poetry_Open_Mic.png",
+    "LAN Party": "events_picture/LAN_Party.png",
+    "Retro Gaming Night": "events_picture/Retro_Gaming_Night.png",
+    "Speedrun Tournament": "events_picture/Speedrun_Tournament.png",
+    "History Lecture": "events_picture/History_Lecture.png",
+    "Museum Visit": "events_picture/Museum_Visit.png",
+    "Debate on Historical Events": "events_picture/Debate_on_Historical_Events.png",
+    "Science Fair": "events_picture/Science_Fair.png",
+    "Lab Experiment Showcase": "events_picture/Lab_Experiment_Showcase.png",
+    "Guest Scientist Talk": "events_picture/Guest_Scientist_Talk.png",
+    "Charity Fundraiser": "events_picture/Charity_Fundraiser.png",
+    "Volunteer Training": "events_picture/Volunteer_Training.png",
+    "Community Discussion": "events_picture/Community_Discussion.png",
+    "Math Olympiad": "events_picture/Math_Olympiad.png",
+    "Puzzle Challenge": "events_picture/Puzzle_Challenge.png",
+    "Applied Mathematics Workshop": "events_picture/Applied_Mathematics_Workshop.png",
+    "3D Printing Workshop": "events_picture/3D_Printing_Workshop.png",
+    "Engineering Hackathon": "events_picture/Engineering_Hackathon.png",
+    "Robotics Challenge": "events_picture/Robotics_Challenge.png",
+    "Map-Making Workshop": "events_picture/Map-Making_Workshop.png",
+    "Field Trip": "events_picture/Field_Trip.png",
+    "GIS Software Tutorial": "events_picture/GIS_Software_Tutorial.png",
+    "Language Exchange": "events_picture/Language_Exchange.png",
+    "Culture Night": "events_picture/Culture_Night.png",
+    "Pronunciation Workshop": "events_picture/Pronunciation_Workshop.png",
+    "Big Data Talk": "events_picture/Big_Data_Talk.png",
+    "SQL Workshop": "events_picture/SQL_Workshop.png"
+}
+
+
 # potentially might not make sense?
 locations = ["Activity Room 1", 'Activity Room 2', 'Activity Room 3', 'Classroom 6.01', 'Classroom 6.02', 'Classroom 6.03',
              'Theatre 1', 'Theatre 2', 'Theatre 3', 'Off-Campus', 'Student Lounge', 'Auditorium', 'The Great Hall']
@@ -813,6 +913,7 @@ class Command(BaseCommand):
                 event_name = random.choice(event_names)
 
                 event_description = event_descriptions.get(event_name, "No description available for this event.")
+                event_picture = event_picture.get(event_name, DEFAULT_PICTURE)
 
                 event_date = self.faker.date_between(start_date=date(2025, 1, 1), end_date=date(2025, 12, 31))
 
@@ -825,6 +926,7 @@ class Command(BaseCommand):
                     'description': event_description,  
                     'date': event_date,
                     'location': random.choice(locations),
+                    'picture': event_picture,
                 }
 
                 self.stdout.write(f"Creating event: {event_data['name']} for {event_data['society'].name}")
@@ -847,7 +949,7 @@ class Command(BaseCommand):
                 description=data['description'],
                 date=data['date'],
                 location=data['location'],
-                picture=DEFAULT_PICTURE,
+                picture=data['picture'],
             )
             self.stdout.write(f"Created event: {event.name}")
         else:
