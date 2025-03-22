@@ -50,6 +50,21 @@ class UserModelTests(TestCase):
         user.save()
         self.assertEqual(user.username, '@defaultuser')
 
+    def test_username_defaults_to_email_when_missing(self):
+        """Test that username is set to email if not provided explicitly."""
+        user = User(
+            email='fallback@example.com',
+            first_name='Fallback',
+            last_name='User',
+            user_type='student',
+            university=self.university,
+            start_date=now().date(),
+            end_date=(now() + timedelta(days=365)).date()
+        )
+        user.set_password('12345')
+        user.save()
+        self.assertEqual(user.username, 'fallback@example.com')
+
     def test_user_full_name(self):
         """Test the full_name method."""
         self.assertEqual(self.user.full_name(), 'Test User')
