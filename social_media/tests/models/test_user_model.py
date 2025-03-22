@@ -3,6 +3,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils.timezone import now, timedelta
 from social_media.models import User, University
 from django.core.exceptions import ValidationError
+from social_media.models.user import DEFAULT_PROFILE_PICTURE
 
 class UserModelTests(TestCase):
     """Test cases for the User model."""
@@ -78,3 +79,10 @@ class UserModelTests(TestCase):
         """Test the mini_gravatar method."""
         mini_gravatar_url = self.user.mini_gravatar()
         self.assertIn('gravatar.com', mini_gravatar_url)
+
+    def test_delete_old_picture_called_for_custom_picture(self):
+        """Test that old profile picture is deleted if it's not default."""
+        new_pic = SimpleUploadedFile("new_pic.jpg", b"file_content", content_type="image/jpeg")
+        self.user.profile_picture = new_pic
+        self.user.save()
+        self.assertNotEqual(self.user.profile_picture.name, DEFAULT_PROFILE_PICTURE)
