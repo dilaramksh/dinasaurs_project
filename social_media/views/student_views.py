@@ -15,24 +15,18 @@ DEFAULT_SOCIETY_LOGO = "society_logos/default.png"
 
 #@login_required
 def help_page(request):
-    """
-    Render the help page.
-    """
+    """Render the help page. """
     return render(request, "partials/footer/help.html")
 
 
 #@login_required
 def society_browser(request):
-    """
-    Render the society browser page.
-    """
+    """Render the society browser page."""
     return render(request, 'student/society_browser.html')
 
 
 def society_creation_request(request):
-    """
-    Handle the society creation request form submission.
-    """
+    """Handle the society creation request form submission."""
     if request.method == 'POST':
         form = SocietyCreationForm(request.POST)
         if form.is_valid():
@@ -65,9 +59,7 @@ def society_creation_request(request):
 
 
 def view_societies(request):
-    """
-    Display the list of approved societies for the current user's university.
-    """
+    """ Display the list of approved societies for the current user's university."""
     student = request.user
     societies = Society.objects.filter(founder__university=student.university, status="approved").prefetch_related('posts')    
     categories = Category.objects.all()
@@ -95,9 +87,7 @@ def view_societies(request):
 
 
 def student_societies(request):
-    """
-    Display the list of societies the current student is a member of.
-    """
+    """Display the list of societies the current student is a member of."""
     student = request.user
     memberships = Membership.objects.filter(user=student)
     user_societies = [membership.society_role.society for membership in memberships]
