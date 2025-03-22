@@ -59,6 +59,9 @@ class MembershipViewsTestCase(TestCase):
         self.assertJSONEqual(response.content, {'success': False, 'error': 'You are already a member of this society.'})
 
     def test_remove_membership_success(self):
+        """
+        Test that a user can successfully remove their membership from a society via POST.
+        """
         membership = Membership.objects.create(user=self.user, society=self.society, society_role=self.role)
         response = self.client.post(reverse('remove_membership', args=[membership.id]), content_type="application/json")
         self.assertEqual(response.status_code, 200)
@@ -70,6 +73,9 @@ class MembershipViewsTestCase(TestCase):
         })
 
     def test_remove_membership_rejects_get(self):
+        """
+        Test that attempting to remove a membership using GET (instead of POST) is rejected.
+        """
         membership = Membership.objects.create(user=self.user, society=self.society, society_role=self.role)
         response = self.client.get(reverse('remove_membership', args=[membership.id]))
         self.assertEqual(response.status_code, 400)
