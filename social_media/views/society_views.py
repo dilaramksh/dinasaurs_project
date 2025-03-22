@@ -222,3 +222,10 @@ def edit_roles(request, society_id):
         'add_form': add_form,
         'delete_form': delete_form
     })
+
+def test(request):
+    events = Event.objects.all()
+    for e in events:
+        if e.picture.name == "events_picture/default.jpg":
+            print(e.name)
+    return render(request, 'society/test.html', {'events': events})
