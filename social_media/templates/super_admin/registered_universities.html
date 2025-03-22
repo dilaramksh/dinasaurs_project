@@ -32,17 +32,11 @@
                     <td>{{ university.domain }}</td>
                     <td><img src="{{ university.logo.url }}" alt="Logo" style="height: 50px;"></td>
                     <td>
-                        <!-- "Delete" / "Block" form -->
                         <form method="post" action="{% url 'update_university_status' university.id 'blocked' %}" onsubmit="return confirmDelete()">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-sm"> ❌ </button>
                         </form>
                         
-                        <!-- "Modify" form (POST) -->
-                        <form method="post" action="{% url 'modify_university' university.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-warning btn-sm"> Modify </button>
-                        </form>
                     </td>
                 </tr>
                 
@@ -82,17 +76,11 @@
                     <td>{{ university.domain }}</td>
                     <td><img src="{{ university.logo.url }}" alt="Logo" style="height: 50px;"></td>
                     <td>
-                        <!-- "Delete" / "Block" form -->
                         <form method="post" action="{% url 'update_university_status' university.id 'approved' %}">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-sm"> ✅ </button>
                         </form>
                         
-                        <!-- "Modify" form (POST) -->
-                        <form method="post" action="{% url 'modify_university' university.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-warning btn-sm"> Modify </button>
-                        </form>
                     </td>
                 </tr>
                 
