@@ -1,0 +1,59 @@
+{% extends 'base_content.html' %}
+{% load static %}
+{% block title %}Manage Competitions{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-3">Manage Competitions ({{ society.name }})</h2>
+    
+    <!-- Button to create a new competition -->
+    <a href="{% url 'create_competition' society_id %}" class="btn btn-success mb-3">
+        Create New Competition
+    </a>
+
+    <!-- Competitions Table -->
+    <div class="card shadow">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">All Competitions</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-warning">
+                        <tr>
+                            <th>Name</th>
+                            <th>Ongoing?</th>
+
+                            <th>Point-Based?</th>
+                            <th>Finalized?</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for comp in competitions %}
+                        <tr>
+                            <td><strong>{{ comp.name }}</strong></td>
+                            <td>{{ comp.is_ongoing }}</td>
+
+                            <td>{{ comp.is_point_based }}</td>
+                            <td>{{ comp.is_finalized }}</td>
+                            <td>
+                                <a href="{% url 'competition_details' comp.id %}" class="btn btn-primary btn-sm">
+                                    Details
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-3">
+                                No competitions found for this society.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

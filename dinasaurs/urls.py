@@ -18,8 +18,6 @@ from django.contrib import admin
 from django.urls import path
 from social_media.views import *
 #from django.conf import settings
-
-# import below this line should not be necessary -- add view to init.py
 from social_media.views.society_views import *
 from social_media.views.student_views import *
 from social_media.views.super_admin_views import *
@@ -59,6 +57,10 @@ urlpatterns = [
     path('student/societies', student_societies, name='student_societies'),
     path('student/memberships/', view_memberships, name='view_memberships'),
     path('remove-membership/<int:membership_id>/', remove_membership, name='remove_membership'),
+    path('competitions/view_competitions/', view_competitions, name='view_competitions'),
+    path('competitions/view_my_competitions/', view_my_competitions, name='view_my_competitions'),
+    path('competitions/<int:competition_id>/leave/', leave_competition, name='leave_competition'),
+    path('competitions/<int:competition_id>/join/', join_competition, name='join_competition'),
 
     #society paths
     path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
@@ -73,6 +75,12 @@ urlpatterns = [
     path('society/<int:society_id>/manage_committee', manage_committee, name='manage_committee'),
     path('society/<int:society_id>/update_committee', update_committee, name='update_committee'),
     path('society/<int:society_id>/edit_roles/', edit_roles, name='edit_roles'),
+    #path('competitions/<int:society_id>/record_match_results/', record_match_results, name='record_match_results'),
+    path('competitions/<int:competition_id>/competition_details/', competition_details, name='competition_details'),
+    path('competitions/<int:competition_id>/set_up_round/', set_up_round, name='set_up_round'),
+    path('competitions/<int:society_id>/create_competition/', create_competition, name='create_competition'),
+    path('competitions/<int:competition_id>/finalize_competition/', finalize_competition, name='finalize_competition'),
+    path('competitions/<int:society_id>/manage_competitions/', manage_competitions, name='manage_competitions'),
 
     #uni-admin paths
     path("university/dashboard/change_status/<int:society_id>/", change_society_status, name="change_society_status"),
@@ -83,8 +91,6 @@ urlpatterns = [
     path('super_admin/requests/', university_requests, name='university_requests'),
     path('super_admin/university_requests/<int:university_id>/<str:new_status>/', update_university_status, name='update_university_status'),
     path('super_admin/registered_universities/', registered_universities, name='registered_universities'),
-    path('super_admin/registered_universities/<int:university_id>/', modify_university, name='modify_university'),
-    
 
     path('society/<int:society_id>/colors/', get_latest_society_colors, name='get_latest_society_colors'),
 

@@ -8,7 +8,6 @@ class FooterViewTests(TestCase):
         """Set up test data before each test."""
         self.client = Client()
 
-
     def test_contact_us_view(self):
         """Test the contact us view."""
         response = self.client.get(reverse('contact_us'))

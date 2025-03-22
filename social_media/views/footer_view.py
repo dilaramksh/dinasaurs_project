@@ -1,17 +1,5 @@
 from django.shortcuts import render
 
-def stay_connected(request):
-    """
-    Render the stay connected page.
-
-    Args:
-        request (HttpRequest): The request object.
-
-    Returns:
-        HttpResponse: The rendered stay connected page.
-    """
-    return render(request, 'partials/footer/stay_connected.html')
-
 def contact_us(request):
     """
     Render the contact us page.

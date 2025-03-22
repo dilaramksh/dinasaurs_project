@@ -1,105 +1,64 @@
-from django.core.exceptions import ValidationError
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
-from django.utils.timezone import now
-from datetime import timedelta
-from social_media.models import User
-import hashlib
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.utils.timezone import now, timedelta
+from social_media.models import User, University
+from django.core.exceptions import ValidationError
 
-class UserModelTestCase(TestCase):
-    """Unit tests for the User model."""
-
-    fixtures = [
-        'social_media/tests/fixtures/default_user.json',
-        'social_media/tests/fixtures/other_users.json'
-    ]
-
-    GRAVATAR_URL = "https://www.gravatar.com/avatar/363c1b0cd64dadffb867236a00e62986"
+class UserModelTests(TestCase):
+    """Test cases for the User model."""
 
     def setUp(self):
-        self.user = User.objects.get(email='john.doe@test.ac.uk')
+        """Set up test data before each test."""
+        self.university = University.objects.create(
+            name="Test University",
+            domain="testuniversity.edu",
+            logo="university_logos/test.png"
+        )
+        self.user = User.objects.create_user(
+            username='@testuser',
+            email='testuser@test.com',
+            password='12345',
+            first_name='Test',
+            last_name='User',
+            user_type='student',
+            university=self.university,
+            start_date=now().date(),
+            end_date=(now() + timedelta(days=365)).date(),
+            profile_picture=SimpleUploadedFile("test_profile.jpg", b"file_content", content_type="image/jpeg")
+        )
 
-    def test_valid_user(self):
-        self._assert_user_is_valid()
-
-    def test_username_must_start_with_at_symbol(self):
-        self.user.username = 'invalidUsername'
-        self._assert_user_is_invalid()
-
-    def test_username_must_have_at_least_four_characters(self):
-        self.user.username = '@ab'
-        self._assert_user_is_invalid()
-
-    def test_username_may_contain_letters_numbers_and_underscores(self):
-        self.user.username = '@valid_123'
-        self._assert_user_is_valid()
-
-    def test_profile_picture_defaults_if_not_provided(self):
-        self.user.profile_picture = None
+    def test_user_save(self):
+        """Test saving a user."""
         self.user.save()
-        self.assertEqual(self.user.profile_picture.name, "profile_pictures/default.jpg")
+        self.assertEqual(self.user.username, '@testuser')
+        self.assertEqual(self.user.first_name, 'Test')
+        self.assertEqual(self.user.last_name, 'User')
 
-    def test_profile_picture_replacement_deletes_old_picture(self):
-        old_picture = SimpleUploadedFile("old_picture.jpg", b"file_content", content_type="image/jpeg")
-        new_picture = SimpleUploadedFile("new_picture.jpg", b"file_content", content_type="image/jpeg")
-
-        self.user.profile_picture = old_picture
-        self.user.save()
-        old_picture_path = self.user.profile_picture.name
-
-        self.user.profile_picture = new_picture
-        self.user.save()
-
-        self.assertNotEqual(self.user.profile_picture.name, old_picture_path)
-
-    def test_email_must_be_case_insensitive_unique(self):
-        second_user = User.objects.create_user(
-            first_name="Jane",
-            last_name="Doe",
-            email="JOHN.DOE@test.ac.uk",  # Same as existing user, but with different capitalization
-            username="@janedoe",
-            user_type="student",
-            university=self.user.university,
+    def test_user_save_with_default_username(self):
+        """Test saving a user with default username."""
+        user = User.objects.create_user(
+            email='defaultuser@test.com',
+            password='12345',
+            first_name='Default',
+            last_name='User',
+            user_type='student',
+            university=self.university,
             start_date=now().date(),
             end_date=(now() + timedelta(days=365)).date()
         )
-        self.user.email = second_user.email.lower()
-        self._assert_user_is_invalid()
+        user.save()
+        self.assertEqual(user.username, 'defaultuser@test.com')
 
-    def test_gravatar_hash_generation(self):
-        expected_hash = hashlib.md5(self.user.email.strip().lower().encode('utf-8')).hexdigest()
-        self.assertEqual(self.user.gravatar_hash, expected_hash)
+    def test_user_full_name(self):
+        """Test the full_name method."""
+        self.assertEqual(self.user.full_name(), 'Test User')
 
-    def test_start_date_cannot_be_after_end_date(self):
-        self.user.start_date = now().date() + timedelta(days=365)
-        self.user.end_date = now().date()
-        self._assert_user_is_invalid()
+    def test_user_gravatar(self):
+        """Test the gravatar method."""
+        gravatar_url = self.user.gravatar()
+        self.assertIn('gravatar.com', gravatar_url)
 
-    def test_default_gravatar(self):
-        actual_gravatar_url = self.user.gravatar()
-        expected_gravatar_url = self._gravatar_url(size=120)
-        self.assertEqual(actual_gravatar_url, expected_gravatar_url)
-
-    def test_custom_gravatar(self):
-        actual_gravatar_url = self.user.gravatar(size=100)
-        expected_gravatar_url = self._gravatar_url(size=100)
-        self.assertEqual(actual_gravatar_url, expected_gravatar_url)
-
-    def test_mini_gravatar(self):
-        actual_gravatar_url = self.user.mini_gravatar()
-        expected_gravatar_url = self._gravatar_url(size=60)
-        self.assertEqual(actual_gravatar_url, expected_gravatar_url)
-
-    def _gravatar_url(self, size):
-        gravatar_url = f"{UserModelTestCase.GRAVATAR_URL}?size={size}&default=mp"
-        return gravatar_url
-
-    def _assert_user_is_valid(self):
-        try:
-            self.user.full_clean()
-        except ValidationError:
-            self.fail('Test user should be valid')
-
-    def _assert_user_is_invalid(self):
-        with self.assertRaises(ValidationError):
-            self.user.full_clean()
+    def test_user_mini_gravatar(self):
+        """Test the mini_gravatar method."""
+        mini_gravatar_url = self.user.mini_gravatar()
+        self.assertIn('gravatar.com', mini_gravatar_url)

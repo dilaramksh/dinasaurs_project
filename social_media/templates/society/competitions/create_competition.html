@@ -1,0 +1,25 @@
+{% extends 'base_content.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Create a New Competition{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header text-center">
+                    <h4>Create a New Competition</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {% include 'partials/bootstrap_form.html' %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
