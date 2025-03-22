@@ -8,7 +8,7 @@ class UniversityModelTestCase(TestCase):
     def setUp(self):
         # Setup some initial valid data
         self.valid_name = "Test University"
-        self.valid_domain = "@test.ac.uk"
+        self.valid_domain = "testuni.ac.uk"
 
     def test_create_valid_university(self):
         """Test that a university with valid name and domain can be created."""
@@ -30,13 +30,6 @@ class UniversityModelTestCase(TestCase):
         duplicate = University(name="Another University", domain=self.valid_domain)
         with self.assertRaises(ValidationError):
             duplicate.full_clean()
-
-    def test_invalid_domain_missing_at_symbol(self):
-        """Test that a domain missing '@' raises a validation error."""
-        invalid_domain = "test.ac.uk"
-        university = University(name="Invalid Domain University", domain=invalid_domain)
-        with self.assertRaises(ValidationError):
-            university.full_clean()
 
     def test_invalid_domain_too_short(self):
         """Test that a domain with fewer than 3 characters before '.ac.uk' raises a validation error."""
@@ -78,3 +71,8 @@ class UniversityModelTestCase(TestCase):
         university = University(name="Whitespace Domain University", domain=invalid_domain)
         with self.assertRaises(ValidationError):
             university.full_clean()
+
+    def test_str_method_returns_name(self):
+        university = University.objects.create(name="Test Uni", domain="testuni.ac.uk")
+        self.assertEqual(str(university), "Test Uni")
+
