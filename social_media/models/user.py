@@ -68,13 +68,13 @@ class User(AbstractUser):
         if self.profile_picture and self.profile_picture.name != DEFAULT_PROFILE_PICTURE:
             default_storage.delete(self.profile_picture.name)
 
-    def save(self, *args, **kwargs):
-        """Handles deleting old profile pictures before saving a new one"""
+    """def save(self, *args, **kwargs):
+            Handles deleting old profile pictures before saving a new one
         if self.pk:  # Check if instance exists
             old_instance = User.objects.get(pk=self.pk)
             if old_instance.profile_picture != self.profile_picture:
                 old_instance.delete_old_picture()
-        super().save(*args, **kwargs)
+        super().save(*args, **kwargs)"""
     
 
     def full_name(self):
