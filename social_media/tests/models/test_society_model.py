@@ -81,6 +81,12 @@ class SocietyModelTestCase(TestCase):
         society = Society.objects.create(**data)
         self.assertTrue(society.paid_membership)
 
+    def test_paid_membership_field_false(self):
+        """Test that paid_membership can be False."""
+        data = dict(self.valid_society_data, paid_membership=False)
+        society = Society.objects.create(**data)
+        self.assertFalse(society.paid_membership)
+        
     def test_status_choices(self):
         """Test that invalid status raises ValidationError."""
         invalid_data = dict(self.valid_society_data, status="invalid_status")
