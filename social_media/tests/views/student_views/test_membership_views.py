@@ -41,18 +41,29 @@ class MembershipViewsTestCase(TestCase):
         )
 
     def test_view_memberships(self):
+        """
+        Test that the view_memberships page displays societies
+        the logged-in user is a member of.
+        """
         Membership.objects.create(user=self.user, society=self.society, society_role=self.role)
         response = self.client.get(reverse('view_memberships'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Chess Club")
 
     def test_join_society_success(self):
+        """
+        Test that a user can successfully join a society
+        they are not already a member of.
+        """
         response = self.client.post(reverse('dashboard_from_mainpage', args=[self.society.id]))
         self.assertEqual(response.status_code, 200)
         self.assertJSONEqual(response.content, {'success': True, 'message': 'Successfully joined society.'})
         self.assertTrue(Membership.objects.filter(user=self.user, society=self.society).exists())
 
     def test_join_society_already_member(self):
+        """
+        Test that a user cannot join a society they are already a member of.
+        """
         Membership.objects.create(user=self.user, society=self.society, society_role=self.role)
         response = self.client.post(reverse('dashboard_from_mainpage', args=[self.society.id]))
         self.assertEqual(response.status_code, 400)
