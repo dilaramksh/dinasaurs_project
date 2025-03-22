@@ -9,3 +9,9 @@ from .society import Society
 from .university import University
 from .user import User
 from .post import Post
+from .competition import (
+    Competition,
+    CompetitionParticipant,
+    Match
+)
+

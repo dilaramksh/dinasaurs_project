@@ -6,14 +6,12 @@ from django.views.generic.edit import FormView
 from social_media.forms import SignUpForm
 import os
 from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
 from social_media.models import User
 
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
 class SignUpView(LoginProhibitedMixin, FormView):
     """Display the sign up screen and handle sign ups."""
-
     form_class = SignUpForm
     template_name = "general/sign_up.html"
     redirect_when_logged_in_url = settings.REDIRECT_URL_WHEN_LOGGED_IN
@@ -40,8 +38,10 @@ class SignUpView(LoginProhibitedMixin, FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
+        """Handle invalid sign up form submission."""
         print(f"Form errors: {form.errors}")
         return self.render_to_response(self.get_context_data(form=form))
 
     def get_success_url(self):
+        """Return the redirect URL after a successful sign up."""
         return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)

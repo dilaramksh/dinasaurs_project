@@ -1,0 +1,78 @@
+{% extends 'base_content.html' %}
+{% load static %}
+
+{% block title %}Your Competitions{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-3">Your Competitions</h2>
+    
+    {% if competitions %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+            <thead class="table-warning">
+                <tr>
+                <th>Name</th>
+                <th>Ongoing?</th>
+                <th>Team-Based?</th>
+                <th>Point-Based?</th>
+                <th>Finalized?</th>
+                <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for comp in competitions %}
+                <tr>
+                <td>{{ comp.name }}</td>
+                <td>
+                    {% if comp.is_ongoing and not comp.eliminated %}
+                    <span class="text-success">Yes</span>
+                    {% else %}
+                    <span class="text-muted">No</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if comp.is_team_based %}
+                    <span class="text-info">Team</span>
+                    {% else %}
+                    <span class="text-secondary">Individual</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if comp.is_point_based %}
+                    <span class="text-info">Points</span>
+                    {% else %}
+                    <span class="text-secondary">Winner-based</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if comp.is_finalized %}
+                    <span class="badge bg-danger">Finalized</span>
+                    {% else %}
+                    <span class="badge bg-success">Not Finalized</span>
+                    {% endif %}
+                </td>
+    
+
+                <td>
+                    <!-- Details button -->
+                    <a href="{% url 'competition_details' comp.id %}" class="btn btn-primary btn-sm me-2">Details</a>
+                    
+                    <!-- Leave button if competition isnt finalized-->
+                    {% if not comp.is_finalized %}
+                    <form method="post" action="{% url 'leave_competition' comp.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Leave</button>
+                    </form>
+                    {% endif %}
+                </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    {% else %}
+      <p class="text-center text-muted">You are not currently in any competitions.</p>
+    {% endif %}
+</div>
+{% endblock %}

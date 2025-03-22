@@ -1,4 +1,4 @@
-from django.core.exceptions import ValidationError
+from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.files.storage import default_storage
 from unittest.mock import patch
@@ -6,9 +6,13 @@ from django.test import TestCase
 from django.utils.timezone import now
 
 from social_media.models import User, University
+from django.utils.timezone import now, timedelta
+from social_media.models import User, University
+from django.core.exceptions import ValidationError
 
-class UserModelTestCase(TestCase):
-    """Unit tests for the User model."""
+class UserModelTests(TestCase):
+    """Test cases for the User model."""
+
     def setUp(self):
         self.university = University.objects.create(
             name="Test University",

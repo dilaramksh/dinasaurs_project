@@ -7,14 +7,17 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def super_admin_dashboard(request):
+    """Display the super admin dashboard."""
     number_pending = University.objects.filter(status="pending").count()
     return render(request, 'super_admin/super_admin_dashboard.html', {'number_pending': number_pending})
 
 def university_requests(request):
+    """Display the list of pending university requests."""
     pending_universities = University.objects.filter(status="pending")
     return render(request, 'super_admin/university_requests.html', {'pending_universities': pending_universities})
 
 def update_university_status(request, university_id, new_status):
+    """Update the status of a university. """
     if request.method == "POST":
         university = get_object_or_404(University, id=university_id)
         university.status = new_status
@@ -25,6 +28,7 @@ def update_university_status(request, university_id, new_status):
     return HttpResponseForbidden("Invalid request method.")
 
 def registered_universities(request):
+    """ Display the list of registered and blocked universities. """
     context = {
         'registered': University.objects.filter(status="approved"),
         'blocked': University.objects.filter(status="blocked")

@@ -14,6 +14,7 @@ from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
 import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,7 +31,7 @@ SECRET_KEY = 'django-insecure-048$05y)ar037ha8w&3!(6%@264f+(y4f@zo*v%#bbya(kj5a0
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    #'*.vercel.app',
+    '*.vercel.app',
     #'hivesociety.vercel.app',
     'localhost',
     '127.0.0.1',
@@ -173,7 +174,11 @@ AUTH_USER_MODEL = 'social_media.User'
 
 # Login URL for redirecting users from login protected views
 LOGIN_URL = 'log_in'
-# URL where @login_prohibited redirects to (needs to be added)
 REDIRECT_URL_WHEN_LOGGED_IN = 'dashboard'
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
+
+if 'test' in sys.argv:  # Check if running tests
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    AWS_ACCESS_KEY_ID = ''
+    AWS_SECRET_ACCESS_KEY = ''

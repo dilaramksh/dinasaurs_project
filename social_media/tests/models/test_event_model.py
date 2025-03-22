@@ -80,3 +80,16 @@ class EventModelTest(TestCase):
         )
         with self.assertRaises(ValidationError):
             event.save()
+
+    def test_event_without_society_raises_error(self):
+        """Test that an event without a society raises a ValidationError."""
+        event = Event(
+            name="No Society Event",
+            society=None,
+            description="This should fail.",
+            date=now().date() + timedelta(days=1),
+            location="Nowhere"
+        )
+        with self.assertRaises(ValidationError) as context:
+            event.save()
+        self.assertIn("associated society", str(context.exception))

@@ -1,20 +1,17 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from social_media.models import Society, Membership, Event
 from social_media.models.colour_history import SocietyColorHistory
 from social_media.models.post import Post
 from django.utils import timezone
 from django.http import JsonResponse
 
-
 #@login_required
 def society_mainpage(request, society_id):
     """Display the webpage for a specific society and allow users to join."""
     society = get_object_or_404(Society, pk=society_id)
-
-    committee_members = [membership.user for 
-                         membership in Membership.objects.filter(society=society) 
-                         if membership.is_committee_member()]
+    
+    memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
+    committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
     
     society_events = society.event_set.filter(date__gte=timezone.now()).order_by('date')
     
@@ -29,6 +26,7 @@ def society_mainpage(request, society_id):
 
     context = {
         'society': society,
+        'society_id': society_id,
         'committee_members': committee_members,
         'society_events': society_events,
         'posts': posts,
@@ -43,7 +41,8 @@ def society_mainpage(request, society_id):
 
 
 def get_latest_society_colors(request, society_id):
-    society = Society.objects.get(pk=society_id)
+    """Get the latest colors of a specific society."""
+    society = get_object_or_404(Society, pk=society_id)
     latest_color = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at').first()
 
     return JsonResponse({

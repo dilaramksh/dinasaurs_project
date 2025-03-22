@@ -4,7 +4,7 @@ from django.db import models
 from .user import User
 from .category import Category
 
-DEFAULT_SOCIETY_LOGO = "society_logos/default.jpg"
+DEFAULT_SOCIETY_LOGO = "society_logos/default.png"
 
 class Society(models.Model):
     """Model used for information on societies"""
@@ -75,4 +75,4 @@ class Society(models.Model):
         self.save()
 
     def __str__(self):
-        return self.name.title()
+        return self.name

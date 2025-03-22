@@ -11,59 +11,27 @@ DEFAULT_UNIVERSITY_LOGO = "university_logos/default.png"
 
 @login_prohibited
 def homepage(request):
-    """
-    Render the homepage.
-
-    Args:
-        request (HttpRequest): The request object.
-
-    Returns:
-        HttpResponse: The rendered homepage.
-    """
+    """Render the homepage. """
     return render(request, 'homepage.html')
 
 def discover_universities(request):
-    """
-    Render the discover universities page with a list of approved universities.
-
-    Args:
-        request (HttpRequest): The request object.
-
-    Returns:
-        HttpResponse: The rendered discover universities page with the list of approved universities.
-    """
+    """Render the discover universities page with a list of approved universities."""
     universities = University.objects.filter(status='approved')
     return render(request, 'homepage/discover_universities.html', {'universities': universities})
 
 def why_join_society(request):
-    """
-    Render the why join society page with popular societies, their first members, and upcoming events.
-
-    Args:
-        request (HttpRequest): The request object.
-
-    Returns:
-        HttpResponse: The rendered why join society page with context data.
-    """
+    """Render the why join society page with popular societies, their first members, and upcoming events."""
     popular_societies = Society.objects.annotate(member_count=Count("membership")).order_by("-member_count")[:4]
 
     def get_first_member(society):
-        """
-        Get the first member of a society.
-
-        Args:
-            society (Society): The society object.
-
-        Returns:
-            Membership: The first membership object of the society, or None if no members exist.
-        """
+        """ Get the first member of a society.  """
         if society:
             return Membership.objects.filter(society=society).order_by("id").first()
         return None
 
-    art_society = get_object_or_404(Society, pk=2)
-    gaming_society = get_object_or_404(Society, pk=3)
-    swim_society = get_object_or_404(Society, pk=45)
+    art_society = Society.objects.filter(name__icontains="art").first()
+    gaming_society = Society.objects.filter(name__icontains="gaming").first()
+    swim_society = Society.objects.filter(name__icontains="swim").first()
 
     art_member = get_first_member(art_society)
     swim_member = get_first_member(swim_society)
@@ -81,27 +49,11 @@ def why_join_society(request):
     return render(request, 'homepage/why_join_society.html', context)
 
 def latest_news(request):
-    """
-    Render the latest news page.
-
-    Args:
-        request (HttpRequest): The request object.
-
-    Returns:
-        HttpResponse: The rendered latest news page.
-    """
+    """Render the latest news page. """
     return render(request, 'homepage/latest_news.html')
 
 def register_your_university(request):
-    """
-    Handle the university registration form submission.
-
-    Args:
-        request (HttpRequest): The request object.
-
-    Returns:
-        HttpResponse: The rendered register your university page with the form.
-    """
+    """ Handle the university registration form submission. """
     if request.method == 'POST':
         form = UniversityCreationForm(request.POST, request.FILES)
 

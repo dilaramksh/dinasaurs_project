@@ -8,5 +8,5 @@ from .customisation_form import CustomisationForm
 from .event_creation_form import EventCreationForm
 from .post_creation_form import PostForm
 from .society_role_form import SocietyRoleForm, DeleteRoleForm
-from .reassign_committee_form import CommitteeReassignForm
 from .university_creation_form import UniversityCreationForm
+from .team_creation_form import TeamCreationForm
