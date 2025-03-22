@@ -42,8 +42,6 @@ def society_creation_request(request):
             else:
                 society.logo = DEFAULT_SOCIETY_LOGO
 
-
-
             society.save()
             messages.success(request, "Your society request has been submitted for approval.")
             return redirect("dashboard") 
@@ -58,7 +56,6 @@ def society_creation_request(request):
 
 def view_societies(request):
     student = request.user
-    print(student.university)
     societies = Society.objects.filter(founder__university=student.university, status="approved").prefetch_related('posts')    
     categories = Category.objects.all()
 

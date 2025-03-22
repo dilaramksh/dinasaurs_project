@@ -27,7 +27,7 @@ from social_media.views.footer_view import *
 from social_media.views.homepage_view import *
 from social_media.views.dashboard_views import *
 #from social_media.views.student_feed_view import *
-#from social_media.views.membership_view import join_society
+from social_media.views.membership_view import join_society
 from social_media.views.membership_view import remove_membership
 
 urlpatterns = [
@@ -60,7 +60,7 @@ urlpatterns = [
     path('student/view_society/', view_societies, name='view_societies'),
     path('student/societies', student_societies, name='student_societies'),
     path('student/memberships/', view_memberships, name='view_memberships'),
-    #path('society/<int:society_id>/join/', join_society, name='join_society'),
+    path('society/<int:society_id>/join/', join_society, name='join_society'),
     path('remove-membership/<int:membership_id>/', remove_membership, name='remove_membership'),
 
     #society paths
@@ -76,7 +76,8 @@ urlpatterns = [
     path('society/<int:society_id>/manage_committee', manage_committee, name='manage_committee'),
     path('society/<int:society_id>/update_committee', update_committee, name='update_committee'),
     path('society/<int:society_id>/edit_roles/', edit_roles, name='edit_roles'),
-    #path('society/<int:society_id>/join/', join_society, name='join_society'),
+    path('society/<int:society_id>/join/', join_society, name='join_society'),
+    path('society/test/', test, name='test'),
 
     #uni-admin paths
     path("university/dashboard/change_status/<int:society_id>/", change_society_status, name="change_society_status"),
@@ -87,7 +88,6 @@ urlpatterns = [
     path('super_admin/requests/', university_requests, name='university_requests'),
     path('super_admin/university_requests/<int:university_id>/<str:new_status>/', update_university_status, name='update_university_status'),
     path('super_admin/registered_universities/', registered_universities, name='registered_universities'),
-    path('super_admin/registered_universities/<int:university_id>/', modify_university, name='modify_university'),
     
 
     path('society/<int:society_id>/colors/', get_latest_society_colors, name='get_latest_society_colors'),
