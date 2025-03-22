@@ -7,28 +7,11 @@ from django.contrib import messages
 
 @login_required
 def view_memberships(request):
-    """Display all memberships of a student user"""
+    """Display all approved society memberships for the currently logged-in student."""
     memberships = Membership.objects.filter(user=request.user, society_role__society__status="approved")  
     print(memberships)
     return render(request, 'student/memberships.html', {'memberships': memberships})
-
-
-@login_required
-def join_society(request, society_id):
-        """Allow a student to join a society"""
-    society = get_object_or_404(Society, pk=society_id)
     
-    # Check if the student is already a member
-    if Membership.objects.filter(user=request.user, society=society).exists():
-        return JsonResponse({'success': False, 'error': 'You are already a member of this society.'})
-    
-    # Otherwise, create a new membership 
-    try:
-        Membership.objects.create(user=request.user, society=society, society_role=None)  # New members should start with no specific role assigned
-        return JsonResponse({'success': True})
-    except ValidationError as e:
-        return JsonResponse({'success': False, 'error': str(e)})
-
 @login_required
 def remove_membership(request, membership_id):
     if request.method != "POST": # Only allow membership removal through POST request to prevent accidental deletion
