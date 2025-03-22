@@ -61,9 +61,10 @@ def why_join_society(request):
             return Membership.objects.filter(society=society).order_by("id").first()
         return None
 
-    art_society = get_object_or_404(Society, pk=2)
-    gaming_society = get_object_or_404(Society, pk=3)
-    swim_society = get_object_or_404(Society, pk=45)
+    # More robust queries
+    art_society = Society.objects.filter(name__icontains="art").first()
+    gaming_society = Society.objects.filter(name__icontains="gaming").first()
+    swim_society = Society.objects.filter(name__icontains="swim").first()
 
     art_member = get_first_member(art_society)
     swim_member = get_first_member(swim_society)
