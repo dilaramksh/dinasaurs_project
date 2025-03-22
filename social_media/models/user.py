@@ -36,9 +36,14 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['email']
 
     def save(self, *args, **kwargs):
-        self.delete_old_picture() 
-        if not self.username:  # Automatically set username to email if not provided
+        if not self.username:
             self.username = self.email
+
+        if self.pk:
+            old_instance = User.objects.get(pk=self.pk)
+            if old_instance.profile_picture != self.profile_picture:
+                old_instance.delete_old_picture()
+
         self.first_name = self.first_name.title()
         self.last_name = self.last_name.title()
         super().save(*args, **kwargs)
