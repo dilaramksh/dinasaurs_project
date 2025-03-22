@@ -44,4 +44,17 @@ class SocietyRoleModelTestCase(TestCase):
         with self.assertRaises(ValidationError):
             role.full_clean()
 
+    def test_str_method(self):
+        """Test the __str__ method returns expected format."""
+        role = SocietyRole.objects.create(society=self.society, role_name="Treasurer")
+        self.assertEqual(str(role), f"{self.society.name} - Treasurer")
+
+    def test_is_committee_role(self):
+        """Test the is_committee_role method behavior."""
+        committee_role = SocietyRole(society=self.society, role_name="President")
+        member_role = SocietyRole(society=self.society, role_name="Member")
+        self.assertTrue(committee_role.is_committee_role())
+        self.assertFalse(member_role.is_committee_role())
+
+
 
