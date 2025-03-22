@@ -88,4 +88,4 @@ class EventModelTest(TestCase):
         )
         with self.assertRaises(ValidationError) as context:
             event.save()
-    self.assertIn("associated society", str(context.exception))
+        self.assertIn("associated society", str(context.exception))
