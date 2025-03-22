@@ -35,15 +35,6 @@ class User(AbstractUser):
     profile_picture = models.ImageField(upload_to="profile_pictures/", blank=True, null=True, default=DEFAULT_PROFILE_PICTURE)
     REQUIRED_FIELDS = ['email']
 
-    """
-    def save(self, *args, **kwargs):
-        self.delete_old_picture() 
-        if not self.username:  # Automatically set username to email if not provided
-            self.username = self.email
-        self.first_name = self.first_name.title()
-        self.last_name = self.last_name.title()
-        super().save(*args, **kwargs)"""
-
     def save(self, *args, **kwargs):
         if not self.username:
             self.username = self.email
@@ -67,15 +58,6 @@ class User(AbstractUser):
         """Deletes the old profile picture from S3 if it's not the default"""
         if self.profile_picture and self.profile_picture.name != DEFAULT_PROFILE_PICTURE:
             default_storage.delete(self.profile_picture.name)
-
-    """def save(self, *args, **kwargs):
-            Handles deleting old profile pictures before saving a new one
-        if self.pk:  # Check if instance exists
-            old_instance = User.objects.get(pk=self.pk)
-            if old_instance.profile_picture != self.profile_picture:
-                old_instance.delete_old_picture()
-        super().save(*args, **kwargs)"""
-    
 
     def full_name(self):
         """Return a string containing the user's full name."""
