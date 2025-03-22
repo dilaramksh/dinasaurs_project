@@ -32,9 +32,11 @@
                                     <td>
                                         <ul>
                                             {% for member in committee_members %}
-                                                {% if member.membership_set.first.society_role.role_name == role.role_name %}
-                                                    <li>{{ member.first_name }} {{ member.last_name }}</li>
-                                                {% endif %}
+                                                {% for membership in member.membership_set.all %}
+                                                    {% if membership.society_id == society_id and membership.society_role.role_name == role.role_name%}
+                                                        <li>{{ member.first_name }} {{ member.last_name }}</li>
+                                                    {% endif %}
+                                                {% endfor %}
                                             {% endfor %}
                                         </ul>
                                     </td>

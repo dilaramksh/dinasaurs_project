@@ -174,6 +174,7 @@ def update_committee(request, society_id):
                 user_membership = Membership.objects.filter(
                     society=society, user=selected_member
                 ).first()
+
                 if user_membership:
                     user_membership.society_role = role
                     user_membership.save()
@@ -186,9 +187,7 @@ def update_committee(request, society_id):
                     )
 
         return redirect("view_members", society_id=society.id)
-
     return redirect("manage_committee", society_id=society.id)
-
 
 
 def edit_roles(request, society_id):
