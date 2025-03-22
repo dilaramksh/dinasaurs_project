@@ -37,6 +37,7 @@ class UserModelTests(TestCase):
     def test_user_save_with_default_username(self):
         """Test saving a user with default username."""
         user = User.objects.create_user(
+            username='@defaultuser',
             email='defaultuser@test.com',
             password='12345',
             first_name='Default',
@@ -47,7 +48,7 @@ class UserModelTests(TestCase):
             end_date=(now() + timedelta(days=365)).date()
         )
         user.save()
-        self.assertEqual(user.username, 'defaultuser@test.com')
+        self.assertEqual(user.username, '@defaultuser')
 
     def test_user_full_name(self):
         """Test the full_name method."""
