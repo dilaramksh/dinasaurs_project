@@ -1,0 +1,35 @@
+{% extends 'base_content.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}View Societies{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-3">Discover Societies</h2>
+    <p class="text-center text-muted">Explore student societies at your university!</p>
+
+    <!-- Event Cards -->
+    <div class="row">
+        {% for event in events %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm society-card">
+                {% if event.picture and event.picture.url %}
+                    <img src="{{ event.picture.url }}" class="card-img-top" alt="{{ event.name }}">
+                {% else %}
+                    <img src="{% static 'events_picture/default.jpg' %}" class="card-img-top" alt="Default Image">
+                {% endif %}
+                <div class="card-body text-center">
+                    <h5 class="card-title society-title">{{ event.name }}</h5>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">No events found matching your criteria.</p>
+        {% endfor %}
+    </div>
+
+<!-- Add FontAwesome for search icon -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+{% endblock %}

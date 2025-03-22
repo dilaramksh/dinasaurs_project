@@ -31,7 +31,3 @@ def registered_universities(request):
         'blocked': University.objects.filter(status="blocked")
     }
     return render(request, 'super_admin/registered_universities.html', context)
-
-def modify_university(request, university_id):
-    university = get_object_or_404(University, id=university_id)
-    return render(request, 'super_admin/modify_university.html', {'university': university})
