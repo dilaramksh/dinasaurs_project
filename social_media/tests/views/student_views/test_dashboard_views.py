@@ -159,7 +159,7 @@ class DashboardViewTestCase(TestCase):
         login_success = self.client.login(username='@paulpoe', password='Password123')
         self.assertTrue(login_success)
         self.assertEqual(self.uni_admin2.university.status, 'other')
-        response = self.client.get(reverse('dashboard'))
+        response = self.client.get(reverse('dashboard')  + '?status=invalid_status')
         self.assertEqual(response.status_code, 200)
         self.assertIn('societies', response.context)
         self.assertIn('chosen_status', response.context)
