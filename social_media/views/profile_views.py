@@ -13,18 +13,7 @@ import os
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
-    """
-    Display user profile editing screen, and handle profile modifications.
-
-    This view allows users to update their profile information, including their profile picture.
-    It handles the removal of the old profile picture (if necessary) and uploads the new one to S3.
-
-    Attributes:
-        model (Model): The model to be updated.
-        template_name (str): The template to be used for rendering the view.
-        form_class (Form): The form class to be used for updating the profile.
-    """
-
+    """Display user profile editing screen, and handle profile modifications."""
     model = User
     template_name = "general/profile.html"
     form_class = UserForm
@@ -32,26 +21,12 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         """
         Return the user to be updated.
-
-        This method retrieves the current user to be updated.
-
-        Returns:
-            User: The current user.
         """
         return self.request.user
 
     def form_valid(self, form):
         """
         Handle valid profile update, remove old picture (if necessary), and upload new one.
-
-        This method handles the profile update process, including the removal of the old profile picture
-        and the upload of the new one to S3.
-
-        Args:
-            form (Form): The form containing the updated profile information.
-
-        Returns:
-            HttpResponse: The response after a successful form submission.
         """
         user = self.request.user
         new_picture = self.request.FILES.get('profile_picture')
@@ -92,14 +67,6 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def form_invalid(self, form):
         """
         Handle invalid profile update.
-
-        This method handles the case where the profile update form is invalid.
-
-        Args:
-            form (Form): The form containing the invalid profile information.
-
-        Returns:
-            HttpResponse: The response after an unsuccessful form submission.
         """
         messages.error(self.request, "Profile could not be updated.")
         return super().form_invalid(form)
@@ -107,23 +74,12 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         """
         Return the redirect URL after a successful update.
-
-        This method returns the URL to redirect to after a successful profile update.
-
-        Returns:
-            str: The URL to redirect to.
         """
         return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
 
 class PasswordView(LoginRequiredMixin, FormView):
     """
     Display password change screen and handle password change requests.
-
-    This view allows users to change their password.
-
-    Attributes:
-        template_name (str): The template to be used for rendering the view.
-        form_class (Form): The form class to be used for changing the password.
     """
 
     template_name = 'general/password.html'
@@ -133,13 +89,6 @@ class PasswordView(LoginRequiredMixin, FormView):
         """
         Pass the current user to the password change form.
 
-        This method passes the current user to the password change form.
-
-        Args:
-            **kwargs: Additional keyword arguments.
-
-        Returns:
-            dict: The keyword arguments for the form.
         """
         kwargs = super().get_form_kwargs(**kwargs)
         kwargs.update({'user': self.request.user})
@@ -148,14 +97,6 @@ class PasswordView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         """
         Handle valid form by saving the new password.
-
-        This method handles the case where the password change form is valid and saves the new password.
-
-        Args:
-            form (Form): The form containing the new password.
-
-        Returns:
-            HttpResponse: The response after a successful form submission.
         """
         form.save()
         login(self.request, self.request.user)
@@ -165,10 +106,6 @@ class PasswordView(LoginRequiredMixin, FormView):
         """
         Redirect the user after successful password change.
 
-        This method returns the URL to redirect to after a successful password change.
-
-        Returns:
-            str: The URL to redirect to.
         """
         messages.add_message(self.request, messages.SUCCESS, "Password updated")
         return reverse('dashboard')
@@ -177,13 +114,6 @@ def log_out(request):
     """
     Log out the current user.
 
-    This view logs out the current user and redirects to the homepage.
-
-    Args:
-        request (HttpRequest): The request object.
-
-    Returns:
-        HttpResponse: A redirect to the homepage.
     """
     logout(request)
     return redirect('homepage')
