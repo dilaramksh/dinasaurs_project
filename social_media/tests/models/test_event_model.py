@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
+
 from django.utils.timezone import now
 from datetime import timedelta
 from social_media.models import Event, Society, Category, User, University
@@ -9,17 +10,21 @@ class EventModelTest(TestCase):
 
     def setUp(self):
         """Set up test data before each test."""
-        self.university = University.objects.create(name="Test University")
+        self.university = University.objects.create(
+            name="Test University",
+            domain='test.ac.uk',
+        )
+
         self.user = User.objects.create_user(
-            username="testuser",
+            username="@testuser",
             password="testpass",
-            email="testuser@example.com",
+            email="testuser@test.ac.uk",
             first_name="Test",
             last_name="User",
             user_type="student",
             university=self.university,
-            start_date=now().date(),
-            end_date=now().date()
+            start_date='2023-09-23',
+            end_date='2026-05-06',
         )
         self.category = Category.objects.create(name="Test Category")
         self.society = Society.objects.create(
@@ -61,8 +66,7 @@ class EventModelTest(TestCase):
         self.event.date = now().date() - timedelta(days=1)
         with self.assertRaises(ValidationError):
             self.event.save()
-
-
+    
     def test_event_for_non_approved_society(self):
         """Test that an event cannot be created for a non-approved society."""
         self.society.status = "pending"

@@ -42,12 +42,11 @@ class UserFormTestCase(TestCase):
 
     def test_valid_user_form(self):
         form = UserForm(data=self.form_input, instance=self.user)  # Pass instance
-        if not form.is_valid():
-            print(form.errors)  # Debugging: Print errors if form fails
         self.assertTrue(form.is_valid())
 
 
     def test_form_uses_model_validation(self):
+        
         self.form_input['username'] = 'badusername'
         form = UserForm(data=self.form_input)
         self.assertFalse(form.is_valid())

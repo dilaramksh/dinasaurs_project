@@ -30,7 +30,6 @@ class Event(models.Model):
     def save(self, *args, **kwargs):
         """
         Ensure that the event date is in the future and the society is approved before saving.
-
         Raises:
             ValidationError: If the event date is in the past, the society is not associated,
                              or the society is not approved.

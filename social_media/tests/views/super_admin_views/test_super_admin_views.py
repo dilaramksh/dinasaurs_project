@@ -58,14 +58,30 @@ class SuperAdminViewsTest(TestCase):
             logo="university_logos/default.png"
         )
 
+    # def test_super_admin_dashboard(self):
+    #     """
+    #     Ensure the super_admin_dashboard view returns the correct template 
+    #     and context data (number_pending).
+    #     """
+    #     response = self.client.get(reverse("dashboard"))
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTemplateUsed(response, "student/student_dashboard.html")
+
+    
     def test_super_admin_dashboard(self):
         """
         Ensure the super_admin_dashboard view returns the correct template 
         and context data (number_pending).
         """
-        response = self.client.get(reverse("dashboard"))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "student/student_dashboard.html")
+        url = reverse("super_admin_dashboard")  # Ensure this matches the name in your urls.py
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)  # Ensure the page loads successfully
+        self.assertTemplateUsed(response, "super_admin/super_admin_dashboard.html")
+
+        # Check that the context contains the correct count of pending universities
+        number_pending = response.context["number_pending"]
+        self.assertEqual(number_pending, 1)  # Since we created one pending university in setUp
 
 
 
@@ -133,16 +149,3 @@ class SuperAdminViewsTest(TestCase):
 
         self.assertEqual(len(blocked), 1)
         self.assertEqual(blocked[0].name, "Blocked University")
-
-    # def test_modify_university(self):
-    #     """
-    #     Ensure the modify_university view returns the correct university 
-    #     in context and correct template.
-    #     """
-    #     url = reverse("modify_university", kwargs={"university_id": self.uni_blocked.id})
-    #     response = self.client.get(url)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, "super_admin/modify_university.html")
-
-    #     university_context = response.context["university"]
-    #     self.assertEqual(university_context.name, "Blocked University")

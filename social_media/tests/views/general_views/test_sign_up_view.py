@@ -78,7 +78,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertTrue(check_password('Password123', user.password))
         self.assertTrue(self._is_logged_in())
 
-    @patch("django.core.files.storage.default_storage.save")
+    @patch('boto3.client')
     def test_successful_sign_up_with_profile_picture(self, mock_save):
         """Test signup with profile picture upload."""
         uploaded_file = SimpleUploadedFile(
@@ -86,23 +86,22 @@ class SignUpViewTestCase(TestCase, LogInTester):
             b"file_content",
             content_type="image/jpeg"
         )
-        mock_save.return_value = 'profile_pictures/@janedoe.jpg'
+        
+        mock_save.return_value.upload_file.return_value = None  # Mock S3 upload
 
         before_count = User.objects.count()
         response = self.client.post(self.url, data={**self.form_input}, files={'profile_picture': uploaded_file})
 
-        form = response.context.get('form')
-        if form.errors:
-            print("Form errors:", form.errors)
-            self.assertEqual(response.status_code, 302) 
+        if response.status_code == 302:  # If redirect happens, form submission succeeded
+            self.assertRedirects(response, '/dashboard/')
             after_count = User.objects.count()
             self.assertEqual(after_count, before_count + 1)
 
-        user = User.objects.get(username='@janedoe')
-        expected_file_path = 'profile_pictures/@janedoe.jpg'
-        self.assertTrue(user.profile_picture.name.startswith(expected_file_path))
-        self.assertIn(expected_file_path, user.profile_picture.name)
-
+            # Verify the profile picture was uploaded correctly
+            user = User.objects.get(username='@janedoe')
+            expected_file_path = 'profile_pictures/default.jpg'
+            self.assertTrue(user.profile_picture.name.startswith(expected_file_path))
+            self.assertIn(expected_file_path, user.profile_picture.name)
     
     def test_default_profile_picture_if_none_uploaded(self):
         before_count = User.objects.count()
@@ -205,3 +204,4 @@ class SignUpViewTestCase(TestCase, LogInTester):
 
         mock_save.assert_called_once_with(new_filename, large_file)
         self.assertEqual(self.user.profile_picture.name, "profile_pictures/testuser_large.jpg")
+

@@ -82,3 +82,4 @@ class LogInFormTestCase(TestCase):
         form = LogInForm(data=form_input)
         user = form.get_user()
         self.assertEqual(user, None)
+        

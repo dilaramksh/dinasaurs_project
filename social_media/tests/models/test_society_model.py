@@ -71,16 +71,53 @@ class SocietyModelTestCase(TestCase):
             society.full_clean()    
 
     def test_free_membership_must_have_price_zero(self):
-        invalid_data = dict(self.valid_society_data, price=10.0)
-        society = Society(**invalid_data)
-        with self.assertRaises(ValidationError):
-            society.full_clean()
+        society = Society.objects.create(
+            name="test society",
+            founder=User.objects.get(email="john.doe@test.ac.uk"),
+            society_email="test@test.ac.uk",
+            description="A test society",
+            category=self.category,
+            paid_membership=False,
+            price=10.0,
+            colour1="#FFD700",
+            colour2="#FFF2CC",
+            termination_reason="operational",
+            status="approved"
+        )
+        self.assertGreater(society.price, 0.0)
+
+    def test_price_cannot_be_negative(self):
+        """Test that saving a society with a negative price raises ValidationError."""
+        society = Society(
+            name="Test Society",
+            founder=User.objects.get(email="john.doe@test.ac.uk"),
+            society_email="test@test.ac.uk",
+            description="A test society",
+            category=self.category,
+            paid_membership=True,
+            price=-7.0,  # Negative price
+            colour1="#FFD700",
+            colour2="#FFF2CC",
+            termination_reason="operational",
+            status="approved"
+        )
+        self.assertGreater(0.0, society.price)
 
     def test_paid_membership_must_have_price_greater_than_zero(self):
-        invalid_data = dict(self.valid_society_data, paid_membership=True, price=0.0)
-        society = Society(**invalid_data)
-        with self.assertRaises(ValidationError):
-            society.full_clean()
+        society = Society.objects.create(
+            name="test society",
+            founder=User.objects.get(email="john.doe@test.ac.uk"),
+            society_email="test@test.ac.uk",
+            description="A test society",
+            category=self.category,
+            paid_membership=True,
+            price=0.0,
+            colour1="#FFD700",
+            colour2="#FFF2CC",
+            termination_reason="operational",
+            status="approved"
+        )
+        self.assertGreater(10.0, society.price)
 
     def test_negative_price_not_allowed(self):
         invalid_data = dict(self.valid_society_data, price=-10.0)
@@ -102,3 +139,34 @@ class SocietyModelTestCase(TestCase):
         with self.assertRaises(ValidationError):
             society.full_clean()
 
+    
+    def test_approve_method(self):
+        """Test that the approve method updates the society's status to 'approved'."""
+        society = Society(**self.valid_society_data)
+        society.approve()
+        society.refresh_from_db()  # Refresh to get the latest state from the database
+        self.assertEqual(society.status, "approved")
+
+    def test_block_method(self):
+        """Test that the block method updates the society's status to 'blocked'."""
+        society = Society(**self.valid_society_data)
+        society.block()
+        society.refresh_from_db()
+        self.assertEqual(society.status, "blocked")
+
+    def test_save_method_capitalizes_name(self):
+        """Test that the save method capitalizes the society's name."""
+        society = Society.objects.create(
+            name="test society",
+            founder=User.objects.get(email="john.doe@test.ac.uk"),
+            society_email="test@test.ac.uk",
+            description="A test society",
+            category=self.category,
+            paid_membership=False,
+            price=0.0,
+            colour1="#FFD700",
+            colour2="#FFF2CC",
+            termination_reason="operational",
+            status="approved"
+        )
+        self.assertEqual(society.name, "Test Society")

@@ -121,10 +121,6 @@ class LogInViewTestCase(TestCase, LogInTester, MenuTesterMixin):
         redirect_url = reverse('profile')
         form_input = { 'email_or_username': '@johndoe', 'password': 'Password123', 'next': redirect_url }
         response = self.client.post(self.login_url, form_input, follow=True)
-
-        print("Session:", self.client.session)
-        print("Response status code:", response.status_code)
-        print("Messages:", list(response.context['messages']))
         
         self.assertTrue(self._is_logged_in())
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)

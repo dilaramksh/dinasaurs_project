@@ -54,12 +54,11 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
             )
             user.profile_picture = f"profile_pictures/{user.username}{file_extension}"
 
-        
-
         if(not user.profile_picture):
-            user.profile_picture = 'profile_pictures/default.jpg'
+            user.profile_picture = DEFAULT_PROFILE_PICTURE
 
         user.save()
+        user.refresh_from_db()
 
         messages.success(self.request, "Profile updated successfully!")
         return super().form_valid(form)

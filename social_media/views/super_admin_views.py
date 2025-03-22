@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def super_admin_dashboard(request):
     number_pending = University.objects.filter(status="pending").count()
-
     return render(request, 'super_admin/super_admin_dashboard.html', {'number_pending': number_pending})
 
 def university_requests(request):

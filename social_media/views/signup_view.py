@@ -19,9 +19,7 @@ class SignUpView(LoginProhibitedMixin, FormView):
     redirect_when_logged_in_url = settings.REDIRECT_URL_WHEN_LOGGED_IN
 
     def form_valid(self, form):
-        print(f"Users before: {User.objects.count()}")
         user = form.save()
-        print(f"Users after form.save(): {User.objects.count()}")
 
         uploaded_file = self.request.FILES.get("profile_picture")
 
@@ -36,7 +34,6 @@ class SignUpView(LoginProhibitedMixin, FormView):
             user.profile_picture = DEFAULT_PROFILE_PICTURE
 
         user.save()
-        print(f"Users after user.save(): {User.objects.count()}")
 
         login(self.request, user)
 

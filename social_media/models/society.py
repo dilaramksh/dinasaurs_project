@@ -60,7 +60,7 @@ class Society(models.Model):
     
     def save(self, *args, **kwargs):
         self.name = self.name.title()  # Capitalize the name before saving
-        if self.price < 0:
+        if self.price < 0.0:
             raise ValidationError("Price cannot be negative.")
         super().save(*args, **kwargs)
     
