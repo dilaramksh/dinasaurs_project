@@ -87,6 +87,20 @@ class SocietyModelTestCase(TestCase):
         society = Society.objects.create(**data)
         self.assertFalse(society.paid_membership)
         
+    def test_save_method_triggers_validation_error_for_negative_price(self):
+        """Ensure save() raises ValidationError for negative price and hits line 64."""
+        data = dict(self.valid_society_data, price=-10.0)
+        society = Society(**data)
+
+        # Temporarily bypass validation so we hit save() directly
+        society.full_clean = lambda *a, **kw: None
+
+        with self.assertRaises(ValidationError) as context:
+            society.save(force_insert=True)  # Ensure it's not an update call
+
+        self.assertIn("Price cannot be negative.", str(context.exception))
+
+
     def test_status_choices(self):
         """Test that invalid status raises ValidationError."""
         invalid_data = dict(self.valid_society_data, status="invalid_status")
