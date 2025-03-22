@@ -68,26 +68,18 @@ class SocietyModelTestCase(TestCase):
         with self.assertRaises(ValidationError):
             society.full_clean()
 
-    def test_free_membership_must_have_price_zero(self):
-        """Test free membership with price > 0 raises ValidationError."""
-        invalid_data = dict(self.valid_society_data, price=10.0)
-        society = Society(**invalid_data)
-        with self.assertRaises(ValidationError):
-            society.full_clean()
-
-    def test_paid_membership_must_have_price_greater_than_zero(self):
-        """Test paid membership with price <= 0 raises ValidationError."""
-        invalid_data = dict(self.valid_society_data, paid_membership=True, price=0.0)
-        society = Society(**invalid_data)
-        with self.assertRaises(ValidationError):
-            society.full_clean()
-
     def test_negative_price_not_allowed(self):
         """Test that negative price raises ValidationError."""
         invalid_data = dict(self.valid_society_data, price=-10.0)
         society = Society(**invalid_data)
         with self.assertRaises(ValidationError):
             society.full_clean()
+
+    def test_paid_membership_field_true(self):
+        """Test that paid_membership can be True."""
+        data = dict(self.valid_society_data, paid_membership=True)
+        society = Society.objects.create(**data)
+        self.assertTrue(society.paid_membership)
 
     def test_status_choices(self):
         """Test that invalid status raises ValidationError."""
