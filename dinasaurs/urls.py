@@ -18,8 +18,6 @@ from django.contrib import admin
 from django.urls import path
 from social_media.views import *
 #from django.conf import settings
-
-# import below this line should not be necessary -- add view to init.py
 from social_media.views.society_views import *
 from social_media.views.student_views import *
 from social_media.views.super_admin_views import *
@@ -83,8 +81,6 @@ urlpatterns = [
     path('super_admin/requests/', university_requests, name='university_requests'),
     path('super_admin/university_requests/<int:university_id>/<str:new_status>/', update_university_status, name='update_university_status'),
     path('super_admin/registered_universities/', registered_universities, name='registered_universities'),
-    path('super_admin/registered_universities/<int:university_id>/', modify_university, name='modify_university'),
-    
 
     path('society/<int:society_id>/colors/', get_latest_society_colors, name='get_latest_society_colors'),
 
