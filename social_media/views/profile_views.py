@@ -13,10 +13,7 @@ import os
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
-    """
-    Display user profile editing screen, and handle profile modifications.
-    """
-
+    """Display user profile editing screen, and handle profile modifications."""
     model = User
     template_name = "general/profile.html"
     form_class = UserForm
