@@ -63,7 +63,7 @@
                                 <div class="societies-list overflow-auto" style="max-height: 170px;">
                                     {% if memberships %}
                                         {% for membership in memberships %}
-                                            <a href="{% url 'student_societies' %}" class="text-decoration-none">
+                                            <a href="{% url 'society_mainpage' society_id=membership.society.id %}" class="text-decoration-none">
                                                 <div class="card mb-2 p-3 text-center border-light shadow-sm"
                                                      style="background-color: #FFF2CC; border-radius: 8px;">
                                                     <strong class="text-dark">{{ membership.society.name }}</strong>

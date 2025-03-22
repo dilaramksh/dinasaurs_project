@@ -10,7 +10,7 @@ import os
 from django.core.files.storage import default_storage
 
 
-DEFAULT_SOCIETY_LOGO = "society_logos/default.jpg"
+DEFAULT_SOCIETY_LOGO = "society_logos/default.png"
 
 #@login_required
 def help_page(request):
