@@ -7,13 +7,10 @@ from social_media.forms import LogInForm
 from social_media.mixins import LoginProhibitedMixin
 
 class LogInView(LoginProhibitedMixin, View):
-    """
-    Display login screen and handle user login.
-    """
+    """ Display login screen and handle user login."""
 
     http_method_names = ['get', 'post']
 
-    # Ensures that users that are already logged in will not access the login page. 
     redirect_when_logged_in_url = settings.REDIRECT_URL_WHEN_LOGGED_IN
 
     def get(self, request):
@@ -21,9 +18,7 @@ class LogInView(LoginProhibitedMixin, View):
         return self.render()
 
     def post(self, request):
-        """
-        Handle log in attempt.
-        """
+        """Handle log in attempt."""
         form = LogInForm(request.POST)
         self.next = request.POST.get('next') or settings.REDIRECT_URL_WHEN_LOGGED_IN
         user = form.get_user()

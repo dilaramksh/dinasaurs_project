@@ -15,9 +15,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Max
 
 def event_creation(request, society_id):
-    """
-    Handle the creation of a new event for a society.
-    """
+    """ Handle the creation of a new event for a society. """
     society = get_object_or_404(Society, pk=society_id)
     if request.method == 'POST':
         form = EventCreationForm(request.POST)
@@ -40,9 +38,7 @@ def event_creation(request, society_id):
     return render(request, 'society/event_creation.html', {'form': form})
 
 def terminate_society(request, society_id):
-    """
-    Handle the termination of a society.
-    """
+    """Handle the termination of a society."""
     society = get_object_or_404(Society, pk=society_id)
 
     if request.method == "POST":
@@ -174,7 +170,6 @@ def manage_competitions(request, society_id):
     if not user_membership or not user_membership.is_committee_member():
         return HttpResponseForbidden("You are not a committee member in this society.")
 
-    # All competitions for this society
     competitions = Competition.objects.filter(society=society)
 
     return render(
@@ -187,7 +182,6 @@ def manage_competitions(request, society_id):
         }
     )
 
-# comp detail show scoreboard
 @login_required
 def finalize_competition(request, competition_id):
     """Allows for finalizing lineup so no new joins/leaves."""
@@ -196,7 +190,7 @@ def finalize_competition(request, competition_id):
     if not user_membership or not user_membership.is_committee_member():
         return HttpResponseForbidden("You are not a committee member in this society.")
 
-    # Finalize the competition lineup
+
     competition.is_finalized = True
     competition.save()
     return redirect("competition_details", competition_id=competition_id)
@@ -211,7 +205,6 @@ def competition_details(request, competition_id):
     user_membership = Membership.objects.filter(user=request.user, society=society).first()
     is_admin = bool(user_membership and user_membership.is_committee_member())
 
-    # If the user is a participant in this competition
     participant = CompetitionParticipant.objects.filter(
         user=request.user, competition=competition
     ).first()
@@ -237,7 +230,7 @@ def competition_details(request, competition_id):
         "participant": participant,
     }
 
-    # Collect uneliminated participants 
+
     context["uneliminated_parts"] = competition.participants.filter(is_eliminated=False)
 
     return render(request, "society/competitions/competition_details.html", context)
@@ -258,13 +251,13 @@ def set_up_round(request, competition_id):
     
     available_parts = CompetitionParticipant.objects.filter(competition=competition, is_eliminated=False)
 
-    # Find the current round based on existing finished matches
+ 
     last_round = competition.matches.filter(is_finished=True).aggregate(Max("round_number"))["round_number__max"]
-    round_number = last_round + 1 if last_round else 1  # start with 1 if no finished matches
+    round_number = last_round + 1 if last_round else 1  
 
     existing_matches = Match.objects.filter(competition=competition, round_number=round_number)
 
-    # Track participants already in matches for this round
+
     selected_participants = set()
     for match in existing_matches:
         if match.participant1:
@@ -285,13 +278,12 @@ def set_up_round(request, competition_id):
 
 
             if opp1_key not in request.POST or opp2_key not in request.POST:
-                break  # no more match forms in POST data
+                break  
 
             opp1_id = request.POST.get(opp1_key)
             opp2_id = request.POST.get(opp2_key)
             i += 1
 
-            # Skip if either is blank or if they're the same
             if not opp1_id or not opp2_id or opp1_id == opp2_id:
                 continue
             
