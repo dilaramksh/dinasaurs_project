@@ -496,17 +496,16 @@ event_pictures = {
     "Monthly Book Discussion": "events_picture/Monthly_Book_Discussion.png",
     "Flexibility Training": "events_picture/Flexibility_Training.png",
     "Morning Yoga": "events_picture/Morning_Yoga.png",
-    "Weekend Trip": "events_picture/Weekend_Trip.png"
-
-    # "Mountain Biking Adventure": "events_picture/Mountain_Biking_Adventure.png",
-    # "Endurance Challenge": "events_picture/Endurance_Challenge.png",
-    # "Water Polo Tournament": "events_picture/Water_Polo_Tournament.png",
-    # "Nature Trail Walk": "events_picture/Nature_Trail_Walk.png",
-    # "International Food Fair": "events_picture/International_Food_Fair.png",
-    # "Cultural Showcase": "events_picture/Cultural_Showcase.png",
-    # "Spiritual Reflection Retreat": "events_picture/Spiritual_Reflection_Retreat.png",
-    # "Rocket Building": "events_picture/Rocket_Building.png",
-    # "Data Science Bootcamp": "events_picture/Data_Science_Bootcamp.png"
+    "Weekend Trip": "events_picture/Weekend_Trip.png",
+    "Mountain Biking Adventure": "events_picture/Mountain_Biking_Adventure.png",
+    "Endurance Challenge": "events_picture/Endurance_Challenge.png",
+    "Water Polo Tournament": "events_picture/Water_Polo_Tournament.png",
+    "Nature Trail Walk": "events_picture/Nature_Trail_Walk.png",
+    "International Food Fair": "events_picture/International_Food_Fair.png",
+    "Cultural Showcase": "events_picture/Cultural_Showcase.png",
+    "Spiritual Reflection Retreat": "events_picture/Spiritual_Reflection_Retreat.png",
+    "Rocket Building": "events_picture/Rocket_Building.png",
+    "Data Science Bootcamp": "events_picture/Data_Science_Bootcamp.png"
 }
 
 
