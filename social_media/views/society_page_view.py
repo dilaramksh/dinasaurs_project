@@ -11,10 +11,9 @@ from django.http import JsonResponse
 def society_mainpage(request, society_id):
     """Display the webpage for a specific society and allow users to join."""
     society = get_object_or_404(Society, pk=society_id)
-
-    committee_members = [membership.user for 
-                         membership in Membership.objects.filter(society=society) 
-                         if membership.is_committee_member()]
+    
+    memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
+    committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
     
     society_events = society.event_set.filter(date__gte=timezone.now()).order_by('date')
     
@@ -29,6 +28,7 @@ def society_mainpage(request, society_id):
 
     context = {
         'society': society,
+        'society_id': society_id,
         'committee_members': committee_members,
         'society_events': society_events,
         'posts': posts,

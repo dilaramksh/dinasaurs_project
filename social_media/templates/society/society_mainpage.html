@@ -78,14 +78,19 @@
                     <div class="col-md-4 col-sm-6 mb-4">
                         <div class="card text-center" style="border-radius: 15px; overflow: hidden;">
                             <div class="card-body bg-white" style="border-radius: 15px;">
-                                <h5 class="card-title">{{ member.membership_set.first.society_role.role_name }}</h5>
+                                {% for membership in member.membership_set.all %}
+                                    {% if membership.society_id == society_id and membership.society_role.is_committee_role %}
+                                        <h5 class="card-title">{{ membership.society_role.role_name }}</h5>
+                                    {% endif %}
+                                {% endfor %}
                                 {% if member.profile_picture %}
-                                    <img src="{{ member.profile_picture.url }}" alt="Profile Picture" width="50" height="50"
-                                        style="border-radius: 50%; margin: 10px 0;">
+                                    <img src="{{ member.profile_picture.url }}" 
+                                    alt="Profile Picture" width="50" height="50" 
+                                    style="border-radius: 50%; margin: 10px 0;">
                                 {% else %}
-                                    <img src="https://hive-society.s3.amazonaws.com/profile_pictures/default-user.jpg"
-                                        alt="Profile Picture" width="50" height="50"
-                                        style="border-radius: 50%; margin: 10px 0;">
+                                    <img src="https://hive-society.s3.amazonaws.com/profile_pictures/default-user.jpg" 
+                                    alt="Profile Picture" width="50" height="50" 
+                                    style="border-radius: 50%; margin: 10px 0;">
                                 {% endif %}
                                 <p class="card-text">{{ member.get_full_name }}</p>
                             </div>
