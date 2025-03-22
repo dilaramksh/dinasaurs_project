@@ -4,6 +4,7 @@ from django.utils.timezone import now, timedelta
 from social_media.models import User, University
 from django.core.exceptions import ValidationError
 from social_media.models.user import DEFAULT_PROFILE_PICTURE
+import hashlib
 
 class UserModelTests(TestCase):
     """Test cases for the User model."""
@@ -94,3 +95,8 @@ class UserModelTests(TestCase):
         self.user.profile_picture = new_pic
         self.user.save()
         self.assertNotEqual(self.user.profile_picture.name, old_pic.name)
+
+    def test_gravatar_hash_generation(self):
+        """Test that gravatar_hash returns correct MD5 hash of email."""
+        expected_hash = hashlib.md5(self.user.email.strip().lower().encode('utf-8')).hexdigest()
+        self.assertEqual(self.user.gravatar_hash, expected_hash)
