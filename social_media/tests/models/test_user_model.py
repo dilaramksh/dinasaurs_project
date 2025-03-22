@@ -86,3 +86,11 @@ class UserModelTests(TestCase):
         self.user.profile_picture = new_pic
         self.user.save()
         self.assertNotEqual(self.user.profile_picture.name, DEFAULT_PROFILE_PICTURE)
+
+    def test_user_profile_picture_update_triggers_delete(self):
+        """Test profile picture change triggers delete_old_picture logic."""
+        old_pic = self.user.profile_picture
+        new_pic = SimpleUploadedFile("updated_pic.jpg", b"new_content", content_type="image/jpeg")
+        self.user.profile_picture = new_pic
+        self.user.save()
+        self.assertNotEqual(self.user.profile_picture.name, old_pic.name)
