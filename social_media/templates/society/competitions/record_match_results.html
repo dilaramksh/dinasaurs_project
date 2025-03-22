@@ -1,0 +1,120 @@
+{% extends "base_content.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Update Round {{ round_number }}</h2>
+  <p>
+    Competition: <strong>{{ competition.name }}</strong>
+    (
+      {% if competition.is_point_based %}Point-based{% else %}Winner-based{% endif %}
+    )
+  </p>
+
+  <div class="row">
+    <!-- LEFT COLUMN: Just the two opponents per match -->
+    <div class="col-md-6">
+      {% if matches_in_round.count == 0 %}
+        <div class="alert alert-info">
+          No matches found for this round.
+        </div>
+      {% else %}
+        <h5>Matches in This Round</h5>
+        <table class="table table-bordered align-middle">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>
+                Participant 1
+              </th>
+              <th>
+                Participant 2
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for match in matches_in_round %}
+              <tr>
+                <td>{{ match.id }}</td>
+                <td>
+
+                  {% if match.participant1 %}
+                    {{ match.participant1.user.username }}
+                  {% else %}
+                    <em>None</em>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if match.participant2 %}
+                    {{ match.participant2.user.username }}
+                  {% else %}
+                    <em>None</em>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    </div>
+    
+    <!-- RIGHT COLUMN: Uneliminated Participants Card -->
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark text-center">
+          <h5 class="mb-0">
+            Uneliminated Participants
+          </h5>
+        </div>
+        <div class="card-body">
+
+
+            {% if uneliminated_parts %}
+              <table class="table table-hover align-middle">
+                <thead class="table-warning">
+                  <tr>
+                    <th>Participant</th>
+                    <th>Eliminate</th>
+                    {% if competition.is_point_based %}
+                      <th>Points</th>
+                    {% endif %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for part in uneliminated_parts %}
+                    <tr>
+                      <td>{{ part.user.username }}</td>
+                      <td>
+                        <form method="post" style="display:inline;">
+                          {% csrf_token %}
+                          <input type="hidden" name="action" value="eliminate">
+                          <input type="hidden" name="target_id" value="{{ part.id }}">
+                          <button type="submit" class="btn btn-danger btn-sm">X</button>
+                        </form>
+                      </td>
+                      {% if competition.is_point_based %}
+                        <td>
+                          <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="update_points">
+                            <input type="text" name="points_{{ part.id }}" 
+                                   value="{{ part.points }}" size="5"
+                                   class="form-control d-inline-block" style="width:80px;">
+                            <button type="submit" class="btn btn-warning btn-sm">Update</button>
+                          </form>
+                        </td>
+                      {% endif %}
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+              <p class="text-muted">No uneliminated participants found.</p>
+            {% endif %}
+
+        </div><!-- card-body -->
+      </div><!-- card -->
+    </div><!-- col-md-6 -->
+  </div><!-- row -->
+</div><!-- container -->
+{% endblock %}

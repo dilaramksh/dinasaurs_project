@@ -1,0 +1,77 @@
+{% extends "base_content.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Set Up Round {{ round_number }}</h2>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <!-- Scheduled Time -->
+    <div class="mb-3">
+      <label class="form-label" for="scheduled_time">Scheduled Time</label>
+      <input type="text" name="scheduled_time" class="form-control" placeholder="YYYY-MM-DD HH:MM:SS">
+    </div>
+
+    <hr>
+    <h4>Match Pairings</h4>
+
+
+    <div id="match_container">
+      {% for i in match_rows %}
+        <div class="match-row d-flex align-items-center mb-2">
+            <select class="form-select me-2 participant1_field" name="match_{{ i }}_participant1">
+              <option value="">-- Select Participant 1 --</option>
+              {% for part in available_parts %}
+                <option value="{{ part.id }}">{{ part.user.username }}</option>
+              {% endfor %}
+            </select>
+            <select class="form-select me-2 participant2_field" name="match_{{ i }}_participant2">
+              <option value="">-- Select Participant 2 --</option>
+              {% for part in available_parts %}
+                <option value="{{ part.id }}">{{ part.user.username }}</option>
+              {% endfor %}
+            </select>
+        </div>
+      {% endfor %}
+    </div>
+
+    <button type="submit" name="add_match" class="btn btn-info mb-3">
+      Create Pair 
+    </button>
+
+    <hr>
+    <button type="submit" class="btn btn-primary">Create Round</button>
+  </form>
+
+  <hr>
+
+  <h4>Already Created Matches</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Match #</th>
+        <th>Participant 1</th>
+        <th>Participant 2</th>
+        <th>Scheduled Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for match in existing_matches %}
+        <tr>
+          <td>{{ match.pk }}</td>
+          <td>
+              {{ match.participant1.user.username }}
+          </td>
+          <td>
+              {{ match.participant2.user.username }}
+          </td>
+          <td>{{ match.scheduled_time }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+{% endblock %}

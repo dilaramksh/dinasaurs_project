@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from social_media.models import Society, Membership
 from django.shortcuts import render
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 
 @login_required
 def view_memberships(request):

@@ -4,4 +4,4 @@ from social_media.models.competition import Competition
 class CompetitionForm(forms.ModelForm):
     class Meta:
         model = Competition
-        fields = ["name", "start_date", "end_date", "is_team_based", "minimum_participants"]
+        fields = ["name", "start_date", "end_date","is_ongoing","is_point_based"]

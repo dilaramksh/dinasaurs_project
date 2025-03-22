@@ -27,16 +27,22 @@ def change_society_status(request, society_id):
                 society=society,
                 role_name="President"
             )
-            if not Membership.objects.filter(
-                    user=society.founder,
-                    society_role=president
-                ).exists():
+            
+            existing_membership = Membership.objects.filter(
+            user=society.founder, 
+            society=society
+            ).first()
+
+            if existing_membership:
+                if existing_membership.society_role != president:
+                    existing_membership.society_role = president
+                    existing_membership.save()
+            else:
                 Membership.objects.create(
                     user=society.founder,
                     society=society,
                     society_role=president
                 )
-
         elif next_status == "blocked":
             society.status = "blocked"
             society.save()

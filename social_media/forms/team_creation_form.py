@@ -1,14 +1,14 @@
 from django import forms
-from social_media.models import CompetitionParticipants
+from social_media.models import CompetitionParticipant
 
-class CreateTeamForm(forms.Form):
+class TeamCreationForm(forms.Form):
     team_name = forms.CharField(label="Team Name", max_length=100)
 
     def __init__(self, *args, **kwargs):
         self.competition = kwargs.pop("competition", None)
         super().__init__(*args, **kwargs)
 
-        available_participants = CompetitionParticipants.objects.filter(
+        available_participants = CompetitionParticipant.objects.filter(
             competition=self.competition
         ).exclude(
             user__teammembership__team__competition=self.competition

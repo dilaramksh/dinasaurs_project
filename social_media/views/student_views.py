@@ -135,9 +135,57 @@ def student_events(request):
         'user_events': user_events,
     })
 
+
+@login_required
+def view_competitions(request):
+    """Shows all competitions by societies user is a member of"""
+    student = request.user
+    print(student.university)
+    societies = Society.objects.filter(founder__university=student.university, status="approved").prefetch_related('competitions')    
+    categories = Category.objects.all()
+
+  
+    society_competitions = Competition.objects.filter(society__in=societies)
+
+    return render(request, 'student/view_competitions.html', {
+        'societies': societies,
+        'categories': categories,
+        'society_competitions': society_competitions
+    })
+
+
+@login_required
+def view_my_competitions(request):
+    """Shows all competitions current user takes part in"""
+    user = request.user
+    
+    if user.user_type != 'student':
+        return HttpResponseForbidden("This page is for students only.")
+
+    user_participations = CompetitionParticipant.objects.filter(user=user)
+
+    competitions = []
+    for part in user_participations:
+        comp = part.competition
+        comp_info = {
+            "id": comp.id,
+            "name": comp.name,
+            "is_ongoing": comp.is_ongoing,
+            "is_point_based": comp.is_point_based,
+            "is_finalized": comp.is_finalized,
+            "eliminated": part.is_eliminated,
+        }
+        competitions.append(comp_info)
+
+    
+    return render(request, "student/view_my_competitions.html", {
+        "competitions": competitions,
+    })
+
+
 @login_required
 def join_competition(request, competition_id):
-    competition = get_object_or_404(Competition, pk=competition_id, is_active=True)
+    competition = get_object_or_404(Competition, pk=competition_id)
     
 
     # joining not allowed if finalized
@@ -147,11 +195,11 @@ def join_competition(request, competition_id):
     # ensure user not already joined
     if CompetitionParticipant.objects.filter(user=request.user, competition=competition).exists():
         messages.error(request, "You have already joined this competition.")
-        return redirect("dashboard") 
+        return redirect("competition_details", competition_id=competition_id) 
 
     CompetitionParticipant.objects.create(user=request.user, competition=competition)
-    messages.error(request, "You successfully signed up for this competition")
-    return redirect("dashboard") 
+    messages.success(request, "You successfully signed up for this competition")
+    return redirect("competition_details", competition_id=competition_id) 
 
 
 @login_required
@@ -163,5 +211,5 @@ def leave_competition(request, competition_id):
 
     participant = get_object_or_404(CompetitionParticipant, user=request.user, competition=competition)
     participant.delete()
-    return redirect("dashboard")
+    return redirect("view_my_competitions")
 

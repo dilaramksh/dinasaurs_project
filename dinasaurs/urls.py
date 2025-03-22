@@ -62,6 +62,10 @@ urlpatterns = [
     path('student/memberships/', view_memberships, name='view_memberships'),
     path('society/<int:society_id>/join/', join_society, name='join_society'),
     path('remove-membership/<int:membership_id>/', remove_membership, name='remove_membership'),
+    path('competitions/view_competitions/', view_competitions, name='view_competitions'),
+    path('competitions/view_my_competitions/', view_my_competitions, name='view_my_competitions'),
+    path('competitions/<int:competition_id>/leave/', leave_competition, name='leave_competition'),
+    path('competitions/<int:competition_id>/join/', join_competition, name='join_competition'),
 
     #society paths
     path('society/<int:society_id>/dashboard/', get_society_dashboard, name='society_dashboard'),
@@ -77,6 +81,9 @@ urlpatterns = [
     path('society/<int:society_id>/update_committee', update_committee, name='update_committee'),
     path('society/<int:society_id>/edit_roles/', edit_roles, name='edit_roles'),
     path('society/<int:society_id>/join/', join_society, name='join_society'),
+    #path('competitions/<int:society_id>/record_match_results/', record_match_results, name='record_match_results'),
+    path('competitions/<int:competition_id>/competition_details/', competition_details, name='competition_details'),
+    path('competitions/<int:competition_id>/set_up_round/', set_up_round, name='set_up_round'),
     path('competitions/<int:society_id>/manage_competitions/', manage_competitions, name='manage_competitions'),
 
     #uni-admin paths

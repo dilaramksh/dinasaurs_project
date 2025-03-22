@@ -75,4 +75,4 @@ class Society(models.Model):
         self.save()
 
     def __str__(self):
-        return self.name.title()
+        return self.name
