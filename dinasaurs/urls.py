@@ -81,7 +81,7 @@ urlpatterns = [
     path('competitions/<int:society_id>/create_competition/', create_competition, name='create_competition'),
     path('competitions/<int:competition_id>/finalize_competition/', finalize_competition, name='finalize_competition'),
     path('competitions/<int:society_id>/manage_competitions/', manage_competitions, name='manage_competitions'),
-    path('society/<int:society_id>/join/', join_society, name='join_society'),
+    # path('society/<int:society_id>/join/', join_society, name='join_society'),
 
     #uni-admin paths
     path("university/dashboard/change_status/<int:society_id>/", change_society_status, name="change_society_status"),

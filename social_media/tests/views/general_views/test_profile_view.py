@@ -161,3 +161,37 @@ class ProfileViewTest(TestCase):
         # Refresh user data from DB
         self.user.refresh_from_db()
         self.assertEqual(self.user.profile_picture.name, "profile_pictures/old_picture.jpg")
+
+    @patch('boto3.client')
+    def test_delete_old_profile_picture_failure(self, mock_boto3):
+        mock_s3 = mock_boto3.return_value
+        mock_s3.delete_object.side_effect = Exception("S3 Deletion Error")
+
+        self.client.login(username=self.user.username, password='Password123')
+        response = self.client.post(self.url, self.form_input, follow=True)
+        messages_list = list(response.context['messages'])
+
+        self.assertFalse(any("Could not delete old profile picture" in str(m) for m in messages_list))
+
+    @patch('boto3.client')
+    def test_successful_profile_picture_upload(self, mock_boto3):
+        mock_s3 = mock_boto3.return_value
+        mock_s3.upload_fileobj.return_value = None
+
+        new_picture = SimpleUploadedFile("new_pic.jpg", b"file_content", content_type="image/jpeg")
+        self.form_input['profile_picture'] = new_picture
+
+        self.client.login(username=self.user.username, password='Password123')
+        self.client.post(self.url, self.form_input, follow=True)
+
+        self.user.refresh_from_db()
+        self.assertFalse(self.user.profile_picture.name.startswith("profile_pictures/@johndoe2"))
+
+    def test_default_profile_picture_set(self):
+        self.client.login(username=self.user.username, password='Password123')
+        self.form_input['profile_picture'] = ""
+
+        self.client.post(self.url, self.form_input, follow=True)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.profile_picture, "profile_pictures/default.jpg")
+

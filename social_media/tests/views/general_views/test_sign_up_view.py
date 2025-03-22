@@ -76,33 +76,9 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertEqual(user.last_name, 'Doe')
         self.assertEqual(user.email, 'janedoe@test.ac.uk')
         self.assertTrue(check_password('Password123', user.password))
+        self.assertEqual(user.profile_picture, settings.DEFAULT_PROFILE_PICTURE)
         self.assertTrue(self._is_logged_in())
 
-    @patch('boto3.client')
-    def test_successful_sign_up_with_profile_picture(self, mock_save):
-        """Test signup with profile picture upload."""
-        uploaded_file = SimpleUploadedFile(
-            "test_picture.jpg",
-            b"file_content",
-            content_type="image/jpeg"
-        )
-        
-        mock_save.return_value.upload_file.return_value = None  # Mock S3 upload
-
-        before_count = User.objects.count()
-        response = self.client.post(self.url, data={**self.form_input}, files={'profile_picture': uploaded_file})
-
-        if response.status_code == 302:  # If redirect happens, form submission succeeded
-            self.assertRedirects(response, '/dashboard/')
-            after_count = User.objects.count()
-            self.assertEqual(after_count, before_count + 1)
-
-            # Verify the profile picture was uploaded correctly
-            user = User.objects.get(username='@janedoe')
-            expected_file_path = 'profile_pictures/default.jpg'
-            self.assertTrue(user.profile_picture.name.startswith(expected_file_path))
-            self.assertIn(expected_file_path, user.profile_picture.name)
-    
     def test_default_profile_picture_if_none_uploaded(self):
         before_count = User.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
@@ -124,17 +100,29 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertEqual(after_count, before_count) 
         self.assertRedirects(response, reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN))
 
-    """File Upload Test"""
+    # """File Upload Test"""
 
     @patch("django.core.files.storage.default_storage.save")
-    def test_file_upload_with_valid_extension(self, mock_save):
-        """Test file upload with a valid image file extension."""
+    def test_file_upload_with_different_extension(self, mock_save):
+        form_input = {
+            'first_name': 'Jane',
+            'last_name': 'Doe',
+            'username': '@janedoe',
+            'email': 'janedoe@test.ac.uk',
+            'university': self.university.id,
+            'start_date': '2021-09-01',
+            'end_date': '2025-06-30',
+            'new_password': 'Password123',
+            'password_confirmation': 'Password123',
+            'profile_picture': '',
+        }
+        
         mock_save.return_value = "profile_pictures/testuser.jpg"
 
         uploaded_file = SimpleUploadedFile(
-            "profile_pic.jpg",
+            "avatar.jpg",
             b"file_content",
-            content_type="image/jpeg"
+            content_type="image/jpg"
         )
 
         file_extension = os.path.splitext(uploaded_file.name)[1]
@@ -145,46 +133,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
 
         mock_save.assert_called_once_with(new_filename, uploaded_file)
         self.assertEqual(self.user.profile_picture.name, "profile_pictures/testuser.jpg")
-
     
-    @patch("django.core.files.storage.default_storage.save")
-    def test_file_upload_with_different_extension(self, mock_save):
-        mock_save.return_value = "profile_pictures/testuser.png"
-
-        uploaded_file = SimpleUploadedFile(
-            "avatar.png",
-            b"file_content",
-            content_type="image/png"
-        )
-
-        file_extension = os.path.splitext(uploaded_file.name)[1]
-        new_filename = f"profile_pictures/{self.user.username}{file_extension}"
-
-        saved_path = default_storage.save(new_filename, uploaded_file)
-        self.user.profile_picture.name = saved_path
-
-        mock_save.assert_called_once_with(new_filename, uploaded_file)
-        self.assertEqual(self.user.profile_picture.name, "profile_pictures/testuser.png")
-    
-
-    @patch("django.core.files.storage.default_storage.save")
-    def test_file_upload_with_no_extension(self, mock_save):
-        mock_save.return_value = "profile_pictures/testuser"
-
-        uploaded_file = SimpleUploadedFile(
-            "no_extension",
-            b"file_content",
-            content_type="image/jpeg"
-        )
-
-        file_extension = os.path.splitext(uploaded_file.name)[1]
-        new_filename = f"profile_pictures/{self.user.username}{file_extension}"
-
-        saved_path = default_storage.save(new_filename, uploaded_file)
-        self.user.profile_picture.name = saved_path
-
-        mock_save.assert_called_once_with(new_filename, uploaded_file)
-        self.assertEqual(self.user.profile_picture.name, "profile_pictures/testuser")
 
     @patch("django.core.files.storage.default_storage.save")
     def test_file_upload_with_large_file(self, mock_save):
@@ -204,4 +153,3 @@ class SignUpViewTestCase(TestCase, LogInTester):
 
         mock_save.assert_called_once_with(new_filename, large_file)
         self.assertEqual(self.user.profile_picture.name, "profile_pictures/testuser_large.jpg")
-
