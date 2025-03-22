@@ -50,43 +50,43 @@ super_admin_fixture = [
 categories = [ 'cultural', 'academic_career', 'faith', 'political', 'sports', 'volunteering', 'other']
 
 society_names = [
-    'computingsoc', 'artsoc', 'gamessoc', 'musicsoc', 'filmsoc',
+    'computingsoc', 'artsoc', 'musicsoc', 'filmsoc',
     'basketballsoc', 'footballsoc', 'tennissoc', 'debatesoc',
     'roboticssoc', 'politicssoc', 'volunteeringsoc', 'literarysoc',
-    'photographysoc', 'dancesoc', 'codingclub', 'chesssoc',
-    'environmentalsoc', 'animessoc', 'theatresoc', 'boardgamessoc',
+    'photographysoc', 'dancesoc', 'codingsoc', 'chesssoc',
+    'environmentalsoc', 'animessoc', 'theatresoc', 'gamessoc',
     'musicproductionclub', 'fashionclub', 'writingclub', 'gamingsoc',
-    'historicalsoc', 'scienceclub', 'socialimpactclub', 'mathssoc',
+    'historicalsoc', 'scienceclub', 'socialimpactclub', 'mathsoc',
     'engineeringclub', 'geographysoc', 'languageclub', 'psychologysoc',
     'medicalsoc', 'lawclub', 'biologyclub', 'chemistrysoc', 'physicsclub',
-    'artclub', 'bookclubsoc', 'yogasoc', 'travelclubsoc', 'cyclingclub',
+    'artclub', 'bookclubsoc', 'yogasoc', 'travelsoc', 'cyclingclub',
     'runningclub', 'swimmingsoc', 'hikingclub', 'culturalsoc', 'diversitysoc',
-    'interfaithsoc', 'mentoringclub', 'startupsoc', 'aerospaceclub', 'AIclub',
+    'interfaithsoc', 'mentoringclub', 'startupsoc', 'aerospaceclub', 'aiclub',
     'dataanalyticsclub'
 ]
+
 
 society_category_mapping = {
     'computingsoc': 'academic_career',
     'artsoc': 'cultural',
-    'gamessoc': 'sports',
     'musicsoc': 'cultural',
     'filmsoc': 'cultural',
     'basketballsoc': 'sports',
     'footballsoc': 'sports',
     'tennissoc': 'sports',
     'debatesoc': 'political',
-    'roboticssoc': 'academic_career',
+    'roboticsoc': 'academic_career',
     'politicssoc': 'political',
-    'volunteeringsoc': 'volunteering',
+    'volunteersoc': 'volunteering',
     'literarysoc': 'cultural',
     'photographysoc': 'cultural',
-    'dancesoc': 'cultural',
-    'codingclub': 'academic_career',
+    'dancesoc': 'sports',
+    'codingsoc': 'academic_career',
     'chesssoc': 'sports',
     'environmentalsoc': 'volunteering',
     'animessoc': 'cultural',
-    'theatresoc': 'cultural',
-    'boardgamessoc': 'sports',
+    'theatresoc': 'other',
+    'gamessoc': 'other',
     'musicproductionclub': 'cultural',
     'fashionclub': 'cultural',
     'writingclub': 'cultural',
@@ -94,7 +94,7 @@ society_category_mapping = {
     'historicalsoc': 'cultural',
     'scienceclub': 'academic_career',
     'socialimpactclub': 'volunteering',
-    'mathssoc': 'academic_career',
+    'mathsoc': 'academic_career',
     'engineeringclub': 'academic_career',
     'geographysoc': 'academic_career',
     'languageclub': 'cultural',
@@ -107,7 +107,7 @@ society_category_mapping = {
     'artclub': 'cultural',
     'bookclubsoc': 'cultural',
     'yogasoc': 'sports',
-    'travelclubsoc': 'social',
+    'travelsoc': 'social',
     'cyclingclub': 'sports',
     'runningclub': 'sports',
     'swimmingsoc': 'sports',
@@ -118,34 +118,35 @@ society_category_mapping = {
     'mentoringclub': 'volunteering',
     'startupsoc': 'academic_career',
     'aerospaceclub': 'academic_career',
-    'AIclub': 'academic_career',
+    'aiclub': 'academic_career',
     'dataanalyticsclub': 'academic_career'
 }
 
-society_role_names = ['President', 'Vice President', 'Treasurer', 'Events Manager', 'Secretary', 'Member']
+
+
+society_role_names = ['President', 'Vice president', 'Treasurer', 'Events manager', 'Secretary', 'Member']
 
 society_event_mapping = {
     'computingsoc': ["Hackathon", "AI Workshop", "Coding Challenge"],
     'artsoc': ["Painting Workshop", "Sculpting Workshop", "Gallery Visit"],
-    'gamesoc': ["Gaming Night", "Board Games Evening", "Esports Tournament"],
     'musicsoc': ["Live Concert", "Music Production Workshop", "Open Mic Night"],
     'filmsoc': ["Movie Screening", "Filmmaking Workshop", "Director's Talk"],
     'basketballsoc': ["Basketball Tournament", "Skills Workshop", "Friendly Match"],
     'footballsoc': ["Football Tournament", "Tactics Workshop", "Charity Match"],
     'tennissoc': ["Tennis Coaching", "Doubles Tournament", "Racket Skills Workshop"],
     'debatesoc': ["Debate Competition", "Public Speaking Workshop", "Political Debate"],
-    'roboticsoc': ["Robot Building Workshop", "AI & Robotics Talk", "Hackathon"],
+    'roboticssoc': ["Robot Building Workshop", "AI & Robotics Talk", "Hackathon"],
     'politicssoc': ["Policy Discussion", "Guest Speaker Event", "Political Debate"],
-    'volunteersoc': ["Community Cleanup", "Fundraising Event", "Charity Drive"],
+    'volunteeringsoc': ["Community Cleanup", "Fundraising Event", "Charity Drive"],
     'literarysoc': ["Poetry Reading", "Book Club Meetup", "Creative Writing Workshop"],
     'photographysoc': ["Photography Walk", "Editing Workshop", "Portrait Session"],
-    'dancingsoc': ["Dance Battle", "Choreography Workshop", "Salsa Night"],
-    'codingclub': ["Code Jam", "Web Dev Workshop", "Python Bootcamp"],
+    'dancesoc': ["Dance Battle", "Choreography Workshop", "Salsa Night"],
+    'codingsoc': ["Code Jam", "Web Dev Workshop", "Python Bootcamp"],
     'chesssoc': ["Chess Tournament", "Grandmaster Talk", "Blitz Chess Night"],
     'environmentalsoc': ["Tree Planting", "Sustainability Seminar", "Climate Change Discussion"],
     'animessoc': ["Anime Marathon", "Cosplay Contest", "Manga Drawing Workshop"],
     'theatresoc': ["Drama Performance", "Acting Workshop", "Scriptwriting Session"],
-    'boardgamesoc': ["Tabletop Night", "Strategy Games Meetup", "Dungeons & Dragons Session"],
+    'gamessoc': ["Gaming Night", "Board Games Evening", "Esports Tournament"],
     'musicproductionclub': ["Studio Recording Session", "Mixing & Mastering Workshop", "DJ Night"],
     'fashionclub': ["Fashion Show", "Styling Workshop", "Design Your Own Outfit"],
     'writingclub': ["Short Story Contest", "Writing Retreat", "Poetry Open Mic"],
@@ -153,7 +154,7 @@ society_event_mapping = {
     'historicalsoc': ["History Lecture", "Museum Visit", "Debate on Historical Events"],
     'scienceclub': ["Science Fair", "Lab Experiment Showcase", "Guest Scientist Talk"],
     'socialimpactclub': ["Charity Fundraiser", "Volunteer Training", "Community Discussion"],
-    'mathsoc': ["Math Olympiad", "Puzzle Challenge", "Applied Mathematics Workshop"],
+    'mathssoc': ["Math Olympiad", "Puzzle Challenge", "Applied Mathematics Workshop"],
     'engineeringclub': ["3D Printing Workshop", "Engineering Hackathon", "Robotics Challenge"],
     'geographysoc': ["Map-Making Workshop", "Field Trip", "GIS Software Tutorial"],
     'languageclub': ["Language Exchange", "Culture Night", "Pronunciation Workshop"],
@@ -166,7 +167,7 @@ society_event_mapping = {
     'artclub': ["Sketching Meetup", "Mural Painting", "Photography & Art Fusion"],
     'bookclubsoc': ["Monthly Book Discussion", "Author Q&A", "Classic Literature Night"],
     'yogasoc': ["Morning Yoga", "Mindfulness Meditation", "Flexibility Training"],
-    'travelclubsoc': ["Weekend Trip", "Backpacking Workshop", "Cultural Exploration"],
+    'travelsoc': ["Weekend Trip", "Backpacking Workshop", "Cultural Exploration"],
     'cyclingclub': ["City Cycling Tour", "Bike Maintenance Workshop", "Mountain Biking Adventure"],
     'runningclub': ["Marathon Training", "Trail Running Session", "Endurance Challenge"],
     'swimmingsoc': ["Swim Meet", "Lifeguard Training", "Water Polo Tournament"],
@@ -177,9 +178,10 @@ society_event_mapping = {
     'mentoringclub': ["Career Guidance Session", "Peer Mentoring Workshop", "Alumni Networking"],
     'startupsoc': ["Pitch Night", "Entrepreneurship Workshop", "Startup Demo Day"],
     'aerospaceclub': ["Rocket Building", "Space Exploration Talk", "Flight Simulator Experience"],
-    'AIclub': ["Deep Learning Seminar", "AI Ethics Discussion", "Neural Networks Workshop"],
+    'aiclub': ["Deep Learning Seminar", "AI Ethics Discussion", "Neural Networks Workshop"],
     'dataanalyticsclub': ["Data Science Bootcamp", "Big Data Talk", "SQL Workshop"]
 }
+
 
 event_descriptions = {
     "Hackathon": "A coding competition where students build innovative software projects.",
@@ -345,6 +347,167 @@ event_descriptions = {
     "Big Data Talk": "A talk discussing how big data is transforming industries and research.",
     "SQL Workshop": "A workshop where students learn how to use SQL for data querying and management."
 }
+
+event_pictures = {
+    "Hackathon": "events_picture/Hackathon.png",
+    "AI Workshop": "events_picture/AI_Workshop.png",
+    "Coding Challenge": "events_picture/Coding_Challenge.png",
+    "Painting Workshop": "events_picture/Painting_Workshop.png",
+    "Sculpting Workshop": "events_picture/Sculpting_Workshop.png",
+    "Gallery Visit": "events_picture/Gallery_Visit.png",
+    "Gaming Night": "events_picture/Gaming_Night.png",
+    "Board Games Evening": "events_picture/Board_Games_Evening.png",
+    "Esports Tournament": "events_picture/Esports_Tournament.png",
+    "Live Concert": "events_picture/Live_Concert.png",
+    "Music Production Workshop": "events_picture/Music_Production_Workshop.png",
+    "Open Mic Night": "events_picture/Open_Mic_Night.png",
+    "Movie Screening": "events_picture/Movie_Screening.png",
+    "Filmmaking Workshop": "events_picture/Filmmaking_Workshop.png",
+    "Director's Talk": "events_picture/Directors_Talk.png",
+    "Basketball Tournament": "events_picture/Basketball_Tournament.png",
+    "Skills Workshop": "events_picture/Skills_Workshop.png",
+    "Friendly Match": "events_picture/Friendly_Match.png",
+    "Football Tournament": "events_picture/Football_Tournament.png",
+    "Tactics Workshop": "events_picture/Tactics_Workshop.png",
+    "Charity Match": "events_picture/Charity_Match.png",
+    "Tennis Coaching": "events_picture/Tennis_Coaching.png",
+    "Doubles Tournament": "events_picture/Doubles_Tournament.png",
+    "Racket Skills Workshop": "events_picture/Racket_Skills_Workshop.png",
+    "Debate Competition": "events_picture/Debate_Competition.png",
+    "Public Speaking Workshop": "events_picture/Public_Speaking_Workshop.png",
+    "Political Debate": "events_picture/Political_Debate.png",
+    "Robot Building Workshop": "events_picture/Robot_Building_Workshop.png",
+    "AI & Robotics Talk": "events_picture/AI_&_Robotics_Talk.png",
+    "Policy Discussion": "events_picture/Policy_Discussion.png",
+    "Guest Speaker Event": "events_picture/Guest_Speaker_Event.png",
+    "Community Cleanup": "events_picture/Community_Cleanup.png",
+    "Fundraising Event": "events_picture/Fundraising_Event.png",
+    "Charity Drive": "events_picture/Charity_Drive.png",
+    "Poetry Reading": "events_picture/Poetry_Reading.png",
+    "Book Club Meetup": "events_picture/Book_Club_Meetup.png",
+    "Creative Writing Workshop": "events_picture/Creative_Writing_Workshop.png",
+    "Photography Walk": "events_picture/Photography_Walk.png",
+    "Editing Workshop": "events_picture/Editing_Workshop.png",
+    "Portrait Session": "events_picture/Portrait_Session.png",
+    "Dance Battle": "events_picture/Dance_Battle.png",
+    "Choreography Workshop": "events_picture/Choreography_Workshop.png",
+    "Salsa Night": "events_picture/Salsa_Night.png",
+    "Code Jam": "events_picture/Code_Jam.png",
+    "Web Dev Workshop": "events_picture/Web_Dev_Workshop.png",
+    "Python Bootcamp": "events_picture/Python_Bootcamp.png",
+    "Chess Tournament": "events_picture/Chess_Tournament.png",
+    "Grandmaster Talk": "events_picture/Grandmaster_Talk.png",
+    "Blitz Chess Night": "events_picture/Blitz_Chess_Night.png",
+    "Tree Planting": "events_picture/Tree_Planting.png",
+    "Sustainability Seminar": "events_picture/Sustainability_Seminar.png",
+    "Climate Change Discussion": "events_picture/Climate_Change_Discussion.png",
+    "Anime Marathon": "events_picture/Anime_Marathon.png",
+    "Cosplay Contest": "events_picture/Cosplay_Contest.png",
+    "Manga Drawing Workshop": "events_picture/Manga_Drawing_Workshop.png",
+    "Drama Performance": "events_picture/Drama_Performance.png",
+    "Acting Workshop": "events_picture/Acting_Workshop.png",
+    "Scriptwriting Session": "events_picture/Scriptwriting_Session.png",
+    "Tabletop Night": "events_picture/Tabletop_Night.png",
+    "Strategy Games Meetup": "events_picture/Strategy_Games_Meetup.png",
+    "Dungeons & Dragons Session": "events_picture/Dungeons_&_Dragons_Session.png",
+    "Studio Recording Session": "events_picture/Studio_Recording_Session.png",
+    "Mixing & Mastering Workshop": "events_picture/Mixing_&_Mastering_Workshop.png",
+    "DJ Night": "events_picture/DJ_Night.png",
+    "Fashion Show": "events_picture/Fashion_Show.png",
+    "Styling Workshop": "events_picture/Styling_Workshop.png",
+    "Design Your Own Outfit": "events_picture/Design_Your_Own_Outfit.png",
+    "Short Story Contest": "events_picture/Short_Story_Contest.png",
+    "Writing Retreat": "events_picture/Writing_Retreat.png",
+    "Poetry Open Mic": "events_picture/Poetry_Open_Mic.png",
+    "LAN Party": "events_picture/LAN_Party.png",
+    "Retro Gaming Night": "events_picture/Retro_Gaming_Night.png",
+    "Speedrun Tournament": "events_picture/Speedrun_Tournament.png",
+    "History Lecture": "events_picture/History_Lecture.png",
+    "Museum Visit": "events_picture/Museum_Visit.png",
+    "Debate on Historical Events": "events_picture/Debate_on_Historical_Events.png",
+    "Science Fair": "events_picture/Science_Fair.png",
+    "Lab Experiment Showcase": "events_picture/Lab_Experiment_Showcase.png",
+    "Guest Scientist Talk": "events_picture/Guest_Scientist_Talk.png",
+    "Charity Fundraiser": "events_picture/Charity_Fundraiser.png",
+    "Volunteer Training": "events_picture/Volunteer_Training.png",
+    "Community Discussion": "events_picture/Community_Discussion.png",
+    "Math Olympiad": "events_picture/Math_Olympiad.png",
+    "Puzzle Challenge": "events_picture/Puzzle_Challenge.png",
+    "Applied Mathematics Workshop": "events_picture/Applied_Mathematics_Workshop.png",
+    "3D Printing Workshop": "events_picture/3D_Printing_Workshop.png",
+    "Engineering Hackathon": "events_picture/Engineering_Hackathon.png",
+    "Robotics Challenge": "events_picture/Robotics_Challenge.png",
+    "Map-Making Workshop": "events_picture/Map-Making_Workshop.png",
+    "Field Trip": "events_picture/Field_Trip.png",
+    "GIS Software Tutorial": "events_picture/GIS_Software_Tutorial.png",
+    "Language Exchange": "events_picture/Language_Exchange.png",
+    "Culture Night": "events_picture/Culture_Night.png",
+    "Pronunciation Workshop": "events_picture/Pronunciation_Workshop.png",
+    "Big Data Talk": "events_picture/Big_Data_Talk.png",
+    "SQL Workshop": "events_picture/SQL_Workshop.png",
+    "Cognitive Science Discussion": "events_picture/Cognitive_Science_Discussion.png",
+    "Therapy Methods Workshop": "events_picture/Therapy_Methods_Workshop.png",
+    "Hospital Tour": "events_picture/Hospital_Tour.png",
+    "Medical Ethics Debate": "events_picture/Medical_Ethics_Debate.png",
+    "First Aid Training": "events_picture/First_Aid_Training.png",
+    "Legal Writing Workshop": "events_picture/Legal_Writing_Workshop.png",
+    "Mock Trial": "events_picture/Mock_Trial.png",
+    "Genetics Discussion": "events_picture/Genetics_Discussion.png",
+    "Nature Hike": "events_picture/Nature_Hike.png",
+    "Lab Safety Training": "events_picture/Lab_Safety_Training.png",
+    "Quantum Physics Talk": "events_picture/Quantum_Physics_Talk.png",
+    "Astronomy Night": "events_picture/Astronomy_Night.png",
+    "Mural Painting": "events_picture/Mural_Painting.png",
+    "Photography & Art Fusion": "events_picture/Photography_&_Art_Fusion.png",
+    "Sketching Meetup": "events_picture/Sketching_Meetup.png",
+    "Author Q&A": "events_picture/Author_Q&A.png",
+    "Classic Literature Night": "events_picture/Classic_Literature_Night.png",
+    "Mindfulness Meditation": "events_picture/Mindfulness_Meditation.png",
+    "Cultural Exploration": "events_picture/Cultural_Exploration.png",
+    "Backpacking Workshop": "events_picture/Backpacking_Workshop.png",
+    "City Cycling Tour": "events_picture/City_Cycling_Tour.png",
+    "Bike Maintenance Workshop": "events_picture/Bike_Maintenance_Workshop.png",
+    "Marathon Training": "events_picture/Marathon_Training.png",
+    "Trail Running Session": "events_picture/Trail_Running_Session.png",
+    "Lifeguard Training": "events_picture/Lifeguard_Training.png",
+    "Mountain Hiking": "events_picture/Mountain_Hiking.png",
+    "Overnight Camping": "events_picture/Overnight_Camping.png",
+    "Cultural Dance Workshop": "events_picture/Cultural_Dance_Workshop.png",
+    "Traditional Music Night": "events_picture/Traditional_Music_Night.png",
+    "Inclusivity Panel": "events_picture/Inclusivity_Panel.png",
+    "Identity & Representation Discussion": "events_picture/Identity_&_Representation_Discussion.png",
+    "Religious History Talk": "events_picture/Religious_History_Talk.png",
+    "Interfaith Dialogue": "events_picture/Interfaith_Dialogue.png",
+    "Peer Mentoring Workshop": "events_picture/Peer_Mentoring_Workshop.png",
+    "Alumni Networking": "events_picture/Alumni_Networking.png",
+    "Startup Demo Day": "events_picture/Startup_Demo_Day.png",
+    "Pitch Night": "events_picture/Pitch_Night.png",
+    "Entrepreneurship Workshop": "events_picture/Entrepreneurship_Workshop.png",
+    "Flight Simulator Experience": "events_picture/Flight_Simulator_Experience.png",
+    "Space Exploration Talk": "events_picture/Space_Exploration_Talk.png",
+    "Neural Networks Workshop": "events_picture/Neural_Networks_Workshop.png",
+    "Deep Learning Seminar": "events_picture/Deep_Learning_Seminar.png",
+    "AI Ethics Discussion": "events_picture/AI_Ethics_Discussion.png",
+    "Mental Health Awareness Talk": "events_picture/Mental_Health_Awareness_Talk.png",
+    "Human Rights Debate": "events_picture/Human_Rights_Debate.png",
+    "Microscopy Session": "events_picture/Microscopy_Session.png",
+    "Chemistry Experiments": "events_picture/Chemistry_Experiments.png",
+    "Circuit-Building Workshop": "events_picture/Circuit_Building_Workshop.png",
+    "Monthly Book Discussion": "events_picture/Monthly_Book_Discussion.png",
+    "Flexibility Training": "events_picture/Flexibility_Training.png",
+    "Morning Yoga": "events_picture/Morning_Yoga.png",
+    "Weekend Trip": "events_picture/Weekend_Trip.png",
+    "Mountain Biking Adventure": "events_picture/Mountain_Biking_Adventure.png",
+    "Endurance Challenge": "events_picture/Endurance_Challenge.png",
+    "Water Polo Tournament": "events_picture/Water_Polo_Tournament.png",
+    "Nature Trail Walk": "events_picture/Nature_Trail_Walk.png",
+    "International Food Fair": "events_picture/International_Food_Fair.png",
+    "Cultural Showcase": "events_picture/Cultural_Showcase.png",
+    "Spiritual Reflection Retreat": "events_picture/Spiritual_Reflection_Retreat.png",
+    "Rocket Building": "events_picture/Rocket_Building.png",
+    "Data Science Bootcamp": "events_picture/Data_Science_Bootcamp.png"
+}
+
 
 # potentially might not make sense?
 locations = ["Activity Room 1", 'Activity Room 2', 'Activity Room 3', 'Classroom 6.01', 'Classroom 6.02', 'Classroom 6.03',
@@ -649,10 +812,10 @@ class Command(BaseCommand):
                 category = Category.objects.create(name=category_name)
 
             if 'soc' in name:
-                description = f"A society for students passionate about {name.split('soc')[0]}"
+                description = f"A society for students passionate about {name.split('soc')[0]}."
             else:
                 if name.lower().endswith('club'):
-                    description = f"A society for students passionate about {name[:-4]}"
+                    description = f"A society for students passionate about {name[:-4]}."  
 
             created_society = self.try_create_society(name, category, description)
             if created_society:
@@ -722,6 +885,9 @@ class Command(BaseCommand):
 
 
     # Seed Memberships-- assigns one user to each role of the society to form entire committees + members
+    """
+    Adjusted seeder, accidental randomization of membership - em:)
+    """
     def create_memberships(self):
         self.stdout.write('Creating memberships...')
         self.generate_membership_fixtures()
@@ -810,6 +976,7 @@ class Command(BaseCommand):
                 event_name = random.choice(event_names)
 
                 event_description = event_descriptions.get(event_name, "No description available for this event.")
+                event_picture = event_pictures.get(event_name, DEFAULT_PICTURE)
 
                 event_date = self.faker.date_between(start_date=date(2025, 1, 1), end_date=date(2025, 12, 31))
 
@@ -822,6 +989,7 @@ class Command(BaseCommand):
                     'description': event_description,  
                     'date': event_date,
                     'location': random.choice(locations),
+                    'picture': event_picture,
                 }
 
                 self.stdout.write(f"Creating event: {event_data['name']} for {event_data['society'].name}")
@@ -844,7 +1012,7 @@ class Command(BaseCommand):
                 description=data['description'],
                 date=data['date'],
                 location=data['location'],
-                picture=DEFAULT_PICTURE,
+                picture=data['picture'],
             )
             self.stdout.write(f"Created event: {event.name}")
         else:

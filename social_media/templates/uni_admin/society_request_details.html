@@ -13,6 +13,7 @@
         </div>
         <div class="card-body">
             <h4 class="text-dark fw-bold">{{ society.name }}</h4>
+            <img src="{{ society.logo.url }}" alt="Society Logo" style="height: 200px;">
             <p><strong>Founder:</strong> {{ society.founder.full_name }} ({{ society.founder.email }})</p>
             <p><strong>Category:</strong> {{ society.category }}</p>
             <p><strong>Description:</strong> {{ society.description }}</p>

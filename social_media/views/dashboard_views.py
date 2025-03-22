@@ -11,8 +11,18 @@ from datetime import date
 
 @login_required
 def dashboard(request):
-    """Display the current user's dashboard."""
+    """
+    Display the current user's dashboard.
 
+    This view handles the display of the dashboard for different types of users (student, university admin, super admin).
+    It redirects to the society dashboard if an active society is selected.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The rendered dashboard page.
+    """
     current_user = request.user
     user_type = current_user.user_type
 
@@ -82,28 +92,53 @@ def dashboard(request):
 @login_required
 @membership_required
 def get_society_dashboard(request, society_id):
-    """Display the dashboard for a specific society."""
+    """
+    Display the dashboard for a specific society.
+
+    Args:
+        request (HttpRequest): The request object.
+        society_id (int): The ID of the society.
+
+    Returns:
+        HttpResponse: The rendered society dashboard page.
+    """
     society = get_object_or_404(Society, pk=society_id)
 
-    # Store the selected society ID
     request.session['active_society_id'] = society.id
     
     return render(request, 'society/society_dashboard.html', {'society': society})
 
 @login_required
 def get_student_dashboard(request):
-    """Clears the active society and redirects to the student dashboard."""
+    """
+    Clears the active society and redirects to the student dashboard.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Redirects to the student dashboard.
+    """
     request.session.pop('active_society_id', None) 
     return redirect('dashboard')
 
 
 @login_required
 def dashboard_from_mainpage(request, society_id):
-    """Handles joining a society and redirects the user to their dashboard"""
+    """
+    Handles joining a society and redirects the user to their dashboard.
+
+    Args:
+        request (HttpRequest): The request object.
+        society_id (int): The ID of the society to join.
+
+    Returns:
+        JsonResponse: A JSON response indicating success or failure.
+    """
     society = get_object_or_404(Society, id=society_id)
 
     if Membership.objects.filter(user=request.user, society=society).exists():
-        return JsonResponse({'success': False, 'error': 'You are already a member of this society'}, status=400)
+        return JsonResponse({'success': False, 'error': 'You are already a member of this society.'}, status=400)
 
     default_role, created = SocietyRole.objects.get_or_create(
         role_name="Member",
@@ -113,6 +148,6 @@ def dashboard_from_mainpage(request, society_id):
  
     Membership.objects.create(user=request.user, society=society, society_role=default_role)
 
-    return JsonResponse({'success': True, 'message': 'Successfully joined society'})
+    return JsonResponse({'success': True, 'message': 'Successfully joined society.'})
     
 

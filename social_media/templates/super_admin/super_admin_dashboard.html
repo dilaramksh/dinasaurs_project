@@ -3,7 +3,7 @@
 
 {% block content %}
 <body>
-    <title>Society Homepage</title>
+    <title>Super Admin Dashboard </title>
 
     <!-- Header with honeycomb pattern -->
     <header class="text-dark text-center py-4 mb-4" 
@@ -17,22 +17,18 @@
         <div class="row">
             <!-- Requests to join SocietyHive --> 
             <div class="col-md-6 mb-3">
-                <div class="card text-center p-4 border-warning shadow-sm h-100">
-                    <h5 class="card-header bg-warning text-dark"> ⚠️ Requests to Join the Hive ⚠️ </h5>
+                <div class="card text-center p-4 border-warning shadow-sm h-80">
+                    <h5 class="card-header bg-warning text-dark"> ⚠️ Requests from University's to Join the Hive, approve or block ⚠️ </h5>
                     <div class="card-body">
-                        {% if number_pending %}
-                            <p class="card-text"> There are currently {{number_pending}} request/s to join </p>
-                            <a href="{% url 'university_requests' %}" class="btn btn-warning"> View </a> 
-                        {% else %}
-                            <p class="card-text"> There are currently no requests </p>
-                        {% endif %}
+                        <p class="card-text"> View all university requests. </p>
+                        <a href="{% url 'university_requests' %}" class="btn btn-warning"> View </a>  
                     </div>
                 </div>
             </div>
         
             <!-- View of Registered Universities -->
             <div class="col-md-6 mb-3">
-                <div class="card text-center p-4 border-warning shadow-sm h-100">
+                <div class="card text-center p-4 border-warning shadow-sm h-80">
                     <h5 class="card-header bg-warning text-dark">  ✅ Registered ✅ and ❌ Blocked ❌ <br> Universities </h5>
                     <div class="card-body">
                         <p class="card-text"> View all universities in the hive </p>
