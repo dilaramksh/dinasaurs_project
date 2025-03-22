@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-048$05y)ar037ha8w&3!(6%@264f+(y4f@zo*v%#bbya(kj5a0
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    #'*.vercel.app',
+    '*.vercel.app',
     #'hivesociety.vercel.app',
     'localhost',
     '127.0.0.1',
