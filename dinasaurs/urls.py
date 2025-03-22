@@ -78,6 +78,8 @@ urlpatterns = [
     #path('competitions/<int:society_id>/record_match_results/', record_match_results, name='record_match_results'),
     path('competitions/<int:competition_id>/competition_details/', competition_details, name='competition_details'),
     path('competitions/<int:competition_id>/set_up_round/', set_up_round, name='set_up_round'),
+    path('competitions/<int:society_id>/create_competition/', create_competition, name='create_competition'),
+    path('competitions/<int:competition_id>/finalize_competition/', finalize_competition, name='finalize_competition'),
     path('competitions/<int:society_id>/manage_competitions/', manage_competitions, name='manage_competitions'),
 
     #uni-admin paths
