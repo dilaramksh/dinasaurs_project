@@ -17,16 +17,6 @@ from django.db.models import Max
 def event_creation(request, society_id):
     """
     Handle the creation of a new event for a society.
-
-    This view handles the creation of a new event for a specific society. It processes the event creation form,
-    saves the event, and redirects to the society dashboard upon successful creation.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered event creation page or a redirect to the society dashboard.
     """
     society = get_object_or_404(Society, pk=society_id)
     if request.method == 'POST':
@@ -52,15 +42,6 @@ def event_creation(request, society_id):
 def terminate_society(request, society_id):
     """
     Handle the termination of a society.
-
-    This view handles the termination of a specific society. It deletes the society and redirects to the dashboard.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered termination confirmation page or a redirect to the dashboard.
     """
     society = get_object_or_404(Society, pk=society_id)
 
@@ -74,15 +55,6 @@ def terminate_society(request, society_id):
 def view_members(request, society_id):
     """
     Display the members of a specific society.
-
-    This view retrieves and displays the members of a specific society, including committee members.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered view members page with the society members.
     """
     memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
     committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
@@ -100,15 +72,6 @@ def view_members(request, society_id):
 def view_upcoming_events(request, society_id):
     """
     Display the upcoming events for a specific society.
-
-    This view retrieves and displays the upcoming events for a specific society.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered view upcoming events page with the society events.
     """
     society = get_object_or_404(Society, pk=society_id)
     events = Event.objects.filter(society=society, date__gte=date.today()).order_by("date")
@@ -116,16 +79,7 @@ def view_upcoming_events(request, society_id):
 
 def event_details(request, event_id):
     """
-    Return event details as JSON for the modal popup.
-
     This view retrieves the details of a specific event and returns them as JSON for use in a modal popup.
-
-    Args:
-        request (HttpRequest): The request object.
-        event_id (int): The ID of the event.
-
-    Returns:
-        JsonResponse: A JSON response containing the event details.
     """
     event = get_object_or_404(Event, pk=event_id)
     participants = EventsParticipant.objects.filter(event=event).select_related("membership")
@@ -149,16 +103,6 @@ def event_details(request, event_id):
 def create_post(request, society_id):
     """
     Handle the creation of a new post for a society.
-
-    This view handles the creation of a new post for a specific society. It processes the post creation form,
-    saves the post, and redirects to the society mainpage upon successful creation.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered post creation page or a redirect to the society mainpage.
     """
     society = get_object_or_404(Society, id=society_id)
     if request.method == "POST":
@@ -185,16 +129,6 @@ def create_post(request, society_id):
 def customise_society_view(request, society_id):
     """
     Handle the customisation of a society's appearance.
-
-    This view handles the customisation of a specific society's appearance. It processes the customisation form,
-    saves the changes, and redirects to the society mainpage upon successful customisation.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered customisation page or a redirect to the society mainpage.
     """
     society = get_object_or_404(Society, pk=society_id)
     past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')

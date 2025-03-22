@@ -14,13 +14,6 @@ class SignUpView(LoginProhibitedMixin, FormView):
     """
     Display the sign up screen and handle sign ups.
 
-    This view handles the display of the sign up screen and the processing of user sign ups.
-    It ensures that users who are already logged in cannot access the sign up page.
-
-    Attributes:
-        form_class (Form): The form class to be used for sign up.
-        template_name (str): The template to be used for rendering the view.
-        redirect_when_logged_in_url (str): URL to redirect to if the user is already logged in.
     """
 
     form_class = SignUpForm
@@ -30,15 +23,6 @@ class SignUpView(LoginProhibitedMixin, FormView):
     def form_valid(self, form):
         """
         Handle valid sign up form submission.
-
-        This method handles the case where the sign up form is valid. It saves the user,
-        handles the profile picture upload, logs in the user, and redirects to the success URL.
-
-        Args:
-            form (Form): The form containing the sign up information.
-
-        Returns:
-            HttpResponse: The response after a successful form submission.
         """
         print(f"Users before: {User.objects.count()}")
         user = form.save()
@@ -66,15 +50,6 @@ class SignUpView(LoginProhibitedMixin, FormView):
     def form_invalid(self, form):
         """
         Handle invalid sign up form submission.
-
-        This method handles the case where the sign up form is invalid. It prints the form errors
-        and renders the sign up template with the form errors.
-
-        Args:
-            form (Form): The form containing the invalid sign up information.
-
-        Returns:
-            HttpResponse: The response after an unsuccessful form submission.
         """
         print(f"Form errors: {form.errors}")
         return self.render_to_response(self.get_context_data(form=form))
@@ -83,9 +58,5 @@ class SignUpView(LoginProhibitedMixin, FormView):
         """
         Return the redirect URL after a successful sign up.
 
-        This method returns the URL to redirect to after a successful sign up.
-
-        Returns:
-            str: The URL to redirect to.
         """
         return reverse(settings.REDIRECT_URL_WHEN_LOGGED_IN)
