@@ -302,7 +302,7 @@ class SocietyPageViewTestCase(TestCase):
         self.assertIn('users', response.context)
         self.assertIn('committee_members', response.context)
 
- 
+
     def test_view_members(self):
         response = self.client.get(reverse('view_members', kwargs={'society_id': self.society.id}))
         self.assertEqual(response.status_code, 200)
