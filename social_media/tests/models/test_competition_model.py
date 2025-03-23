@@ -35,4 +35,7 @@ class CompetitionModelTestCase(TestCase):
 
     def test_competition_creation(self):
         self.assertEqual(self.competition.name, "Spring Coding Challenge")
+        self.assertTrue(self.competition.is_point_based)
+        self.assertFalse(self.competition.is_finalized)
+        self.assertEqual(str(self.competition), "Test Society: Spring Coding Challenge")
 
