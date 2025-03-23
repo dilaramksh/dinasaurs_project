@@ -90,4 +90,7 @@ class CompetitionModelTestCase(TestCase):
             round_number=1
         )
 
+        match.finalize_result(score1=3, score2=2, winner_part=self.participant1)
+
+
 
