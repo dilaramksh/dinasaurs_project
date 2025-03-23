@@ -32,6 +32,11 @@ class SocietyRoleFormTests(TestCase):
             termination_reason="operational",
             status="approved"
         )
+
+        SocietyRole.objects.create(society=self.society, role_name="President")
+        SocietyRole.objects.create(society=self.society, role_name="Member")
+
+
     def test_valid_role_name(self):
         """Test that SocietyRoleForm accepts a valid role name."""
         form_data = {'role_name': 'Treasurer'}
