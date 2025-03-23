@@ -1,5 +1,5 @@
 from django.test import TestCase
-from social_media.models import Competition, Society, User, University, Category, CompetitionParticipant
+from social_media.models import Competition, Society, User, University, Category, CompetitionParticipant, Match
 from django.utils.timezone import now, timedelta
 from django.utils import timezone
 
@@ -44,7 +44,15 @@ class CompetitionModelTestCase(TestCase):
             start_date=now().date(), end_date=(now() + timedelta(days=365)).date()
         )
 
+        self.user2 = User.objects.create_user(
+            username='@user2', email='user2@test.com', password='12345',
+            first_name='User', last_name='Two', user_type='student',
+            university=self.university,
+            start_date=now().date(), end_date=(now() + timedelta(days=365)).date()
+        )
+
         self.participant1 = CompetitionParticipant.objects.create(user=self.user1, competition=self.competition)
+        self.participant2 = CompetitionParticipant.objects.create(user=self.user2, competition=self.competition)
 
     def test_competition_creation(self):
         self.assertEqual(self.competition.name, "Spring Coding Challenge")
