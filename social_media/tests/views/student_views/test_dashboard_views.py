@@ -6,9 +6,15 @@ from social_media.views import *
 class DashboardViewTestCase(TestCase):
 
     def setUp(self):
-        university = University.objects.create(name="King's College London", status='approved', domain='kcl.ac.uk')
-        university2 = University.objects.create(name="SOAS", status='other', domain='@soas.ac.uk')
+        university = University.objects.create(
+            name="King's College London",
+            status='approved',
+            domain='kcl.ac.uk')
 
+        university2 = University.objects.create(
+            name="SOAS",
+            status='other',
+            domain='@soas.ac.uk')
 
         self.student = User.objects.create_user(
             first_name='jane',
@@ -120,7 +126,6 @@ class DashboardViewTestCase(TestCase):
         self.dashboard_mainpage_url = reverse('dashboard_from_mainpage', args=[self.society.id])
 
 
-    # PASSES
     def test_no_active_society_dashboard_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -132,7 +137,7 @@ class DashboardViewTestCase(TestCase):
         self.assertIn('user', response.context)
         self.assertEqual(response.context['user'].user_type, 'student')
 
-    # PASSES
+
     def test_active_society_dashboard_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -143,7 +148,7 @@ class DashboardViewTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('society_dashboard', kwargs={'society_id': 1}))
 
-    # PASSES
+
     def test_approved_uni_admin_society_dashboard_view(self):
         login_success = self.client.login(username='@michaeljordan', password='Password123')
         self.assertTrue(login_success)
@@ -154,12 +159,12 @@ class DashboardViewTestCase(TestCase):
         self.assertIn('chosen_status', response.context)
         self.assertEqual(response.context['user'].user_type, 'uni_admin')
 
-    #
-    def test_other_status_uni_admin_dashboard_view(self):
+
+    def test_invalid_status_uni_admin_dashboard_view(self):
         login_success = self.client.login(username='@paulpoe', password='Password123')
         self.assertTrue(login_success)
         self.assertEqual(self.uni_admin2.university.status, 'other')
-        response = self.client.get(reverse('dashboard'))
+        response = self.client.get(reverse('dashboard')  + '?status=invalid_status')
         self.assertEqual(response.status_code, 200)
         self.assertIn('societies', response.context)
         self.assertIn('chosen_status', response.context)
@@ -167,7 +172,7 @@ class DashboardViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'uni_admin/uni_admin_dashboard.html')
         self.assertEqual(response.context['user'].user_type, 'uni_admin')
 
-    # PASSES
+
     def test_super_admin_society_dashboard_view(self):
         login_success = self.client.login(username='@lebronjames', password='Password123')
         self.assertTrue(login_success)
@@ -176,7 +181,7 @@ class DashboardViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'super_admin/super_admin_dashboard.html')
         self.assertEqual(response.context['user'].user_type, 'super_admin')
 
-    # PASSES
+
     def test_other_user_dashboard_view(self):
         self.client.login(username='@jamescordon', password='Password123')
         response = self.client.get(reverse('dashboard'))
@@ -185,7 +190,7 @@ class DashboardViewTestCase(TestCase):
         self.assertIn('user', response.context)
         self.assertEqual(response.context['user'], self.other_user)
 
-    # PASSES
+
     def test_get_society_dashboard(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -197,7 +202,7 @@ class DashboardViewTestCase(TestCase):
         session = self.client.session
         self.assertEqual(session['active_society_id'], self.society.id)
 
-    # PASSES
+
     def test_get_student_dashboard_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -211,7 +216,6 @@ class DashboardViewTestCase(TestCase):
         self.assertRedirects(response, reverse('dashboard'))
 
 
-    # PASSES
     def test_join_society_non_member(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -219,15 +223,14 @@ class DashboardViewTestCase(TestCase):
         url = reverse('dashboard_from_mainpage', args=[self.society2.id])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(str(response.content, encoding='utf8'), {'success': True, 'message': 'Successfully joined society'})
+        self.assertJSONEqual(str(response.content, encoding='utf8'), {'success': True, 'message': 'Successfully joined society.'})
         membership = Membership.objects.filter(user=self.student, society=self.society2)
         self.assertTrue(membership.exists())
 
-    # PASSES
+
     def test_join_society_already_a_member(self):
         self.client.login(username='@janedoe', password='Password123')
         url = reverse('dashboard_from_mainpage', args=[self.society.id])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 400)
-        self.assertJSONEqual(str(response.content, encoding='utf8'),{'success': False, 'error': 'You are already a member of this society'})
-
+        self.assertJSONEqual(str(response.content, encoding='utf8'),{'success': False, 'error': 'You are already a member of this society.'})
