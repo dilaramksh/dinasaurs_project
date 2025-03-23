@@ -91,6 +91,10 @@ class CompetitionModelTestCase(TestCase):
         )
 
         match.finalize_result(score1=3, score2=2, winner_part=self.participant1)
+        self.assertTrue(match.is_finished)
+        self.assertEqual(match.score_p1, 3)
+        self.assertEqual(match.score_p2, 2)
+
 
 
 
