@@ -4,6 +4,9 @@
         "use": "@vercel/python",
         "config": { "maxLambdaSize": "50mb", "runtime": "python3.9"}
     }],
+    "env": {
+        "PYTHON_VERSION": "3.9"
+    },
     "routes": [
         {
             "src": "/(.*)",
