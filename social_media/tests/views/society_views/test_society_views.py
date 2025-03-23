@@ -12,7 +12,7 @@ import io
 from PIL import Image
 
 from social_media.forms import CustomisationForm, PostForm
-from social_media.models import Category, Society, SocietyRole, Membership, University, User, Competition, CompetitionParticipant
+from social_media.models import Category, Society, SocietyRole, Membership, University, User, Competition, EventsParticipant, Event, Post
 from social_media.models.colour_history import SocietyColorHistory
 
 
@@ -227,14 +227,14 @@ class SocietyPageViewTestCase(TestCase):
         # URLs
         self.url = reverse('create_event', kwargs={'society_id': self.society.id})
 
-    # PASSES
+
     def test_get_event_creation_form(self):
         response = self.client.get(reverse('create_event', args=[self.society.id]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/event_creation.html')
         self.assertIn('form', response.context)
 
-    # PASSES
+
     def test_post_valid_event_creation(self):
         self.client.login(username='@johndoe', password='Password123')
         session = self.client.session
@@ -253,7 +253,7 @@ class SocietyPageViewTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "Your event has been created.")
 
-    # PASSES
+
     def test_post_invalid_event_creation(self):
         response = self.client.post(reverse('create_event', args=[self.society.id]), self.invalid_form_data)
         self.assertEqual(Event.objects.count(), 1)
@@ -262,7 +262,7 @@ class SocietyPageViewTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "There was an error with your submission. Please try again.")
 
-    # PASSES
+
     def test_event_creation_with_post(self):
         self.client.login(username='@johndoe', password='Password123')
         session = self.client.session
@@ -274,14 +274,14 @@ class SocietyPageViewTestCase(TestCase):
         event = Event.objects.get(name='nba finals')
         self.assertTrue(event.picture)
 
-    # PASSES
+
     def test_terminate_society_view(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.get(reverse('terminate_society', kwargs={'society_id': self.society.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/terminate_society.html')
 
-    # PASSES
+
     def test_society_is_deleted_terminate_society_view(self):
         self.client.login(username='@johndoe', password='Password123')
         self.client.session['active_society_id'] = self.society.id
@@ -294,7 +294,7 @@ class SocietyPageViewTestCase(TestCase):
         redirect_response = self.client.get(response.url)
         self.assertEqual(redirect_response.request['PATH_INFO'], reverse('dashboard'))
 
-    # PASSES
+
     def test_view_members_view(self):
         response = self.client.get(reverse('view_members', kwargs={'society_id': self.society.id}))
         self.assertEqual(response.status_code, 200)
@@ -302,7 +302,7 @@ class SocietyPageViewTestCase(TestCase):
         self.assertIn('users', response.context)
         self.assertIn('committee_members', response.context)
 
-    # PASSES
+ 
     def test_view_members(self):
         response = self.client.get(reverse('view_members', kwargs={'society_id': self.society.id}))
         self.assertEqual(response.status_code, 200)
@@ -310,14 +310,14 @@ class SocietyPageViewTestCase(TestCase):
         self.assertIn('committee_members', response.context)
         self.assertIn('users', response.context)
 
-    # PASSES
+
     def test_view_upcoming_events(self):
         response = self.client.get(reverse('upcoming_events', kwargs={'society_id': self.society.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/view_upcoming_events.html')
         self.assertIn('events', response.context)
 
-    # PASSES
+
     def test_event_details(self):
         response = self.client.get(reverse("event_details", kwargs={"event_id": self.event.id}))
         self.assertEqual(response.status_code, 200)
@@ -329,7 +329,7 @@ class SocietyPageViewTestCase(TestCase):
         self.assertEqual(data["description"], self.event.description)
         self.assertIn(self.user.username, data["participants"])
 
-    # PASSES
+
     def test_event_details_with_picture(self):
         response = self.client.get(reverse("event_details", kwargs={"event_id": self.event.id}))
         self.assertEqual(response.status_code, 200)
@@ -344,7 +344,7 @@ class SocietyPageViewTestCase(TestCase):
         self.assertEqual(data["picture"], expected_image_url_absolute)
         self.assertIn(self.user.username, data["participants"])
 
-    # PASSES
+
     def test_event_details_no_picture(self):
         self.event.picture = None
         self.event.save()
@@ -360,7 +360,7 @@ class SocietyPageViewTestCase(TestCase):
         self.assertEqual(data["picture"], expected_image_url)
         self.assertIn(self.user.username, data["participants"])
 
-    # PASSES
+
     def test_valid_create_post_view(self):
         self.client.login(username='@johndoe', password='Password123')
         today = datetime.now().date()
@@ -377,7 +377,7 @@ class SocietyPageViewTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "Post created successfully!")
 
-    # PASSES
+
     def test_invalid_create_post_view(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.post(reverse('create_post', args=[self.society.id]), self.invalid_post_form_data)
@@ -386,7 +386,7 @@ class SocietyPageViewTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "Error in post creation. Please check the form.")
 
-    # PASSES
+
     def test_else_create_post_view(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.get(reverse('create_post', args=[self.society.id]))
@@ -396,7 +396,7 @@ class SocietyPageViewTestCase(TestCase):
         self.assertIn('form', response.context)
         self.assertIn('society', response.context)
 
-    # PASSES
+
     def test_valid_create_post_view_with_image(self):
         self.client.login(username='@johndoe', password='Password123')
         today = datetime.now().date()
@@ -415,7 +415,7 @@ class SocietyPageViewTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "Post created successfully!", "❌ Success message missing!")
 
-    # PASSES
+
     def test_valid_customise_society_view(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.post(reverse('customise_society', args=[self.society.id]), self.sch_form_data)
@@ -426,14 +426,14 @@ class SocietyPageViewTestCase(TestCase):
         self.assertEqual(society_colour_history.previous_colour2, '#FFFFFF')
         self.assertRedirects(response, reverse('society_mainpage', kwargs={'society_id': self.society.id}))
 
-    # PASSES
+
     def test_invalid_customise_society_view(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.post(reverse('customise_society', args=[self.society.id]), self.invalid_sch_form_data)
         self.assertEqual(SocietyColorHistory.objects.count(), 0)
         self.assertTemplateUsed(response, 'society/customise_society.html')
 
-    # PASSES
+
     def test_else_customise_society_view(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.get(reverse('customise_society', args=[self.society.id]))
@@ -454,19 +454,19 @@ class SocietyPageViewTestCase(TestCase):
         self.assertIn('committee_roles', response.context)
         self.assertIn('society_id', response.context)
 
-    # PASSES
+
     def test_update_committee_view(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.post(reverse('update_committee', args=[self.society.id]), {})
         self.assertRedirects(response, reverse('view_members', kwargs={'society_id': self.society.id}))
 
-    # FAILING
+
     def test_update_committee_redirect(self):
         post_data = {}
         response = self.client.post(reverse('update_committee', args=[self.society.id]), post_data)
         self.assertRedirects(response, reverse('view_members', args=[self.society.id]))
 
-    # PASSES
+
     def test_update_committee(self):
         response = self.client.post(reverse('update_committee', args=[self.society.id]), self.committee_update_data)
         self.assertRedirects(response, reverse('view_members', args=[self.society.id]))
@@ -482,7 +482,7 @@ class SocietyPageViewTestCase(TestCase):
         self.assertEqual(self.user.membership_set.first().society_role, self.role2)  # user1 should now be the Secretary
         self.assertEqual(self.user2.membership_set.first().society_role, self.role)  # user2 should now be the President
 
-    # PASSES
+
     def test_edit_roles_view(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.get(reverse('edit_roles', args=[self.society.id]))
@@ -492,34 +492,33 @@ class SocietyPageViewTestCase(TestCase):
         self.assertIn('delete_form', response.context)
         self.assertEqual(len(response.context['committee_roles']), 2)  # 2 roles (president, secretary)
 
-    # PASSES
+
     def test_add_role_post(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.post(reverse('edit_roles', args=[self.society.id]), self.edit_role_data1)
         self.assertRedirects(response, reverse('edit_roles', args=[self.society.id]))
         self.assertTrue(SocietyRole.objects.filter(society=self.society, role_name='treasurer').exists())
 
-    # PASSES
+
     def test_delete_role_post(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.post(reverse('edit_roles', args=[self.society.id]), self.edit_role_data2, follow=True)
         self.assertRedirects(response, reverse('edit_roles', args=[self.society.id]))
         self.assertFalse(SocietyRole.objects.filter(id=self.role2.id).exists())
 
-    # PASSES
+
     def test_delete_role_president(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.post(reverse('edit_roles', args=[self.society.id]), self.edit_role_data3)
         self.assertEqual(response.status_code, 200)
 
-    # PASSES
+
     def test_attempt_non_member_create_competition(self):
         self.client.login(username='@lukadoncic', password='Password123')
         response = self.client.get(reverse('create_competition', args=[self.society.id]))
         self.assertEqual(response.status_code, 403)
 
 
-    # PASSES
     def test_attempt_create_competition(self):
         self.client.login(username='@johndoe', password='Password123')
         response = self.client.post(reverse("create_competition", args=[self.society.id]), self.competition_form_data)
