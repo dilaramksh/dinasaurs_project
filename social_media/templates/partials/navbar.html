@@ -19,7 +19,15 @@
       </div>
     {% endif %}
 
-    <!-- Profile(logged in users only)-->
+    <!-- Navbar Toggler for Small Screens -->
+    {% if not user.is_authenticated %}
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    {% endif %}
+
+    <!-- Profile Dropdown -->
     {% if user.is_authenticated %}
       <div class="nav-item dropdown">
         <button type="button" class="btn border-0 dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -36,13 +44,15 @@
         </ul>
       </div>
     {% else %}
+
+    <!-- Login/Signup Buttons -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-              <a href="{% url 'log_in' %}" class="btn btn-warning text-white me-2">Log In</a>
+          <li class="nav-item me-lg-2">
+              <a href="{% url 'log_in' %}" class="btn btn-warning text-white mb-2">Log In</a>
           </li>
           <li class="nav-item">
-              <a href="{% url 'sign_up' %}" class="btn btn-warning text-white me-2">Sign Up</a>
+              <a href="{% url 'sign_up' %}" class="btn btn-warning text-white mb-2">Sign Up</a>
           </li>
         </ul>
       </div>
