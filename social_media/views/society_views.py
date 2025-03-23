@@ -405,7 +405,7 @@ def edit_roles(request, society_id):
         elif 'delete_role' in request.POST:
             delete_form = DeleteRoleForm(request.POST, society=society)
             if delete_form.is_valid():
-                role_to_delete = delete_form.cleaned_data
+                role_to_delete = delete_form.cleaned_data['role']
                 role_to_delete.delete()
                 return redirect('edit_roles', society_id=society.id)
     else:

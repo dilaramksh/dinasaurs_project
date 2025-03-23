@@ -7,11 +7,13 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from social_media.forms import CustomisationForm, PostForm
 from social_media.models import *
 from social_media.models.colour_history import SocietyColorHistory
-from datetime import date, datetime
+from datetime import date
 from django.core.files.storage import default_storage
 from django.conf import settings
-
-
+import io
+from PIL import Image
+from django.utils import timezone
+from datetime import datetime
 
 
 
@@ -19,7 +21,26 @@ class SocietyPageViewTestCase(TestCase):
 
     def setUp(self):
         university = University.objects.create(name="King's College London")
-        test_image = SimpleUploadedFile("events_picture/default.jpg", b"file_content", content_type="image/jpeg")
+        image_io = io.BytesIO()
+        image = Image.new('RGB', (100, 100), color='red')
+        image.save(image_io, format='JPEG')
+
+        test_image = SimpleUploadedFile(
+            "test.jpg", image_io.getvalue(), content_type="image/jpeg"
+        )
+
+        naive_start_date_1 = datetime(2025, 7, 15, 18, 30)
+        naive_end_date_1 = datetime(2025, 7, 15, 23, 0)
+
+        naive_start_date_2 = datetime(2025, 3, 22, 18, 30)
+        naive_end_date_2 = datetime(2025, 3, 22, 23, 0)
+
+
+        aware_start_date_1 = timezone.make_aware(naive_start_date_1, timezone.get_current_timezone())
+        aware_end_date_1 = timezone.make_aware(naive_end_date_1, timezone.get_current_timezone())
+
+        aware_start_date_2 = timezone.make_aware(naive_start_date_2, timezone.get_current_timezone())
+        aware_end_date_2 = timezone.make_aware(naive_end_date_2, timezone.get_current_timezone())
 
         self.user = User.objects.create_user(
             first_name='john',
@@ -42,6 +63,18 @@ class SocietyPageViewTestCase(TestCase):
             start_date='2023-09-23',
             end_date='2026-05-06',
             username='@janedoe',
+            password='Password123'
+        )
+
+        self.user3 = User.objects.create_user(
+            first_name='luka',
+            last_name='doncic',
+            email='lukadoncic@kcl.ac.uk',
+            user_type='student',
+            university=university,
+            start_date='2023-09-23',
+            end_date='2026-05-06',
+            username='@lukadoncic',
             password='Password123'
         )
 
@@ -114,6 +147,16 @@ class SocietyPageViewTestCase(TestCase):
             'society_id': '0',
         }
 
+        self.event_picture_form_data = {
+            'name': 'nba finals',
+            'society': self.society,
+            'description': 'nba finals watch party',
+            'date': '2025-06-01',
+            'location': 'bush house lecture theatre',
+            'society_id': self.society.id,
+            'picture': test_image
+        }
+
         self.post_form_data = {
             'title':'Announcement',
             'content':'Event location change',
@@ -143,12 +186,11 @@ class SocietyPageViewTestCase(TestCase):
         }
 
         self.picture_form_data = {
-            'name': 'basketball game',
+            'title': 'event recap',
+            'content': 'photo from our latest event',
+            'created_at': '2025-09-09',
+            'author': self.user,
             'society': self.society,
-            'description': '5 v 5',
-            'date': '2025-06-01',
-            'location': 'court',
-            'society_id': self.society.id,
             'picture': test_image
         }
 
@@ -172,6 +214,15 @@ class SocietyPageViewTestCase(TestCase):
              'role': self.role.id
         }
 
+        self.competition_form_data = {
+            'society':self.society,
+            'name' : 'wwe',
+            'start_date' : aware_start_date_1,
+            'end_date' : aware_end_date_2,
+            'is_ongoing' : 'True',
+           ' is_point_based' : 'False',
+            'is_finalized' : 'False',
+        }
 
         # URLs
         self.url = reverse('create_event', kwargs={'society_id': self.society.id})
@@ -217,10 +268,10 @@ class SocietyPageViewTestCase(TestCase):
         session = self.client.session
         session.pop('active_society_id', None)
         session.save()
-        response = self.client.post(reverse('create_event', args=[self.society.id]), self.picture_form_data, format='multipart')
+        response = self.client.post(reverse('create_event', args=[self.society.id]), self.event_picture_form_data, format='multipart')
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(Event.objects.filter(name='basketball game').exists())
-        event = Event.objects.get(name='basketball game')
+        self.assertTrue(Event.objects.filter(name='nba finals').exists())
+        event = Event.objects.get(name='nba finals')
         self.assertTrue(event.picture)
 
     # PASSES
@@ -294,7 +345,7 @@ class SocietyPageViewTestCase(TestCase):
         self.assertIn(self.user.username, data["participants"])
 
     # PASSES
-    def test_evet_Details_no_picture(self):
+    def test_event_details_no_picture(self):
         self.event.picture = None
         self.event.save()
         response = self.client.get(reverse("event_details", kwargs={"event_id": self.event.id}))
@@ -345,36 +396,24 @@ class SocietyPageViewTestCase(TestCase):
         self.assertIn('form', response.context)
         self.assertIn('society', response.context)
 
-    # FAILING
+    # PASSES
     def test_valid_create_post_view_with_image(self):
         self.client.login(username='@johndoe', password='Password123')
         today = datetime.now().date()
         response = self.client.post(reverse('create_post', args=[self.society.id]), self.picture_form_data)
-        if response.status_code != 200:
-            print("Form errors:", response.context['form'].errors)
         post_count = Post.objects.count()
-        print("Number of posts in the database after request:", post_count)
-        self.assertEqual(post_count, 1)
+        self.assertEqual(post_count, 1, "❌ Post was not created!")
         post = Post.objects.first()
-        print("Post created:", post)
-        self.assertEqual(post.society, self.society.id)
+        self.assertEqual(post.society.id, self.society.id)
         self.assertEqual(post.author, self.user)
-        self.assertEqual(post.title, 'Announcement')
-        self.assertEqual(post.content, 'Event location change')
+        self.assertEqual(post.title, 'event recap')
+        self.assertEqual(post.content, 'photo from our latest event')
         self.assertEqual(post.created_at.date(), today)
-
-        # Check if the picture is saved in storage
-        print("Checking if the picture is saved at:", post.picture.name)
         self.assertTrue(default_storage.exists(post.picture.name))
-
-        # Check if the user is redirected to the correct page
-        self.assertRedirects(response, reverse('society_mainpage', kwargs={'society_id': self.society.id}))
-        self.assertEqual(response.status_code, 302)
-
-        # Check for success message
+        expected_redirect = reverse('society_mainpage', kwargs={'society_id': self.society.id})
+        self.assertRedirects(response, expected_redirect)
         messages = list(get_messages(response.wsgi_request))
-        print("Messages after response:", [str(message) for message in messages])
-        self.assertEqual(str(messages[0]), "Post created successfully!")
+        self.assertEqual(str(messages[0]), "Post created successfully!", "❌ Success message missing!")
 
     # PASSES
     def test_valid_customise_society_view(self):
@@ -473,5 +512,17 @@ class SocietyPageViewTestCase(TestCase):
         response = self.client.post(reverse('edit_roles', args=[self.society.id]), self.edit_role_data3)
         self.assertEqual(response.status_code, 200)
 
+    # PASSES
+    def test_attempt_non_member_create_competition(self):
+        self.client.login(username='@lukadoncic', password='Password123')
+        response = self.client.get(reverse('create_competition', args=[self.society.id]))
+        self.assertEqual(response.status_code, 403)
 
+
+    # PASSES
+    def test_attempt_create_competition(self):
+        self.client.login(username='@johndoe', password='Password123')
+        response = self.client.post(reverse("create_competition", args=[self.society.id]), self.competition_form_data)
+        self.assertEqual(Competition.objects.count(), 1)
+        self.assertRedirects(response, reverse("manage_competitions", args=[self.society.id]))
 
