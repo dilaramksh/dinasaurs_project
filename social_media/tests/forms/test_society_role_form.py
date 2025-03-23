@@ -43,4 +43,18 @@ class SocietyRoleFormTests(TestCase):
         form_data = {'role_name': 'Treasurer'}
         form = SocietyRoleForm(data=form_data)
         self.assertTrue(form.is_valid())
+
+    def test_delete_role_form_excludes_protected_roles(self):
+        """Test DeleteRoleForm excludes 'President' and 'Member' roles."""
+        form = DeleteRoleForm(society=self.society)
+        role_queryset = form.fields['role'].queryset
+        self.assertIn(self.role_to_delete, role_queryset)
+        self.assertNotIn(
+            SocietyRole.objects.get(society=self.society, role_name="President"),
+            role_queryset
+        )
+        self.assertNotIn(
+            SocietyRole.objects.get(society=self.society, role_name="Member"),
+            role_queryset
+        )
     
