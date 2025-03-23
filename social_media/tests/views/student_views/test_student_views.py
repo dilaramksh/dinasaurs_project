@@ -152,7 +152,7 @@ class StudentViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('/help')
 
-    """
+
     # PASSES
     def test_valid_society_creation_request_view(self):
         self.client.login(username='@janedoe', password='Password123')

@@ -12,14 +12,13 @@ from django.core.files.storage import default_storage
 
 DEFAULT_SOCIETY_LOGO = "society_logos/default.png"
 
-#@login_required
+@login_required
 def help_page(request):
     """Render the help page. """
     return render(request, "partials/footer/help.html")
 
-"""
-#@login_required
 
+@login_required
 def society_creation_request(request):
     """Handle the society creation request form submission."""
     if request.method == 'POST':
