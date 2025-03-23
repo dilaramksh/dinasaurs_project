@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
-from social_media.models import *
-from social_media.views import *
+from social_media.models import Category, Society, SocietyRole, Membership, University, User
+
 
 class DashboardViewTestCase(TestCase):
 

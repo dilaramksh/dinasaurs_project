@@ -51,10 +51,8 @@ urlpatterns = [
     path('partials/footer/privacy_policy/', privacy_policy, name='privacy_policy'),
 
     #student paths
-    path('student/homepage/', society_browser, name='society_browser'),
     path('student/create_society/', society_creation_request, name='society_creation_request'),
     path('student/view_society/', view_societies, name='view_societies'),
-    path('student/societies', student_societies, name='student_societies'),
     path('student/memberships/', view_memberships, name='view_memberships'),
     path('remove-membership/<int:membership_id>/', remove_membership, name='remove_membership'),
     path('competitions/view_competitions/', view_competitions, name='view_competitions'),

@@ -14,13 +14,12 @@ def change_society_status(request, society_id):
         next_status = request.POST.get("next_status")
 
         if next_status not in ["approved", "blocked", "pending"]:
-            next_status = "pending"  # fallback
+            next_status = "pending"
 
         if next_status == "approved":
             society.status = "approved"
             society.save()
 
-            # Create or get 'President' role for this society
             president, _ = SocietyRole.objects.get_or_create(
                 society=society,
                 role_name="President"
