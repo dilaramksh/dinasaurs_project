@@ -26,18 +26,12 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 load_dotenv()
 
-"""
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    load_dotenv(dotenv_file)
-"""
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-048$05y)ar037ha8w&3!(6%@264f+(y4f@zo*v%#bbya(kj5a0'
+SECRET_KEY ='django-insecure-048$05y)ar037ha8w&3!(6%@264f+(y4f@zo*v%#bbya(kj5a0'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     '.vercel.app',
@@ -111,16 +105,24 @@ WSGI_APPLICATION = 'dinasaurs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('dbname'),
-        'USER': os.getenv('user'),
-        'PASSWORD': os.getenv('password'),
-        'HOST': os.getenv('host'),  # should be "db.kjzcbbisaprhzgxhuqot.supabase.co"
-        'PORT': os.getenv('port', '5432'),  # default to 5432 if not set
+if DEBUG:  # Development 
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv("DB_ENGINE", "django.db.backends.sqlite3"),
+            'NAME': os.getenv("DB_NAME", os.path.join(BASE_DIR, "db.sqlite3")),
+        }
     }
-}
+else:  # Production 
+    DATABASES = {
+        'default': {
+            'ENGINE': "django.db.backends.postgresql",
+            'NAME': os.getenv("DB_NAME"),
+            'USER': os.getenv("DB_USER"),
+            'PASSWORD': os.getenv("DB_PASSWORD"),
+            'HOST': os.getenv("DB_HOST"),
+            'PORT': os.getenv("DB_PORT", "5432"),  # Default PostgreSQL port
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
