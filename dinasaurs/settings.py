@@ -117,8 +117,8 @@ DATABASES = {
         'NAME': os.getenv('dbname'),
         'USER': os.getenv('user'),
         'PASSWORD': os.getenv('password'),
-        'HOST': os.getenv('host'),  # should be "db.kjzcbbisaprhzgxhuqot.supabase.co"
-        'PORT': os.getenv('port', '5432'),  # default to 5432 if not set
+        'HOST': os.getenv('host'),  
+        'PORT': os.getenv('port', '5432'),
     }
 }
 

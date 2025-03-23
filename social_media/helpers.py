@@ -2,7 +2,9 @@ from django.conf import settings
 from django.shortcuts import redirect, get_object_or_404
 from social_media.models import *
 
-
+"""
+Decorators
+"""
 def login_prohibited(view_function):
     """Decorator for view functions that redirect users away if they are logged in."""
     
@@ -23,6 +25,20 @@ def membership_required(view_function):
         return view_function(request, society_id, *args, **kwargs)
     return modified_view_function
 
+def user_type_required(user_type):
+    def decorator(view_function):
+        @wraps(view_function)
+        def _wrapped_view(request, *view_args, **view_kwargs):
+            print("User: ", request.user, request.user.user_type)
+            if getattr(request.user, 'user_type', None) == user_type:
+                return view_function(request, *view_args, **view_kwargs)
+            return render(request, 'unauthorized_page.html')
+        return _wrapped_view
+    return decorator
+
+"""
+Helpers
+"""
 def get_committee_members(society):
     """Retrieve committee members for a given society."""
     return [membership.user for membership in Membership.objects.filter(society=society) if membership.is_committee_member()]
