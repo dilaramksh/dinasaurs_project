@@ -1,7 +1,8 @@
 from django.test import TestCase
 from social_media.forms.society_role_form import SocietyRoleForm
 from django.utils.timezone import now, timedelta
-from social_media.models import User, University
+from social_media.models import User, University, Category, Society, SocietyRole
+from social_media.forms.society_role_form import DeleteRoleForm
 
 class SocietyRoleFormTests(TestCase):
     def setUp(self):
@@ -16,6 +17,20 @@ class SocietyRoleFormTests(TestCase):
             university=self.university,
             start_date=now().date(),
             end_date=(now() + timedelta(days=365)).date()
+        )
+        self.category = Category.objects.create(name="Tech")
+        self.society = Society.objects.create(
+            name="Coding Society",
+            founder=self.user,
+            society_email="code@society.com",
+            description="A society for coding lovers",
+            category=self.category,
+            paid_membership=False,
+            price=0.0,
+            colour1="#FFFFFF",
+            colour2="#000000",
+            termination_reason="operational",
+            status="approved"
         )
     def test_valid_role_name(self):
         """Test that SocietyRoleForm accepts a valid role name."""
