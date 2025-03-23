@@ -15,19 +15,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Max
 
 def event_creation(request, society_id):
-    """
-    Handle the creation of a new event for a society.
-
-    This view handles the creation of a new event for a specific society. It processes the event creation form,
-    saves the event, and redirects to the society dashboard upon successful creation.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered event creation page or a redirect to the society dashboard.
-    """
+    """ Handle the creation of a new event for a society. """
     society = get_object_or_404(Society, pk=society_id)
     if request.method == 'POST':
         form = EventCreationForm(request.POST)
@@ -50,18 +38,7 @@ def event_creation(request, society_id):
     return render(request, 'society/event_creation.html', {'form': form})
 
 def terminate_society(request, society_id):
-    """
-    Handle the termination of a society.
-
-    This view handles the termination of a specific society. It deletes the society and redirects to the dashboard.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered termination confirmation page or a redirect to the dashboard.
-    """
+    """Handle the termination of a society."""
     society = get_object_or_404(Society, pk=society_id)
 
     if request.method == "POST":
@@ -72,18 +49,7 @@ def terminate_society(request, society_id):
     return render(request, "society/terminate_society.html")
 
 def view_members(request, society_id):
-    """
-    Display the members of a specific society.
-
-    This view retrieves and displays the members of a specific society, including committee members.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered view members page with the society members.
-    """
+    """Display the members of a specific society."""
     memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
     committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
 
@@ -98,35 +64,13 @@ def view_members(request, society_id):
     return render(request, "society/view_members.html", context)
 
 def view_upcoming_events(request, society_id):
-    """
-    Display the upcoming events for a specific society.
-
-    This view retrieves and displays the upcoming events for a specific society.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered view upcoming events page with the society events.
-    """
+    """Display the upcoming events for a specific society."""
     society = get_object_or_404(Society, pk=society_id)
     events = Event.objects.filter(society=society, date__gte=date.today()).order_by("date")
     return render(request, 'society/view_upcoming_events.html', {'events': events, 'society': society})
 
 def event_details(request, event_id):
-    """
-    Return event details as JSON for the modal popup.
-
-    This view retrieves the details of a specific event and returns them as JSON for use in a modal popup.
-
-    Args:
-        request (HttpRequest): The request object.
-        event_id (int): The ID of the event.
-
-    Returns:
-        JsonResponse: A JSON response containing the event details.
-    """
+    """This view retrieves the details of a specific event and returns them as JSON for use in a modal popup."""
     event = get_object_or_404(Event, pk=event_id)
     participants = EventsParticipant.objects.filter(event=event).select_related("membership")
 
@@ -147,19 +91,7 @@ def event_details(request, event_id):
     return JsonResponse(data)
 
 def create_post(request, society_id):
-    """
-    Handle the creation of a new post for a society.
-
-    This view handles the creation of a new post for a specific society. It processes the post creation form,
-    saves the post, and redirects to the society mainpage upon successful creation.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered post creation page or a redirect to the society mainpage.
-    """
+    """Handle the creation of a new post for a society."""
     society = get_object_or_404(Society, id=society_id)
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
@@ -183,19 +115,7 @@ def create_post(request, society_id):
     return render(request, 'society/create_post.html', {"form": form, "society": society})
 
 def customise_society_view(request, society_id):
-    """
-    Handle the customisation of a society's appearance.
-
-    This view handles the customisation of a specific society's appearance. It processes the customisation form,
-    saves the changes, and redirects to the society mainpage upon successful customisation.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered customisation page or a redirect to the society mainpage.
-    """
+    """Handle the customisation of a society's appearance."""
     society = get_object_or_404(Society, pk=society_id)
     past_colors = SocietyColorHistory.objects.filter(society=society).order_by('-updated_at')
 
@@ -222,7 +142,6 @@ def customise_society_view(request, society_id):
         'past_colors': past_colors
     })
 
-# Competition-related views
 
 @login_required
 def create_competition(request, society_id):
@@ -257,7 +176,6 @@ def manage_competitions(request, society_id):
     if not user_membership or not user_membership.is_committee_member():
         return HttpResponseForbidden("You are not a committee member in this society.")
 
-    # All competitions for this society
     competitions = Competition.objects.filter(society=society)
 
     return render(
@@ -269,7 +187,6 @@ def manage_competitions(request, society_id):
             "competitions": competitions,
         }
     )
-
 
 @login_required
 def finalize_competition(request, competition_id):
@@ -294,7 +211,6 @@ def competition_details(request, competition_id):
     user_membership = Membership.objects.filter(user=request.user, society=society).first()
     is_admin = bool(user_membership and user_membership.is_committee_member())
 
-    # If the user is a participant in this competition
     participant = CompetitionParticipant.objects.filter(
         user=request.user, competition=competition
     ).first()
@@ -364,7 +280,7 @@ def set_up_round(request, competition_id):
     available_parts = CompetitionParticipant.objects.filter(competition=competition, is_eliminated=False)
 
     last_round = competition.matches.filter(is_finished=True).aggregate(Max("round_number"))["round_number__max"]
-    round_number = last_round + 1 if last_round else 1  # start with 1 if no finished matches
+    round_number = last_round + 1 if last_round else 1  
 
     existing_matches = Match.objects.filter(competition=competition, round_number=round_number)
 
@@ -546,19 +462,7 @@ def record_match_results(request, competition_id):
 
 
 def manage_committee(request, society_id):
-    """
-    Display and manage the committee members of a society.
-
-    This view retrieves and displays the committee members of a specific society. It also allows for managing
-    the committee roles.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered manage committee page with the committee members and roles.
-    """
+    """Display and manage the committee members of a society."""
     memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
 
     committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
@@ -577,19 +481,7 @@ def manage_committee(request, society_id):
     return render(request, 'society/manage_committee.html', context)
 
 def update_committee(request, society_id):
-    """
-    Update the committee roles of a society.
-
-    This view handles the updating of committee roles for a specific society. It processes the role update form
-    and saves the changes.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: A redirect to the view members page or the manage committee page.
-    """
+    """Update the committee roles of a society."""
     society = get_object_or_404(Society, id=society_id)
 
     if request.method == "POST":
@@ -614,22 +506,9 @@ def update_committee(request, society_id):
                     )
 
         return redirect("view_members", society_id=society.id)
-    return redirect("manage_committee", society_id=society.id)
 
 def edit_roles(request, society_id):
-    """
-    Edit the roles within a society.
-
-    This view handles the editing of roles within a specific society. It processes the role addition and deletion forms
-    and saves the changes.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society.
-
-    Returns:
-        HttpResponse: The rendered edit roles page with the role forms.
-    """
+    """Edit the roles within a society."""
     society = get_object_or_404(Society, id=society_id)
     roles = SocietyRole.objects.filter(society=society)
 
@@ -651,3 +530,15 @@ def edit_roles(request, society_id):
             delete_form = DeleteRoleForm(request.POST, society=society)
             if delete_form.is_valid():
                 role_to_delete = delete_form.cleaned_data
+                role_to_delete.delete()
+                return redirect('edit_roles', society_id=society.id)
+    else:
+        add_form = SocietyRoleForm()
+        delete_form = DeleteRoleForm(society=society)
+ 
+    return render(request, 'society/edit_roles.html', {
+         'society': society,
+         'committee_roles': committee_roles,
+         'add_form': add_form,
+         'delete_form': delete_form
+     })

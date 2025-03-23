@@ -5,20 +5,7 @@ from social_media.models import Society, Membership, SocietyRole
 
 @login_required
 def change_society_status(request, society_id):
-    """
-    Allows university admin to change a society's status to approved, blocked, or pending.
-
-    This view allows a university admin to change the status of a society. It handles the status
-    change through a POST request and ensures that the user is a university admin. If the status
-    is changed to approved, it assigns the founder as the President of the society.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society to be updated.
-
-    Returns:
-        HttpResponse: A redirect to the dashboard with the updated status or a forbidden/not allowed response.
-    """
+    """Allows university admin to change a society's status to approved, blocked, or pending."""
     if request.user.user_type != "uni_admin":
         return HttpResponseForbidden("You must be a university admin to do this.")
 
@@ -68,19 +55,7 @@ def change_society_status(request, society_id):
 
 @login_required
 def society_request_details(request, society_id):
-    """
-    Allows university admin to view details of a pending society request.
-
-    This view allows a university admin to view the details of a pending society request. It ensures
-    that the user is a university admin and that the society belongs to the same university as the admin.
-
-    Args:
-        request (HttpRequest): The request object.
-        society_id (int): The ID of the society to be viewed.
-
-    Returns:
-        HttpResponse: The rendered society request details page or a forbidden response.
-    """
+    """ Allows university admin to view details of a pending society request."""
     society = get_object_or_404(Society, pk=society_id)
 
     if request.user.user_type != "uni_admin":

@@ -38,7 +38,7 @@ class Event(models.Model):
         if self.date < now().date():
             raise ValidationError({'date': 'The event date must be in the future.'})
 
-        if not self.society:  
+        if not self.society_id:  
             raise ValidationError("Cannot save an event without an associated society.")
 
         if self.society.status != "approved":
