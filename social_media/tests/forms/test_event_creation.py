@@ -76,4 +76,5 @@ class EventCreationFormTest(TestCase):
 
         form = EventCreationForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('date', form.errors)
         self.assertEqual(form.errors['date'], ['The event date cannot be in the past.'])
