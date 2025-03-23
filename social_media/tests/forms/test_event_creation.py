@@ -73,3 +73,6 @@ class EventCreationFormTest(TestCase):
             'date': past_date,
             'location': 'Old Location',
         }
+
+        form = EventCreationForm(data=form_data)
+        self.assertFalse(form.is_valid())
