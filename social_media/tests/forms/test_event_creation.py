@@ -2,6 +2,7 @@ from django.test import TestCase
 from social_media.forms import EventCreationForm
 from social_media.models import Event
 from datetime import date
+from datetime import timedelta
 
 class EventCreationFormTest(TestCase):
     """Test cases for the EventCreationForm."""
@@ -62,3 +63,13 @@ class EventCreationFormTest(TestCase):
         form = EventCreationForm(data=form_data)
         self.assertTrue(form.is_valid())
         self.assertNotIn('picture', form.errors)
+
+    def test_form_date_in_the_past(self):
+        """Test form rejects a date in the past."""
+        past_date = date.today() - timedelta(days=1)
+        form_data = {
+            'name': 'Past Event',
+            'description': 'Event in the past.',
+            'date': past_date,
+            'location': 'Old Location',
+        }
