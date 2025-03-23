@@ -1,4 +1,3 @@
-from social_media.decorators import user_type_required
 from social_media.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -18,7 +17,7 @@ def help_page(request):
     """Render the help page. """
     return render(request, "partials/footer/help.html")
 
-
+"""
 #@login_required
 
 def society_creation_request(request):

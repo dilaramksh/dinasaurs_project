@@ -464,7 +464,7 @@ class SocietyPageViewTestCase(TestCase):
     def test_update_committee_redirect(self):
         post_data = {}
         response = self.client.post(reverse('update_committee', args=[self.society.id]), post_data)
-        self.assertRedirects(response, reverse('manage_committee', args=[self.society.id]))
+        self.assertRedirects(response, reverse('view_members', args=[self.society.id]))
 
     # PASSES
     def test_update_committee(self):

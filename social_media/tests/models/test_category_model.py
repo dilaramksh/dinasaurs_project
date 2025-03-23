@@ -49,3 +49,7 @@ class CategoryModelTest(TestCase):
         category2.full_clean()
         category2.save()
         self.assertEqual(Category.objects.count(), 2)
+
+    def test_str_representation(self):
+        category = Category(name='faith')
+        self.assertEqual(str(category), 'Faith')
