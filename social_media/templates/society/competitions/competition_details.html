@@ -3,13 +3,52 @@
 
 {% block content %}
 <div class="container mt-4">
+    {% if is_admin %}
+    <a href="{% url 'manage_competitions' competition.society.id %}" class="btn btn-secondary  mb-3">
+        &laquo; Back
+    </a>
+    {% else %}
+    <a href="{% url 'view_my_competitions'  %}" class="btn btn-secondary  mb-3">
+        &laquo; Back
+    </a>
+    {% endif %}
+
+    {% if not competition.is_finalized %}
+        {% if is_participant and not participant.is_eliminated %}
+            <form method="post" action="{% url 'leave_competition' competition.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger mb-3">Leave Competition</button>
+            </form>
+        {% elif not is_participant %}
+            <form method="post" action="{% url 'join_competition' competition.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success mb-3">Join Competition</button>
+            </form>
+        {% endif %}
+        {% else %}
+        {% if not competition.is_ongoing %}
+            <p class="text-muted">This competition has ended.</p>
+        {% else %}
+        {% if is_admin %}
+            <!-- End Competition' button if not ended already -->
+            <form method="post" style="display:inline;">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="end_competition">
+              <button type="submit" class="btn btn-danger mb-3">End Competition</button>
+            </form>
+        {% endif %}
+        {% endif %}
+        <p class="text-muted">Competition is finalized; you cannot join or leave.</p>
+        
+    {% endif %}
+    
     <h2>{{ competition.name }}
         (
         {% if competition.is_point_based %}Point-based{% else %}Winner-based{% endif %}
         )
     </h2>
     
-    <!-- Participant status -->
+    <!-- Participant status (for the current user) -->
     {% if is_participant %}
         {% if participant.is_eliminated %}
             <p class="text-danger">You are eliminated from this competition.</p>
@@ -21,89 +60,99 @@
     {% endif %}
     
     <!-- Join/Leave Buttons if not finalized -->
-    {% if not competition.is_finalized %}
-        {% if is_participant and not participant.is_eliminated %}
-            <form method="post" action="{% url 'leave_competition' competition.id %}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Leave Competition</button>
-            </form>
-        {% elif not is_participant %}
-            <form method="post" action="{% url 'join_competition' competition.id %}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary mb-3">Join Competition</button>
-            </form>
-        {% endif %}
-    {% else %}
-        <p class="text-muted">Competition is finalized; you cannot join or leave.</p>
-    {% endif %}
+    
+        
+
     <hr>
 
-    {% if is_admin %}
-        <!-- Button to finalize or set up a new round -->
+    {% if is_admin and competition.is_ongoing %}
         <h3>Matches</h3>
-        <p class="text-muted">Finalize both competition and the last round before setting up a new round.</p>
+        <p class="text-muted">To set up a new round, finalize the competition and record the current match results</p>
         {% if not competition.is_finalized %}
-            <a href="{% url 'finalize_competition' competition.id %}" class="btn btn-danger mb-3">
+            <a href="{% url 'finalize_competition' competition.id %}" class="btn btn-primary mb-3">
                 Finalize Lineup
             </a>
         {% else %}
-            <a href="{% url 'record_match_results' competition.id %}" class="btn btn-info mb-3">
-                Record Match Result
+            <a href="{% url 'record_match_results' competition.id %}" class="btn btn-primary mb-3">
+                Record Match Results
             </a>
-            <a href="{% url 'set_up_round' competition.id %}" class="btn btn-danger mb-3">
-                New Round
+            <a href="{% url 'set_up_round' competition.id %}" class="btn btn-primary mb-3">
+                Set Up Round
             </a>
             <hr>
         {% endif %}
-
-        <div class="card shadow-sm">
+    {% endif %}     
+        <div class="card shadow-sm mt-4">
             <div class="card-header bg-warning text-dark text-center">
-                <h5 class="mb-0">
-                    Uneliminated 
-
-                    Participants 
-                </h5>
+              <h5 class="mb-0">Results</h5>
             </div>
             <div class="card-body">
+              {% if all_participants %}
+                <table class="table table-hover align-middle">
+                  <thead class="table-warning">
+                    <tr>
+                      <th>Participant</th>
+                      <th>Status</th>
+                      
+                      {% if competition.is_point_based %}
+                        <th>Points</th>
+                      {% else %}
+                        <th>Winner?</th>
+                      {% endif %}
+                      {% if is_admin and competition.is_ongoing %}
+                        <th>Action</th>
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for p in all_participants %}
+                      <tr>
+                        <td>{{ p.user.username }}</td>
+                        <td>
+                          {% if p.is_eliminated %}
+                            <span class="text-danger">Eliminated</span>
+                          {% else %}
+                            <span class="text-success">Active</span>
+                          {% endif %}
+                        </td>
+                        
+                        {% if competition.is_point_based %}
+                          <td>{{ p.points }}</td>
+                        {% else %}
+                          <td>
+                            {% if latest_winner_ids and p.id in latest_winner_ids %}
+                              <span class="text-success">Yes</span>
+                            {% else %}
+                              <span class="text-muted">No</span>
+                            {% endif %}
+                          </td>
 
-                {% else %}
-                    {% if uneliminated_parts %}
-                        <table class="table table-hover align-middle">
-                            <thead class="table-warning">
-                                <tr>
-                                    <th>Participant</th>
-                                    <th>Eliminate</th>
-                                    {% if competition.is_point_based %}
-                                        <th>Points</th>
-                                    {% endif %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for part in uneliminated_parts %}
-                                    <tr>
-                                        <td>{{ part.user.username }}</td>
-                                        <td>
-                                            <form method="post" style="display:inline;">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="action" value="eliminate">
-                                                <input type="hidden" name="target_id" value="{{ part.id }}">
-                                                <button type="submit" class="btn btn-danger btn-sm">X</button>
-                                            </form>
-                                        </td>
-                                        {% if competition.is_point_based %}
-                                            <!-- Show points in read-only form -->
-                                            <td>{{ part.points }}</td>
-                                        {% endif %}
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <p class="text-muted">No uneliminated participants found.</p>
-                    {% endif %}
-                {% endif %}
+                        {% endif %}
+                        {% if is_admin and competition.is_ongoing %}
+
+                        <td>
+                            <form method="post" style="display:inline;">
+                              {% csrf_token %}
+                              <input type="hidden" name="action" value="toggle_elimination">
+                              <input type="hidden" name="participant_id" value="{{ p.id }}">
+                              {% if p.is_eliminated %}
+                                <button type="submit" class="btn btn-warning btn-sm">Revert</button>
+                              {% else %}
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminate</button>
+                              {% endif %}
+                            </form>
+                          </td>
+                          {% endif %}
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                <p class="text-muted">No participants in this competition.</p>
+              {% endif %}
             </div>
-        </div>
+          </div>
+          
 
 </div>
 {% endblock %}
