@@ -57,4 +57,9 @@ class SocietyRoleFormTests(TestCase):
             SocietyRole.objects.get(society=self.society, role_name="Member"),
             role_queryset
         )
+
+    def test_delete_role_form_no_society(self):
+        """Test DeleteRoleForm returns empty queryset if no society is passed."""
+        form = DeleteRoleForm()
+        self.assertEqual(form.fields['role'].queryset.count(), 0)
     
