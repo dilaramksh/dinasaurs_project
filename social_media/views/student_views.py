@@ -17,12 +17,11 @@ def help_page(request):
     """Render the help page. """
     return render(request, "partials/footer/help.html")
 
-
+"""
 #@login_required
 def society_browser(request):
-    """Render the society browser page."""
     return render(request, 'student/society_browser.html')
-
+"""
 
 def society_creation_request(request):
     """Handle the society creation request form submission."""
@@ -121,6 +120,7 @@ def student_societies(request):
         'committee_members': committee_members,
     })
 
+""""
 def student_events(request):
     student = request.user
     memberships = Membership.objects.filter(
@@ -135,7 +135,7 @@ def student_events(request):
         'user_societies': user_societies,
         'user_events': user_events,
     })
-
+"""
 
 @login_required
 def view_competitions(request):

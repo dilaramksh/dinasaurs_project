@@ -26,7 +26,7 @@ class LogOutViewTestCase(TestCase, LogInTester):
         self.assertFalse(self._is_logged_in())
 
     def test_get_log_out_without_being_logged_in(self):
-        response = self.client.get(self.url, follow=True)
+        response = self.client.get(self.logout_url, follow=True)
         self.assertRedirects(response, self.homepage_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'homepage.html')
         self.assertFalse(self._is_logged_in())

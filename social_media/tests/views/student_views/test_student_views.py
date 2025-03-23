@@ -85,6 +85,7 @@ class StudentViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('/help')
 
+    """
     # PASSES
     def test_society_browser_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
@@ -94,6 +95,7 @@ class StudentViewTestCase(TestCase):
         self.assertTemplateUsed('student/society_browser.html')
         self.assertIn('user', response.context)
         self.assertEqual(response.context['user'].user_type, 'student')
+    """
 
     # PASSES
     def test_valid_society_creation_request_view(self):
@@ -164,6 +166,7 @@ class StudentViewTestCase(TestCase):
         self.assertIn('selected_category', response.context)
         self.assertIn('society_posts', response.context)
 
+    """
     # PASSES
     def test_student_events_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
@@ -174,7 +177,8 @@ class StudentViewTestCase(TestCase):
         self.assertIn('student', response.context)
         self.assertIn('user_societies', response.context)
         self.assertIn('user_events', response.context)
-
+    """
+    
     # PASSES
     def test_no_selected_society_student_societies_view(self):
         self.client.login(username='@janedoe', password='Password123')

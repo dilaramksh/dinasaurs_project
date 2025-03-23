@@ -6,6 +6,7 @@ from social_media.forms import UserForm
 from social_media.models import User
 from social_media.tests.helpers import reverse_with_next
 from social_media.models import University
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 import os
 from unittest.mock import patch, MagicMock
