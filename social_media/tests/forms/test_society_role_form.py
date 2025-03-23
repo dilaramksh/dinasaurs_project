@@ -35,6 +35,7 @@ class SocietyRoleFormTests(TestCase):
 
         SocietyRole.objects.create(society=self.society, role_name="President")
         SocietyRole.objects.create(society=self.society, role_name="Member")
+        self.role_to_delete = SocietyRole.objects.create(society=self.society, role_name="Event Manager")
 
 
     def test_valid_role_name(self):
