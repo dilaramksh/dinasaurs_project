@@ -82,4 +82,12 @@ class CompetitionModelTestCase(TestCase):
         )
         self.assertEqual(match.get_opponents(), (self.participant1, self.participant2))
 
+    def test_finalize_result(self):
+        match = Match.objects.create(
+            competition=self.competition,
+            participant1=self.participant1,
+            participant2=self.participant2,
+            round_number=1
+        )
+
 
