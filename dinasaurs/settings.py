@@ -12,9 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+import sys
+import psycopg2
 from dotenv import load_dotenv
 import os
-import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,16 +24,24 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+load_dotenv()
+
+"""
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    load_dotenv(dotenv_file)
+"""
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-048$05y)ar037ha8w&3!(6%@264f+(y4f@zo*v%#bbya(kj5a0'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '*.vercel.app',
-    #'hivesociety.vercel.app',
+    '.vercel.app',
+    'hivesociety.vercel.app',
     'localhost',
     '127.0.0.1',
 ]
@@ -64,7 +73,6 @@ MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-
 
 
 MIDDLEWARE = [
@@ -103,30 +111,17 @@ WSGI_APPLICATION = 'dinasaurs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-
-load_dotenv()
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join('/tmp', 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('dbname'),
+        'USER': os.getenv('user'),
+        'PASSWORD': os.getenv('password'),
+        'HOST': os.getenv('host'),  # should be "db.kjzcbbisaprhzgxhuqot.supabase.co"
+        'PORT': os.getenv('port', '5432'),  # default to 5432 if not set
     }
-    #'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
 
-
-
-# Test Database
-#DATABASES['default']['TEST'] = {
-#    'NAME': 'test_dinosaurs_project',
-#}
-
-"""
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join('/tmp', 'db.sqlite3'),
-    }"
-"""
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
