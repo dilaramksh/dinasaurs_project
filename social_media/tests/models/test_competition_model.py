@@ -55,3 +55,13 @@ class CompetitionModelTestCase(TestCase):
     def test_competition_participant_str(self):
         self.assertEqual(str(self.participant1), "@user1 in Spring Coding Challenge")
 
+    def test_match_str(self):
+        match = Match.objects.create(
+            competition=self.competition,
+            participant1=self.participant1,
+            participant2=self.participant2,
+            round_number=1
+        )
+        self.assertIn("Match #", str(match))
+        self.assertIn("Spring Coding Challenge", str(match))
+
