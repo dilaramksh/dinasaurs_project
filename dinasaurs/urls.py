@@ -75,10 +75,13 @@ urlpatterns = [
     path('society/<int:society_id>/manage_committee', manage_committee, name='manage_committee'),
     path('society/<int:society_id>/update_committee', update_committee, name='update_committee'),
     path('society/<int:society_id>/edit_roles/', edit_roles, name='edit_roles'),
-    #path('competitions/<int:society_id>/record_match_results/', record_match_results, name='record_match_results'),
     path('competitions/<int:competition_id>/competition_details/', competition_details, name='competition_details'),
     path('competitions/<int:competition_id>/set_up_round/', set_up_round, name='set_up_round'),
     path('competitions/<int:society_id>/manage_competitions/', manage_competitions, name='manage_competitions'),
+    path('competitions/<int:society_id>/create_competition/', create_competition, name='create_competition'),
+    path('competitions/<int:competition_id>/finalize_competition/', finalize_competition, name='finalize_competition'),
+    path('competitions/<int:competition_id>/record_match_results/', record_match_results, name='record_match_results'),
+   # path('competitions/<int:competition_id>/finish_current_round/', finish_current_round, name='finish_current_round'),
 
     #uni-admin paths
     path("university/dashboard/change_status/<int:society_id>/", change_society_status, name="change_society_status"),
