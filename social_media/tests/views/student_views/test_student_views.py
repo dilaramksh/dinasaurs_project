@@ -1,13 +1,15 @@
-
 from django.test import TestCase
 from django.urls import reverse
-from social_media.forms.society_creation_form import SocietyCreationForm
-from social_media.models import *
 from django.contrib.messages import get_messages
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
+
 from datetime import datetime
+
+from social_media.forms.society_creation_form import SocietyCreationForm
+from social_media.models import Category, Society, SocietyRole, Membership, University, User, Competition, CompetitionParticipant
+
 
 class StudentViewTestCase(TestCase):
 
@@ -144,7 +146,6 @@ class StudentViewTestCase(TestCase):
         }
 
 
-    # PASSES
     def test_help_page_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -153,7 +154,6 @@ class StudentViewTestCase(TestCase):
         self.assertTemplateUsed('/help')
 
 
-    # PASSES
     def test_valid_society_creation_request_view(self):
         self.client.login(username='@janedoe', password='Password123')
         url = reverse('society_creation_request')
@@ -170,7 +170,7 @@ class StudentViewTestCase(TestCase):
         self.assertEqual(str(messages[0]), "Your society request has been submitted for approval.")
         self.assertRedirects(response, reverse('dashboard'))
 
-    # PASSES
+
     def test_valid_society_creation_request_with_picture(self):
         self.client.login(username='@janedoe', password='Password123')
         url = reverse('society_creation_request')
@@ -181,7 +181,6 @@ class StudentViewTestCase(TestCase):
         self.assertRedirects(response, reverse('dashboard'))
 
 
-    # PASSES
     def test_invalid_society_creation_request_view(self):
         self.client.login(username='@janedoe', password='Password123')
         url = reverse('society_creation_request')
@@ -190,7 +189,7 @@ class StudentViewTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "There was an error with your request submission. Please try again.")
 
-    # PASSES
+
     def test_else_society_creation_form(self):
         self.client.login(username='@janedoe', password='Password123')
         url = reverse('society_creation_request')
@@ -200,7 +199,7 @@ class StudentViewTestCase(TestCase):
         self.assertIsInstance(form, SocietyCreationForm)
         self.assertIn('form', response.context)
 
-    # PASSES
+
     def test_no_filters_view_societies(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -209,7 +208,7 @@ class StudentViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'student/view_societies.html')
         self.assertIn('societies', response.context)
 
-    # PASSES
+
     def test_search_query_view_societies(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -219,7 +218,7 @@ class StudentViewTestCase(TestCase):
         self.assertEqual(len(societies), 1)
         self.assertEqual(societies.first(), self.society)
 
-    # PASSES
+
     def test_category_filter_view_societies(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -230,10 +229,6 @@ class StudentViewTestCase(TestCase):
         self.assertEqual(societies.first(), self.society)
 
 
-
-
-
-    # PASSES
     def test_view_competitions_view(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -244,14 +239,13 @@ class StudentViewTestCase(TestCase):
         self.assertIn('society_competitions', response.context)
 
 
-    # PASSES
     def test_view_my_competitions_non_student(self):
         login_success = self.client.login(username='@mohammedali', password='Password123')
         self.assertTrue(login_success)
         response = self.client.get(reverse('view_my_competitions'))
         self.assertEqual(response.status_code, 403)
 
-    # PASSES
+
     def test_view_my_competitions_student(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -266,15 +260,13 @@ class StudentViewTestCase(TestCase):
         self.assertEqual(competitions[0]['is_finalized'], False)
 
 
-
-    # PASSES
     def test_attempt_join_finalised_competition_view(self):
         login_success = self.client.login(username='@johnsmith', password='Password123')
         self.assertTrue(login_success)
         response = self.client.get(reverse('join_competition', kwargs={'competition_id':self.finalised_competition.id}))
         self.assertEqual(response.status_code, 403)
 
-    # PASSES
+
     def test_attempt_join_competition_already_participant(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -282,7 +274,7 @@ class StudentViewTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('competition_details', kwargs={'competition_id': self.competition.id}))
 
-    # PASSES
+
     def test_attempt_join_competition_(self):
         login_success = self.client.login(username='@johnsmith', password='Password123')
         self.assertTrue(login_success)
@@ -292,14 +284,14 @@ class StudentViewTestCase(TestCase):
         self.assertEqual(created_competition_participant.competition, self.competition)
         self.assertRedirects(response, reverse('competition_details', kwargs={'competition_id': self.competition.id}))
 
-    # PASSES
+
     def test_leave_finalised_competition(self):
         login_success = self.client.login(username='@johnsmith', password='Password123')
         self.assertTrue(login_success)
         response = self.client.get(reverse('leave_competition', kwargs={'competition_id': self.finalised_competition.id}))
         self.assertEqual(response.status_code, 403)
 
-    # PASSES
+
     def test_leave_competition(self):
         login_success = self.client.login(username='@janedoe', password='Password123')
         self.assertTrue(login_success)
@@ -307,4 +299,3 @@ class StudentViewTestCase(TestCase):
         response = self.client.get(reverse('leave_competition', kwargs={'competition_id': self.competition.id}))
         competition_participants = CompetitionParticipant.objects.count()
         self.assertEqual( competition_participants,  competition_participants_before - 1)
-

@@ -1,9 +1,5 @@
-from unicodedata import category
-
-from django.contrib.auth import login
 from django.test import TestCase
 from django.urls import reverse
-
 from social_media.models import *
 
 
@@ -44,7 +40,7 @@ class SocietyPageViewTestCase(TestCase):
         # URLs
         self.latest_society_colors_url = reverse('get_latest_society_colors', args=[self.society.id])
 
-    # PASSES
+
     def test_society_mainpage_view(self):
         login_success = self.client.login(username='@johndoe', password='Password123')
         self.assertTrue(login_success)
@@ -60,7 +56,7 @@ class SocietyPageViewTestCase(TestCase):
         self.assertIn('is_committee_member', response.context)
         self.assertIn('past_colors', response.context)
 
-    # PASSES
+
     def test_get_latest_society_colors(self):
         login_success = self.client.login(username='@johndoe', password='Password123')
         self.assertTrue(login_success)

@@ -1,19 +1,19 @@
-from unicodedata import category
-
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.core.files.uploadedfile import SimpleUploadedFile
-from social_media.forms import CustomisationForm, PostForm
-from social_media.models import *
-from social_media.models.colour_history import SocietyColorHistory
-from datetime import date
 from django.core.files.storage import default_storage
 from django.conf import settings
-import io
-from PIL import Image
 from django.utils import timezone
-from datetime import datetime
+
+from datetime import date, datetime
+import io
+
+from PIL import Image
+
+from social_media.forms import CustomisationForm, PostForm
+from social_media.models import Category, Society, SocietyRole, Membership, University, User, Competition, CompetitionParticipant
+from social_media.models.colour_history import SocietyColorHistory
 
 
 
