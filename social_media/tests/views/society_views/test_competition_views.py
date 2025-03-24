@@ -503,5 +503,10 @@ class CompetitionViewsTests(TestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "society/competitions/create_competition.html")
+        self.assertIn("form", response.context)
+        self.assertIn("society_id", response.context)
+
+
 
 
