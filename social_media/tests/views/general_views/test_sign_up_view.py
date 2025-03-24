@@ -9,6 +9,16 @@ from django.conf import settings
 from unittest.mock import patch
 from django.core.files.storage import default_storage
 import os
+from io import BytesIO
+from PIL import Image
+
+# Helper function to create an in-memory test image
+def get_test_image_file(filename="test.jpg"):
+    image_io = BytesIO()
+    image = Image.new("RGB", (100, 100), color="red")
+    image.save(image_io, format="JPEG")
+    image_io.seek(0)
+    return SimpleUploadedFile(filename, image_io.read(), content_type="image/jpeg")
 
 class SignUpViewTestCase(TestCase, LogInTester):
     """Tests of the sign up view."""
@@ -86,13 +96,10 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.form_input["username"] = "@janetestpic"
         self.form_input["email"] = "janetestpic@test.ac.uk"
 
-        uploaded_file = SimpleUploadedFile(
-            "test_picture.jpg",
-            b"file_content",
-            content_type="image/jpeg"
-        )
+        uploaded_file = get_test_image_file("test_picture.jpg") # # Generate a valid in-memory image file
+
         mock_save.return_value = 'profile_pictures/@janetestpic.jpg'
-        self.form_input["profile_picture"] = uploaded_file
+        self.form_input["profile_picture"] = uploaded_file ## Attach the uploaded image to the form input
 
         before_count = User.objects.count()
         response = self.client.post(self.url, data={**self.form_input}, files={'profile_picture': uploaded_file})
