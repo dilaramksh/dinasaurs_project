@@ -106,10 +106,9 @@ class SignUpViewTestCase(TestCase, LogInTester):
 
         user = User.objects.get(username='@janetestpic')
         
-        # Validate the file name was saved as expected
+        # Validate the file name was saved as expected.
         expected_file_path = 'profile_pictures/@janetestpic.jpg'
         print("Saved file name:", user.profile_picture.name)
-
         self.assertTrue(user.profile_picture.name.startswith(expected_file_path))
         self.assertIn(expected_file_path, user.profile_picture.name)
 
