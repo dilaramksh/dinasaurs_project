@@ -506,6 +506,8 @@ class CompetitionViewsTests(TestCase):
         self.assertTemplateUsed(response, "society/competitions/create_competition.html")
         self.assertIn("form", response.context)
         self.assertIn("society_id", response.context)
+        self.assertIsInstance(response.context["form"], CompetitionForm)
+        self.assertEqual(response.context["society_id"], self.society.id)
 
 
 
