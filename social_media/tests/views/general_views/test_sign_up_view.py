@@ -96,7 +96,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.form_input["username"] = "@janetestpic"
         self.form_input["email"] = "janetestpic@test.ac.uk"
 
-        uploaded_file = get_test_image_file("test_picture.jpg") # # Generate a valid in-memory image file
+        uploaded_file = get_test_image_file("test_picture.jpg") # Generate a valid in-memory image file
 
         mock_save.return_value = 'profile_pictures/@janetestpic.jpg'
         self.form_input["profile_picture"] = uploaded_file ## Attach the uploaded image to the form input
