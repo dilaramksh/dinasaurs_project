@@ -5,6 +5,7 @@ from django.contrib.messages import get_messages
 from unittest.mock import patch
 from django.core.exceptions import ValidationError
 
+
 from social_media.models import (
     University,
     Society,
@@ -467,3 +468,15 @@ class CompetitionViewsTests(TestCase):
         m.refresh_from_db()
         self.assertEqual(m.winner_participant, self.participant_admin)
         self.assertTrue(m.is_finished)
+
+    def test_create_competition_invalid_form(self):
+        """Test that an error message is shown when invalid competition data is submitted."""
+        self.login_admin()
+        url = reverse("create_competition", kwargs={"society_id": self.society.id})
+        
+        invalid_data = {
+            "name": "",  # Missing name
+            "start_date": "invalid-date",  # Invalid date format
+            "end_date": "2025-01-01",  # Valid end date
+            "is_point_based": "on"
+        }
