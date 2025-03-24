@@ -266,6 +266,11 @@ class CompetitionViewsTests(TestCase):
         self.participant_admin.save()
         self.participant_normal.save()
 
+        url = reverse("competition_details", kwargs={"competition_id": self.competition.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.competition.name)
+
     ## Tests for set_up_round
 
     def test_set_up_round_access_denied_for_non_committee(self):
