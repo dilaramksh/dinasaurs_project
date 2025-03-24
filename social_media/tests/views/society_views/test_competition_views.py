@@ -331,6 +331,15 @@ class CompetitionViewsTests(TestCase):
             "match_0_participant2": self.participant_normal.id,
         }, follow=True)
 
+        # Only 1 match with these participants should exist
+        matches = Match.objects.filter(
+            competition=self.competition,
+            round_number=2,
+            participant1=self.participant_admin,
+            participant2=self.participant_normal,
+        )
+        self.assertEqual(matches.count(), 1)
+
 
     ## Tests for record_match_results
 
