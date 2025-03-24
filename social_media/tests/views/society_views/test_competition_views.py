@@ -2,8 +2,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.contrib.messages import get_messages
-from datetime import date, datetime
-from django.core.files.uploadedfile import SimpleUploadedFile
+from unittest.mock import patch
+from django.core.exceptions import ValidationError
 
 from social_media.models import (
     University,
@@ -376,3 +376,94 @@ class CompetitionViewsTests(TestCase):
         self.participant_normal.refresh_from_db()
         self.assertTrue(self.participant_normal.is_eliminated)
         self.assertEqual(response.status_code, 302)
+
+
+    def test_set_up_round_skip_same_participants(self):
+        """Skipping creation if participant1 == participant2"""
+        self.login_admin()
+        self.competition.is_finalized = True
+        self.competition.save()
+        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        response = self.client.post(url, data={
+            "action": "add_match",
+            "match_0_participant1": self.participant_admin.id,
+            "match_0_participant2": self.participant_admin.id,
+        }, follow=True)
+        # No match should be created
+        self.assertFalse(Match.objects.filter(round_number=2).exists())
+
+    def test_set_up_round_validation_error(self):
+        """Trigger the ValidationError in match.clean()"""
+        self.login_admin()
+        self.competition.is_finalized = True
+        self.competition.save()
+        
+        with patch("social_media.models.Match.clean", side_effect=ValidationError("invalid")):
+            url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+            response = self.client.post(url, data={
+                "action": "add_match",
+                "match_0_participant1": self.participant_admin.id,
+                "match_0_participant2": self.participant_normal.id,
+            }, follow=True)
+            # Should still return a page without crashing
+            self.assertEqual(response.status_code, 200)
+
+    def test_set_up_round_revert_match(self):
+        """Deleting an existing match"""
+        self.login_admin()
+        self.competition.is_finalized = True
+        self.competition.save()
+        match = Match.objects.create(
+            competition=self.competition,
+            round_number=2,
+            participant1=self.participant_admin,
+            participant2=self.participant_normal,
+        )
+        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        response = self.client.post(url, data={
+            "action": "revert_match",
+            "match_id": match.id
+        }, follow=True)
+        self.assertFalse(Match.objects.filter(pk=match.id).exists())
+
+    def test_record_match_results_pick_winner_participant1(self):
+        self.competition.is_point_based = False
+        self.competition.is_finalized = True
+        self.competition.save()
+        m = Match.objects.create(
+            competition=self.competition,
+            round_number=2,
+            participant1=self.participant_admin,
+            participant2=self.participant_normal,
+            is_finished=False
+        )
+        self.login_admin()
+        url = reverse("record_match_results", kwargs={"competition_id": self.competition.id})
+        response = self.client.post(url, data={
+            "action": "pick_winner",
+            f"winner_{m.id}": str(self.participant_admin.id),
+        })
+        m.refresh_from_db()
+        self.assertEqual(m.winner_participant, self.participant_admin)
+        self.assertTrue(m.is_finished)
+
+    def test_record_match_results_pick_winner_participant1(self):
+        self.competition.is_point_based = False
+        self.competition.is_finalized = True
+        self.competition.save()
+        m = Match.objects.create(
+            competition=self.competition,
+            round_number=2,
+            participant1=self.participant_admin,
+            participant2=self.participant_normal,
+            is_finished=False
+        )
+        self.login_admin()
+        url = reverse("record_match_results", kwargs={"competition_id": self.competition.id})
+        response = self.client.post(url, data={
+            "action": "pick_winner",
+            f"winner_{m.id}": str(self.participant_admin.id),
+        })
+        m.refresh_from_db()
+        self.assertEqual(m.winner_participant, self.participant_admin)
+        self.assertTrue(m.is_finished)
