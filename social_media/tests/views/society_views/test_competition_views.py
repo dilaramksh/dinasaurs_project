@@ -205,6 +205,19 @@ class CompetitionViewsTests(TestCase):
         self.assertTrue(any("cannot modify an ended competition" in str(m) for m in messages_list))
         self.assertFalse(self.ended_competition.is_finalized)
 
+    def test_toggle_elimination_on_ended_competition_shows_error(self):
+        self.competition.is_ongoing = False
+        self.competition.save()
+        self.login_admin()
+
+        url = reverse("competition_details", kwargs={"competition_id": self.competition.id})
+        response = self.client.post(url, {
+            "action": "toggle_elimination",
+            "participant_id": self.participant_normal.id,
+        }, follow=True)
+
+
+
     ## Tests for competition_details
 
     def test_competition_details_get_as_admin(self):
