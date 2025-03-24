@@ -486,4 +486,8 @@ class CompetitionViewsTests(TestCase):
         # Should render the same form with errors
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "society/competitions/create_competition.html")
+        form = response.context["form"]
+        self.assertTrue(form.errors)
+        self.assertIn("name", form.errors)
+        self.assertIn("start_date", form.errors)
 
