@@ -496,3 +496,12 @@ class CompetitionViewsTests(TestCase):
         messages_list = list(get_messages(response.wsgi_request))
         self.assertTrue(any("Invalid competition details" in str(m) for m in messages_list))
 
+    def test_create_competition_get_request_as_committee(self):
+        """Test GET request to create_competition renders form correctly."""
+        self.login_admin()
+        url = reverse("create_competition", kwargs={"society_id": self.society.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+
+
