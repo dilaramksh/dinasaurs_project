@@ -341,7 +341,7 @@ class CompetitionViewsTests(TestCase):
         self.assertEqual(matches.count(), 1)
 
     def test_set_up_round_invalid_datetime_ignored(self):
-        """Test that an invalid datetime format is ignored gracefully when adding a match."""
+        """Test that an invalid datetime format is ignored when adding a match."""
         self.login_admin()
         self.competition.is_finalized = True
         self.competition.save()
@@ -366,12 +366,22 @@ class CompetitionViewsTests(TestCase):
         url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
         response = self.client.post(url, data={
             "action": "add_match",
-            "scheduled_time": "not-a-valid-date",
+            "scheduled_time": "not-a-valid-date", # Invalid datetime string
             "match_0_participant1": self.participant_admin.id,
             "match_0_participant2": new_participant.id,
         }, follow=True)
 
         self.assertEqual(response.status_code, 200)
+
+        match = Match.objects.filter(
+            competition=self.competition,
+            participant1=self.participant_admin,
+            participant2=new_participant
+        ).first()
+
+        # Match should still be created, but without scheduled_time
+        self.assertIsNotNone(match)
+        self.assertIsNone(match.scheduled_time)
 
 
 
