@@ -363,6 +363,17 @@ class CompetitionViewsTests(TestCase):
             competition=self.competition
         )
 
+        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        response = self.client.post(url, data={
+            "action": "add_match",
+            "scheduled_time": "not-a-valid-date",
+            "match_0_participant1": self.participant_admin.id,
+            "match_0_participant2": new_participant.id,
+        }, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+
 
 
     ## Tests for record_match_results
