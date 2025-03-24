@@ -16,11 +16,11 @@ class Command(BaseCommand):
             Event.objects.all().delete()
             EventsParticipant.objects.all().delete()
             Membership.objects.all().delete()
-            News.objects.all().delete()
-            #Post.objects.all().delete()
+            Post.objects.all().delete()
             Society.objects.all().delete()
             SocietyRole.objects.all().delete()
-
+            Competition.objects.all().delete()
+            Category.objects.all().delete()
 
             print("Unseed successfully. All relevant data has been removed.")
         except Exception as e:
