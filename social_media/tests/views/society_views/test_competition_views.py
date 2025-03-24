@@ -432,6 +432,22 @@ class CompetitionViewsTests(TestCase):
         self.assertEqual(self.participant_admin.points, 5)
         self.assertEqual(self.participant_normal.points, 10)
 
+    def test_record_match_results_invalid_score_skips_update(self):
+        self.competition.is_point_based = True
+        self.competition.is_finalized = True
+        self.competition.save()
+        
+        match = Match.objects.create(
+            competition=self.competition,
+            round_number=1,
+            participant1=self.participant_admin,
+            participant2=self.participant_normal,
+            score_p1=0,
+            score_p2=0,
+            is_finished=False
+        )
+
+
     def test_record_match_results_pick_winner(self):
         """Test pick_winner action for winner-based competition."""
         self.competition.is_point_based = False
