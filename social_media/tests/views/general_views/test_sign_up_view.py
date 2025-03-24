@@ -82,6 +82,10 @@ class SignUpViewTestCase(TestCase, LogInTester):
     @patch("django.core.files.storage.default_storage.save")
     def test_successful_sign_up_with_profile_picture(self, mock_save):
         """Test signup with profile picture upload."""
+
+        self.form_input["username"] = "@janetestpic"
+        self.form_input["email"] = "janetestpic@test.ac.uk"
+        
         uploaded_file = SimpleUploadedFile(
             "test_picture.jpg",
             b"file_content",
