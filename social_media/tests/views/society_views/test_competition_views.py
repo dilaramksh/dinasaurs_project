@@ -216,6 +216,10 @@ class CompetitionViewsTests(TestCase):
             "participant_id": self.participant_normal.id,
         }, follow=True)
 
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("cannot modify an ended competition" in str(m) for m in messages_list))
+        self.participant_normal.refresh_from_db()
+        self.assertFalse(self.participant_normal.is_eliminated)  
 
 
     ## Tests for competition_details
