@@ -92,6 +92,10 @@ class SignUpViewTestCase(TestCase, LogInTester):
         before_count = User.objects.count()
         response = self.client.post(self.url, data={**self.form_input}, files={'profile_picture': uploaded_file})
 
+        form = response.context.get('form')
+        if form.errors:
+            print("Form errors:", form.errors)
+            self.assertEqual(response.status_code, 302) 
             after_count = User.objects.count()
             self.assertEqual(after_count, before_count + 1)
 
@@ -100,7 +104,6 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertTrue(user.profile_picture.name.startswith(expected_file_path))
         self.assertIn(expected_file_path, user.profile_picture.name)
 
-    
     def test_default_profile_picture_if_none_uploaded(self):
         before_count = User.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
