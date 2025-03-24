@@ -66,7 +66,7 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
 
     def save(self):
         """Create a new user."""
-        
+    
         university_id = self.cleaned_data.get('university').id
         university = University.objects.get(id=university_id) 
 
@@ -85,5 +85,10 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
         )
 
         return user
-        
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username", "")
+        print("CLEANED USERNAME IN FORM:", repr(username.strip()))
+        return username.strip()
+
  
