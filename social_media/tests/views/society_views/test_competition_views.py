@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.messages import get_messages
 from unittest.mock import patch
 from django.core.exceptions import ValidationError
+from social_media.forms.competition_creation_form import CompetitionForm
 
 
 from social_media.models import (
