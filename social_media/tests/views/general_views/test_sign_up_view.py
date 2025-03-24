@@ -85,7 +85,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
 
         self.form_input["username"] = "@janetestpic"
         self.form_input["email"] = "janetestpic@test.ac.uk"
-        
+
         uploaded_file = SimpleUploadedFile(
             "test_picture.jpg",
             b"file_content",
@@ -96,12 +96,16 @@ class SignUpViewTestCase(TestCase, LogInTester):
         before_count = User.objects.count()
         response = self.client.post(self.url, data={**self.form_input}, files={'profile_picture': uploaded_file})
 
+        if response.status_code != 302:
+            print("FORM ERRORS:", response.context.get('form').errors)
+
         self.assertEqual(response.status_code, 302)
 
         after_count = User.objects.count()
         self.assertEqual(after_count, before_count + 1)
 
-        user = User.objects.get(username='@janedoe')
+        user = User.objects.get(username='@janetestpic')
+        
         expected_file_path = 'profile_pictures/@janedoe.jpg'
         self.assertTrue(user.profile_picture.name.startswith(expected_file_path))
         self.assertIn(expected_file_path, user.profile_picture.name)
