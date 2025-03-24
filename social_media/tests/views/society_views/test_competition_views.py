@@ -447,6 +447,16 @@ class CompetitionViewsTests(TestCase):
             is_finished=False
         )
 
+        self.login_admin()
+        url = reverse("record_match_results", kwargs={"competition_id": self.competition.id})
+        response = self.client.post(url, data={
+            "action": "update_points",
+            f"score_p1_{match.id}": "not-a-number",
+            f"score_p2_{match.id}": "10"
+        }, follow=True)
+
+        
+
 
     def test_record_match_results_pick_winner(self):
         """Test pick_winner action for winner-based competition."""
