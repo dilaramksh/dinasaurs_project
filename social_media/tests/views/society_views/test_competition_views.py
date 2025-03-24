@@ -477,6 +477,6 @@ class CompetitionViewsTests(TestCase):
         invalid_data = {
             "name": "",  # Missing name
             "start_date": "invalid-date",  # Invalid date format
-            "end_date": "2025-01-01",  # Valid end date
+            "end_date": "2025-01-01",  # Just added a valid end date, since form will fail on start_date
             "is_point_based": "on"
         }
