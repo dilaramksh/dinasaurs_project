@@ -480,3 +480,10 @@ class CompetitionViewsTests(TestCase):
             "end_date": "2025-01-01",  # Just added a valid end date, since form will fail on start_date
             "is_point_based": "on"
         }
+
+        response = self.client.post(url, data=invalid_data, follow=True)
+
+        # Should render the same form with errors
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "society/competitions/create_competition.html")
+
