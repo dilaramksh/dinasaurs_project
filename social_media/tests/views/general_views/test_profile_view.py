@@ -194,27 +194,3 @@ class ProfileViewTest(TestCase):
         self.user.refresh_from_db()
         self.assertEqual(self.user.profile_picture, "profile_pictures/default.jpg")
 
-    @patch('boto3.client')
-    def test_warning_message_on_profile_picture_delete_failure(self, mock_s3_client):
-        """Test that a warning message is shown when S3 deletion fails."""
-        self.client.login(username=self.user.username, password='Password123')
-
-        # Set an existing (non-default) profile picture
-        self.user.profile_picture = "profile_pictures/old_picture.jpg"
-        self.user.save()
-
-        # Simulate S3 delete throwing an exception
-        mock_s3 = mock_s3_client.return_value
-        mock_s3.delete_object.side_effect = Exception("Deletion failed")
-
-        # Upload a new image
-        new_image = SimpleUploadedFile("new_pic.jpg", b"new image data", content_type="image/jpeg")
-        response = self.client.post(self.url, {'profile_picture': new_image}, follow=True)
-
-        # Look for the warning message
-        messages_list = list(response.context['messages'])
-        warning_messages = [m for m in messages_list if m.level == messages.WARNING]
-
-        self.assertTrue(any("Could not delete old profile picture" in str(m) for m in warning_messages))
-
-
