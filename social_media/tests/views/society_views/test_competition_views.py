@@ -340,6 +340,30 @@ class CompetitionViewsTests(TestCase):
         )
         self.assertEqual(matches.count(), 1)
 
+    def test_set_up_round_invalid_datetime_ignored(self):
+        """Test that an invalid datetime format is ignored gracefully when adding a match."""
+        self.login_admin()
+        self.competition.is_finalized = True
+        self.competition.save()
+
+        # Create a new user to avoid IntegrityError
+        new_user = User.objects.create_user(
+            username='newuser2',
+            password='newpass',
+            first_name='New',
+            last_name='User2',
+            email='new2@kcl.ac.uk',
+            user_type='student',
+            university=self.university,
+            start_date='2023-09-23',
+            end_date='2026-05-06',
+        )
+        new_participant = CompetitionParticipant.objects.create(
+            user=new_user,
+            competition=self.competition
+        )
+
+
 
     ## Tests for record_match_results
 
