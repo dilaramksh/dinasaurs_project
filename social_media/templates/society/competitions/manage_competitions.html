@@ -4,56 +4,74 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-3">Manage Competitions ({{ society.name }})</h2>
-    
-    <!-- Button to create a new competition -->
-    <a href="{% url 'create_competition' society_id %}" class="btn btn-success mb-3">
-        Create New Competition
-    </a>
+  <h2 class="mb-3">Manage Competitions ({{ society.name }})</h2>
+  
+  <a href="{% url 'dashboard' %}" class="btn btn-secondary  mb-3">
+    &laquo; Back
+</a>
+  <a href="{% url 'create_competition' society_id %}" class="btn btn-success mb-3">
+    Create New Competition
+  </a>
 
-    <!-- Competitions Table -->
-    <div class="card shadow">
-        <div class="card-header bg-light">
-            <h5 class="mb-0">All Competitions</h5>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-warning">
-                        <tr>
-                            <th>Name</th>
-                            <th>Ongoing?</th>
-
-                            <th>Point-Based?</th>
-                            <th>Finalized?</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for comp in competitions %}
-                        <tr>
-                            <td><strong>{{ comp.name }}</strong></td>
-                            <td>{{ comp.is_ongoing }}</td>
-
-                            <td>{{ comp.is_point_based }}</td>
-                            <td>{{ comp.is_finalized }}</td>
-                            <td>
-                                <a href="{% url 'competition_details' comp.id %}" class="btn btn-primary btn-sm">
-                                    Details
-                                </a>
-                            </td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="6" class="text-center text-muted py-3">
-                                No competitions found for this society.
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <!-- Competitions Table inside a card -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-warning text-dark text-center">
+      <h5 class="mb-0">All Competitions</h5>
     </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle mb-0">
+          <thead class="table-warning">
+            <tr>
+              <th>Name</th>
+              <th>Ongoing?</th>
+              <th>Point-Based?</th>
+              <th>Finalized?</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for comp in competitions %}
+              <tr>
+                <td>{{ comp.name }}</td>
+                                    <td>
+                                        {% if comp.is_ongoing and not comp.eliminated %}
+                                            <span class="text-success">Yes</span>
+                                        {% else %}
+                                            No
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if comp.is_point_based %}
+                                            Point-based
+                                        {% else %}
+                                           Winner-based
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if comp.is_finalized %}
+                                            <span class="badge bg-danger">Finalized</span>
+                                        {% else %}
+                                            <span class="badge bg-success">Not Finalized</span>
+                                        {% endif %}
+                                    </td>
+                <td>
+                  <a href="{% url 'competition_details' comp.id %}" class="btn btn-primary btn-sm">
+                    Details
+                  </a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="5" class="text-center text-muted py-3">
+                  No competitions found for this society.
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

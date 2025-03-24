@@ -3,118 +3,172 @@
 
 {% block content %}
 <div class="container mt-4">
+    <a href="{% url 'competition_details' competition.id %}" class="btn btn-secondary  mb-3">
+        &laquo; Back
+    </a>
   <h2>Update Round {{ round_number }}</h2>
-  <p>
-    Competition: <strong>{{ competition.name }}</strong>
-    (
-      {% if competition.is_point_based %}Point-based{% else %}Winner-based{% endif %}
-    )
-  </p>
+
 
   <div class="row">
-    <!-- LEFT COLUMN: Just the two opponents per match -->
-    <div class="col-md-6">
-      {% if matches_in_round.count == 0 %}
-        <div class="alert alert-info">
-          No matches found for this round.
-        </div>
-      {% else %}
-        <h5>Matches in This Round</h5>
-        <table class="table table-bordered align-middle">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>
-                Participant 1
-              </th>
-              <th>
-                Participant 2
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for match in matches_in_round %}
-              <tr>
-                <td>{{ match.id }}</td>
-                <td>
-
-                  {% if match.participant1 %}
-                    {{ match.participant1.user.username }}
-                  {% else %}
-                    <em>None</em>
-                  {% endif %}
-                </td>
-                <td>
-                  {% if match.participant2 %}
-                    {{ match.participant2.user.username }}
-                  {% else %}
-                    <em>None</em>
-                  {% endif %}
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% endif %}
-    </div>
-    
-    <!-- RIGHT COLUMN: Uneliminated Participants Card -->
-    <div class="col-md-6">
+    <!-- Left table: Matches in This Round -->
+    <div class="col-md-6 mb-4">
       <div class="card shadow-sm">
         <div class="card-header bg-warning text-dark text-center">
-          <h5 class="mb-0">
-            Uneliminated Participants
-          </h5>
+          <h5 class="mb-0">Matches in This Round</h5>
         </div>
         <div class="card-body">
 
-
-            {% if uneliminated_parts %}
-              <table class="table table-hover align-middle">
+          {% if matches_in_round.count == 0 %}
+            <div class="alert alert-info">
+              No matches found for this round.
+            </div>
+          {% else %}
+            <form method="post">
+              {% csrf_token %}
+              <input type="hidden" name="action" 
+                     value="{% if competition.is_point_based %}update_points{% else %}pick_winner{% endif %}">
+              
+              <table class="table table-hover table-bordered align-middle">
                 <thead class="table-warning">
                   <tr>
-                    <th>Participant</th>
-                    <th>Eliminate</th>
+                    <th>#</th>
+                    <th>Participant 1</th>
+                    <th>Participant 2</th>
+
                     {% if competition.is_point_based %}
                       <th>Points</th>
+                    {% else %}
+                      <th>Pick Winner</th>
                     {% endif %}
                   </tr>
                 </thead>
                 <tbody>
-                  {% for part in uneliminated_parts %}
+                  {% for match in matches_in_round %}
                     <tr>
-                      <td>{{ part.user.username }}</td>
+                      <td>{{ match.id }}</td>
+
                       <td>
-                        <form method="post" style="display:inline;">
-                          {% csrf_token %}
-                          <input type="hidden" name="action" value="eliminate">
-                          <input type="hidden" name="target_id" value="{{ part.id }}">
-                          <button type="submit" class="btn btn-danger btn-sm">X</button>
-                        </form>
+                        {% if match.participant1 %}
+                          {{ match.participant1.user.username }}
+                        {% else %}
+                          <em>None</em>
+                        {% endif %}
                       </td>
+
+                      <td>
+                        {% if match.participant2 %}
+                          {{ match.participant2.user.username }}
+                        {% else %}
+                          <em>None</em>
+                        {% endif %}
+                      </td>
+
+                      <!-- Score or Winner selection -->
                       {% if competition.is_point_based %}
+                      <td>
+                        <div class="d-flex">
+                          <input type="text" class="form-control me-1"
+                                 style="width:80px;"
+                                 name="score_p1_{{ match.id }}" 
+                                 value="{{ match.score_p1|default:'' }}"
+                                 placeholder="Score1">
+                    
+                          <input type="text" class="form-control"
+                                 style="width:80px;"
+                                 name="score_p2_{{ match.id }}" 
+                                 value="{{ match.score_p2|default:'' }}"
+                                 placeholder="Score2">
+                        </div>
+                      </td>
+                      {% else %}
                         <td>
-                          <form method="post" style="display:inline;">
-                            {% csrf_token %}
-                            <input type="hidden" name="action" value="update_points">
-                            <input type="text" name="points_{{ part.id }}" 
-                                   value="{{ part.points }}" size="5"
-                                   class="form-control d-inline-block" style="width:80px;">
-                            <button type="submit" class="btn btn-warning btn-sm">Update</button>
-                          </form>
+                          {% if match.participant1 %}
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio"
+                                     name="winner_{{ match.id }}" 
+                                     value="{{ match.participant1_id }}"
+                                     {% if match.winner_participant_id == match.participant1_id %}checked{% endif %}>
+                              <label class="form-check-label">
+                                 {{ match.participant1.user.username }} Won
+                              </label>
+                            </div>
+                          {% endif %}
+
+                          {% if match.participant2 %}
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio"
+                                     name="winner_{{ match.id }}" 
+                                     value="{{ match.participant2_id }}"
+                                     {% if match.winner_participant_id == match.participant2_id %}checked{% endif %}>
+                              <label class="form-check-label">
+                                 {{ match.participant2.user.username }} Won
+                              </label>
+                            </div>
+                          {% endif %}
                         </td>
                       {% endif %}
                     </tr>
                   {% endfor %}
                 </tbody>
               </table>
-            {% else %}
-              <p class="text-muted">No uneliminated participants found.</p>
-            {% endif %}
 
-        </div><!-- card-body -->
-      </div><!-- card -->
-    </div><!-- col-md-6 -->
-  </div><!-- row -->
-</div><!-- container -->
+
+              <button type="submit" class="btn btn-success">
+                {% if competition.is_point_based %}Update Points{% else %}Save Winners{% endif %}
+              </button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right col: uneliminated participants -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark text-center">
+          <h5 class="mb-0">Uneliminated Participants</h5>
+        </div>
+        <div class="card-body">
+
+          {% if uneliminated_parts %}
+            <table class="table table-hover align-middle">
+              <thead class="table-warning">
+                <tr>
+                  <th>Participant</th>
+                  <th>Eliminate</th>
+
+                  {% if competition.is_point_based %}
+                    <th>Points</th>
+                  {% endif %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for part in uneliminated_parts %}
+                  <tr>
+                    <td>{{ part.user.username }}</td>
+                    <td>
+                      <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="eliminate">
+                        <input type="hidden" name="eliminate_participant_id" value="{{ part.id }}">
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminate</button>
+                      </form>
+                    </td>
+
+                    {% if competition.is_point_based %}
+                      <td>{{ part.points }}</td>
+                    {% endif %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <p class="text-muted">No uneliminated participants found.</p>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+</div>
+</div>
 {% endblock %}

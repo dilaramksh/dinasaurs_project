@@ -12,7 +12,8 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
     university = forms.ModelChoiceField(
         queryset=University.objects.filter(status='approved'),
         empty_label="Select a University",
-        label="University"
+        label="University",
+        error_messages={'required': "Please select a university."}
     ) 
 
     class Meta:

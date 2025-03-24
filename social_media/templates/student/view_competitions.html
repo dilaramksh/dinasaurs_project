@@ -5,59 +5,61 @@
 
 {% block content %}
 <div class="container mt-4">
-    <a href="{% url 'view_my_competitions' %}" class="btn btn-primary btn-sm me-2">My Competitions</a>
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary mb-3">
+        &laquo; Back
+    </a>
+    <a href="{% url 'view_my_competitions' %}" class="btn btn-primary mb-3">My Competitions</a>
+   
     {% if society_competitions %}
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead class="table-warning">
-            <tr>
-              <th>Name</th>
-              <th>Team-Based?</th>
-              <th>Point-Based?</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-          {% for comp in society_competitions %}
-            {% if not comp.is_finalized %}
+      <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark text-center">
+          <h5 class="mb-0">Upcoming Competitions</h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle mb-0">
+              <thead class="table-warning">
                 <tr>
-                <td>{{ comp.name }}</td>
-
-                <td>
-                    {% if comp.is_team_based %}
-                    Team-based
-                    {% else %}
-                    Individual
-                    {% endif %}
-                </td>
-                <td>
-                    {% if comp.is_point_based %}
-                    Point-based
-                    {% else %}
-                    Winner-based
-                    {% endif %}
-                </td>
-                <td>
-                    <!-- A "Details" button that goes to the competition detail page -->
-                   <a href="{% url 'competition_details' comp.id %}" class="btn btn-primary btn-sm me-2">Details</a>
-                  
-                   <!-- If not finalized, "Join" button -->
-                   {% if not comp.is_finalized %}
-                   <form method="post" action="{% url 'join_competition' comp.id %}" style="display:inline;">
-                       {% csrf_token %}
-                       <button type="submit" class="btn btn-success btn-sm">Join</button>
-                   </form>
-                   {% endif %}
-
-                </td>
+                  <th>Name</th>
+                  <th>Point-Based?</th>
+                  <th>Actions</th>
                 </tr>
-            {% endif %}
-          {% endfor %}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+              {% for comp in society_competitions %}
+                {% if not comp.is_finalized %}
+                    <tr>
+                      <td>{{ comp.name }} ({{comp.society.name}})</td>
+                      <td>
+                        {% if comp.is_point_based %}
+                          Point-based
+                        {% else %}
+                          Winner-based
+                        {% endif %}
+                      </td>
+                      <td>
+                        <!-- Details button -->
+                        <a href="{% url 'competition_details' comp.id %}" class="btn btn-primary btn-sm me-2">
+                          Details
+                        </a>
+                        <!-- If not finalized, a "Join" button -->
+                        {% if not comp.is_finalized %}
+                          <form method="post" action="{% url 'join_competition' comp.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm">Join</button>
+                          </form>
+                        {% endif %}
+                      </td>
+                    </tr>
+                {% endif %}
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     {% else %}
-      <p class="text-center text-muted">You are not currently in any competitions.</p>
+      <p class="text-center text-muted">There are no upcoming competitions.</p>
     {% endif %}
 </div>
 {% endblock %}

@@ -4,6 +4,7 @@ from social_media.models import Event, Society, Category, University, User
 from datetime import date
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now, timedelta
+from datetime import timedelta
 
 class EventCreationFormTest(TestCase):
     """Test cases for the EventCreationForm."""
@@ -142,3 +143,17 @@ class EventCreationFormTest(TestCase):
 
 
     
+    def test_form_date_in_the_past(self):
+        """Test form rejects a date in the past."""
+        past_date = date.today() - timedelta(days=1)
+        form_data = {
+            'name': 'Past Event',
+            'description': 'Event in the past.',
+            'date': past_date,
+            'location': 'Old Location',
+        }
+
+        form = EventCreationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('date', form.errors)
+        self.assertEqual(form.errors['date'], ['The event date cannot be in the past.'])

@@ -141,10 +141,27 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    <p class="text-muted text-center">No posts yet!</p>
+                    <p class="text-center">No posts yet!</p>
                 {% endif %}
             </div>
         </section>
+        <section id="competitions" class="mt-5">
+            <h2 class="text-black">Competitions</h2>
+            <ul class="list-group">
+                {% for comp in competitions %}
+                    <li class="list-group-item">
+                        <h5>
+                            <a href="{% url 'competition_details' comp.id %}">{{ comp.name }}</a>
+                        </h5>
+                        <p class="mb-0">🗓 {{ comp.start_date|date:"Y-m-d" }}</p>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-center">No competitions available.</li>
+                {% endfor %}
+            </ul>
+        </section>
+        
+        
 
         {% if request.user.user_type == "student" %}
             {% if not is_member and not is_committee_member %}
