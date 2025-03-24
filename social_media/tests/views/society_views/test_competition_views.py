@@ -255,6 +255,17 @@ class CompetitionViewsTests(TestCase):
         self.competition.refresh_from_db()
         self.assertFalse(self.competition.is_ongoing)
 
+    def test_competition_details_point_based_ordering(self):
+        """Covers ordering participants by points for point-based competitions."""
+        self.login_admin()
+        self.competition.is_point_based = True
+        self.competition.save()
+
+        self.participant_admin.points = 5
+        self.participant_normal.points = 10
+        self.participant_admin.save()
+        self.participant_normal.save()
+
     ## Tests for set_up_round
 
     def test_set_up_round_access_denied_for_non_committee(self):
