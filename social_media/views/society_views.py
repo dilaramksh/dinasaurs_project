@@ -153,14 +153,11 @@ def create_competition(request, society_id):
     if request.method == "POST":
         form = CompetitionForm(request.POST)
         if form.is_valid():
-            try:
-                competition = form.save(commit=False)
-                competition.society_id = society_id
-                competition.save()
-                messages.success(request, "Competition created successfully.")
-                return redirect("manage_competitions", society_id=society_id)
-            except Exception as e:
-                messages.error(request, f"Error creating competition: {e}")
+            competition = form.save(commit=False)
+            competition.society_id = society_id
+            competition.save()
+            messages.success(request, "Competition created successfully.")
+            return redirect("manage_competitions", society_id=society_id)    
         else:
             messages.error(request, "Invalid competition details. Please check the form.")
     else:
