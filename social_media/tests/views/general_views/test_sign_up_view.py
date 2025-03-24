@@ -91,7 +91,8 @@ class SignUpViewTestCase(TestCase, LogInTester):
             b"file_content",
             content_type="image/jpeg"
         )
-        mock_save.return_value = 'profile_pictures/@janedoe.jpg'
+        mock_save.return_value = 'profile_pictures/@janetestpic.jpg'
+        self.form_input["profile_picture"] = uploaded_file
 
         before_count = User.objects.count()
         response = self.client.post(self.url, data={**self.form_input}, files={'profile_picture': uploaded_file})
@@ -106,9 +107,10 @@ class SignUpViewTestCase(TestCase, LogInTester):
 
         user = User.objects.get(username='@janetestpic')
         
-        # Validate the file name was saved as expected.
+        # Validate the file name was saved as expected
         expected_file_path = 'profile_pictures/@janetestpic.jpg'
         print("Saved file name:", user.profile_picture.name)
+
         self.assertTrue(user.profile_picture.name.startswith(expected_file_path))
         self.assertIn(expected_file_path, user.profile_picture.name)
 
