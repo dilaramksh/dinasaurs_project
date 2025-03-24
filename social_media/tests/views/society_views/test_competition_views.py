@@ -324,6 +324,13 @@ class CompetitionViewsTests(TestCase):
             participant2=self.participant_normal,
         )
 
+        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        response = self.client.post(url, data={
+            "action": "add_match",
+            "match_0_participant1": self.participant_admin.id,
+            "match_0_participant2": self.participant_normal.id,
+        }, follow=True)
+
 
     ## Tests for record_match_results
 
