@@ -49,7 +49,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
                 new_picture,
                 settings.AWS_STORAGE_BUCKET_NAME,
                 f"profile_pictures/{user.username}{file_extension}",
-                ExtraArgs={"ACL": "public-read", "ContentType": new_picture.content_type}
+                ExtraArgs={"ContentType": new_picture.content_type}
             )
             user.profile_picture = f"profile_pictures/{user.username}{file_extension}"
 
