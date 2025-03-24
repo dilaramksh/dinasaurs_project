@@ -98,7 +98,8 @@ class SignUpViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, data={**self.form_input}, files={'profile_picture': uploaded_file})
 
         if response.status_code != 302:
-            print("FORM ERRORS:", response.context.get('form').errors)
+            form = response.context.get('form')
+            print("FORM ERRORS:", form.errors)
 
         self.assertEqual(response.status_code, 302)
 
