@@ -455,8 +455,9 @@ class CompetitionViewsTests(TestCase):
             f"score_p2_{match.id}": "10"
         }, follow=True)
 
-        
-
+        match.refresh_from_db()
+        self.assertFalse(match.is_finished)
+        self.assertEqual(match.score_p1, 0)
 
     def test_record_match_results_pick_winner(self):
         """Test pick_winner action for winner-based competition."""
