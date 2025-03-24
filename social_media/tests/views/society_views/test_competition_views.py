@@ -491,3 +491,7 @@ class CompetitionViewsTests(TestCase):
         self.assertIn("name", form.errors)
         self.assertIn("start_date", form.errors)
 
+        # Should show an error message in the messages framework
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Invalid competition details" in str(m) for m in messages_list))
+
