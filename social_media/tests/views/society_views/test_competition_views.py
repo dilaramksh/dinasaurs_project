@@ -311,6 +311,20 @@ class CompetitionViewsTests(TestCase):
         self.assertIsNotNone(match)
         self.assertEqual(match.scheduled_time.strftime("%Y-%m-%d %H:%M:%S"), "2025-01-01 10:00:00")
 
+    def test_set_up_round_skip_duplicate_match(self):
+        self.login_admin()
+        self.competition.is_finalized = True
+        self.competition.save()
+
+        # Create initial match
+        Match.objects.create(
+            competition=self.competition,
+            round_number=2,
+            participant1=self.participant_admin,
+            participant2=self.participant_normal,
+        )
+
+
     ## Tests for record_match_results
 
     def test_record_match_results_redirect_if_no_matches(self):
