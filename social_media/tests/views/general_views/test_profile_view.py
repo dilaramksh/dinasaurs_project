@@ -156,11 +156,7 @@ class ProfileViewTest(TestCase):
         # Upload a new picture
         new_image = SimpleUploadedFile("new_profile.jpg", b"new image data", content_type="image/jpeg")
         response = self.client.post(self.url, {'profile_picture': new_image}, follow=True)
-        """
-        # Refresh user data from DB
-        self.user.refresh_from_db()
-        self.assertEqual(self.user.profile_picture.name, "profile_pictures/old_picture.jpg")
-        """
+        
     @patch('boto3.client')
     def test_delete_old_profile_picture_failure(self, mock_boto3):
         mock_s3 = mock_boto3.return_value
