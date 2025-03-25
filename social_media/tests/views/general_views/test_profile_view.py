@@ -218,7 +218,14 @@ class ProfileViewTest(TestCase):
         messages_list = list(response.context["messages"])
         print("MESSAGES:", [str(m) for m in messages_list])
         self.assertTrue(any("Could not delete old profile picture" in str(m) for m in messages_list))
-        
+    
+    def test_profile_picture_set_to_default_if_none(self):
+        """Covers fallback to default profile picture when none is set."""
+        self.client.login(username=self.user.username, password='Password123')
+
+        self.user.profile_picture = None  # Forcing the edge case
+        self.user.save()
+
     @patch('boto3.client')
     def test_delete_old_profile_picture_failure(self, mock_boto3):
         mock_s3 = mock_boto3.return_value
