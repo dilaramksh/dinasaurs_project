@@ -73,7 +73,7 @@ social_media/tests/views/general_views/test_homepage_view.py              86    
 social_media/tests/views/general_views/test_log_in_view.py               124      0   100%
 social_media/tests/views/general_views/test_log_out_view.py               24      0   100%
 social_media/tests/views/general_views/test_password_view.py              63      0   100%
-social_media/tests/views/general_views/test_profile_view.py              136      0   100%
+social_media/tests/views/general_views/test_profile_view.py              179      0   100%
 social_media/tests/views/general_views/test_sign_up_view.py              119      2    98%
 social_media/tests/views/general_views/test_view_mixins.py                 8      0   100%
 social_media/tests/views/society_views/__init__.py                         0      0   100%
@@ -99,7 +99,7 @@ social_media/views/footer_view.py                                          5    
 social_media/views/homepage_view.py                                       46      0   100%
 social_media/views/login_view.py                                          25      0   100%
 social_media/views/membership_view.py                                     20      0   100%
-social_media/views/profile_views.py                                       59      8    86%
+social_media/views/profile_views.py                                       59      0   100%
 social_media/views/signup_view.py                                         31      0   100%
 social_media/views/society_page_view.py                                   24      0   100%
 social_media/views/society_views.py                                      325      0   100%
@@ -107,4 +107,4 @@ social_media/views/student_views.py                                       86    
 social_media/views/super_admin_views.py                                   24      0   100%
 social_media/views/uni_admin_views.py                                     39      0   100%
 ------------------------------------------------------------------------------------------
-TOTAL                                                                   4415    429    90%
+TOTAL                                                                   4458    421    91%
