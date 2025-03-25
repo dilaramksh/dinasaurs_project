@@ -226,6 +226,18 @@ class ProfileViewTest(TestCase):
         self.user.profile_picture = None  # Forcing the edge case
         self.user.save()
 
+        form_input = {
+            'first_name': self.user.first_name,
+            'last_name': self.user.last_name,
+            'username': self.user.username,
+            'email': self.user.email,
+            'university': self.user.university.id,
+            'start_date': self.user.start_date.strftime('%Y-%m-%d'),
+            'end_date': self.user.end_date.strftime('%Y-%m-%d'),
+        }
+
+        response = self.client.post(self.url, data=form_input, follow=True)
+
     @patch('boto3.client')
     def test_delete_old_profile_picture_failure(self, mock_boto3):
         mock_s3 = mock_boto3.return_value
