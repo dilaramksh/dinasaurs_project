@@ -141,6 +141,12 @@ class ProfileViewTest(TestCase):
         login_success = self.client.login(username=self.user.username, password='NewPassword456')
         self.assertTrue(login_success)
 
+    def test_log_out(self):
+        self.client.login(username=self.user.username, password='Password123')
+        response = self.client.get(reverse('log_out'), follow=True)
+        self.assertRedirects(response, reverse('homepage'))
+        self.assertNotIn('_auth_user_id', self.client.session)  # Confirms user is logged out
+
     @patch('boto3.client')
     def test_profile_picture_upload(self, mock_s3_client):
         """Test successful profile picture upload."""
