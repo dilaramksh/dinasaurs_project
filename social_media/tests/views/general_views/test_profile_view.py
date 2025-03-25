@@ -162,6 +162,11 @@ class ProfileViewTest(TestCase):
             'first_name': self.user.first_name,
             'last_name': self.user.last_name,
             'username': self.user.username,
+            'email': self.user.email,
+            'university': self.user.university.id,
+            'start_date': self.user.start_date.strftime('%Y-%m-%d'),
+            'end_date': self.user.end_date.strftime('%Y-%m-%d'),
+            'profile_picture': new_image,
         }
         response = self.client.post(self.url, {'profile_picture': new_image}, follow=True)
         
