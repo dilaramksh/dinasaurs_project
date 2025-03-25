@@ -272,12 +272,3 @@ class ProfileViewTest(TestCase):
         self.client.post(self.url, self.form_input, follow=True)
         self.user.refresh_from_db()
         self.assertEqual(self.user.profile_picture, "profile_pictures/default.jpg")
-
-
-    def test_default_profile_picture_set(self):
-        self.client.login(username=self.user.username, password='Password123')
-        self.form_input['profile_picture'] = ""
-
-        self.client.post(self.url, self.form_input, follow=True)
-        self.user.refresh_from_db()
-        self.assertEqual(self.user.profile_picture, "profile_pictures/default.jpg")
