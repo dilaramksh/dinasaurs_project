@@ -201,7 +201,7 @@ class ProfileViewTest(TestCase):
         self.assertNotEqual(self.user.profile_picture, "profile_pictures/default.jpg")
 
         # Upload a new picture
-        new_image = SimpleUploadedFile("new_profile.jpg", b"new image data", content_type="image/jpeg")
+        new_image = get_test_image_file("new_profile.jpg")
 
         form_input = {
             'first_name': self.user.first_name,
