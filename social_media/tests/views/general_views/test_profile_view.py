@@ -112,6 +112,14 @@ class ProfileViewTest(TestCase):
         response = self.client.post(self.url, self.form_input)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
+    def test_get_password_view(self):
+        self.client.login(username=self.user.username, password='Password123')
+        url = reverse('password')  
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'general/password.html')
+        form = response.context['form']
+        self.assertEqual(form.user, self.user)
 
     @patch('boto3.client')
     def test_profile_picture_upload(self, mock_s3_client):
