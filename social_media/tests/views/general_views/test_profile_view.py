@@ -9,6 +9,17 @@ from social_media.models import University
 from django.core.files.uploadedfile import SimpleUploadedFile
 import os
 from unittest.mock import patch, MagicMock
+from PIL import Image
+import io
+
+def get_test_image_file(name="test.jpg", ext="JPEG", size=(100, 100), color=(255, 0, 0)):
+    file = io.BytesIO()
+    image = Image.new("RGB", size, color)
+    image.save(file, ext)
+    file.name = name
+    file.seek(0)
+    return SimpleUploadedFile(name, file.read(), content_type="image/jpeg")
+
 
 class ProfileViewTest(TestCase):
     """Test suite for the profile view."""
