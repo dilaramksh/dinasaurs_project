@@ -237,6 +237,8 @@ class ProfileViewTest(TestCase):
         }
 
         response = self.client.post(self.url, data=form_input, follow=True)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.profile_picture, "profile_pictures/default.jpg")
 
     @patch('boto3.client')
     def test_delete_old_profile_picture_failure(self, mock_boto3):
