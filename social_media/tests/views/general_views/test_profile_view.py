@@ -168,7 +168,11 @@ class ProfileViewTest(TestCase):
             'end_date': self.user.end_date.strftime('%Y-%m-%d'),
             'profile_picture': new_image,
         }
-        response = self.client.post(self.url, {'profile_picture': new_image}, follow=True)
+        response = self.client.post(self.url, data=form_input, follow=True)
+
+        messages_list = list(response.context["messages"])
+        print("MESSAGES:", [str(m) for m in messages_list])
+        self.assertTrue(any("Could not delete old profile picture" in str(m) for m in messages_list))
         
     @patch('boto3.client')
     def test_delete_old_profile_picture_failure(self, mock_boto3):
