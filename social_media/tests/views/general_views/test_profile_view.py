@@ -136,6 +136,11 @@ class ProfileViewTest(TestCase):
         print("MESSAGES:", [str(m) for m in messages_list])
         self.assertTrue(any("Password updated" in str(m) for m in messages_list))
 
+        # Confirm login works with new password
+        self.client.logout()
+        login_success = self.client.login(username=self.user.username, password='NewPassword456')
+        self.assertTrue(login_success)
+
     @patch('boto3.client')
     def test_profile_picture_upload(self, mock_s3_client):
         """Test successful profile picture upload."""
