@@ -153,8 +153,16 @@ class ProfileViewTest(TestCase):
         self.user.profile_picture = "profile_pictures/old_picture.jpg"
         self.user.save()
 
+        self.assertNotEqual(self.user.profile_picture, "profile_pictures/default.jpg")
+
         # Upload a new picture
         new_image = SimpleUploadedFile("new_profile.jpg", b"new image data", content_type="image/jpeg")
+
+        form_input = {
+            'first_name': self.user.first_name,
+            'last_name': self.user.last_name,
+            'username': self.user.username,
+        }
         response = self.client.post(self.url, {'profile_picture': new_image}, follow=True)
         
     @patch('boto3.client')
