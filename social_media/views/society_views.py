@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from social_media.helpers import redirect_to_society_dashboard
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, HttpResponseNotAllowed
+from django.http import HttpResponseForbidden
 from social_media.forms.competition_creation_form import CompetitionForm
 from django.core.exceptions import ValidationError
 from django.db.models import Max

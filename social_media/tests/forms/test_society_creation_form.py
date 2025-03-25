@@ -1,7 +1,6 @@
 from tkinter.font import names
 from unicodedata import category
 
-from django import forms
 from django.test import TestCase
 from social_media.forms import *
 from social_media.forms.society_creation_form import SocietyCreationForm

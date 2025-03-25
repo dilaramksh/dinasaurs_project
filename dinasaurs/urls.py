@@ -17,13 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from social_media.views import *
-#from django.conf import settings
-from social_media.views.society_views import *
-from social_media.views.student_views import *
-from social_media.views.super_admin_views import *
-from social_media.views.footer_view import *
-from social_media.views.homepage_view import *
-from social_media.views.dashboard_views import *
+
 from social_media.views.membership_view import remove_membership
 
 urlpatterns = [

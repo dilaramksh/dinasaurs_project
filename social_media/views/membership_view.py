@@ -1,10 +1,8 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from social_media.models import Society, Membership
+from social_media.models import Membership
 from django.shortcuts import render
-from django.contrib import messages
-from django.core.exceptions import ValidationError
 
 @login_required
 def view_memberships(request):

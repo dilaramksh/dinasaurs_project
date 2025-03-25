@@ -6,8 +6,6 @@ from social_media.models import User, University
 from django.core.files.uploadedfile import SimpleUploadedFile
 from datetime import date
 
-
-
 class UserFormTestCase(TestCase):
     """Unit tests of the user form."""
 
@@ -88,8 +86,8 @@ class UserFormTestCase(TestCase):
         after_count = User.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertEqual(user.username, '@updatedusername')
-        self.assertEqual(user.first_name, 'Uname')
-        self.assertEqual(user.last_name, 'Ulname')
+        self.assertEqual(user.first_name, 'UName')
+        self.assertEqual(user.last_name, 'ULName')
         self.assertEqual(user.email, 'john.doe@test.ac.uk')
         self.assertEqual(user.university, self.university)
         self.assertEqual(user.start_date, date(2025, 1, 1))

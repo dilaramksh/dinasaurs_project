@@ -1,5 +1,4 @@
 from django.test import TestCase
-from social_media.models.society import Society
 from social_media.forms import CustomisationForm  
 
 class CustomisationFormTest(TestCase):

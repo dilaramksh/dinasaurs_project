@@ -3,12 +3,10 @@ from django.contrib.auth.hashers import check_password
 from django import forms
 from django.test import TestCase
 from social_media.forms import SignUpForm
-from social_media.models import User, University
+from social_media.models import University
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils.timezone import now, timedelta
-from django.core.validators import EmailValidator, ValidationError
-
-
+from django.core.validators import ValidationError
 
 class SignUpFormTestCase(TestCase):
     """Unit tests of the sign up form."""

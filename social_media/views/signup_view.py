@@ -1,12 +1,11 @@
 from django.conf import settings
 from django.contrib.auth import login
 from social_media.mixins import LoginProhibitedMixin
-from django.urls import reverse, NoReverseMatch
+from django.urls import reverse
 from django.views.generic.edit import FormView
 from social_media.forms import SignUpForm
 import os
 from django.core.files.storage import default_storage
-from social_media.models import User
 
 DEFAULT_PROFILE_PICTURE = "profile_pictures/default.jpg"
 

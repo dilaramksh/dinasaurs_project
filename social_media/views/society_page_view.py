@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from social_media.models import Society, Membership, Event
+from social_media.models import Society, Membership
 from social_media.models.colour_history import SocietyColorHistory
-from social_media.models.post import Post
 from django.utils import timezone
 from django.http import JsonResponse
 

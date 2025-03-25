@@ -1,6 +1,5 @@
 from django.test import TestCase
 from social_media.forms import PostForm
-from social_media.models import Post
 
 class PostFormTest(TestCase):
     """Test cases for the PostForm."""
