@@ -121,6 +121,16 @@ class ProfileViewTest(TestCase):
         form = response.context['form']
         self.assertEqual(form.user, self.user)
 
+    def test_post_password_change_success(self):
+        self.client.login(username=self.user.username, password='Password123')
+
+        url = reverse('password')
+        response = self.client.post(url, {
+            'password': 'Password123',
+            'new_password': 'NewPassword456',
+            'password_confirmation': 'NewPassword456',
+        }, follow=True)
+
     @patch('boto3.client')
     def test_profile_picture_upload(self, mock_s3_client):
         """Test successful profile picture upload."""
