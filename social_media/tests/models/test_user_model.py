@@ -107,5 +107,4 @@ class UserModelTests(TestCase):
         fourth_test.profile_picture = new_picture
         fourth_test.save()
 
-        # Ensure the delete method was called for the old picture
         mock_delete.assert_called()

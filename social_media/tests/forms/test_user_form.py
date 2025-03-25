@@ -39,7 +39,7 @@ class UserFormTestCase(TestCase):
         self.assertTrue(isinstance(email_field, forms.EmailField))
 
     def test_valid_user_form(self):
-        form = UserForm(data=self.form_input, instance=self.user)  # Pass instance
+        form = UserForm(data=self.form_input, instance=self.user)  
         self.assertTrue(form.is_valid())
 
 
