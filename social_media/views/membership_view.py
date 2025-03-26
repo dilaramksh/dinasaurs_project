@@ -8,7 +8,6 @@ from django.shortcuts import render
 def view_memberships(request):
     """Display all approved society memberships for the currently logged-in student."""
     memberships = Membership.objects.filter(user=request.user, society_role__society__status="approved")  
-    print(memberships)
     return render(request, 'student/memberships.html', {'memberships': memberships})
     
 @login_required

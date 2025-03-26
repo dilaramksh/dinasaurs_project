@@ -3,14 +3,13 @@ from social_media.models import Society, Membership
 from social_media.models.colour_history import SocietyColorHistory
 from django.utils import timezone
 from django.http import JsonResponse
+from social_media.helpers import *
 
 #@login_required
 def society_mainpage(request, society_id):
     """Display the webpage for a specific society and allow users to join."""
     society = get_object_or_404(Society, pk=society_id)
-    
-    memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
-    committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
+    committee_members = get_committee_members(society_id)
     
     society_events = society.event_set.filter(date__gte=timezone.now()).order_by('date')
     

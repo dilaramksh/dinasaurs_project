@@ -229,7 +229,10 @@ class SocietyPageViewTestCase(TestCase):
 
 
     def test_get_event_creation_form(self):
-        response = self.client.get(reverse('create_event', args=[self.society.id]))
+        self.client.login(username='@johndoe', password='Password123')
+        url = reverse('create_event', args=[self.society.id])
+        #response = self.client.get(reverse('create_event', args=[self.society.id]))
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/event_creation.html')
         self.assertIn('form', response.context)
@@ -255,6 +258,7 @@ class SocietyPageViewTestCase(TestCase):
 
 
     def test_post_invalid_event_creation(self):
+        self.client.login(username='@johndoe', password='Password123')
         response = self.client.post(reverse('create_event', args=[self.society.id]), self.invalid_form_data)
         self.assertEqual(Event.objects.count(), 1)
         self.assertFormError(response, 'form', 'name', 'This field is required.')
@@ -277,7 +281,9 @@ class SocietyPageViewTestCase(TestCase):
 
     def test_terminate_society_view(self):
         self.client.login(username='@johndoe', password='Password123')
-        response = self.client.get(reverse('terminate_society', kwargs={'society_id': self.society.id}))
+        url = reverse('terminate_society', kwargs={'society_id': self.society.id})
+        #response = self.client.get(reverse('terminate_society', kwargs={'society_id': self.society.id}))
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/terminate_society.html')
 
@@ -296,7 +302,10 @@ class SocietyPageViewTestCase(TestCase):
 
 
     def test_view_members_view(self):
-        response = self.client.get(reverse('view_members', kwargs={'society_id': self.society.id}))
+        self.client.login(username='@johndoe', password='Password123')
+        url = reverse('view_members', kwargs={'society_id': self.society.id})
+        response = self.client.get(url)
+        #response = self.client.get(reverse('view_members', kwargs={'society_id': self.society.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/view_members.html')
         self.assertIn('users', response.context)
@@ -304,7 +313,10 @@ class SocietyPageViewTestCase(TestCase):
 
 
     def test_view_members(self):
-        response = self.client.get(reverse('view_members', kwargs={'society_id': self.society.id}))
+        self.client.login(username='@johndoe', password='Password123')
+        url = reverse('view_members', kwargs={'society_id': self.society.id})
+        response = self.client.get(url)
+        #response = self.client.get(reverse('view_members', kwargs={'society_id': self.society.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/view_members.html')
         self.assertIn('committee_members', response.context)
@@ -312,13 +324,17 @@ class SocietyPageViewTestCase(TestCase):
 
 
     def test_view_upcoming_events(self):
-        response = self.client.get(reverse('upcoming_events', kwargs={'society_id': self.society.id}))
+        self.client.login(username='@johndoe', password='Password123')
+        url = reverse('upcoming_events', kwargs={'society_id': self.society.id})
+        response = self.client.get(url)
+        #response = self.client.get(reverse('upcoming_events', kwargs={'society_id': self.society.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/view_upcoming_events.html')
         self.assertIn('events', response.context)
 
 
     def test_event_details(self):
+        self.client.login(username='@johndoe', password='Password123')
         response = self.client.get(reverse("event_details", kwargs={"event_id": self.event.id}))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/json")
@@ -331,7 +347,8 @@ class SocietyPageViewTestCase(TestCase):
 
 
     def test_event_details_with_picture(self):
-        response = self.client.get(reverse("event_details", kwargs={"event_id": self.event.id}))
+        self.client.login(username='@johndoe', password='Password123')
+        response = self.client.get(reverse('event_details', kwargs={'event_id': self.event.id}))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/json")
         data = response.json()
@@ -346,6 +363,7 @@ class SocietyPageViewTestCase(TestCase):
 
 
     def test_event_details_no_picture(self):
+        self.client.login(username='@johndoe', password='Password123')
         self.event.picture = None
         self.event.save()
         response = self.client.get(reverse("event_details", kwargs={"event_id": self.event.id}))
@@ -462,12 +480,14 @@ class SocietyPageViewTestCase(TestCase):
 
 
     def test_update_committee_redirect(self):
+        self.client.login(username='@johndoe', password='Password123')
         post_data = {}
         response = self.client.post(reverse('update_committee', args=[self.society.id]), post_data)
         self.assertRedirects(response, reverse('view_members', args=[self.society.id]))
 
 
     def test_update_committee(self):
+        self.client.login(username='@johndoe', password='Password123')
         response = self.client.post(reverse('update_committee', args=[self.society.id]), self.committee_update_data)
         self.assertRedirects(response, reverse('view_members', args=[self.society.id]))
         messages = list(get_messages(response.wsgi_request))
@@ -515,7 +535,9 @@ class SocietyPageViewTestCase(TestCase):
 
     def test_attempt_non_member_create_competition(self):
         self.client.login(username='@lukadoncic', password='Password123')
-        response = self.client.get(reverse('create_competition', args=[self.society.id]))
+        url = reverse('create_competition', args=[self.society.id])
+        response = self.client.get(url)
+        #response = self.client.get(reverse('create_competition', args=[self.society.id]))
         self.assertEqual(response.status_code, 403)
 
 

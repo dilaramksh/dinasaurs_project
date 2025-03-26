@@ -9,3 +9,4 @@ from .event_creation_form import EventCreationForm
 from .post_creation_form import PostForm
 from .society_role_form import SocietyRoleForm, DeleteRoleForm
 from .university_creation_form import UniversityCreationForm
+from .competition_creation_form import CompetitionForm

@@ -13,8 +13,11 @@ from .student_views import (
 )
 from .society_views import (
     event_creation, terminate_society, view_members, view_upcoming_events, create_post, edit_roles, 
-    update_committee, manage_competitions, create_competition, finalize_competition, competition_details,
-    set_up_round, record_match_results, manage_committee, customise_society_view, event_details
+    update_committee, manage_committee, customise_society_view, event_details
+)
+
+from .society_competition_views import (
+    manage_competitions, create_competition, finalize_competition, competition_details, set_up_round, record_match_results,
 )
 
 from .uni_admin_views import(
@@ -25,7 +28,7 @@ from .super_admin_views import (
     super_admin_dashboard, university_requests, update_university_status, registered_universities
 )
 
-from .membership_view import view_memberships
+from .membership_view import view_memberships, remove_membership
 from .society_page_view import society_mainpage, get_latest_society_colors
 
 from .footer_view import contact_us, privacy_policy

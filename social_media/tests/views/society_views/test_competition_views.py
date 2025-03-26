@@ -172,20 +172,20 @@ class CompetitionViewsTests(TestCase):
     ## Tests for finalize_competition
 
     def test_finalize_competition_not_logged_in(self):
-        url = reverse("finalize_competition", kwargs={"competition_id": self.competition.id})
+        url = reverse("finalize_competition", kwargs={"society_id": self.society.id, "competition_id": self.competition.id})
         response = self.client.post(url)
         # Should redirect to login page (302)
         self.assertNotEqual(response.status_code, 200)
 
     def test_finalize_competition_forbidden_for_non_committee(self):
         self.login_normal()
-        url = reverse("finalize_competition", kwargs={"competition_id": self.competition.id})
+        url = reverse("finalize_competition", kwargs={"society_id": self.society.id, "competition_id": self.competition.id})
         response = self.client.post(url)
         self.assertEqual(response.status_code, 403)
 
     def test_finalize_competition_success(self):
         self.login_admin()
-        url = reverse("finalize_competition", kwargs={"competition_id": self.competition.id})
+        url = reverse("finalize_competition", kwargs={"society_id": self.society.id, "competition_id": self.competition.id})
         response = self.client.post(url, follow=True)
         self.competition.refresh_from_db()
         self.assertTrue(self.competition.is_finalized)
@@ -197,7 +197,7 @@ class CompetitionViewsTests(TestCase):
         and an error message should be added.
         """
         self.login_admin()
-        url = reverse("finalize_competition", kwargs={"competition_id": self.ended_competition.id})
+        url = reverse("finalize_competition", kwargs={"society_id": self.society.id, "competition_id": self.ended_competition.id})
         response = self.client.post(url, follow=True)
         self.ended_competition.refresh_from_db()
         # Assuming our view uses messages.error when competition is ended.
@@ -275,7 +275,7 @@ class CompetitionViewsTests(TestCase):
 
     def test_set_up_round_access_denied_for_non_committee(self):
         self.login_normal()
-        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        url = reverse("set_up_round", kwargs={"society_id": self.society.id,"competition_id": self.competition.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
 
@@ -284,7 +284,7 @@ class CompetitionViewsTests(TestCase):
         # Our competition is not finalized by default? In our setup, competition is not finalized.
         self.competition.is_finalized = False
         self.competition.save()
-        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        url = reverse("set_up_round", kwargs={"society_id": self.society.id, "competition_id": self.competition.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
 
@@ -293,7 +293,7 @@ class CompetitionViewsTests(TestCase):
         self.login_admin()
         self.competition.is_finalized = True
         self.competition.save()
-        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        url = reverse("set_up_round", kwargs={"society_id": self.society.id, "competition_id": self.competition.id})
         response = self.client.post(url, data={
             "action": "add_match",
             "scheduled_time": "2025-01-01 10:00:00",
@@ -314,7 +314,7 @@ class CompetitionViewsTests(TestCase):
             start_date='2023-09-23', end_date='2026-05-06'
         )
         new_participant = CompetitionParticipant.objects.create(user=new_user, competition=self.competition)
-        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        url = reverse("set_up_round", kwargs={"society_id": self.society.id, "competition_id": self.competition.id})
         response = self.client.post(url, data={
             "action": "add_match",
             "scheduled_time": "2025-01-01 10:00:00",
@@ -340,7 +340,7 @@ class CompetitionViewsTests(TestCase):
             participant2=self.participant_normal,
         )
 
-        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        url = reverse("set_up_round", kwargs={"society_id": self.society.id, "competition_id": self.competition.id})
         response = self.client.post(url, data={
             "action": "add_match",
             "match_0_participant1": self.participant_admin.id,
@@ -379,7 +379,7 @@ class CompetitionViewsTests(TestCase):
             competition=self.competition
         )
 
-        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        url = reverse("set_up_round", kwargs={"society_id": self.society.id, "competition_id": self.competition.id})
         response = self.client.post(url, data={
             "action": "add_match",
             "scheduled_time": "not-a-valid-date", # Invalid datetime string
@@ -520,7 +520,7 @@ class CompetitionViewsTests(TestCase):
         self.login_admin()
         self.competition.is_finalized = True
         self.competition.save()
-        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        url = reverse("set_up_round", kwargs={"society_id": self.society.id, "competition_id": self.competition.id})
         response = self.client.post(url, data={
             "action": "add_match",
             "match_0_participant1": self.participant_admin.id,
@@ -536,7 +536,7 @@ class CompetitionViewsTests(TestCase):
         self.competition.save()
         
         with patch("social_media.models.Match.clean", side_effect=ValidationError("invalid")):
-            url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+            url = reverse("set_up_round", kwargs={"society_id": self.society.id, "competition_id": self.competition.id})
             response = self.client.post(url, data={
                 "action": "add_match",
                 "match_0_participant1": self.participant_admin.id,
@@ -556,7 +556,7 @@ class CompetitionViewsTests(TestCase):
             participant1=self.participant_admin,
             participant2=self.participant_normal,
         )
-        url = reverse("set_up_round", kwargs={"competition_id": self.competition.id})
+        url = reverse("set_up_round", kwargs={"society_id": self.society.id, "competition_id": self.competition.id})
         response = self.client.post(url, data={
             "action": "revert_match",
             "match_id": match.id
@@ -608,7 +608,7 @@ class CompetitionViewsTests(TestCase):
     def test_create_competition_invalid_form(self):
         """Test that an error message is shown when invalid competition data is submitted."""
         self.login_admin()
-        url = reverse("create_competition", kwargs={"society_id": self.society.id})
+        url = reverse("create_competition", kwargs={"society_id": self.society.id, "society_id": self.society.id})
         
         invalid_data = {
             "name": "",  # Missing name
@@ -634,7 +634,7 @@ class CompetitionViewsTests(TestCase):
     def test_create_competition_get_request_as_committee(self):
         """Test GET request to create_competition renders form correctly."""
         self.login_admin()
-        url = reverse("create_competition", kwargs={"society_id": self.society.id})
+        url = reverse("create_competition", kwargs={"society_id": self.society.id, "society_id": self.society.id})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)

@@ -69,14 +69,14 @@
         <h3>Matches</h3>
         <p class="text-muted">To set up a new round, finalize the competition and record the current match results</p>
         {% if not competition.is_finalized %}
-            <a href="{% url 'finalize_competition' competition.id %}" class="btn btn-primary mb-3">
+            <a href="{% url 'finalize_competition' competition.society.id competition.id %}" class="btn btn-primary mb-3">
                 Finalize Lineup
             </a>
         {% else %}
             <a href="{% url 'record_match_results' competition.id %}" class="btn btn-primary mb-3">
                 Record Match Results
             </a>
-            <a href="{% url 'set_up_round' competition.id %}" class="btn btn-primary mb-3">
+            <a href="{% url 'set_up_round' competition.society.id competition.id %}" class="btn btn-primary mb-3">
                 Set Up Round
             </a>
             <hr>

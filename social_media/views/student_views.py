@@ -51,7 +51,7 @@ def society_creation_request(request):
 
     return render(request, 'student/submit_society_request.html', {'form': form})
 
-
+@login_required
 def view_societies(request):
     """ Display the list of approved societies for the current user's university."""
     student = request.user

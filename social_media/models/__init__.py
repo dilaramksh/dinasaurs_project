@@ -14,4 +14,5 @@ from .competition import (
     CompetitionParticipant,
     Match
 )
+from .colour_history import SocietyColorHistory
 

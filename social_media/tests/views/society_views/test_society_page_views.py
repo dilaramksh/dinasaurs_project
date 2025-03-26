@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from social_media.models import University, Category, User, Society
+from social_media.models import University, Category, User, Society, SocietyRole
 
 
 class SocietyPageViewTestCase(TestCase):

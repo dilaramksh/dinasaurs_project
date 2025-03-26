@@ -38,7 +38,6 @@ class SignUpView(LoginProhibitedMixin, FormView):
 
     def form_invalid(self, form):
         """Handle invalid sign up form submission."""
-        print(f"Form errors: {form.errors}")
         return self.render_to_response(self.get_context_data(form=form))
 
     def get_success_url(self):

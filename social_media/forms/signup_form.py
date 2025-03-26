@@ -88,7 +88,6 @@ class SignUpForm(NewPasswordMixin, forms.ModelForm):
 
     def clean_username(self):
         username = self.cleaned_data.get("username", "")
-        print("CLEANED USERNAME IN FORM:", repr(username.strip()))
         return username.strip()
 
  

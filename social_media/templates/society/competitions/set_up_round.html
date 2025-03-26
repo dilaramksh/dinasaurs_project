@@ -15,7 +15,7 @@
       <h5 class="mb-0">Match Pairings</h5>
     </div>
     <div class="card-body">
-      <form method="post" action="{% url 'set_up_round' competition.id %}">
+      <form method="post" action="{% url 'set_up_round' competition.society.id competition.id %}">
         {% csrf_token %}
         <div class="mb-3">
           <label class="form-label" for="scheduled_time">Scheduled Time</label>
@@ -73,7 +73,7 @@
                 <td>{{ match.participant2.user.username }}</td>
                 <td>{{ match.scheduled_time }}</td>
                 <td>
-                  <form method="post" action="{% url 'set_up_round' competition.id %}" style="display:inline;">
+                  <form method="post" action="{% url 'set_up_round' competition.society.id competition.id %}" style="display:inline;">
                     {% csrf_token %}
                     <input type="hidden" name="action" value="revert_match">
                     <input type="hidden" name="match_id" value="{{ match.id }}">
