@@ -1,7 +1,7 @@
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from social_media.models import Society, Membership, Event, SocietyRole
+from social_media.models import Society, Membership, Event, SocietyRole, University
 from django.shortcuts import get_object_or_404
 from social_media.models import Society
 from social_media.helpers import membership_required
@@ -71,6 +71,10 @@ def dashboard(request):
         template = "uni_admin/uni_admin_dashboard.html"
     
     elif user_type == 'super_admin':
+        number_pending = University.objects.filter(status="pending").count()
+        context = {
+            "number_pending": number_pending
+        }
         template = "super_admin/super_admin_dashboard.html"
     else:
         template = 'student/student_dashboard.html' 

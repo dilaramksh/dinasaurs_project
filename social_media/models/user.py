@@ -36,8 +36,6 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['email']
 
     def save(self, *args, **kwargs):
-        if not self.username:
-            self.username = self.email
 
         if self.pk:
             old_instance = User.objects.get(pk=self.pk)

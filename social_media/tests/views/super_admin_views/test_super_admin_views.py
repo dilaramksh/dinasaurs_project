@@ -58,31 +58,6 @@ class SuperAdminViewsTest(TestCase):
             logo="university_logos/default.png"
         )
 
-    # def test_super_admin_dashboard(self):
-    #     """
-    #     Ensure the super_admin_dashboard view returns the correct template 
-    #     and context data (number_pending).
-    #     """
-    #     response = self.client.get(reverse("dashboard"))
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, "student/student_dashboard.html")
-
-    
-    def test_super_admin_dashboard(self):
-        """
-        Ensure the super_admin_dashboard view returns the correct template 
-        and context data (number_pending).
-        """
-        url = reverse("super_admin_dashboard")  # Ensure this matches the name in your urls.py
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 200)  # Ensure the page loads successfully
-        self.assertTemplateUsed(response, "super_admin/super_admin_dashboard.html")
-
-        # Check that the context contains the correct count of pending universities
-        number_pending = response.context["number_pending"]
-        self.assertEqual(number_pending, 1)  # Since we created one pending university in setUp
-
 
 
     def test_university_requests(self):

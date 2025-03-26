@@ -62,9 +62,7 @@ def is_user_committee(user, society):
     if not user_membership:
         return False
     if user_membership.is_committee_member():
-        return True
-    return False
-    
+        return True    
 
 def redirect_to_society_dashboard(request, fallback='dashboard'):
     """Redirects to the correct society dashboard or falls back to the general dashboard."""

@@ -231,7 +231,6 @@ class SocietyPageViewTestCase(TestCase):
     def test_get_event_creation_form(self):
         self.client.login(username='@johndoe', password='Password123')
         url = reverse('create_event', args=[self.society.id])
-        #response = self.client.get(reverse('create_event', args=[self.society.id]))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/event_creation.html')
@@ -282,7 +281,6 @@ class SocietyPageViewTestCase(TestCase):
     def test_terminate_society_view(self):
         self.client.login(username='@johndoe', password='Password123')
         url = reverse('terminate_society', kwargs={'society_id': self.society.id})
-        #response = self.client.get(reverse('terminate_society', kwargs={'society_id': self.society.id}))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/terminate_society.html')
@@ -305,7 +303,6 @@ class SocietyPageViewTestCase(TestCase):
         self.client.login(username='@johndoe', password='Password123')
         url = reverse('view_members', kwargs={'society_id': self.society.id})
         response = self.client.get(url)
-        #response = self.client.get(reverse('view_members', kwargs={'society_id': self.society.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/view_members.html')
         self.assertIn('users', response.context)
@@ -316,7 +313,6 @@ class SocietyPageViewTestCase(TestCase):
         self.client.login(username='@johndoe', password='Password123')
         url = reverse('view_members', kwargs={'society_id': self.society.id})
         response = self.client.get(url)
-        #response = self.client.get(reverse('view_members', kwargs={'society_id': self.society.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'society/view_members.html')
         self.assertIn('committee_members', response.context)
@@ -537,7 +533,6 @@ class SocietyPageViewTestCase(TestCase):
         self.client.login(username='@lukadoncic', password='Password123')
         url = reverse('create_competition', args=[self.society.id])
         response = self.client.get(url)
-        #response = self.client.get(reverse('create_competition', args=[self.society.id]))
         self.assertEqual(response.status_code, 403)
 
 

@@ -59,7 +59,7 @@ def terminate_society(request, society_id):
 def view_members(request, society_id):
     """Display the members of a specific society."""
     memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
-    committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
+    committee_members = get_committee_members(society_id)
 
     all_users = list(set(m.user for m in memberships))
 
@@ -164,7 +164,7 @@ def manage_committee(request, society_id):
     """Display and manage the committee members of a society."""
     memberships = Membership.objects.filter(society_id=society_id).select_related('user', 'society_role')
 
-    committee_members = [m.user for m in memberships if m.society_role.is_committee_role()]
+    committee_members = get_committee_members(society_id)
 
     all_roles = SocietyRole.objects.filter(society_id=society_id)
     committee_roles = [role for role in all_roles if role.is_committee_role()]

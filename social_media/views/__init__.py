@@ -25,7 +25,7 @@ from .uni_admin_views import(
 )
 
 from .super_admin_views import (
-    super_admin_dashboard, university_requests, update_university_status, registered_universities
+    university_requests, update_university_status, registered_universities
 )
 
 from .membership_view import view_memberships, remove_membership

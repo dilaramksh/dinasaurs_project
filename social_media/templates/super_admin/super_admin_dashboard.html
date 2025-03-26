@@ -31,8 +31,12 @@
                 <div class="card text-center p-4 border-warning shadow-sm h-80">
                     <h5 class="card-header bg-warning text-dark">  ✅ Registered ✅ and ❌ Blocked ❌ <br> Universities </h5>
                     <div class="card-body">
-                        <p class="card-text"> View all universities in the hive </p>
-                        <a href="{% url 'registered_universities' %}" class="btn btn-warning"> View </a> 
+                        {% if number_pending %}
+                            <p class="card-text"> There are currently {{number_pending}} request/s to join </p>
+                            <a href="{% url 'university_requests' %}" class="btn btn-warning"> View </a> 
+                        {% else %}
+                            <p class="card-text"> There are currently no requests </p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
